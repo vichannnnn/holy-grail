@@ -1,8 +1,8 @@
 .ONESHELL:
 SHELL = bash
 
-backend_container := holy-grail-backend
-frontend_container := holy-grail-frontend
+backend_container := backend
+frontend_container := frontend
 docker_run := docker compose run --rm
 docker_backend := $(docker_run) $(backend_container)
 docker_compose_production_run := docker compose -f docker-compose.prod.yml run --rm $(backend_container)

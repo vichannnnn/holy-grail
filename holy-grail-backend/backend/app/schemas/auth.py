@@ -1,7 +1,9 @@
-from pydantic import constr, EmailStr
-from app.schemas.base import CustomBaseModel as BaseModel
-from typing import Optional
 from enum import IntEnum
+from typing import Optional
+
+from pydantic import constr
+
+from app.schemas.base import CustomBaseModel as BaseModel
 
 password_validator = constr(regex="^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&^])[^\s]{8,20}$")
 username_validator = constr(regex="^[a-zA-Z0-9]{4,20}$")
@@ -15,13 +17,13 @@ class RoleEnum(IntEnum):
 
 class AccountRegisterSchema(BaseModel):
     username: username_validator  # type: ignore
-    email: EmailStr
+    # email: EmailStr
     password: password_validator  # type: ignore
     repeat_password: password_validator  # type: ignore
 
 
 class AccountUpdatePasswordSchema(BaseModel):
-    email: Optional[EmailStr]
+    # email: Optional[EmailStr]
     before_password: Optional[password_validator]  # type: ignore
     password: Optional[password_validator]  # type: ignore
     repeat_password: Optional[password_validator]  # type: ignore
@@ -34,7 +36,7 @@ class AccountSchema(AccountRegisterSchema):
 
 class CurrentUserSchema(BaseModel):
     user_id: int
-    email: EmailStr
+    # email: EmailStr
     username: username_validator  # type: ignore
     role: RoleEnum
 

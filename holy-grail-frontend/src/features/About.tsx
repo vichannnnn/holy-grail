@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
+import { Box, Flex, Image } from "@chakra-ui/react";
 import AboutLogo from "../assets/placeholder-about.png";
 import { HeaderText } from "../components/HeroContent/HeaderText";
 import { HeroText } from "../components/HeroContent/HeroText";
@@ -30,8 +30,7 @@ const About = () => {
           <HeaderText text="web hosting" />
           <HeroText
             mt="5%"
-            text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eu orci
-          eget purus convallis fringilla."
+            text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
           />
         </Box>
       </Flex>

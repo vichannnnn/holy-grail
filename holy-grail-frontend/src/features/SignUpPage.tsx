@@ -18,7 +18,7 @@ import PasswordValidationBox from "./PasswordValidationBox";
 
 const SignUpPage = () => {
   const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
+  // const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
   const toast = useToast();
@@ -49,12 +49,12 @@ const SignUpPage = () => {
         username: username,
         password: password,
         repeat_password: repeatPassword,
-        email: email,
+        // email: email,
       });
 
       toast({
         title: "Account successfully created.",
-        description: `Please check your email (${email}) for the verification link.`,
+        description: `You can now log in with your credentials.`,
         status: "success",
         duration: 5000,
         isClosable: true,
@@ -62,18 +62,15 @@ const SignUpPage = () => {
     } catch (error) {
       let errorDescription =
         "Unable to create account. Please check your input and try again.";
-      const axiosError = error as AxiosError<ErrorResponseData>;
 
       type ErrorResponseData = {
         detail: string;
       };
 
+      const axiosError = error as AxiosError<ErrorResponseData>;
+
       if (axiosError.response && axiosError.response.status === 409) {
-        if (axiosError.response.data.detail === "Email already exists") {
-          errorDescription = "An account with this email already exists.";
-        } else if (
-          axiosError.response.data.detail === "Username already exists"
-        ) {
+        if (axiosError.response.data.detail === "Username already exists") {
           errorDescription = "An account with this username already exists.";
         }
       } else if (axiosError.response && axiosError.response.status === 400) {
@@ -123,15 +120,15 @@ const SignUpPage = () => {
                     required
                   />
                 </FormControl>
-                <FormControl id="email">
-                  <FormLabel>Email address</FormLabel>
-                  <Input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                  />
-                </FormControl>
+                {/*<FormControl id="email">*/}
+                {/*  <FormLabel>Email address</FormLabel>*/}
+                {/*  <Input*/}
+                {/*    type="email"*/}
+                {/*    value={email}*/}
+                {/*    onChange={(e) => setEmail(e.target.value)}*/}
+                {/*    required*/}
+                {/*  />*/}
+                {/*</FormControl>*/}
                 <FormControl id="password">
                   <FormLabel>Password</FormLabel>
                   <Input

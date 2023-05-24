@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, FormEvent } from "react";
 import {
   Box,
   Button,
@@ -13,7 +13,6 @@ import {
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../providers/AuthProvider";
-import { AxiosError } from "axios";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
@@ -22,7 +21,7 @@ const LoginPage = () => {
   const toast = useToast();
   const navigate = useNavigate();
 
-  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
@@ -36,17 +35,9 @@ const LoginPage = () => {
       });
       navigate("/");
     } catch (error) {
-      let errorDescription = "Invalid username or password.";
-      const axiosError = error as AxiosError;
-
-      if (axiosError.response && axiosError.response.status === 403) {
-        errorDescription =
-          "Please verify your email using the verification email sent to your account before logging in.";
-      }
-
       toast({
         title: "Login failed.",
-        description: errorDescription,
+        description: "Invalid username or password.",
         status: "error",
         duration: 3000,
         isClosable: true,

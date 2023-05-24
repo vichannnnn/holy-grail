@@ -1,28 +1,28 @@
-from app.db.base_class import Base
-from app.exceptions import AppError
-from sqlalchemy import Index
-from sqlalchemy import exc as SQLAlchemyExceptions
-from sqlalchemy import select, update
-from sqlalchemy.orm import relationship, Mapped, mapped_column
-from sqlalchemy.sql.expression import text
-from typing import TYPE_CHECKING, Union
-from app.crud.base import CRUD
 from datetime import datetime, timedelta
 from os import environ
-from app.api.deps import get_session
+from typing import TYPE_CHECKING, Union
+
 from fastapi import Depends, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from passlib.context import CryptContext
+from sqlalchemy import Index
+from sqlalchemy import exc as SQLAlchemyExceptions
+from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import relationship, Mapped, mapped_column
+from sqlalchemy.sql.expression import text
+
+from app.api.deps import get_session
+from app.crud.base import CRUD
+from app.db.base_class import Base
+from app.exceptions import AppError
+from app.schemas.admin import UpdateRoleSchema
 from app.schemas.auth import (
     AccountRegisterSchema,
     AccountUpdatePasswordSchema,
     CurrentUserSchema,
 )
-from app.schemas.admin import UpdateRoleSchema
-import traceback
-
 
 if TYPE_CHECKING:
     from app.models.library import Library
@@ -46,9 +46,9 @@ class Authenticator:
 
     @classmethod
     async def get_current_user(
-        cls,
-        token: str = Depends(oauth2_scheme),
-        session: AsyncSession = Depends(get_session),
+            cls,
+            token: str = Depends(oauth2_scheme),
+            session: AsyncSession = Depends(get_session),
     ) -> CurrentUserSchema:
         try:
             payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
@@ -58,7 +58,7 @@ class Authenticator:
                         user_id=user.user_id,
                         username=username,
                         role=user.role,
-                        email=user.email,
+                        # email=user.email,
                     )
 
         except JWTError as exc:
@@ -67,9 +67,9 @@ class Authenticator:
 
     @classmethod
     async def get_admin(
-        cls,
-        token: str = Depends(oauth2_scheme),
-        session: AsyncSession = Depends(get_session),
+            cls,
+            token: str = Depends(oauth2_scheme),
+            session: AsyncSession = Depends(get_session),
     ) -> CurrentUserSchema:
         try:
             payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
@@ -80,7 +80,7 @@ class Authenticator:
                             user_id=user.user_id,
                             username=username,
                             role=user.role,
-                            email=user.email,
+                            # email=user.email,
                         )
 
         except JWTError as exc:
@@ -104,17 +104,17 @@ class Account(Base, CRUD["Account"]):
 
     user_id: Mapped[int] = mapped_column(primary_key=True)
     username: Mapped[str] = mapped_column(nullable=False, unique=True)
-    email: Mapped[str] = mapped_column(nullable=False, unique=True)
+    # email: Mapped[str] = mapped_column(nullable=False, unique=True)
     password: Mapped[str] = mapped_column(nullable=False)
     documents: Mapped["Library"] = relationship(back_populates="account", uselist=True)
     role: Mapped[int] = mapped_column(nullable=False, server_default=text("1"))
 
     async def register(
-        self, session: AsyncSession, data: AccountRegisterSchema
+            self, session: AsyncSession, data: AccountRegisterSchema
     ) -> CurrentUserSchema:
         self.username = data.username
         self.password = Authenticator.pwd_context.hash(data.password)
-        self.email = data.email
+        # self.email = data.email
 
         try:
             session.add(self)
@@ -124,7 +124,7 @@ class Account(Base, CRUD["Account"]):
             user_data = {
                 "user_id": self.user_id,
                 "username": self.username,
-                "email": self.email,
+                # "email": self.email,
                 "role": self.role,
             }
 
@@ -137,7 +137,7 @@ class Account(Base, CRUD["Account"]):
 
     @classmethod
     async def login(
-        cls, session: AsyncSession, username: str, password: str
+            cls, session: AsyncSession, username: str, password: str
     ) -> Union[CurrentUserSchema, bool]:
         if not (credentials := await Account.select_from_username(session, username)):
             return False
@@ -147,7 +147,7 @@ class Account(Base, CRUD["Account"]):
         user_data = {
             "user_id": credentials.user_id,
             "username": credentials.username,
-            "email": credentials.email,
+            # "email": credentials.email,
             "role": credentials.role,
         }
         current_user = CurrentUserSchema(**user_data)
@@ -155,11 +155,11 @@ class Account(Base, CRUD["Account"]):
 
     @classmethod
     async def update_password(
-        cls, session: AsyncSession, user_id: int, data: AccountUpdatePasswordSchema
+            cls, session: AsyncSession, user_id: int, data: AccountUpdatePasswordSchema
     ):
         curr_cred = await Account.get_one_by_filter(session, [("user_id", user_id)])
         if not Authenticator.pwd_context.verify(
-            data.before_password, curr_cred.password
+                data.before_password, curr_cred.password
         ):
             raise AppError.INVALID_CREDENTIALS_ERROR
 

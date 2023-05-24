@@ -5,7 +5,7 @@ import { isTokenExpired } from "../auth/auth";
 export interface User {
   user_id: number;
   username: string;
-  email: string;
+  // email: string;
   role: number;
 }
 
