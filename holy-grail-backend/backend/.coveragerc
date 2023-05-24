@@ -1,0 +1,9 @@
+[run]
+source = your_project_folder
+omit = *tests*, *venv*
+
+[report]
+exclude_lines =
+    pragma: no cover
+    def __repr__
+    raise NotImplementedError

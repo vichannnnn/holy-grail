@@ -1,0 +1,13 @@
+[MASTER]
+disable=too-few-public-methods,
+        missing-module-docstring,
+        missing-class-docstring,
+        missing-function-docstring,
+        no-self-use, no-member, duplicate-code, abstract-method
+
+extension-pkg-whitelist=pydantic
+ignore=tests
+
+# Customize Default Rule Behaviour
+ignored-argument-names=authenticated|user
+max-line-length=120

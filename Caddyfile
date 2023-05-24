@@ -1,0 +1,11 @@
+{$BACKEND_URL} {
+    handle_path /api/v1/* {
+	    reverse_proxy {$BACKEND_CONTAINER_URL}
+	    }
+}
+
+{$DEBUG_URL} {
+    handle_path /api/v1/* {
+	    reverse_proxy {$DEBUG_CONTAINER_URL}
+	    }
+}

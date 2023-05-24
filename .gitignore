@@ -1,7 +1,43 @@
+# Frontend gitignore
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+holy-grail-backend/.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+
+
+postgres/
+celerybeat-schedule
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
+**/__pycache__/
+*/mypy_cache
+.DS_store
+.idea
 
 # C extensions
 *.so
@@ -122,6 +158,7 @@ celerybeat.pid
 # Environments
 .env
 .venv
+.production_env
 env/
 venv/
 ENV/
