@@ -104,7 +104,7 @@ class Account(Base, CRUD["Account"]):
 
     user_id: Mapped[int] = mapped_column(primary_key=True)
     username: Mapped[str] = mapped_column(nullable=False, unique=True)
-    # email: Mapped[str] = mapped_column(nullable=False, unique=True)
+    email: Mapped[str] = mapped_column(nullable=True, unique=True)
     password: Mapped[str] = mapped_column(nullable=False)
     documents: Mapped["Library"] = relationship(back_populates="account", uselist=True)
     role: Mapped[int] = mapped_column(nullable=False, server_default=text("1"))

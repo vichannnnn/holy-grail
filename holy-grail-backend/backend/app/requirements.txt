@@ -12,7 +12,6 @@ httpx==0.23.0
 requests==2.30.0
 pydantic[email]==1.10.8
 python-multipart
-psycopg==3.1.9
 types-requests==2.31.0.0
 PyJWT==2.7.0
 starlette_validation_uploadfile

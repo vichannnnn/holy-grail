@@ -12,6 +12,8 @@ services:
       dockerfile: Dockerfile.dev
     environment:
       VITE_API_URL: ${VITE_API_URL}
+    depends_on:
+      - backend
     volumes:
       - ./holy-grail-frontend/src:/app/src
     restart:
@@ -57,7 +59,7 @@ services:
     healthcheck:
       interval: 5s
       retries: 10
-      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      test: [ "CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB" ]
     image: postgres:14.1-alpine
     ports:
       - '5432:5432'
@@ -70,6 +72,8 @@ services:
     image: redis:7.0.7-alpine
     ports:
       - "6379:6379"
+    depends_on:
+      - db
     command: redis-server --loglevel verbose
     restart: unless-stopped
 
@@ -92,7 +96,7 @@ services:
     command: celery -A app.worker worker -B --loglevel=info
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "celery inspect ping"]
+      test: [ "CMD-SHELL", "celery inspect ping" ]
     volumes:
       - ./holy-grail-backend/backend:/app
 
@@ -110,29 +114,29 @@ services:
     restart: unless-stopped
 
   caddy:
-     container_name: holy-grail-proxy
-     image: caddy:2.6.2-alpine
-     networks:
-       - holy-grail-network
-       - default
-     ports:
-       - '80:80'
-       - '443:443'
-       - '5173:5173'
-       - '8000:8000'
-       - '9000:9000'
-     environment:
-       FRONTEND_URL: ${FRONTEND_URL}
-       FRONTEND_CONTAINER_URL: ${FRONTEND_CONTAINER_URL}
-       BACKEND_URL: ${BACKEND_URL}
-       BACKEND_CONTAINER_URL: ${BACKEND_CONTAINER_URL}
-       DEBUG_URL: ${DEBUG_URL}
-       DEBUG_CONTAINER_URL: ${DEBUG_CONTAINER_URL}
-     restart: unless-stopped
-     volumes:
-       - ./Caddyfile.dev:/etc/caddy/Caddyfile
-       - caddy_data:/data
-       - caddy_config:/config
+    container_name: holy-grail-proxy
+    image: caddy:2.6.2-alpine
+    networks:
+      - holy-grail-network
+      - default
+    ports:
+      - '80:80'
+      - '443:443'
+      - '5173:5173'
+      - '8000:8000'
+      - '9000:9000'
+    environment:
+      FRONTEND_URL: ${FRONTEND_URL}
+      FRONTEND_CONTAINER_URL: ${FRONTEND_CONTAINER_URL}
+      BACKEND_URL: ${BACKEND_URL}
+      BACKEND_CONTAINER_URL: ${BACKEND_CONTAINER_URL}
+      DEBUG_URL: ${DEBUG_URL}
+      DEBUG_CONTAINER_URL: ${DEBUG_CONTAINER_URL}
+    restart: unless-stopped
+    volumes:
+      - ./Caddyfile.dev:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
 
 volumes:
   caddy_config: null
