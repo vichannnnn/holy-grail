@@ -105,12 +105,12 @@ const LoginPage = () => {
                 Register now.
               </Link>
             </Text>
-            <Text>
-              Forgot your password?{" "}
-              <Link as="button" textDecoration="underline">
-                Click here.
-              </Link>
-            </Text>
+            {/*<Text>*/}
+            {/*  Forgot your password?{" "}*/}
+            {/*  <Link as="button" textDecoration="underline">*/}
+            {/*    Click here.*/}
+            {/*  </Link>*/}
+            {/*</Text>*/}
           </Box>
         </Flex>
       </Flex>

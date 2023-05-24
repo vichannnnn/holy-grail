@@ -72,7 +72,7 @@ const NavBar = () => {
             {user.role > 1 && (
               <MenuItem onClick={handleAdminButtonClick}>Admin Panel</MenuItem>
             )}
-            <MenuItem>Change Password</MenuItem>
+            {/*<MenuItem>Change Password</MenuItem>*/}
             <MenuItem onClick={handleLogout}>Log Out</MenuItem>
           </MenuList>
         </Menu>
