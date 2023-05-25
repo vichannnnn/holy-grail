@@ -3,7 +3,7 @@ import { UploadButton } from "./UploadButton";
 
 const Upload = () => {
   return (
-    <div id="faq">
+    <div id="upload">
       <Flex direction="column" bgColor="white">
         <Text
           fontSize="5xl"

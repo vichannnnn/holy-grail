@@ -1,5 +1,7 @@
 import { Button, ButtonProps, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import AuthContext from "../../providers/AuthProvider";
 
 type UploadButtonProps = ButtonProps & {
   text: string;
@@ -7,9 +9,14 @@ type UploadButtonProps = ButtonProps & {
 
 export const UploadButton = ({ text, ...props }: UploadButtonProps) => {
   const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
 
   const handleUploadButtonClick = () => {
-    navigate("/upload");
+    if (user) {
+      navigate("/upload");
+    } else {
+      navigate("/login");
+    }
   };
 
   return (

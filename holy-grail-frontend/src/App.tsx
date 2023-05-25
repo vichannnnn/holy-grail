@@ -7,7 +7,7 @@ import Library from "./features/Library";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Footer from "./features/Footer";
 import SignUpPage from "./features/SignUpPage";
-import UploadPage from "./components/LibraryContent/UploadPage";
+import UploadPage from "./features/UploadPage";
 import { AuthProvider } from "./providers/AuthProvider";
 import ApprovalPage from "./features/ApprovalPage";
 
