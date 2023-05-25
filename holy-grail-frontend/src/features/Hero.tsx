@@ -5,13 +5,7 @@ import { HeroText } from "../components/HeroContent/HeroText";
 
 const Hero = () => {
   return (
-    <Flex
-      justifyContent="space-between"
-      w="56vw"
-      mb="10%"
-      minH="40vh"
-      bgColor="white"
-    >
+    <Flex justifyContent="space-between" mb="10%" minH="40vh" bgColor="white">
       <Box w="50%" textAlign="left">
         <HeroText fontWeight="bold" text="Lorem ipsum" mb="3%" lineHeight="1" />
         <HeaderText text="Super fast" />
