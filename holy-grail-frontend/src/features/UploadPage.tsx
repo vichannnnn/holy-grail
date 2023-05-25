@@ -29,7 +29,6 @@ const UploadPage = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
-
   useEffect(() => {
     fetchData().then(({ categories, subjects, types }) => {
       setCategories(categories);

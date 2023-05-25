@@ -8,7 +8,7 @@ export const HeaderText = ({ text, ...props }: HeaderTextProps) => {
   return (
     <Text
       fontWeight="bold"
-      fontSize="7xl"
+      fontSize="5xl"
       color="black"
       lineHeight="1"
       {...props}
