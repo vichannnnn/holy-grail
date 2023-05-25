@@ -39,55 +39,34 @@ const NavBar = () => {
   };
 
   return (
-    <Box
-      as="nav"
+    <Flex
+      align="center"
+      justify="space-between"
       position="sticky"
-      zIndex="sticky"
-      bg="white"
-      textAlign="center"
-      sx={{
-        "> *": {
-          marginX: '4',
-        },
-      }}
-      p={4}
+      mb="8%"
     >
-      <Box as="span" display="inline-block" verticalAlign="middle">
-        <RouterLink to="/">
-          <NavBarLogo />
-        </RouterLink>
-      </Box>
-      <Box as="span" display="inline-block" verticalAlign="middle">
-        <RouterLink to="/">
-          <ClickableText children="Home" />
-        </RouterLink>
-      </Box>
-      <Box as="span" display="inline-block" verticalAlign="middle">
-        <Link to="about" smooth={true} duration={500}>
-          <ClickableText children="About" />
-        </Link>
-      </Box>
-      <Box as="span" display="inline-block" verticalAlign="middle">
-        <RouterLink to="/library">
-          <ClickableText children="Library" />
-        </RouterLink>
-      </Box>
-      <Box as="span" display="inline-block" verticalAlign="middle">
-        <Link to="features" smooth={true} duration={500}>
-          <ClickableText children="Features" />
-        </Link>
-      </Box>
-      <Box as="span" display="inline-block" verticalAlign="middle">
-        <Link to="faq" smooth={true} duration={500}>
-          <ClickableText children="FAQ" />
-        </Link>
-      </Box>
+      <RouterLink to="/">
+        <NavBarLogo />
+      </RouterLink>
+      <RouterLink to="/">
+        <ClickableText children="Home" />
+      </RouterLink>
+      <Link to="about" smooth={true} duration={500}>
+        <ClickableText children="About" />
+      </Link>
+      <RouterLink to="/library">
+        <ClickableText children="Library" />
+      </RouterLink>
+      <Link to="features" smooth={true} duration={500}>
+        <ClickableText children="Features" />
+      </Link>
+      <Link to="faq" smooth={true} duration={500}>
+        <ClickableText children="FAQ" />
+      </Link>
 
       {user ? (
         <Menu>
-          <Box as="span" display="inline-block" verticalAlign="middle">
           <MenuButton as={NavBarRightButton}>{user.username}</MenuButton>
-          </Box>
           <MenuList>
             {user.role > 1 && (
               <MenuItem onClick={handleAdminButtonClick}>Admin Panel</MenuItem>
@@ -97,13 +76,13 @@ const NavBar = () => {
           </MenuList>
         </Menu>
       ) : (
-        <Box as="span" display="inline-block" verticalAlign="middle">
+        <Box>
           <RouterLink to="/login">
             <NavBarRightButton children="Log In" />
           </RouterLink>
         </Box>
       )}
-    </Box>
+    </Flex>
   );
 };
 

@@ -19,6 +19,8 @@ build:
 stop:
 	docker compose -f docker-compose.$(version).yml stop
 
+run:
+	docker compose -f docker-compose.$(version).yml up -d
 down:
 	docker compose -f docker-compose.$(version).yml down
 
