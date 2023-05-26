@@ -38,7 +38,7 @@ const UploadPage = () => {
   }, []);
 
   if (!user) {
-    return navigate("/login");
+    navigate("/login");
   }
 
   const handleButtonClick = () => {
