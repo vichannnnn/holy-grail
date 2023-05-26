@@ -17,9 +17,9 @@ const Combobox = ({ label, value, onChange, options }: ComboboxProps) => {
       <Autocomplete
         sx={{
           "& .MuiInputBase-root": {
+            width: "100%",
             height: "35px",
             padding: "0 10px",
-            alignItems: "center",
           },
           "& .MuiInputLabel-root": {
             marginTop: "-9px",

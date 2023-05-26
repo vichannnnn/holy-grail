@@ -4,7 +4,7 @@ import Upload from "../components/LibraryContent/Upload";
 const Library = () => {
   return (
     <>
-      <Upload />
+      {/*<Upload />*/}
       <NotesApplication />
     </>
   );

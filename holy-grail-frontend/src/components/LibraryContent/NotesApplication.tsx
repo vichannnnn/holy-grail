@@ -9,6 +9,7 @@ import {
   Tbody,
   HStack,
   Button,
+  TableContainer, Box
 } from "@chakra-ui/react";
 import Combobox from "./Combobox";
 import {
@@ -105,6 +106,8 @@ const NotesApplication = () => {
 
   return (
     <>
+      <Box display="flex" justifyContent="center">
+      <TableContainer sx={{ maxWidth: '100%', width: '80%' }}>
       <Table variant="simple" mt="8%">
         <Thead>
           <Tr>
@@ -141,7 +144,6 @@ const NotesApplication = () => {
                 }))}
               />
             </Th>
-            <Th></Th>
           </Tr>
           <Tr>
             <Th>Category</Th>
@@ -153,6 +155,8 @@ const NotesApplication = () => {
         </Thead>
         <Tbody>{renderNotes()}</Tbody>
       </Table>
+      </TableContainer>
+      </Box>
 
       <HStack spacing={4} justifyContent="center" mt="10%">
         <Button
