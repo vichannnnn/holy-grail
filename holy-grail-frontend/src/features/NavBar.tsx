@@ -89,23 +89,43 @@ const NavBar = () => {
             <Link to="faq" smooth={true} duration={500}>
               <MenuItem>FAQ</MenuItem>
             </Link>
+            {user ? (
+              <>
+                {user.role > 1 && (
+                  <MenuItem onClick={handleAdminButtonClick}>
+                    Admin Panel
+                  </MenuItem>
+                )}
+                <MenuItem onClick={handleLogout}>Log Out</MenuItem>
+              </>
+            ) : (
+              <RouterLink to="/login">
+                <MenuItem>Log In</MenuItem>
+              </RouterLink>
+            )}
           </MenuList>
         </Menu>
       )}
-      {user ? (
-        <Menu>
-          <MenuButton as={NavBarRightButton}>{user.username}</MenuButton>
-          <MenuList>
-            {user.role > 1 && (
-              <MenuItem onClick={handleAdminButtonClick}>Admin Panel</MenuItem>
-            )}
-            <MenuItem onClick={handleLogout}>Log Out</MenuItem>
-          </MenuList>
-        </Menu>
-      ) : (
-        <RouterLink to="/login">
-          <NavBarRightButton children="Log In" />
-        </RouterLink>
+      {isDesktop && (
+        <>
+          {user ? (
+            <Menu>
+              <MenuButton as={NavBarRightButton}>{user.username}</MenuButton>
+              <MenuList>
+                {user.role > 1 && (
+                  <MenuItem onClick={handleAdminButtonClick}>
+                    Admin Panel
+                  </MenuItem>
+                )}
+                <MenuItem onClick={handleLogout}>Log Out</MenuItem>
+              </MenuList>
+            </Menu>
+          ) : (
+            <RouterLink to="/login">
+              <NavBarRightButton children="Log In" />
+            </RouterLink>
+          )}
+        </>
       )}
     </Flex>
   );
