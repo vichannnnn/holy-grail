@@ -3,10 +3,13 @@ import {
   Flex,
   Menu,
   MenuButton,
-  MenuItem,
   MenuList,
+  MenuItem,
+  IconButton,
   useToast,
+  useBreakpointValue,
 } from "@chakra-ui/react";
+import { HamburgerIcon } from "@chakra-ui/icons";
 import { NavBarRightButton } from "../components/NavBarContent/NavBarRightButton";
 import { ClickableText } from "../components/NavBarContent/ClickableText";
 import { NavBarLogo } from "../components/NavBarContent/NavBarLogo";
@@ -19,6 +22,7 @@ const NavBar = () => {
   const { user, logout } = useContext(AuthContext);
   const toast = useToast();
   const navigate = useNavigate();
+  const isDesktop = useBreakpointValue({ base: false, lg: true });
 
   const handleAdminButtonClick = () => {
     navigate("/admin");
@@ -39,31 +43,55 @@ const NavBar = () => {
   };
 
   return (
-    <Flex
-      align="center"
-      justify="space-between"
-      position="sticky"
-      mb="8%"
-    >
+    <Flex align="center" justify="space-between" position="sticky" mb="8%">
       <RouterLink to="/">
         <NavBarLogo />
       </RouterLink>
-      <RouterLink to="/">
-        <ClickableText children="Home" />
-      </RouterLink>
-      <Link to="about" smooth={true} duration={500}>
-        <ClickableText children="About" />
-      </Link>
-      <RouterLink to="/library">
-        <ClickableText children="Library" />
-      </RouterLink>
-      <Link to="features" smooth={true} duration={500}>
-        <ClickableText children="Features" />
-      </Link>
-      <Link to="faq" smooth={true} duration={500}>
-        <ClickableText children="FAQ" />
-      </Link>
-
+      {isDesktop ? (
+        <>
+          <RouterLink to="/">
+            <ClickableText children="Home" />
+          </RouterLink>
+          <Link to="about" smooth={true} duration={500}>
+            <ClickableText children="About" />
+          </Link>
+          <RouterLink to="/library">
+            <ClickableText children="Library" />
+          </RouterLink>
+          <Link to="features" smooth={true} duration={500}>
+            <ClickableText children="Features" />
+          </Link>
+          <Link to="faq" smooth={true} duration={500}>
+            <ClickableText children="FAQ" />
+          </Link>
+        </>
+      ) : (
+        <Menu>
+          <MenuButton
+            as={IconButton}
+            aria-label="Menu"
+            icon={<HamburgerIcon />}
+            variant="outline"
+          />
+          <MenuList>
+            <RouterLink to="/">
+              <MenuItem>Home</MenuItem>
+            </RouterLink>
+            <Link to="about" smooth={true} duration={500}>
+              <MenuItem>About</MenuItem>
+            </Link>
+            <RouterLink to="/library">
+              <MenuItem>Library</MenuItem>
+            </RouterLink>
+            <Link to="features" smooth={true} duration={500}>
+              <MenuItem>Features</MenuItem>
+            </Link>
+            <Link to="faq" smooth={true} duration={500}>
+              <MenuItem>FAQ</MenuItem>
+            </Link>
+          </MenuList>
+        </Menu>
+      )}
       {user ? (
         <Menu>
           <MenuButton as={NavBarRightButton}>{user.username}</MenuButton>
@@ -71,16 +99,13 @@ const NavBar = () => {
             {user.role > 1 && (
               <MenuItem onClick={handleAdminButtonClick}>Admin Panel</MenuItem>
             )}
-            {/*<MenuItem>Change Password</MenuItem>*/}
             <MenuItem onClick={handleLogout}>Log Out</MenuItem>
           </MenuList>
         </Menu>
       ) : (
-        <Box>
-          <RouterLink to="/login">
-            <NavBarRightButton children="Log In" />
-          </RouterLink>
-        </Box>
+        <RouterLink to="/login">
+          <NavBarRightButton children="Log In" />
+        </RouterLink>
       )}
     </Flex>
   );
