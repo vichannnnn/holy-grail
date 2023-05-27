@@ -64,10 +64,10 @@ const LoginPage = () => {
           mt="-40%"
         >
           <Box textAlign="left" mb="15%">
-            <Text fontWeight="bold" fontSize="5xl" mb="5%">
+            <Text fontWeight="bold" fontSize="4xl" mb="5%">
               Log in
             </Text>
-            <Text>Enter your credentials to access your account.</Text>
+            <Text fontSize="xs">Enter your credentials to access your account.</Text>
           </Box>
           <Box width="100%">
             <form onSubmit={handleLogin}>
