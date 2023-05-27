@@ -7,7 +7,6 @@ import {
   Input,
   VStack,
   Flex,
-  Text,
   Link,
   useToast,
 } from "@chakra-ui/react";
@@ -15,6 +14,9 @@ import { useNavigate } from "react-router-dom";
 import apiClient from "../../api/apiClient";
 import { AxiosError } from "axios";
 import PasswordValidationBox from "./PasswordValidationBox";
+import { Text } from "../../components/Text/Text";
+import { Title } from "../../components/Title/Title";
+import AccountForm from "../../components/AccountForm/AccountForm";
 
 const SignUpPage = () => {
   const [username, setUsername] = useState("");
@@ -90,83 +92,73 @@ const SignUpPage = () => {
 
   return (
     <>
-      <Flex
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="center"
-        minHeight="100vh"
-      >
-        <Box textAlign="left" mb="15%">
-          <Text fontWeight="bold" fontSize="5xl" mb="5%">
-            Sign Up
-          </Text>
-          <Text>Create an account to access all features.</Text>
-        </Box>
-        <Box width="100%">
-          <form onSubmit={handleRegister}>
-            <VStack spacing="6">
-              <FormControl id="username">
-                <FormLabel>Username</FormLabel>
-                <Input
-                  type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  required
-                />
-              </FormControl>
-              {/*<FormControl id="email">*/}
-              {/*  <FormLabel>Email address</FormLabel>*/}
-              {/*  <Input*/}
-              {/*    type="email"*/}
-              {/*    value={email}*/}
-              {/*    onChange={(e) => setEmail(e.target.value)}*/}
-              {/*    required*/}
-              {/*  />*/}
-              {/*</FormControl>*/}
-              <FormControl id="password">
-                <FormLabel>Password</FormLabel>
-                <Input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-              </FormControl>
-              <FormControl id="repeat-password">
-                <FormLabel>Repeat Password</FormLabel>
-                <Input
-                  type="password"
-                  value={repeatPassword}
-                  onChange={(e) => setRepeatPassword(e.target.value)}
-                  required
-                />
-              </FormControl>
+      <AccountForm>
+        <Title mb="5%">Sign up</Title>
+        <Text mb="15%">Create an account to access all features.</Text>
 
-              <PasswordValidationBox
-                lengthValid={lengthValid}
-                specialCharValid={specialCharValid}
-                capitalLetterValid={capitalLetterValid}
-                repeatPasswordValid={repeatPasswordValid}
-                allCriteriaMet={allCriteriaMet}
+        <form onSubmit={handleRegister}>
+          <VStack spacing="6">
+            <FormControl id="username">
+              <FormLabel>Username</FormLabel>
+              <Input
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
               />
+            </FormControl>
+            {/*<FormControl id="email">*/}
+            {/*  <FormLabel>Email address</FormLabel>*/}
+            {/*  <Input*/}
+            {/*    type="email"*/}
+            {/*    value={email}*/}
+            {/*    onChange={(e) => setEmail(e.target.value)}*/}
+            {/*    required*/}
+            {/*  />*/}
+            {/*</FormControl>*/}
+            <FormControl id="password">
+              <FormLabel>Password</FormLabel>
+              <Input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </FormControl>
+            <FormControl id="repeat-password">
+              <FormLabel>Repeat Password</FormLabel>
+              <Input
+                type="password"
+                value={repeatPassword}
+                onChange={(e) => setRepeatPassword(e.target.value)}
+                required
+              />
+            </FormControl>
 
-              <Button type="submit" colorScheme="blue" w="100%">
-                Sign Up
-              </Button>
-            </VStack>
-          </form>
-          <Text mt="30%">
-            Already a member?{" "}
-            <Link
-              as="button"
-              onClick={() => navigate("/login")}
-              textDecoration="underline"
-            >
-              Log in here.
-            </Link>
-          </Text>
-        </Box>
-      </Flex>
+            <PasswordValidationBox
+              lengthValid={lengthValid}
+              specialCharValid={specialCharValid}
+              capitalLetterValid={capitalLetterValid}
+              repeatPasswordValid={repeatPasswordValid}
+              allCriteriaMet={allCriteriaMet}
+            />
+
+            <Button type="submit" colorScheme="blue" w="100%">
+              Sign Up
+            </Button>
+          </VStack>
+        </form>
+        <Text mt="30%">
+          Already a member?{" "}
+          <Link
+            as="button"
+            onClick={() => navigate("/login")}
+            textDecoration="underline"
+          >
+            Log in here.
+          </Link>
+        </Text>
+      </AccountForm>
     </>
   );
 };

@@ -7,12 +7,14 @@ import {
   Input,
   VStack,
   Flex,
-  Text,
   Link,
   useToast,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../../providers/AuthProvider";
+import { Title } from "../../components/Title/Title";
+import { Text } from "../../components/Text/Text";
+import AccountForm from "../../components/AccountForm/AccountForm";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
@@ -51,71 +53,48 @@ const LoginPage = () => {
 
   return (
     <>
-      <Flex
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="center"
-        minHeight="100vh"
-      >
-        <Flex
-          flexDirection="column"
-          alignItems="flex-start"
-          width="40%"
-          mt="-40%"
-        >
-          <Box textAlign="left" mb="15%">
-            <Text fontWeight="bold" fontSize="4xl" mb="5%">
-              Log in
-            </Text>
-            <Text fontSize="xs">
-              Enter your credentials to access your account.
-            </Text>
-          </Box>
-          <Box width="100%">
-            <form onSubmit={handleLogin}>
-              <VStack spacing="6">
-                <FormControl id="username">
-                  <FormLabel>Username</FormLabel>
-                  <Input
-                    type="username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    required
-                  />
-                </FormControl>
-                <FormControl id="password">
-                  <FormLabel>Password</FormLabel>
-                  <Input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
-                </FormControl>
-                <Button type="submit" colorScheme="blue" w="100%">
-                  Log In
-                </Button>
-              </VStack>
-            </form>
-            <Text mt="30%">
-              Not a member?{" "}
-              <Link
-                as="button"
-                onClick={handleRegister}
-                textDecoration="underline"
-              >
-                Register now.
-              </Link>
-            </Text>
-            {/*<Text>*/}
-            {/*  Forgot your password?{" "}*/}
-            {/*  <Link as="button" textDecoration="underline">*/}
-            {/*    Click here.*/}
-            {/*  </Link>*/}
-            {/*</Text>*/}
-          </Box>
-        </Flex>
-      </Flex>
+      <AccountForm>
+        <Title mb="5%">Log in</Title>
+        <Text mb="15%">Enter your credentials to access your account.</Text>
+
+        <form onSubmit={handleLogin}>
+          <VStack spacing="6">
+            <FormControl id="username">
+              <FormLabel>Username</FormLabel>
+              <Input
+                type="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+              />
+            </FormControl>
+            <FormControl id="password">
+              <FormLabel>Password</FormLabel>
+              <Input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </FormControl>
+            <Button type="submit" colorScheme="blue" w="100%">
+              Log In
+            </Button>
+          </VStack>
+        </form>
+        <Text mt="30%">
+          Not a member?{" "}
+          <Link as="button" onClick={handleRegister} textDecoration="underline">
+            Register now.
+          </Link>
+        </Text>
+        {/*<Text>*/}
+        {/*  Forgot your password?{" "}*/}
+        {/*  <Link as="button" textDecoration="underline">*/}
+        {/*    Click here.*/}
+        {/*  </Link>*/}
+        {/*</Text>*/}
+      </AccountForm>
     </>
   );
 };
