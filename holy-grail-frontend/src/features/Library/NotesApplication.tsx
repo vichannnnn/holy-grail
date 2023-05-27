@@ -1,14 +1,11 @@
 import { useState, useEffect } from "react";
 import {
-  Text,
   Table,
   Thead,
   Tr,
   Td,
   Th,
   Tbody,
-  HStack,
-  Button,
   TableContainer,
   Box,
 } from "@chakra-ui/react";
@@ -22,6 +19,7 @@ import {
   DocumentType,
   PaginatedNotes,
 } from "../../utils/library/Search";
+import { Pagination } from "../../components/Pagination/Pagination";
 
 const NotesApplication = () => {
   const [notes, setNotes] = useState<PaginatedNotes>({
@@ -34,7 +32,7 @@ const NotesApplication = () => {
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [subjects, setSubjects] = useState<SubjectType[]>([]);
   const [types, setTypes] = useState<DocumentType[]>([]);
-  const [pageInfo, setPageInfo] = useState({ page: 1, size: 20, total: 0 });
+  const [pageInfo, setPageInfo] = useState({ page: 1, size: 3, total: 0 });
 
   const [category, setCategory] = useState<number | "">(0);
   const [subject, setSubject] = useState<number | "">(0);
@@ -159,25 +157,7 @@ const NotesApplication = () => {
         </TableContainer>
       </Box>
 
-      <HStack spacing={4} justifyContent="center" mt="10%">
-        <Button
-          onClick={() => handlePageChange(pageInfo.page - 1)}
-          isDisabled={pageInfo.page === 1}
-        >
-          Prev
-        </Button>
-        <Text>
-          Page {pageInfo.page} of {Math.ceil(pageInfo.total / pageInfo.size)}
-        </Text>
-        <Button
-          onClick={() => handlePageChange(pageInfo.page + 1)}
-          isDisabled={
-            pageInfo.page === Math.ceil(pageInfo.total / pageInfo.size)
-          }
-        >
-          Next
-        </Button>
-      </HStack>
+      <Pagination pageInfo={pageInfo} handlePageChange={handlePageChange} />
     </Box>
   );
 };

@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import {
-  Text,
   Table,
   Thead,
   Tr,
@@ -23,6 +22,7 @@ import {
 import approveNote from "../../utils/actions/ApproveNote";
 import deleteNote from "../../utils/actions/DeleteNote";
 import DeleteAlert from "./DeleteAlert";
+import { Pagination } from "../../components/Pagination/Pagination";
 
 const ApprovalTable = () => {
   const [notes, setNotes] = useState<PaginatedNotes>({
@@ -196,25 +196,7 @@ const ApprovalTable = () => {
         <Tbody>{renderNotes()}</Tbody>
       </Table>
 
-      <HStack spacing={4} justifyContent="center" mt="10%">
-        <Button
-          onClick={() => handlePageChange(pageInfo.page - 1)}
-          isDisabled={pageInfo.page === 1}
-        >
-          Prev
-        </Button>
-        <Text>
-          Page {pageInfo.page} of {Math.ceil(pageInfo.total / pageInfo.size) ? pageInfo.page >= 1 : 1}
-        </Text>
-        <Button
-          onClick={() => handlePageChange(pageInfo.page + 1)}
-          isDisabled={
-            pageInfo.page === Math.ceil(pageInfo.total / pageInfo.size)
-          }
-        >
-          Next
-        </Button>
-      </HStack>
+      <Pagination pageInfo={pageInfo} handlePageChange={handlePageChange} />
       <DeleteAlert
         isOpen={isAlertOpen}
         onClose={() => setIsAlertOpen(false)}

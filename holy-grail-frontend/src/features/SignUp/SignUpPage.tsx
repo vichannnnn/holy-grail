@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
 import {
-  Box,
   Button,
   FormControl,
   FormLabel,
   Input,
   VStack,
-  Flex,
   Link,
   useToast,
 } from "@chakra-ui/react";
@@ -16,7 +14,7 @@ import { AxiosError } from "axios";
 import PasswordValidationBox from "./PasswordValidationBox";
 import { Text } from "../../components/Text/Text";
 import { Title } from "../../components/Title/Title";
-import AccountForm from "../../components/AccountForm/AccountForm";
+import { AccountForm } from "../../components/AccountForm/AccountForm";
 
 const SignUpPage = () => {
   const [username, setUsername] = useState("");

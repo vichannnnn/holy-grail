@@ -2,7 +2,7 @@ import { Box, Flex, Image } from "@chakra-ui/react";
 import AboutLogo from "../../assets/placeholder-about.png";
 import { Text } from "../../components/Text/Text";
 import { Title } from "../../components/Title/Title";
-import HeroBox from "../../components/HeroBox/HeroBox";
+import { HeroBox } from "../../components/HeroBox/HeroBox";
 
 const About = () => {
   return (

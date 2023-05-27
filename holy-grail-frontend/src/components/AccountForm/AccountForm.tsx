@@ -1,6 +1,6 @@
 import { Box, BoxProps, Flex } from "@chakra-ui/react";
 
-const AccountForm = ({ children }: BoxProps) => {
+export const AccountForm = ({ children }: BoxProps) => {
   return (
     <>
       <Flex
@@ -16,5 +16,3 @@ const AccountForm = ({ children }: BoxProps) => {
     </>
   );
 };
-
-export default AccountForm;

@@ -1,12 +1,10 @@
 import { useState, useContext, FormEvent } from "react";
 import {
-  Box,
   Button,
   FormControl,
   FormLabel,
   Input,
   VStack,
-  Flex,
   Link,
   useToast,
 } from "@chakra-ui/react";
@@ -14,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import AuthContext from "../../providers/AuthProvider";
 import { Title } from "../../components/Title/Title";
 import { Text } from "../../components/Text/Text";
-import AccountForm from "../../components/AccountForm/AccountForm";
+import { AccountForm } from "../../components/AccountForm/AccountForm";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
