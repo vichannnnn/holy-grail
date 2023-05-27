@@ -103,8 +103,8 @@ const NotesApplication = () => {
   };
 
   return (
-    <ThemeProvider theme={muiTheme}>
-      <Box>
+    <Box>
+      <ThemeProvider theme={muiTheme}>
         <Box display="flex" justifyContent="center">
           <TableContainer sx={{ maxWidth: "80%" }}>
             <Table sx={{ minWidth: 650 }}>
@@ -156,10 +156,10 @@ const NotesApplication = () => {
             </Table>
           </TableContainer>
         </Box>
+      </ThemeProvider>
 
-        <Pagination pageInfo={pageInfo} handlePageChange={handlePageChange} />
-      </Box>
-    </ThemeProvider>
+      <Pagination pageInfo={pageInfo} handlePageChange={handlePageChange} />
+    </Box>
   );
 };
 
