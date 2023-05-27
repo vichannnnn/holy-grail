@@ -32,7 +32,7 @@ const NotesApplication = () => {
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [subjects, setSubjects] = useState<SubjectType[]>([]);
   const [types, setTypes] = useState<DocumentType[]>([]);
-  const [pageInfo, setPageInfo] = useState({ page: 1, size: 3, total: 0 });
+  const [pageInfo, setPageInfo] = useState({ page: 1, size: 20, total: 0 });
 
   const [category, setCategory] = useState<number | "">(0);
   const [subject, setSubject] = useState<number | "">(0);
@@ -104,7 +104,7 @@ const NotesApplication = () => {
   };
 
   return (
-    <Box maxWidth="100%">
+    <Box>
       <Box display="flex" justifyContent="center">
         <TableContainer sx={{ maxWidth: "80%" }}>
           <Table variant="simple" mt="8%">

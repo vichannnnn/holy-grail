@@ -17,7 +17,7 @@ const Combobox = ({ label, value, onChange, options }: ComboboxProps) => {
       <Autocomplete
         sx={{
           "& .MuiInputBase-root": {
-            width: "100%",
+            width: "auto",
             height: "35px",
             padding: "0 10px",
           },
@@ -25,6 +25,7 @@ const Combobox = ({ label, value, onChange, options }: ComboboxProps) => {
             marginTop: "-9px",
           },
         }}
+        componentsProps={{ popper: { style: { width: "fit-content" } } }}
         value={options.find((option) => option.value === value) || null}
         options={options}
         onChange={(_, newValue) => onChange(newValue?.value || "")}
