@@ -1,10 +1,10 @@
 import { Text } from "@chakra-ui/react";
 
-type ClickableTextProps = {
+type TextLinkProps = {
   children: string;
 };
 
-export const ClickableText = ({ children }: ClickableTextProps) => {
+export const TextLink = ({ children }: TextLinkProps) => {
   return (
     <Text
       fontSize="md"

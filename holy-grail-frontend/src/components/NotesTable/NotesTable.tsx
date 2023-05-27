@@ -26,6 +26,7 @@ interface NotesTableProps {
   pageInfo: { page: number; size: number; total: number };
   handlePageChange: (page: number) => void;
   renderAdditionalColumn?: (note: Note) => JSX.Element | null;
+  isAdmin: boolean;
 }
 
 const VITE_AWS_S3_BUCKET_URL = import.meta.env.VITE_AWS_S3_BUCKET_URL;
@@ -44,6 +45,7 @@ const NotesTable = ({
   pageInfo,
   handlePageChange,
   renderAdditionalColumn,
+  isAdmin,
 }: NotesTableProps) => {
   const muiTheme = createTheme();
 
@@ -89,7 +91,7 @@ const NotesTable = ({
                   <TableCell>Type</TableCell>
                   <TableCell>Uploaded by</TableCell>
                   <TableCell>File</TableCell>
-                  {renderAdditionalColumn && <TableCell>Action</TableCell>}
+                  {isAdmin && <TableCell>Action</TableCell>}
                 </TableRow>
               </TableHead>
               <TableBody>

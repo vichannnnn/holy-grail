@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { NavBarRightButton } from "./NavBarRightButton";
-import { ClickableText } from "./ClickableText";
+import { TextLink } from "../../components/TextLink/TextLink";
 import { NavBarLogo } from "./NavBarLogo";
 import { Link } from "react-scroll";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
@@ -50,19 +50,19 @@ const NavBar = () => {
       {isDesktop ? (
         <>
           <RouterLink to="/">
-            <ClickableText children="Home" />
+            <TextLink children="Home" />
           </RouterLink>
           <Link to="about" smooth={true} duration={500}>
-            <ClickableText children="About" />
+            <TextLink children="About" />
           </Link>
           <RouterLink to="/library">
-            <ClickableText children="Library" />
+            <TextLink children="Library" />
           </RouterLink>
           <Link to="features" smooth={true} duration={500}>
-            <ClickableText children="Features" />
+            <TextLink children="Features" />
           </Link>
           <Link to="faq" smooth={true} duration={500}>
-            <ClickableText children="FAQ" />
+            <TextLink children="FAQ" />
           </Link>
         </>
       ) : (

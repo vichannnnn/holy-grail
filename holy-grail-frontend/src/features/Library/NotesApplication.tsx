@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
-
+import { useState, useEffect, useContext } from "react";
+import { Button, Box, Stack } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 import {
   fetchData,
   fetchApprovedNotes,
@@ -8,8 +9,10 @@ import {
   DocumentType,
   PaginatedNotes,
 } from "../../utils/library/Search";
-
+import DeleteAlert from "../Approval/DeleteAlert";
+import AuthContext from "../../providers/AuthProvider";
 import NotesTable from "../../components/NotesTable/NotesTable";
+import deleteNote from "../../utils/actions/DeleteNote";
 
 const NotesApplication = () => {
   const [notes, setNotes] = useState<PaginatedNotes>({
@@ -19,6 +22,10 @@ const NotesApplication = () => {
     size: 0,
     total: 0,
   });
+  const { user } = useContext(AuthContext);
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
+  const [noteId, setNoteId] = useState<number | null>(null);
+
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [subjects, setSubjects] = useState<SubjectType[]>([]);
   const [types, setTypes] = useState<DocumentType[]>([]);
@@ -73,6 +80,16 @@ const NotesApplication = () => {
     }
   };
 
+  const handleDelete = async (id: number) => {
+    try {
+      await deleteNote(id);
+      setIsAlertOpen(false);
+      filterNotes();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   // const renderNotes = () => {
   //   return notes.items.map((note: Note) => (
   //     <TableRow key={note.id}>
@@ -93,6 +110,7 @@ const NotesApplication = () => {
   //   ));
   // };
 
+  // @ts-ignore
   return (
     <>
       <NotesTable
@@ -108,6 +126,37 @@ const NotesApplication = () => {
         onTypeChange={(newValue) => setType(Number(newValue))}
         pageInfo={pageInfo}
         handlePageChange={handlePageChange}
+        isAdmin={Boolean(user?.role && user.role >= 2)}
+        renderAdditionalColumn={(note) =>
+          user && user.role >= 2 ? (
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
+              <Stack spacing={2} direction="row">
+                <Button
+                  size="small"
+                  color="error"
+                  variant="outlined"
+                  startIcon={<DeleteIcon />}
+                  onClick={() => {
+                    setIsAlertOpen(true);
+                    setNoteId(note.id);
+                  }}
+                  sx={{ fontSize: "12px" }}
+                >
+                  Delete
+                </Button>
+              </Stack>
+            </Box>
+          ) : null
+        }
+      />
+      <DeleteAlert
+        isOpen={isAlertOpen}
+        onClose={() => setIsAlertOpen(false)}
+        onConfirm={() => {
+          if (noteId !== null) {
+            handleDelete(noteId);
+          }
+        }}
       />
     </>
   );
