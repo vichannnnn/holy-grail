@@ -10,7 +10,7 @@ import {
   HStack,
   Button,
 } from "@chakra-ui/react";
-import Combobox from "../LibraryContent/Combobox";
+import Combobox from "../Library/Combobox";
 import {
   Note,
   fetchData,

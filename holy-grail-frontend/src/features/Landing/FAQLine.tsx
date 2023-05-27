@@ -3,9 +3,9 @@ import {
   AccordionButton,
   AccordionPanel,
   Box,
-  Text,
 } from "@chakra-ui/react";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
+import { Text } from "../../components/Text/Text";
 
 type FAQLineProps = {
   question: string;

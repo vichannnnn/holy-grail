@@ -1,5 +1,6 @@
-import { Accordion, Flex, Text } from "@chakra-ui/react";
-import FAQLine from "../components/FAQContent/FAQLine";
+import { Accordion, Flex } from "@chakra-ui/react";
+import FAQLine from "./FAQLine";
+import { Text } from "../../components/Text/Text";
 
 const FAQ = () => {
   return (

@@ -7,7 +7,7 @@ import {
   Flex,
   Image,
 } from "@chakra-ui/react";
-import FooterLogo from "../assets/placeholder-footer.svg";
+import FooterLogo from "../../assets/placeholder-footer.svg";
 
 const Footer = () => {
   return (

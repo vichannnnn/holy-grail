@@ -12,7 +12,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import apiClient from "../api/apiClient";
+import apiClient from "../../api/apiClient";
 import { AxiosError } from "axios";
 import PasswordValidationBox from "./PasswordValidationBox";
 

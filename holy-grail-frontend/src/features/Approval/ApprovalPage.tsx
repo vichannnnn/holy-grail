@@ -1,4 +1,4 @@
-import ApprovalTable from "../components/AdminContent/ApprovalTable";
+import ApprovalTable from "./ApprovalTable";
 
 const ApprovalPage = () => {
   return (

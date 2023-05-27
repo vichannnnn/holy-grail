@@ -12,7 +12,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import AuthContext from "../providers/AuthProvider";
+import AuthContext from "../../providers/AuthProvider";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
@@ -67,7 +67,9 @@ const LoginPage = () => {
             <Text fontWeight="bold" fontSize="4xl" mb="5%">
               Log in
             </Text>
-            <Text fontSize="xs">Enter your credentials to access your account.</Text>
+            <Text fontSize="xs">
+              Enter your credentials to access your account.
+            </Text>
           </Box>
           <Box width="100%">
             <form onSubmit={handleLogin}>

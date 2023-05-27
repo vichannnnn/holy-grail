@@ -9,7 +9,8 @@ import {
   Tbody,
   HStack,
   Button,
-  TableContainer, Box
+  TableContainer,
+  Box,
 } from "@chakra-ui/react";
 import Combobox from "./Combobox";
 import {
@@ -107,55 +108,55 @@ const NotesApplication = () => {
   return (
     <>
       <Box display="flex" justifyContent="center">
-      <TableContainer sx={{ maxWidth: '80%'}}>
-      <Table variant="simple" mt="8%">
-        <Thead>
-          <Tr>
-            <Th>
-              <Combobox
-                label="Category"
-                value={category !== "" ? Number(category) : ""}
-                onChange={(newValue) => setCategory(Number(newValue))}
-                options={categories.map((category) => ({
-                  value: category.id,
-                  label: category.name,
-                }))}
-              />
-            </Th>
-            <Th>
-              <Combobox
-                label="Subject"
-                value={subject !== "" ? Number(subject) : ""}
-                onChange={(newValue) => setSubject(Number(newValue))}
-                options={subjects.map((subject) => ({
-                  value: subject.id,
-                  label: subject.name,
-                }))}
-              />
-            </Th>
-            <Th>
-              <Combobox
-                label="Type"
-                value={type !== "" ? Number(type) : ""}
-                onChange={(newValue) => setType(Number(newValue))}
-                options={types.map((type) => ({
-                  value: type.id,
-                  label: type.name,
-                }))}
-              />
-            </Th>
-          </Tr>
-          <Tr>
-            <Th>Category</Th>
-            <Th>Subject</Th>
-            <Th>Type</Th>
-            <Th>Uploaded by</Th>
-            <Th>File</Th>
-          </Tr>
-        </Thead>
-        <Tbody>{renderNotes()}</Tbody>
-      </Table>
-      </TableContainer>
+        <TableContainer sx={{ maxWidth: "80%" }}>
+          <Table variant="simple" mt="8%">
+            <Thead>
+              <Tr>
+                <Th>
+                  <Combobox
+                    label="Category"
+                    value={category !== "" ? Number(category) : ""}
+                    onChange={(newValue) => setCategory(Number(newValue))}
+                    options={categories.map((category) => ({
+                      value: category.id,
+                      label: category.name,
+                    }))}
+                  />
+                </Th>
+                <Th>
+                  <Combobox
+                    label="Subject"
+                    value={subject !== "" ? Number(subject) : ""}
+                    onChange={(newValue) => setSubject(Number(newValue))}
+                    options={subjects.map((subject) => ({
+                      value: subject.id,
+                      label: subject.name,
+                    }))}
+                  />
+                </Th>
+                <Th>
+                  <Combobox
+                    label="Type"
+                    value={type !== "" ? Number(type) : ""}
+                    onChange={(newValue) => setType(Number(newValue))}
+                    options={types.map((type) => ({
+                      value: type.id,
+                      label: type.name,
+                    }))}
+                  />
+                </Th>
+              </Tr>
+              <Tr>
+                <Th>Category</Th>
+                <Th>Subject</Th>
+                <Th>Type</Th>
+                <Th>Uploaded by</Th>
+                <Th>File</Th>
+              </Tr>
+            </Thead>
+            <Tbody>{renderNotes()}</Tbody>
+          </Table>
+        </TableContainer>
       </Box>
 
       <HStack spacing={4} justifyContent="center" mt="10%">

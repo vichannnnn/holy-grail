@@ -1,15 +1,15 @@
 import "./App.css";
 import { ChakraProvider } from "@chakra-ui/react";
-import NavBar from "./features/NavBar";
-import LoginPage from "./features/LoginPage";
-import LandingPage from "./features/LandingPage";
-import Library from "./features/Library";
+import NavBar from "./features/Common/NavBar";
+import LoginPage from "./features/SignIn/LoginPage";
+import LandingPage from "./features/Landing/LandingPage";
+import Library from "./features/Library/Library";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Footer from "./features/Footer";
-import SignUpPage from "./features/SignUpPage";
-import UploadPage from "./features/UploadPage";
+import Footer from "./features/Common/Footer";
+import SignUpPage from "./features/SignUp/SignUpPage";
+import UploadPage from "./features/Upload/UploadPage";
 import { AuthProvider } from "./providers/AuthProvider";
-import ApprovalPage from "./features/ApprovalPage";
+import ApprovalPage from "./features/Approval/ApprovalPage";
 
 function App() {
   return (

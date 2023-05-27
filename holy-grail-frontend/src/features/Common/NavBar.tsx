@@ -10,13 +10,13 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
-import { NavBarRightButton } from "../components/NavBarContent/NavBarRightButton";
-import { ClickableText } from "../components/NavBarContent/ClickableText";
-import { NavBarLogo } from "../components/NavBarContent/NavBarLogo";
+import { NavBarRightButton } from "./NavBarRightButton";
+import { ClickableText } from "./ClickableText";
+import { NavBarLogo } from "./NavBarLogo";
 import { Link } from "react-scroll";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useContext } from "react";
-import AuthContext from "../providers/AuthProvider";
+import AuthContext from "../../providers/AuthProvider";
 
 const NavBar = () => {
   const { user, logout } = useContext(AuthContext);

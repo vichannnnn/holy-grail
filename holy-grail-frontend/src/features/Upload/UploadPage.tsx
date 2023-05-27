@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Button, VStack, Heading, Box, Text, useToast } from "@chakra-ui/react";
-import Combobox from "../components/LibraryContent/Combobox";
+import Combobox from "../Library/Combobox";
 import {
   fetchData,
   CategoryType,
   SubjectType,
   DocumentType,
-} from "../utils/library/Search";
-import { createNote } from "../utils/actions/CreateNote";
+} from "../../utils/library/Search";
+import { createNote } from "../../utils/actions/CreateNote";
 import { useContext } from "react";
-import AuthContext from "../providers/AuthProvider";
+import AuthContext from "../../providers/AuthProvider";
 import { useNavigate } from "react-router-dom";
 
 const UploadPage = () => {
