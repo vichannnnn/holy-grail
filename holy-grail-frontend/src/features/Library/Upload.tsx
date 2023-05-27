@@ -1,22 +1,18 @@
-import { Text, Flex } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import { UploadButton } from "./UploadButton";
+import { Text } from "../../components/Text/Text";
+import { Title } from "../../components/Title/Title";
 
 const Upload = () => {
   return (
     <div id="upload">
       <Flex direction="column" bgColor="white">
-        <Text
-          fontSize="5xl"
-          fontFamily="Trebuchet MS, sans-serif"
-          fontWeight="bold"
-        >
-          Library
-        </Text>
-        <Text fontFamily="Trebuchet MS, sans-serif" fontSize="xl" mt="3%">
+        <Title>Library</Title>
+        <Text fontSize="xl" mt="3%">
           This is where the catalogues of notes and practice papers are stored
           at.
         </Text>
-        <Text fontFamily="Trebuchet MS, sans-serif" fontSize="xl">
+        <Text fontSize="xl">
           You can upload notes into the library subjected to approval of the
           administrator, just hit the button below!
         </Text>
