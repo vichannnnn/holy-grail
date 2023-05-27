@@ -1,17 +1,6 @@
 import { useState, useEffect } from "react";
+import { Button, Box, Stack } from "@mui/material";
 import {
-  Table,
-  Thead,
-  Tr,
-  Td,
-  Th,
-  Tbody,
-  HStack,
-  Button,
-} from "@chakra-ui/react";
-import Combobox from "../Library/Combobox";
-import {
-  Note,
   fetchData,
   fetchPendingApprovalNotes,
   CategoryType,
@@ -22,7 +11,9 @@ import {
 import approveNote from "../../utils/actions/ApproveNote";
 import deleteNote from "../../utils/actions/DeleteNote";
 import DeleteAlert from "./DeleteAlert";
-import { Pagination } from "../../components/Pagination/Pagination";
+import NotesTable from "../../components/NotesTable/NotesTable";
+import SendIcon from "@mui/icons-material/Send";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const ApprovalTable = () => {
   const [notes, setNotes] = useState<PaginatedNotes>({
@@ -108,95 +99,87 @@ const ApprovalTable = () => {
     }
   };
 
-  const renderNotes = () => {
-    return notes.items.map((note: Note) => (
-      <Tr key={note.id}>
-        <Td>{note.doc_category?.name}</Td>
-        <Td>{note.doc_subject?.name}</Td>
-        <Td>{note.doc_type?.name}</Td>
-        <Td>{note.account?.username}</Td>
-        <Td>
-          <a
-            href={`https://holy-grail-bucket.s3.ap-southeast-1.amazonaws.com/${note.file_name}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            View PDF
-          </a>
-        </Td>
-        <Td>
-          <HStack spacing="20px">
-            <Button colorScheme="green" onClick={() => handleApprove(note.id)}>
-              Approve
-            </Button>
-            <Button
-              colorScheme="red"
-              onClick={() => {
-                setIsAlertOpen(true);
-                setNoteId(note.id);
-              }}
-            >
-              Delete
-            </Button>
-          </HStack>
-        </Td>
-      </Tr>
-    ));
-  };
+  // const renderNotes = () => {
+  //   return notes.items.map((note: Note) => (
+  //     <Tr key={note.id}>
+  //       <Td>{note.doc_category?.name}</Td>
+  //       <Td>{note.doc_subject?.name}</Td>
+  //       <Td>{note.doc_type?.name}</Td>
+  //       <Td>{note.account?.username}</Td>
+  //       <Td>
+  //         <a
+  //           href={`https://holy-grail-bucket.s3.ap-southeast-1.amazonaws.com/${note.file_name}`}
+  //           target="_blank"
+  //           rel="noopener noreferrer"
+  //         >
+  //           View PDF
+  //         </a>
+  //       </Td>
+  //       <Td>
+  //         <HStack spacing="20px">
+  //           <Button colorScheme="green" onClick={() => handleApprove(note.id)}>
+  //             Approve
+  //           </Button>
+  //           <Button
+  //             colorScheme="red"
+  //             onClick={() => {
+  //               setIsAlertOpen(true);
+  //               setNoteId(note.id);
+  //             }}
+  //           >
+  //             Delete
+  //           </Button>
+  //         </HStack>
+  //       </Td>
+  //     </Tr>
+  //   ));
+  // };
 
   return (
     <>
-      <Table variant="simple" mt="8%">
-        <Thead>
-          <Tr>
-            <Th>
-              <Combobox
-                label="Category"
-                value={category !== "" ? Number(category) : ""}
-                onChange={(newValue) => setCategory(Number(newValue))}
-                options={categories.map((category) => ({
-                  value: category.id,
-                  label: category.name,
-                }))}
-              />
-            </Th>
-            <Th>
-              <Combobox
-                label="Subject"
-                value={subject !== "" ? Number(subject) : ""}
-                onChange={(newValue) => setSubject(Number(newValue))}
-                options={subjects.map((subject) => ({
-                  value: subject.id,
-                  label: subject.name,
-                }))}
-              />
-            </Th>
-            <Th>
-              <Combobox
-                label="Type"
-                value={type !== "" ? Number(type) : ""}
-                onChange={(newValue) => setType(Number(newValue))}
-                options={types.map((type) => ({
-                  value: type.id,
-                  label: type.name,
-                }))}
-              />
-            </Th>
-            <Th></Th>
-          </Tr>
-          <Tr>
-            <Th>Category</Th>
-            <Th>Subject</Th>
-            <Th>Type</Th>
-            <Th>Uploaded by</Th>
-            <Th>File</Th>
-            <Th>Action</Th>
-          </Tr>
-        </Thead>
-        <Tbody>{renderNotes()}</Tbody>
-      </Table>
-
-      <Pagination pageInfo={pageInfo} handlePageChange={handlePageChange} />
+      <NotesTable
+        notes={notes.items}
+        categories={categories.map((c) => ({ value: c.id, label: c.name }))}
+        subjects={subjects.map((s) => ({ value: s.id, label: s.name }))}
+        types={types.map((t) => ({ value: t.id, label: t.name }))}
+        category={category !== "" ? Number(category) : ""}
+        subject={subject !== "" ? Number(subject) : ""}
+        type={type !== "" ? Number(type) : ""}
+        onCategoryChange={(newValue) => setCategory(Number(newValue))}
+        onSubjectChange={(newValue) => setSubject(Number(newValue))}
+        onTypeChange={(newValue) => setType(Number(newValue))}
+        pageInfo={pageInfo}
+        handlePageChange={handlePageChange}
+        renderAdditionalColumn={(note) => (
+          <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <Stack spacing={2} direction="row">
+              <Button
+                size="small"
+                color="primary"
+                variant="contained"
+                startIcon={<SendIcon />}
+                onClick={() => handleApprove(note.id)}
+                sx={{ fontSize: "12px" }}
+              >
+                Approve
+              </Button>
+              <Button
+                size="small"
+                color="error"
+                variant="outlined"
+                startIcon={<DeleteIcon />}
+                onClick={() => {
+                  setIsAlertOpen(true);
+                  setNoteId(note.id);
+                }}
+                sx={{ fontSize: "12px" }}
+              >
+                Delete
+              </Button>
+            </Stack>
+          </Box>
+        )}
+      />
       <DeleteAlert
         isOpen={isAlertOpen}
         onClose={() => setIsAlertOpen(false)}

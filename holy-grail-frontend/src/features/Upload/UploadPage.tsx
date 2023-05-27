@@ -113,7 +113,7 @@ const UploadPage = () => {
         </Heading>
         <Box w="30%">
           <Combobox
-            label="Categorys"
+            label="Category"
             value={category !== "" ? Number(category) : ""}
             onChange={(newValue) => setCategory(Number(newValue))}
             options={categories.map((category) => ({

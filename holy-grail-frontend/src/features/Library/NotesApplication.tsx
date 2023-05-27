@@ -1,14 +1,6 @@
 import { useState, useEffect } from "react";
-import { Box } from "@mui/material";
-import TableContainer from "@mui/material/TableContainer";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Combobox from "./Combobox";
+
 import {
-  Note,
   fetchData,
   fetchApprovedNotes,
   CategoryType,
@@ -16,8 +8,8 @@ import {
   DocumentType,
   PaginatedNotes,
 } from "../../utils/library/Search";
-import { Pagination } from "../../components/Pagination/Pagination";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+
+import NotesTable from "../../components/NotesTable/NotesTable";
 
 const NotesApplication = () => {
   const [notes, setNotes] = useState<PaginatedNotes>({
@@ -35,7 +27,6 @@ const NotesApplication = () => {
   const [category, setCategory] = useState<number | "">(0);
   const [subject, setSubject] = useState<number | "">(0);
   const [type, setType] = useState<number | "">(0);
-  const muiTheme = createTheme();
 
   useEffect(() => {
     fetchData().then(({ categories, subjects, types }) => {
@@ -82,84 +73,43 @@ const NotesApplication = () => {
     }
   };
 
-  const renderNotes = () => {
-    return notes.items.map((note: Note) => (
-      <TableRow key={note.id}>
-        <TableCell>{note.doc_category?.name}</TableCell>
-        <TableCell>{note.doc_subject?.name}</TableCell>
-        <TableCell>{note.doc_type?.name}</TableCell>
-        <TableCell>{note.account?.username}</TableCell>
-        <TableCell>
-          <a
-            href={`https://holy-grail-bucket.s3.ap-southeast-1.amazonaws.com/${note.file_name}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            View PDF
-          </a>
-        </TableCell>
-      </TableRow>
-    ));
-  };
+  // const renderNotes = () => {
+  //   return notes.items.map((note: Note) => (
+  //     <TableRow key={note.id}>
+  //       <TableCell>{note.doc_category?.name}</TableCell>
+  //       <TableCell>{note.doc_subject?.name}</TableCell>
+  //       <TableCell>{note.doc_type?.name}</TableCell>
+  //       <TableCell>{note.account?.username}</TableCell>
+  //       <TableCell>
+  //         <a
+  //           href={`https://holy-grail-bucket.s3.ap-southeast-1.amazonaws.com/${note.file_name}`}
+  //           target="_blank"
+  //           rel="noopener noreferrer"
+  //         >
+  //           View PDF
+  //         </a>
+  //       </TableCell>
+  //     </TableRow>
+  //   ));
+  // };
 
   return (
-    <Box>
-      <ThemeProvider theme={muiTheme}>
-        <Box display="flex" justifyContent="center">
-          <TableContainer sx={{ maxWidth: "80%"}} >
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>
-                    <Combobox
-                      label="Category"
-                      value={category !== "" ? Number(category) : ""}
-                      onChange={(newValue) => setCategory(Number(newValue))}
-                      options={categories.map((category) => ({
-                        value: category.id,
-                        label: category.name,
-                      }))}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <Combobox
-                      label="Subject"
-                      value={subject !== "" ? Number(subject) : ""}
-                      onChange={(newValue) => setSubject(Number(newValue))}
-                      options={subjects.map((subject) => ({
-                        value: subject.id,
-                        label: subject.name,
-                      }))}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <Combobox
-                      label="Type"
-                      value={type !== "" ? Number(type) : ""}
-                      onChange={(newValue) => setType(Number(newValue))}
-                      options={types.map((type) => ({
-                        value: type.id,
-                        label: type.name,
-                      }))}
-                    />
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Category</TableCell>
-                  <TableCell>Subject</TableCell>
-                  <TableCell>Type</TableCell>
-                  <TableCell>Uploaded by</TableCell>
-                  <TableCell>File</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>{renderNotes()}</TableBody>
-            </Table>
-          </TableContainer>
-        </Box>
-      </ThemeProvider>
-
-      <Pagination pageInfo={pageInfo} handlePageChange={handlePageChange} />
-    </Box>
+    <>
+      <NotesTable
+        notes={notes.items}
+        categories={categories.map((c) => ({ value: c.id, label: c.name }))}
+        subjects={subjects.map((s) => ({ value: s.id, label: s.name }))}
+        types={types.map((t) => ({ value: t.id, label: t.name }))}
+        category={category !== "" ? Number(category) : ""}
+        subject={subject !== "" ? Number(subject) : ""}
+        type={type !== "" ? Number(type) : ""}
+        onCategoryChange={(newValue) => setCategory(Number(newValue))}
+        onSubjectChange={(newValue) => setSubject(Number(newValue))}
+        onTypeChange={(newValue) => setType(Number(newValue))}
+        pageInfo={pageInfo}
+        handlePageChange={handlePageChange}
+      />
+    </>
   );
 };
 
