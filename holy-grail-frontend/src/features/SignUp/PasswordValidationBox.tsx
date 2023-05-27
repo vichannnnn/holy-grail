@@ -1,6 +1,7 @@
 import React from "react";
-import { Box, VStack, Text, Icon } from "@chakra-ui/react";
+import { Box, VStack, Icon, HStack } from "@chakra-ui/react";
 import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
+import { Text } from "../../components/Text/Text";
 
 interface PasswordValidationBoxProps {
   lengthValid: boolean;
@@ -17,14 +18,14 @@ const PasswordValidationBox: React.FC<PasswordValidationBoxProps> = ({
   allCriteriaMet,
 }) => {
   const renderValidationMessage = (valid: boolean, message: string) => (
-    <Text>
+    <HStack spacing={2}>
       <Icon
         as={valid ? CheckIcon : CloseIcon}
         color={valid ? "green.500" : "red.500"}
         mr={2}
       />
-      {message}
-    </Text>
+      <Text>{message}</Text>
+    </HStack>
   );
 
   return (
