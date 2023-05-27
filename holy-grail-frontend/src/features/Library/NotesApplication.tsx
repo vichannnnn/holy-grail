@@ -106,10 +106,10 @@ const NotesApplication = () => {
   };
 
   return (
-    <>
+    <Box maxWidth="100%">
       <Box display="flex" justifyContent="center">
         <TableContainer sx={{ maxWidth: "80%" }}>
-          <Table variant="simple" mt="8%">
+          <Table variant="simple" mt="8%" >
             <Thead>
               <Tr>
                 <Th>
@@ -178,7 +178,7 @@ const NotesApplication = () => {
           Next
         </Button>
       </HStack>
-    </>
+    </Box>
   );
 };
 
