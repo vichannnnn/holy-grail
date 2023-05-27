@@ -107,7 +107,7 @@ const NotesApplication = () => {
   return (
     <>
       <Box display="flex" justifyContent="center">
-      <TableContainer sx={{ maxWidth: '100%', width: '80%' }}>
+      <TableContainer sx={{ maxWidth: '80%'}}>
       <Table variant="simple" mt="8%">
         <Thead>
           <Tr>
