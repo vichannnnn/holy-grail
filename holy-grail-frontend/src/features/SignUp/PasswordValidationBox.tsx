@@ -18,7 +18,7 @@ const PasswordValidationBox: React.FC<PasswordValidationBoxProps> = ({
   allCriteriaMet,
 }) => {
   const renderValidationMessage = (valid: boolean, message: string) => (
-    <HStack spacing={2}>
+    <HStack spacing={2} textAlign="left">
       <Icon
         as={valid ? CheckIcon : CloseIcon}
         color={valid ? "green.500" : "red.500"}
