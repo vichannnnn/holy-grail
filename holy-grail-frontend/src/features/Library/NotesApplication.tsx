@@ -106,8 +106,8 @@ const NotesApplication = () => {
     <Box>
       <ThemeProvider theme={muiTheme}>
         <Box display="flex" justifyContent="center">
-          <TableContainer sx={{ maxWidth: "80%" }}>
-            <Table sx={{ minWidth: 650 }}>
+          <TableContainer sx={{ maxWidth: "80%"}} >
+            <Table>
               <TableHead>
                 <TableRow>
                   <TableCell>
