@@ -204,7 +204,7 @@ const ApprovalTable = () => {
           Prev
         </Button>
         <Text>
-          Page {pageInfo.page} of {Math.ceil(pageInfo.total / pageInfo.size)}
+          Page {pageInfo.page} of {Math.ceil(pageInfo.total / pageInfo.size) ? pageInfo.page >= 1 : 1}
         </Text>
         <Button
           onClick={() => handlePageChange(pageInfo.page + 1)}
