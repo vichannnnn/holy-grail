@@ -11,7 +11,7 @@ services:
       context: ./holy-grail-frontend
       dockerfile: Dockerfile.dev
     environment:
-      VITE_API_URL: ${VITE_API_URL}
+      VITE_APP_API_URL: ${VITE_APP_API_URL}
     depends_on:
       - backend
     volumes:
