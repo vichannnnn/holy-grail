@@ -8,7 +8,8 @@ const ApprovalScreen = () => {
       <Flex direction="column" bgColor="white">
         <Title>Administrator Panel</Title>
         <Text fontSize="xl" mt="3%" mb="10%">
-          This is a list of unapproved notes and where you can choose to approve or delete the submitted notes.
+          This is a list of unapproved notes and where you can choose to approve
+          or delete the submitted notes.
         </Text>
       </Flex>
     </div>
