@@ -190,7 +190,9 @@ const DeveloperScreen = () => {
           onClose={closeEditUserModal}
           onSubmit={handleUpdateUser}
           initialRole={editUserRole}
-          userName={users.find((user) => user.user_id === editUserId)?.username || ""}
+          userName={
+            users.find((user) => user.user_id === editUserId)?.username || ""
+          }
           userId={editUserId}
         />
       )}

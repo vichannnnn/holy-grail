@@ -37,10 +37,10 @@ const EditUserModal = ({
     <Modal open={isOpen} onClose={onClose}>
       <Box
         sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
           position: "absolute",
           top: "50%",
           left: "50%",
@@ -54,16 +54,15 @@ const EditUserModal = ({
         <h3>Username: {userName}</h3>
         <form onSubmit={handleFormSubmit}>
           <VStack mt="20%">
-          <Select value={newRole} onChange={handleRoleChange}>
-            <MenuItem value={RoleEnum.USER}>User</MenuItem>
-            <MenuItem value={RoleEnum.ADMIN}>Admin</MenuItem>
-            <MenuItem value={RoleEnum.DEVELOPER}>Developer</MenuItem>
-          </Select>
-          <Button type="submit">Submit</Button>
+            <Select value={newRole} onChange={handleRoleChange}>
+              <MenuItem value={RoleEnum.USER}>User</MenuItem>
+              <MenuItem value={RoleEnum.ADMIN}>Admin</MenuItem>
+              <MenuItem value={RoleEnum.DEVELOPER}>Developer</MenuItem>
+            </Select>
+            <Button type="submit">Submit</Button>
           </VStack>
         </form>
       </Box>
-
     </Modal>
   );
 };

@@ -1,6 +1,8 @@
 import { Accordion, Flex } from "@chakra-ui/react";
 import FAQLine from "./FAQLine";
 import { Text } from "../../components/Text/Text";
+import { TextLink } from "../../components/TextLink/TextLink";
+import { Link as RouterLink } from "react-router-dom";
 
 const FAQ = () => {
   return (
@@ -14,8 +16,7 @@ const FAQ = () => {
         FAQ's
       </Text>
       <Text fontFamily="Trebuchet MS, sans-serif" mt="3%">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sed eros
-        nisi. Curabitur sodales, ante et venenatis posuere.
+        Need help? We've got you covered!
       </Text>
       <Flex align="center" justifyContent="center" minH="100vh">
         <Accordion
@@ -28,39 +29,53 @@ const FAQ = () => {
           width="100%"
           borderWidth="0"
         >
-          <FAQLine question="What is secure web hosting?">
-            <Text mb={4} fontFamily="Trebuchet MS, sans-serif" textAlign="left">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
-            </Text>
-            <Text fontFamily="Trebuchet MS, sans-serif" textAlign="left">
-              Orci varius natoque penatibus et magnis dis parturient montes,
-              nascetur ridiculus mus. Vivamus a venenatis risus, a iaculis enim.
-              Curabitur dignissim porta lorem eget ultrices. Phasellus eu magna
-              rutrum, aliquet tellus ac, egestas neque. Etiam egestas ac tellus
-              at placerat. Sed gravida dui non magna porta, ut porttitor nulla
-              lobortis. Nullam orci mauris, auctor at est at, egestas rutrum
-              diam. Sed et nunc dolor.
+          <FAQLine question="What is the Holy Grail?">
+            <Text mb={4} textAlign="left"></Text>
+            <Text textAlign="left">
+              Holy Grail is a collaborative initiative undertaken by students to
+              compile a repository of notes and practice papers.
+              <br></br>
+              <br></br>
+              The aim is to support fellow students in their academic journey by
+              providing a centralized application that serves as a reliable
+              library for these educational resources. The project was initiated
+              due to the absence of a suitable platform to store and access such
+              resources.
             </Text>
           </FAQLine>
 
-          <FAQLine question="How do I get started?">
-            <Text fontFamily="Trebuchet MS, sans-serif" mb={4} textAlign="left">
-              Orci varius natoque penatibus et magnis dis parturient montes,
-              nascetur ridiculus mus. Vivamus a venenatis risus, a iaculis enim.
-              Curabitur dignissim porta lorem eget ultrices. Phasellus eu magna
-              rutrum, aliquet tellus ac, egestas neque. Etiam egestas ac tellus
-              at placerat. Sed gravida dui non magna porta, ut porttitor nulla
-              lobortis. Nullam orci mauris, auctor at est at, egestas rutrum
-              diam. Sed et nunc dolor.
+          <FAQLine question="How do I use the Holy Grail?">
+            <Text mb={4} textAlign="left">
+              You can access the resources uploaded over{" "}
+              <RouterLink to="/library">
+                <TextLink
+                  display="inline"
+                  color="blue"
+                  children="here at the Library"
+                />
+              </RouterLink>
+              . Anyone is able to freely access these resources even without
+              having an account.
             </Text>
-            <Text fontFamily="Trebuchet MS, sans-serif" textAlign="left">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
+          </FAQLine>
+
+          <FAQLine question="How do I contribute my notes to the Holy Grail?">
+            <Text mb={4} textAlign="left">
+              You can upload the notes that you want to share over{" "}
+              <RouterLink to="/upload">
+                <TextLink display="inline" color="blue" children="here" />
+              </RouterLink>
+              .<br></br>
+              <br></br>
+              Do note that you can only upload PDF files and you will need an
+              account to start uploading your notes. They will only be available
+              to public after approval.
+            </Text>
+          </FAQLine>
+          <FAQLine question="Will the Holy Grail always be free?">
+            <Text mb={4} textAlign="left">
+              Yes. The entire project and application is done out of initiative
+              and will always be free.
             </Text>
           </FAQLine>
         </Accordion>

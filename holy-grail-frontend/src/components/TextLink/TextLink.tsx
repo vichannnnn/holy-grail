@@ -1,17 +1,13 @@
-import { Text } from "@chakra-ui/react";
+import { TextProps } from "@chakra-ui/react";
+import { Text } from "../Text/Text";
 
-type TextLinkProps = {
+type TextLinkProps = TextProps & {
   children: string;
 };
 
-export const TextLink = ({ children }: TextLinkProps) => {
+export const TextLink = ({ children, ...props }: TextLinkProps) => {
   return (
-    <Text
-      fontSize="md"
-      cursor="pointer"
-      color="black"
-      fontFamily="Trebuchet MS, sans-serif"
-    >
+    <Text cursor="pointer" {...props}>
       {children}
     </Text>
   );
