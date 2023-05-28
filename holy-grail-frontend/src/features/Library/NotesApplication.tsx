@@ -29,7 +29,7 @@ const NotesApplication = () => {
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [subjects, setSubjects] = useState<SubjectType[]>([]);
   const [types, setTypes] = useState<DocumentType[]>([]);
-  const [pageInfo, setPageInfo] = useState({ page: 1, size: 3, total: 0 });
+  const [pageInfo, setPageInfo] = useState({ page: 1, size: 20, total: 0 });
 
   const [category, setCategory] = useState<number | "">(0);
   const [subject, setSubject] = useState<number | "">(0);

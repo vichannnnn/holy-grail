@@ -8,6 +8,7 @@ import {
   Image,
 } from "@chakra-ui/react";
 import FooterLogo from "../../assets/placeholder-footer.svg";
+import { Link as RouterLink } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -18,21 +19,20 @@ const Footer = () => {
         </VStack>
         <Box textAlign="left">
           <Text fontSize="sm">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam dui
-            mauris, volutpat nec dolor et, suscipit lacinia lectus.
+            I honestly don't know what to put here yet.
           </Text>
         </Box>
       </Flex>
       <VStack alignItems="start" spacing={2}>
         <Heading size="sm">Information</Heading>
-        <Link href="#">About us</Link>
-        <Link href="#">Features</Link>
-        <Link href="#">FAQ</Link>
+        <RouterLink to="/#about">About us</RouterLink>
+        <RouterLink to="/#features">Features</RouterLink>
+        <RouterLink to="/#faq">FAQ</RouterLink>
       </VStack>
 
       <VStack alignItems="start" spacing={2}>
         <Heading size="sm">My Account</Heading>
-        <Link href="#">Login</Link>
+        {/*<RouterLink to="/login">Login</RouterLink>*/}
       </VStack>
     </Flex>
   );
