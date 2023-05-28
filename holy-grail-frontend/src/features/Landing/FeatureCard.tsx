@@ -15,7 +15,7 @@ type FeatureCardProps = CardProps & {
   headerText: string;
   image?: string;
   children: React.ReactNode;
-  linkPath?: string
+  linkPath?: string;
 };
 
 export const FeatureCard = ({
@@ -30,7 +30,7 @@ export const FeatureCard = ({
     if (linkPath) {
       navigate(linkPath); // Use history.push to navigate to the new path
     }
-  }
+  };
 
   return (
     <LinkBox onClick={handleCardClick}>
