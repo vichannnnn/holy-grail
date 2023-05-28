@@ -9,21 +9,31 @@ import {
   Box,
   LinkBox,
 } from "@chakra-ui/react";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 
 type FeatureCardProps = CardProps & {
   headerText: string;
   image?: string;
   children: React.ReactNode;
+  linkPath?: string
 };
 
 export const FeatureCard = ({
   headerText,
   image,
   children,
+  linkPath,
   ...props
 }: FeatureCardProps) => {
+  const navigate = useNavigate();
+  const handleCardClick = () => {
+    if (linkPath) {
+      navigate(linkPath); // Use history.push to navigate to the new path
+    }
+  }
+
   return (
-    <LinkBox>
+    <LinkBox onClick={handleCardClick}>
       <Card
         maxW="sm"
         as={Box}

@@ -32,7 +32,7 @@ const FAQLine = ({ question, children }: FAQLineProps) => {
               background="transparent"
               borderRadius="none"
             >
-              <Text fontFamily="Trebuchet MS, sans-serif">{question}</Text>
+              <Text>{question}</Text>
             </Box>
             {isExpanded ? (
               <MinusIcon w={5} h={5} mr={3} />

@@ -16,11 +16,7 @@ export const NavBarRightButton = forwardRef<
         h="40px"
         {...props}
       >
-        <Text
-          fontFamily="Trebuchet MS, sans-serif"
-          fontWeight="bold"
-          color="black"
-        >
+        <Text fontWeight="bold" color="black">
           {children}
         </Text>
       </Button>

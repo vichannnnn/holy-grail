@@ -1,5 +1,6 @@
-import { Button, Text } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 import { ButtonHTMLAttributes, forwardRef } from "react";
+import { Text } from "../Text/Text";
 
 export const HomeButton = forwardRef<
   HTMLButtonElement,
@@ -16,11 +17,7 @@ export const HomeButton = forwardRef<
         h="40px"
         {...props}
       >
-        <Text
-          fontFamily="Trebuchet MS, sans-serif"
-          fontWeight="bold"
-          color="black"
-        >
+        <Text fontWeight="bold" color="black">
           {children}
         </Text>
       </Button>

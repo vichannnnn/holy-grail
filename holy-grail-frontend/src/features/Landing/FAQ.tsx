@@ -7,17 +7,10 @@ import { Link as RouterLink } from "react-router-dom";
 const FAQ = () => {
   return (
     <div id="faq">
-      <Text
-        fontSize="5xl"
-        fontFamily="Trebuchet MS, sans-serif"
-        fontWeight="bold"
-        mt="10%"
-      >
+      <Text fontSize="5xl" fontWeight="bold" mt="10%">
         FAQ's
       </Text>
-      <Text fontFamily="Trebuchet MS, sans-serif" mt="3%">
-        Need help? We've got you covered!
-      </Text>
+      <Text mt="3%">Need help? We've got you covered!</Text>
       <Flex align="center" justifyContent="center" minH="100vh">
         <Accordion
           defaultIndex={[0]}

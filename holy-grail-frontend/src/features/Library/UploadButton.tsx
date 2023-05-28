@@ -1,7 +1,8 @@
-import { Button, ButtonProps, Text } from "@chakra-ui/react";
+import { Button, ButtonProps } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import AuthContext from "../../providers/AuthProvider";
+import { Text } from "../../components/Text/Text";
 
 type UploadButtonProps = ButtonProps & {
   text: string;
@@ -28,9 +29,7 @@ export const UploadButton = ({ text, ...props }: UploadButtonProps) => {
         onClick={handleUploadButtonClick}
         {...props}
       >
-        <Text fontFamily="Trebuchet MS, sans-serif" fontWeight="bold">
-          {text}
-        </Text>
+        <Text fontWeight="bold">{text}</Text>
       </Button>
     </>
   );

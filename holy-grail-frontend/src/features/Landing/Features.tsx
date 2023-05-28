@@ -8,7 +8,7 @@ const Features = () => {
   return (
     <div id="features">
       <HStack justify="center" spacing={2}>
-        <FeatureCard image={ViteLogo} headerText="Contribute Notes">
+        <FeatureCard image={ViteLogo} headerText="Contribute Notes" linkPath="/upload">
           <>
             <Text color="grey" mb={4}>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sed
@@ -24,7 +24,7 @@ const Features = () => {
             </Text>
           </>
         </FeatureCard>
-        <FeatureCard image={VueLogo} headerText="View Notes">
+        <FeatureCard image={VueLogo} headerText="View Notes" linkPath="/library">
           <>
             <Text color="#909090" mb={4}>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sed
