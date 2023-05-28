@@ -29,7 +29,7 @@ interface NotesTableProps {
   isAdmin?: boolean;
 }
 
-const VITE_AWS_S3_BUCKET_URL = import.meta.env.VITE_AWS_S3_BUCKET_URL;
+const VITE_APP_AWS_S3_BUCKET_URL = import.meta.env.VITE_APP_AWS_S3_BUCKET_URL;
 
 const NotesTable = ({
   notes,
@@ -103,7 +103,7 @@ const NotesTable = ({
                     <TableCell>{note.account?.username}</TableCell>
                     <TableCell>
                       <a
-                        href={`${VITE_AWS_S3_BUCKET_URL}/${note.file_name}`}
+                        href={`${VITE_APP_AWS_S3_BUCKET_URL}/${note.file_name}`}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
