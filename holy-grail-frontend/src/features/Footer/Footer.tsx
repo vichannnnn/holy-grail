@@ -18,9 +18,7 @@ const Footer = () => {
           <Image src={FooterLogo} alt="Placeholder image" mb="10%" />
         </VStack>
         <Box textAlign="left">
-          <Text fontSize="sm">
-            I honestly don't know what to put here yet.
-          </Text>
+          <Text fontSize="sm">I honestly don't know what to put here yet.</Text>
         </Box>
       </Flex>
       <VStack alignItems="start" spacing={2}>
