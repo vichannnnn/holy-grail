@@ -12,6 +12,7 @@ services:
       dockerfile: Dockerfile.dev
     environment:
       VITE_APP_API_URL: ${VITE_APP_API_URL}
+      VITE_APP_AWS_S3_BUCKET_URL: ${VITE_APP_AWS_S3_BUCKET_URL}
     depends_on:
       - backend
     volumes:
