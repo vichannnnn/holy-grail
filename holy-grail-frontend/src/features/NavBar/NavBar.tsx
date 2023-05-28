@@ -56,18 +56,18 @@ const NavBar = () => {
           <RouterLink to="/">
             <TextLink children="Home" />
           </RouterLink>
-          <Link to="about" smooth={true} duration={500}>
+          <RouterLink to="/#about">
             <TextLink children="About" />
-          </Link>
+          </RouterLink>
           <RouterLink to="/library">
             <TextLink children="Library" />
           </RouterLink>
-          <Link to="features" smooth={true} duration={500}>
+          <RouterLink to="/#features">
             <TextLink children="Features" />
-          </Link>
-          <Link to="faq" smooth={true} duration={500}>
+          </RouterLink>
+          <RouterLink to="/#faq">
             <TextLink children="FAQ" />
-          </Link>
+          </RouterLink>
         </>
       ) : (
         <Menu>
