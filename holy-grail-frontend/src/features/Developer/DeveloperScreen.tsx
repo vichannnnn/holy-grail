@@ -26,17 +26,29 @@ import {
   updateCategory,
   updateDocumentType,
 } from "../../utils/actions/UpdateCategory";
-
+import {
+  createCategory,
+  createSubject,
+  createDocumentType,
+} from "../../utils/actions/CreateCategory";
+import AddModal from "./AddModal";
 type DataTypeKey = "categories" | "subjects" | "types";
 
 interface TabContentProps {
   title: string;
   data: Array<CategoryType | SubjectType | DocumentType>;
   handleEdit: (id: number, type: DataTypeKey) => void;
+  handleAdd: () => void;
   type: DataTypeKey;
 }
 
-const TabContent = ({ title, data, handleEdit, type }: TabContentProps) => {
+const TabContent = ({
+  title,
+  data,
+  handleEdit,
+  handleAdd,
+  type,
+}: TabContentProps) => {
   const handleEditClick = (id: number) => {
     handleEdit(id, type);
   };
@@ -47,7 +59,9 @@ const TabContent = ({ title, data, handleEdit, type }: TabContentProps) => {
         <TableHead>
           <TableRow>
             <TableCell>{title}</TableCell>
-            <TableCell align="right">Actions</TableCell>
+            <TableCell align="right">
+              <Button onClick={handleAdd}>+</Button>
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -82,9 +96,32 @@ const DeveloperScreen = () => {
 
   const [editId, setEditId] = useState<number | null>(null);
   const [editType, setEditType] = useState<DataTypeKey | null>(null);
+  const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
+  const [addType, setAddType] = useState<DataTypeKey | null>(null);
+
+  const handleAdd = async (newName: string) => {
+    if (addType !== null) {
+      if (addType === "categories") {
+        await createCategory(newName);
+      } else if (addType === "subjects") {
+        await createSubject(newName);
+      } else if (addType === "types") {
+        await createDocumentType(newName);
+      }
+      // fetch the data again after adding
+      fetchData().then(setData);
+    }
+    setIsAddModalOpen(false);
+    setAddType(null);
+  };
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
+  };
+
+  const openAddModal = (type: DataTypeKey) => {
+    setAddType(type);
+    setIsAddModalOpen(true);
   };
 
   const openEditModal = (id: number, type: string) => {
@@ -106,6 +143,7 @@ const DeveloperScreen = () => {
       } else if (editType === "types") {
         await updateDocumentType(editId, newName);
       }
+      fetchData().then(setData);
     }
     closeEditModal();
   };
@@ -116,6 +154,13 @@ const DeveloperScreen = () => {
 
   return (
     <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+      {isAddModalOpen && (
+        <AddModal
+          isOpen={true}
+          onClose={() => setIsAddModalOpen(false)}
+          onSubmit={handleAdd}
+        />
+      )}
       <Tabs
         value={value}
         onChange={handleChange}
@@ -130,6 +175,7 @@ const DeveloperScreen = () => {
           title="Categories"
           data={data.categories}
           handleEdit={openEditModal}
+          handleAdd={() => openAddModal("categories")}
           type="categories"
         />
       )}
@@ -138,6 +184,7 @@ const DeveloperScreen = () => {
           title="Subjects"
           data={data.subjects}
           handleEdit={openEditModal}
+          handleAdd={() => openAddModal("subjects")}
           type="subjects"
         />
       )}
@@ -146,6 +193,7 @@ const DeveloperScreen = () => {
           title="Types"
           data={data.types}
           handleEdit={openEditModal}
+          handleAdd={() => openAddModal("types")}
           type="types"
         />
       )}
