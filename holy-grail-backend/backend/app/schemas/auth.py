@@ -41,6 +41,10 @@ class CurrentUserSchema(BaseModel):
     role: RoleEnum
 
 
+class UpdateUserRoleSchema(BaseModel):
+    role: Optional[RoleEnum]
+
+
 class AuthSchema(BaseModel):
     username: username_validator  # type: ignore
     password: password_validator  # type: ignore

@@ -46,9 +46,9 @@ class Authenticator:
 
     @classmethod
     async def get_current_user(
-        cls,
-        token: str = Depends(oauth2_scheme),
-        session: AsyncSession = Depends(get_session),
+            cls,
+            token: str = Depends(oauth2_scheme),
+            session: AsyncSession = Depends(get_session),
     ) -> CurrentUserSchema:
         try:
             payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
@@ -67,9 +67,9 @@ class Authenticator:
 
     @classmethod
     async def get_admin(
-        cls,
-        token: str = Depends(oauth2_scheme),
-        session: AsyncSession = Depends(get_session),
+            cls,
+            token: str = Depends(oauth2_scheme),
+            session: AsyncSession = Depends(get_session),
     ) -> CurrentUserSchema:
         try:
             payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
@@ -89,9 +89,9 @@ class Authenticator:
 
     @classmethod
     async def get_developer(
-        cls,
-        token: str = Depends(oauth2_scheme),
-        session: AsyncSession = Depends(get_session),
+            cls,
+            token: str = Depends(oauth2_scheme),
+            session: AsyncSession = Depends(get_session),
     ) -> CurrentUserSchema:
         try:
             payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
@@ -132,7 +132,7 @@ class Account(Base, CRUD["Account"]):
     role: Mapped[int] = mapped_column(nullable=False, server_default=text("1"))
 
     async def register(
-        self, session: AsyncSession, data: AccountRegisterSchema
+            self, session: AsyncSession, data: AccountRegisterSchema
     ) -> CurrentUserSchema:
         self.username = data.username
         self.password = Authenticator.pwd_context.hash(data.password)
@@ -159,7 +159,7 @@ class Account(Base, CRUD["Account"]):
 
     @classmethod
     async def login(
-        cls, session: AsyncSession, username: str, password: str
+            cls, session: AsyncSession, username: str, password: str
     ) -> Union[CurrentUserSchema, bool]:
         if not (credentials := await Account.select_from_username(session, username)):
             return False
@@ -177,11 +177,11 @@ class Account(Base, CRUD["Account"]):
 
     @classmethod
     async def update_password(
-        cls, session: AsyncSession, user_id: int, data: AccountUpdatePasswordSchema
+            cls, session: AsyncSession, user_id: int, data: AccountUpdatePasswordSchema
     ):
         curr_cred = await Account.get_one_by_filter(session, [("user_id", user_id)])
         if not Authenticator.pwd_context.verify(
-            data.before_password, curr_cred.password
+                data.before_password, curr_cred.password
         ):
             raise AppError.INVALID_CREDENTIALS_ERROR
 
@@ -235,3 +235,23 @@ class Account(Base, CRUD["Account"]):
 
         except SQLAlchemyExceptions.NoResultFound:
             return None
+
+    @classmethod
+    async def get(cls: Base, session: AsyncSession, user_id: int):
+        stmt = select(cls).where(cls.user_id == user_id)
+        result = await session.execute(stmt)
+        return result.scalar()
+
+    @classmethod
+    async def get_all(cls: Base, session: AsyncSession):
+        stmt = select(cls).order_by(cls.user_id)
+        result = await session.execute(stmt)
+        return result.scalars().all()
+
+    @classmethod
+    async def update(cls: Base, session: AsyncSession, id: int, data: dict):
+        stmt = update(cls).returning(cls).where(cls.user_id == id).values(**data)
+        res = await session.execute(stmt)
+        await session.commit()
+        updated_object = res.fetchone()
+        return updated_object[0]

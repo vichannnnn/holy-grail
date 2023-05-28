@@ -4,7 +4,7 @@ export const Title = ({ children, ...props }: TextProps) => {
   return (
     <ChakraText
       fontWeight="bold"
-      fontSize="4xl"
+      fontSize={["xl", "3xl", "5xl", "7xl"]}
       color="black"
       lineHeight="1"
       {...props}

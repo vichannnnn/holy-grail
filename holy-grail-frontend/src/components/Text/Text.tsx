@@ -5,7 +5,7 @@ export const Text = ({ children, ...props }: TextProps) => {
     <ChakraText
       fontFamily="Trebuchet MS, sans-serif"
       color="black"
-      fontSize="md"
+      fontSize={["sm", "md", "lg", "xl"]}
       {...props}
     >
       {children}
