@@ -22,7 +22,7 @@ const LandingPage = () => {
   return (
     <>
       <Hero />
-      <About />
+      {/*<About />*/}
       <Features />
       <FAQ />
     </>
