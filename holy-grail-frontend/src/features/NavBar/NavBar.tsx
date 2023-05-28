@@ -28,6 +28,10 @@ const NavBar = () => {
     navigate("/admin");
   };
 
+  const handleDevButtonClick = () => {
+    navigate("/developer");
+  };
+
   const handleLogout = async () => {
     try {
       logout();
@@ -96,6 +100,11 @@ const NavBar = () => {
                     Admin Panel
                   </MenuItem>
                 )}
+                {user.role > 2 && (
+                  <MenuItem onClick={handleDevButtonClick}>
+                    Developer Panel
+                  </MenuItem>
+                )}
                 <MenuItem onClick={handleLogout}>Log Out</MenuItem>
               </>
             ) : (
@@ -115,6 +124,11 @@ const NavBar = () => {
                 {user.role > 1 && (
                   <MenuItem onClick={handleAdminButtonClick}>
                     Admin Panel
+                  </MenuItem>
+                )}
+                {user.role > 2 && (
+                  <MenuItem onClick={handleDevButtonClick}>
+                    Developer Panel
                   </MenuItem>
                 )}
                 <MenuItem onClick={handleLogout}>Log Out</MenuItem>

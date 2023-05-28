@@ -1,10 +1,11 @@
 from typing import TypeVar, Generic
+
+from sqlalchemy import update, delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import declared_attr
-from sqlalchemy import update, delete, select
 from sqlalchemy.orm.decl_api import DeclarativeMeta
-from app.db.base_class import Base
 
+from app.db.base_class import Base
 
 ModelType = TypeVar("ModelType")
 
@@ -16,7 +17,7 @@ class CRUD(Generic[ModelType]):
 
     @classmethod
     async def create(
-        cls: DeclarativeMeta, session: AsyncSession, data: dict
+            cls: DeclarativeMeta, session: AsyncSession, data: dict
     ) -> ModelType:
         obj = cls(**data)
         session.add(obj)
@@ -31,21 +32,24 @@ class CRUD(Generic[ModelType]):
 
     @classmethod
     async def update(
-        cls: Base, session: AsyncSession, id: int, data: dict
+            cls: Base, session: AsyncSession, id: int, data: dict
     ) -> ModelType:
         stmt = update(cls).returning(cls).where(cls.id == id).values(**data)
         res = await session.execute(stmt)
         await session.commit()
         updated_object = res.fetchone()
-        return updated_object
+        return updated_object[0]
 
     @classmethod
     async def delete(cls: Base, session: AsyncSession, id: int) -> ModelType:
-        stmt = delete(cls).returning(cls).where(cls.id == id)
-        res = await session.execute(stmt)
+        stmt = delete(cls).where(cls.id == id)
+        fetch_stmt = select(cls).where(cls.id == id)
+
+        res = await session.execute(fetch_stmt)
+        await session.execute(stmt)
+        deleted_note = res.scalar()
         await session.commit()
-        deleted_object = res.fetchone()
-        return deleted_object
+        return deleted_note
 
     @classmethod
     async def get_all(cls: Base, session: AsyncSession):

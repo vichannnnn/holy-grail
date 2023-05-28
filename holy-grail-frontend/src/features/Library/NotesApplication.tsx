@@ -110,7 +110,6 @@ const NotesApplication = () => {
   //   ));
   // };
 
-  // @ts-ignore
   return (
     <>
       <NotesTable

@@ -1,16 +1,39 @@
+from typing import Optional
+
 from app.schemas.base import CustomBaseModel as BaseModel
 
 
-class SubjectSchema(BaseModel):
-    id: int
+class SubjectCreateSchema(BaseModel):
     name: str
 
 
-class CategorySchema(BaseModel):
-    id: int
+class CategoryCreateSchema(BaseModel):
     name: str
 
 
-class DocumentTypeSchema(BaseModel):
-    id: int
+class DocumentTypeCreateSchema(BaseModel):
     name: str
+
+
+class SubjectSchema(SubjectCreateSchema):
+    id: int
+
+
+class CategorySchema(CategoryCreateSchema):
+    id: int
+
+
+class DocumentTypeSchema(DocumentTypeCreateSchema):
+    id: int
+
+
+class SubjectUpdateSchema(SubjectCreateSchema):
+    name: Optional[str]
+
+
+class CategoryUpdateSchema(CategoryCreateSchema):
+    name: Optional[str]
+
+
+class DocumentTypeUpdateSchema(DocumentTypeCreateSchema):
+    name: Optional[str]

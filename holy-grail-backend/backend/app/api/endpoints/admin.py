@@ -15,7 +15,6 @@ async def admin_update_role(
     session: AsyncSession = Depends(get_session),
     authenticated: Account = Depends(Authenticator.get_admin),
 ):
-
     credentials = await Account.update_role(session, data)
     return credentials
 
@@ -26,6 +25,5 @@ async def approve_note(
     authenticated: Account = Depends(Authenticator.get_admin),
     session: AsyncSession = Depends(get_session),
 ):
-
     note = await Library.approve_note(session, id)
     return note

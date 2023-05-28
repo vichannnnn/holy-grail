@@ -67,7 +67,6 @@ class Library(Base):
         uploaded_by: int,
         data: NoteCreateSchema,
     ):
-
         if uploaded_file.content_type not in accepted_types.keys():
             raise AppError.INVALID_FILE_TYPE_ERROR
 
@@ -149,7 +148,6 @@ class Library(Base):
     async def update(
         cls: Base, session: AsyncSession, id: int, authenticated: Account, data: dict
     ):
-
         stmt = update(cls)
         fetch_stmt = select(cls)
 
@@ -184,7 +182,6 @@ class Library(Base):
 
     @classmethod
     async def approve_note(cls: Base, session: AsyncSession, id: int):
-
         stmt = update(cls)
         fetch_stmt = select(cls)
         fetch_stmt = fetch_stmt.where(cls.id == id)
@@ -207,7 +204,6 @@ class Library(Base):
 
     @classmethod
     async def delete(cls: Base, session: AsyncSession, authenticated: Account, id: int):
-
         stmt = delete(cls).where(cls.id == id)
         fetch_stmt = (
             select(cls)

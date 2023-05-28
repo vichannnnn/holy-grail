@@ -1,6 +1,4 @@
-import { useMemo } from "react";
 import apiClient from "../../api/apiClient";
-import { matchSorter } from "match-sorter";
 
 export type PaginatedNotes = {
   items: Note[];
@@ -35,20 +33,16 @@ export type Note = {
   };
 };
 
-export type CategoryType = {
+export interface CommonType {
   id: number;
   name: string;
-};
+}
 
-export type SubjectType = {
-  id: number;
-  name: string;
-};
+export type CategoryType = CommonType;
 
-export type DocumentType = {
-  id: number;
-  name: string;
-};
+export type SubjectType = CommonType;
+
+export type DocumentType = CommonType;
 
 export const fetchData = async () => {
   const [categories, subjects, types] = await Promise.all([
@@ -99,16 +93,16 @@ export const fetchPendingApprovalNotes = async (searchParams: {
   return response.data;
 };
 
-export function useMatch(term: string, items: string[]) {
-  return useMemo(() => {
-    if (term.trim() === "") {
-      return items;
-    } else {
-      const results = matchSorter(items, term, {
-        keys: [(item) => item],
-      });
-
-      return results.length > 0 ? results : [];
-    }
-  }, [term, items]);
-}
+// export function useMatch(term: string, items: string[]) {
+//   return useMemo(() => {
+//     if (term.trim() === "") {
+//       return items;
+//     } else {
+//       const results = matchSorter(items, term, {
+//         keys: [(item) => item],
+//       });
+//
+//       return results.length > 0 ? results : [];
+//     }
+//   }, [term, items]);
+// }

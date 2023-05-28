@@ -21,7 +21,6 @@ async def create_note(
     authenticated: Account = Depends(Authenticator.get_current_user),
     session: AsyncSession = Depends(get_session),
 ):
-
     note = await Library.create(
         session, uploaded_file=file, uploaded_by=authenticated.user_id, data=data
     )
@@ -69,7 +68,6 @@ async def get_all_pending_approval_notes(
     session: AsyncSession = Depends(get_session),
     authenticated: Account = Depends(Authenticator.get_admin),
 ):
-
     notes = await Library.get_all(
         session,
         page=page,

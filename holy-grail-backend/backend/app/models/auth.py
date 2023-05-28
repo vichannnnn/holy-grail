@@ -46,9 +46,9 @@ class Authenticator:
 
     @classmethod
     async def get_current_user(
-            cls,
-            token: str = Depends(oauth2_scheme),
-            session: AsyncSession = Depends(get_session),
+        cls,
+        token: str = Depends(oauth2_scheme),
+        session: AsyncSession = Depends(get_session),
     ) -> CurrentUserSchema:
         try:
             payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
@@ -67,15 +67,37 @@ class Authenticator:
 
     @classmethod
     async def get_admin(
-            cls,
-            token: str = Depends(oauth2_scheme),
-            session: AsyncSession = Depends(get_session),
+        cls,
+        token: str = Depends(oauth2_scheme),
+        session: AsyncSession = Depends(get_session),
     ) -> CurrentUserSchema:
         try:
             payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
             if username := payload.get("sub"):
                 if user := await Account.select_from_username(session, username):
                     if user.role >= 2:
+                        return CurrentUserSchema(
+                            user_id=user.user_id,
+                            username=username,
+                            role=user.role,
+                            # email=user.email,
+                        )
+
+        except JWTError as exc:
+            raise AppError.INVALID_CREDENTIALS_ERROR from exc
+        raise AppError.INVALID_CREDENTIALS_ERROR
+
+    @classmethod
+    async def get_developer(
+        cls,
+        token: str = Depends(oauth2_scheme),
+        session: AsyncSession = Depends(get_session),
+    ) -> CurrentUserSchema:
+        try:
+            payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
+            if username := payload.get("sub"):
+                if user := await Account.select_from_username(session, username):
+                    if user.role >= 3:
                         return CurrentUserSchema(
                             user_id=user.user_id,
                             username=username,
@@ -110,7 +132,7 @@ class Account(Base, CRUD["Account"]):
     role: Mapped[int] = mapped_column(nullable=False, server_default=text("1"))
 
     async def register(
-            self, session: AsyncSession, data: AccountRegisterSchema
+        self, session: AsyncSession, data: AccountRegisterSchema
     ) -> CurrentUserSchema:
         self.username = data.username
         self.password = Authenticator.pwd_context.hash(data.password)
@@ -137,7 +159,7 @@ class Account(Base, CRUD["Account"]):
 
     @classmethod
     async def login(
-            cls, session: AsyncSession, username: str, password: str
+        cls, session: AsyncSession, username: str, password: str
     ) -> Union[CurrentUserSchema, bool]:
         if not (credentials := await Account.select_from_username(session, username)):
             return False
@@ -155,11 +177,11 @@ class Account(Base, CRUD["Account"]):
 
     @classmethod
     async def update_password(
-            cls, session: AsyncSession, user_id: int, data: AccountUpdatePasswordSchema
+        cls, session: AsyncSession, user_id: int, data: AccountUpdatePasswordSchema
     ):
         curr_cred = await Account.get_one_by_filter(session, [("user_id", user_id)])
         if not Authenticator.pwd_context.verify(
-                data.before_password, curr_cred.password
+            data.before_password, curr_cred.password
         ):
             raise AppError.INVALID_CREDENTIALS_ERROR
 

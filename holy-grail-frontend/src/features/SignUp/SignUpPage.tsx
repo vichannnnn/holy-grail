@@ -18,6 +18,7 @@ import { AccountForm } from "../../components/AccountForm/AccountForm";
 
 const SignUpPage = () => {
   const [username, setUsername] = useState("");
+  const [usernameValid, setUsernameValid] = useState(true);
   // const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
@@ -35,6 +36,11 @@ const SignUpPage = () => {
     repeatPasswordValid;
 
   useEffect(() => {
+    const usernameRegex = /^[a-zA-Z0-9]{4,20}$/;
+    setUsernameValid(usernameRegex.test(username));
+  }, [username]);
+
+  useEffect(() => {
     setLengthValid(password.length <= 30 && password.length >= 8);
     setSpecialCharValid(/[!@#$%^&*]/.test(password));
     setCapitalLetterValid(/[A-Z]/.test(password));
@@ -43,6 +49,18 @@ const SignUpPage = () => {
 
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!usernameValid) {
+      toast({
+        title: "Invalid username.",
+        description:
+          "Please ensure your username is valid. It should contain 4 to 20 alphanumeric characters.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
 
     try {
       await apiClient.post("/auth/create", {
@@ -59,6 +77,7 @@ const SignUpPage = () => {
         duration: 5000,
         isClosable: true,
       });
+      navigate("/");
     } catch (error) {
       let errorDescription =
         "Unable to create account. Please check your input and try again.";
@@ -76,6 +95,9 @@ const SignUpPage = () => {
       } else if (axiosError.response && axiosError.response.status === 400) {
         errorDescription =
           "Your password does not match. Please check your password and try again.";
+      } else if (axiosError.response && axiosError.response.status === 422) {
+        errorDescription =
+          "Please ensure your username is valid. It should contain 4 to 20 alphanumeric characters.";
       }
 
       toast({
