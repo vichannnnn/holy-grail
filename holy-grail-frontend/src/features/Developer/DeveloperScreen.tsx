@@ -1,18 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Box,
-  Tab,
-  Tabs,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Button,
-} from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
+import { Box, Tab, Tabs } from "@mui/material";
 import { fetchData } from "../../utils/library/Search";
 import {
   CommonType,
@@ -21,6 +8,7 @@ import {
   DocumentType,
 } from "../../utils/library/Search";
 import EditModal from "./EditModal";
+import EditUserModal from "./EditUserModal";
 import {
   updateSubject,
   updateCategory,
@@ -32,59 +20,11 @@ import {
   createDocumentType,
 } from "../../utils/actions/CreateCategory";
 import AddModal from "./AddModal";
+import { TabContent } from "./TabContent";
+import { TabContentUsers } from "./TabContentUsers";
+import { updateUserRole, fetchAllUsers } from "../../utils/actions/UpdateUser";
+import { User, RoleEnum } from "./TabContentUsers";
 type DataTypeKey = "categories" | "subjects" | "types";
-
-interface TabContentProps {
-  title: string;
-  data: Array<CategoryType | SubjectType | DocumentType>;
-  handleEdit: (id: number, type: DataTypeKey) => void;
-  handleAdd: () => void;
-  type: DataTypeKey;
-}
-
-const TabContent = ({
-  title,
-  data,
-  handleEdit,
-  handleAdd,
-  type,
-}: TabContentProps) => {
-  const handleEditClick = (id: number) => {
-    handleEdit(id, type);
-  };
-
-  return (
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>{title}</TableCell>
-            <TableCell align="right">
-              <Button onClick={handleAdd}>+</Button>
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data.map((item) => (
-            <TableRow key={item.id}>
-              <TableCell component="th" scope="row">
-                {item.name}
-              </TableCell>
-              <TableCell align="right">
-                <Button onClick={() => handleEditClick(item.id)}>
-                  <EditIcon />
-                </Button>
-                {/*<Button onClick={() => handleDelete(item.id)}>*/}
-                {/*  <DeleteIcon />*/}
-                {/*</Button>*/}
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  );
-};
 
 const DeveloperScreen = () => {
   const [value, setValue] = React.useState(0);
@@ -98,6 +38,12 @@ const DeveloperScreen = () => {
   const [editType, setEditType] = useState<DataTypeKey | null>(null);
   const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
   const [addType, setAddType] = useState<DataTypeKey | null>(null);
+
+  const [users, setUsers] = useState<User[]>([]);
+  const [editUserId, setEditUserId] = useState<number | null>(null);
+  const [editUserRole, setEditUserRole] = useState<RoleEnum | null>(null);
+  const [isEditUserModalOpen, setIsEditUserModalOpen] =
+    useState<boolean>(false);
 
   const handleAdd = async (newName: string) => {
     if (addType !== null) {
@@ -134,6 +80,21 @@ const DeveloperScreen = () => {
     setEditType(null);
   };
 
+  const openEditUserModal = (id: number) => {
+    const user = users.find((user) => user.user_id === id);
+    if (user) {
+      setEditUserId(id);
+      setEditUserRole(user.role);
+      setIsEditUserModalOpen(true);
+    }
+  };
+
+  const closeEditUserModal = () => {
+    setEditUserId(null);
+    setEditUserRole(null);
+    setIsEditUserModalOpen(false);
+  };
+
   const handleUpdate = async (newName: string) => {
     if (editId !== null && editType !== null) {
       if (editType === "categories") {
@@ -148,8 +109,18 @@ const DeveloperScreen = () => {
     closeEditModal();
   };
 
+  const handleUpdateUser = async (newRole: RoleEnum) => {
+    if (editUserId !== null) {
+      await updateUserRole(editUserId, newRole);
+      fetchAllUsers().then(setUsers);
+    }
+    setEditUserId(null);
+    setEditUserRole(null);
+  };
+
   useEffect(() => {
     fetchData().then(setData);
+    fetchAllUsers().then(setUsers);
   }, []);
 
   return (
@@ -169,6 +140,7 @@ const DeveloperScreen = () => {
         <Tab label="Categories" />
         <Tab label="Subjects" />
         <Tab label="Types" />
+        <Tab label="Users" />
       </Tabs>
       {value === 0 && (
         <TabContent
@@ -197,6 +169,9 @@ const DeveloperScreen = () => {
           type="types"
         />
       )}
+      {value === 3 && (
+        <TabContentUsers data={users} handleEdit={openEditUserModal} />
+      )}
       {editId !== null && editType !== null && (
         <EditModal
           isOpen={true}
@@ -207,6 +182,16 @@ const DeveloperScreen = () => {
               (item: CommonType) => item.id === editId
             )?.name || ""
           }
+        />
+      )}
+      {editUserId !== null && editUserRole !== null && (
+        <EditUserModal
+          isOpen={isEditUserModalOpen}
+          onClose={closeEditUserModal}
+          onSubmit={handleUpdateUser}
+          initialRole={editUserRole}
+          userName={users.find((user) => user.user_id === editUserId)?.username || ""}
+          userId={editUserId}
         />
       )}
     </Box>
