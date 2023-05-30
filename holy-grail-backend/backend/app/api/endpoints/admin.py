@@ -14,9 +14,9 @@ router = APIRouter()
 
 @router.put("/update_role")
 async def admin_update_role(
-        data: UpdateRoleSchema,
-        session: AsyncSession = Depends(get_session),
-        authenticated: Account = Depends(Authenticator.get_admin),
+    data: UpdateRoleSchema,
+    session: AsyncSession = Depends(get_session),
+    authenticated: Account = Depends(Authenticator.get_admin),
 ):
     credentials = await Account.update_role(session, data)
     return credentials
@@ -24,9 +24,9 @@ async def admin_update_role(
 
 @router.put("/approve/{id}")
 async def approve_note(
-        id: int,
-        authenticated: Account = Depends(Authenticator.get_admin),
-        session: AsyncSession = Depends(get_session),
+    id: int,
+    authenticated: Account = Depends(Authenticator.get_admin),
+    session: AsyncSession = Depends(get_session),
 ):
     note = await Library.approve_note(session, id)
     return note
@@ -34,8 +34,8 @@ async def approve_note(
 
 @router.get("/users", response_model=List[CurrentUserSchema])
 async def get_all_account(
-        authenticated=Depends(Authenticator.get_developer),
-        session: AsyncSession = Depends(get_session),
+    authenticated=Depends(Authenticator.get_developer),
+    session: AsyncSession = Depends(get_session),
 ):
     res = await Account.get_all(session)
     return res
@@ -43,9 +43,9 @@ async def get_all_account(
 
 @router.get("/user/{id}", response_model=CurrentUserSchema)
 async def get_account(
-        id: int,
-        authenticated=Depends(Authenticator.get_developer),
-        session: AsyncSession = Depends(get_session),
+    id: int,
+    authenticated=Depends(Authenticator.get_developer),
+    session: AsyncSession = Depends(get_session),
 ):
     res = await Account.get(session, user_id=id)
     return res
@@ -53,10 +53,10 @@ async def get_account(
 
 @router.put("/user/{id}", response_model=CurrentUserSchema)
 async def update_account(
-        id: int,
-        data: UpdateUserRoleSchema,
-        authenticated=Depends(Authenticator.get_developer),
-        session: AsyncSession = Depends(get_session),
+    id: int,
+    data: UpdateUserRoleSchema,
+    authenticated=Depends(Authenticator.get_developer),
+    session: AsyncSession = Depends(get_session),
 ):
     res = await Account.update(session, id=id, data=dict(data))
     return res

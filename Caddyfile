@@ -4,8 +4,6 @@
 	    }
 }
 
-{$DEBUG_URL} {
-    handle_path /api/v1/* {
-	    reverse_proxy {$DEBUG_CONTAINER_URL}
-	    }
+{$FRONTEND_URL} {
+    reverse_proxy {$FRONTEND_CONTAINER_URL}
 }

@@ -19,9 +19,9 @@ router = APIRouter()
 @router.post("/create", response_model=CurrentUserSchema)
 @limiter.limit("5/minute")
 async def create_account(
-        request: Request,
-        data: AccountRegisterSchema,
-        session: AsyncSession = Depends(get_session),
+    request: Request,
+    data: AccountRegisterSchema,
+    session: AsyncSession = Depends(get_session),
 ):
     if data.password != data.repeat_password:
         raise AppError.PASSWORD_MISMATCH_ERROR
@@ -32,9 +32,9 @@ async def create_account(
 
 @router.post("/update_password")
 async def user_update_password(
-        data: AccountUpdatePasswordSchema,
-        session: AsyncSession = Depends(get_session),
-        authenticated: Account = Depends(Authenticator.get_current_user),
+    data: AccountUpdatePasswordSchema,
+    session: AsyncSession = Depends(get_session),
+    authenticated: Account = Depends(Authenticator.get_current_user),
 ):
     credentials = await Account.update_password(session, authenticated.user_id, data)
     return credentials
@@ -42,15 +42,15 @@ async def user_update_password(
 
 @router.get("/get", response_model=CurrentUserSchema)
 async def get_account_name(
-        user: AuthSchema = Depends(Authenticator.get_current_user),
+    user: AuthSchema = Depends(Authenticator.get_current_user),
 ):
     return user
 
 
 @router.post("/login")
 async def user_login(
-        data: AuthSchema,
-        session: AsyncSession = Depends(get_session),
+    data: AuthSchema,
+    session: AsyncSession = Depends(get_session),
 ):
     credentials = await Account.login(session, data.username, data.password)
 

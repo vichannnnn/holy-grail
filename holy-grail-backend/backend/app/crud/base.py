@@ -17,7 +17,7 @@ class CRUD(Generic[ModelType]):
 
     @classmethod
     async def create(
-            cls: DeclarativeMeta, session: AsyncSession, data: dict
+        cls: DeclarativeMeta, session: AsyncSession, data: dict
     ) -> ModelType:
         obj = cls(**data)
         session.add(obj)
@@ -32,7 +32,7 @@ class CRUD(Generic[ModelType]):
 
     @classmethod
     async def update(
-            cls: Base, session: AsyncSession, id: int, data: dict
+        cls: Base, session: AsyncSession, id: int, data: dict
     ) -> ModelType:
         stmt = update(cls).returning(cls).where(cls.id == id).values(**data)
         res = await session.execute(stmt)
