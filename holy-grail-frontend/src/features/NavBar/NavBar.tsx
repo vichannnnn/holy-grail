@@ -47,7 +47,7 @@ const NavBar = () => {
   };
 
   return (
-    <Flex align="center" justify="space-between" position="sticky" mb="8%">
+    <Flex align="center" justify="space-between" position="sticky" mb="8%" minWidth="50vw">
       <RouterLink to="/">
         <NavBarLogo />
       </RouterLink>

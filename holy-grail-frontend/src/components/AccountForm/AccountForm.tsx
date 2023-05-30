@@ -8,8 +8,9 @@ export const AccountForm = ({ children }: BoxProps) => {
         alignItems="center"
         justifyContent="center"
         minHeight="100vh"
+        width="100%"
       >
-        <Box width={["100%", "80%", "70%", "50%"]} textAlign="left">
+        <Box width={["100%", "80%", "65%", "50%"]} textAlign="left">
           {children}
         </Box>
       </Flex>
