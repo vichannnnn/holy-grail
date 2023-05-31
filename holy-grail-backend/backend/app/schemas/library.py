@@ -1,18 +1,21 @@
-from app.schemas.base import CustomBaseModel as BaseModel
-from typing import Optional
 from datetime import datetime
-from app.schemas.categories import DocumentTypeSchema, CategorySchema, SubjectSchema
+from typing import Optional
+
 from app.schemas.auth import UploaderSchema
+from app.schemas.base import CustomBaseModel as BaseModel
+from app.schemas.categories import DocumentTypeSchema, CategorySchema, SubjectSchema
 
 
 class NoteCreateSchema(BaseModel):
     category: int
     subject: int
     type: int
+    document_name: str
 
 
 class NoteUpdateSchema(BaseModel):
     category: Optional[int]
+    document_name: Optional[str]
     subject: Optional[int]
     type: Optional[int]
     uploaded_by: Optional[int]

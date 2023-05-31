@@ -1,16 +1,18 @@
-from app.db.base_class import Base
-from sqlalchemy.orm import Mapped, mapped_column, relationship, selectinload
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.sql.expression import text
-from sqlalchemy import func, ForeignKey, select, update, delete
 import datetime
 from typing import TYPE_CHECKING, Optional
-from app.models.auth import Account
-from app.file_handler import save_file
-from app.schemas.library import NoteCreateSchema
+
 from fastapi import UploadFile, HTTPException
+from sqlalchemy import func, ForeignKey, select, update, delete
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import Mapped, mapped_column, relationship, selectinload
+from sqlalchemy.sql.expression import text
 from starlette.datastructures import UploadFile as StarletteUploadFile
+
+from app.db.base_class import Base
 from app.exceptions import AppError
+from app.file_handler import save_file
+from app.models.auth import Account
+from app.schemas.library import NoteCreateSchema
 
 if TYPE_CHECKING:
     from app.models.categories import CategoryLevel, Subjects, DocumentTypes
@@ -44,6 +46,7 @@ class Library(Base):
         nullable=False,
         index=True,
     )
+    document_name: Mapped[str] = mapped_column(nullable=False, unique=False)
     file_name: Mapped[str] = mapped_column(nullable=False, unique=True)
     view_count: Mapped[int] = mapped_column(server_default=text("0"), nullable=False)
     uploaded_by: Mapped[int] = mapped_column(
@@ -61,11 +64,11 @@ class Library(Base):
 
     @classmethod
     async def create(
-        cls,
-        session: AsyncSession,
-        uploaded_file: UploadFile,
-        uploaded_by: int,
-        data: NoteCreateSchema,
+            cls,
+            session: AsyncSession,
+            uploaded_file: UploadFile,
+            uploaded_by: int,
+            data: NoteCreateSchema,
     ):
         if uploaded_file.content_type not in accepted_types.keys():
             raise AppError.INVALID_FILE_TYPE_ERROR
@@ -84,14 +87,14 @@ class Library(Base):
 
     @classmethod
     async def get_all(
-        cls,
-        session: AsyncSession,
-        page: int,
-        size: int,
-        approved: bool = True,
-        category: Optional[str] = None,
-        subject: Optional[str] = None,
-        doc_type: Optional[str] = None,
+            cls,
+            session: AsyncSession,
+            page: int,
+            size: int,
+            approved: bool = True,
+            category: Optional[str] = None,
+            subject: Optional[str] = None,
+            doc_type: Optional[str] = None,
     ):
         stmt = select(cls).where(cls.approved == approved)
         count_stmt = select(func.count()).select_from(stmt)
@@ -146,7 +149,7 @@ class Library(Base):
 
     @classmethod
     async def update(
-        cls: Base, session: AsyncSession, id: int, authenticated: Account, data: dict
+            cls: Base, session: AsyncSession, id: int, authenticated: Account, data: dict
     ):
         stmt = update(cls)
         fetch_stmt = select(cls)
