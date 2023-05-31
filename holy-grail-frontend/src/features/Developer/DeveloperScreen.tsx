@@ -124,7 +124,7 @@ const DeveloperScreen = () => {
   }, []);
 
   return (
-    <Box sx={{ borderBottom: 1, borderColor: "divider" }} >
+    <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
       {isAddModalOpen && (
         <AddModal
           isOpen={true}

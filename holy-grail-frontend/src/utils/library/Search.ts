@@ -13,8 +13,10 @@ export type Note = {
   category: number;
   subject: number;
   type: number;
+  document_name: string;
   file_name: string;
   uploaded_by: number;
+  uploaded_on: string;
   doc_category: {
     id: number;
     name: string;

@@ -1,5 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Button, VStack, Heading, Box, Text, useToast } from "@chakra-ui/react";
+import {
+  Button,
+  VStack,
+  Heading,
+  Box,
+  Text,
+  useToast,
+  Input,
+} from "@chakra-ui/react";
 import Combobox from "../Library/Combobox";
 import {
   fetchData,
@@ -17,6 +25,7 @@ const UploadPage = () => {
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [subjects, setSubjects] = useState<SubjectType[]>([]);
   const [types, setTypes] = useState<DocumentType[]>([]);
+  const [documentName, setDocumentName] = useState<string | null>(null);
 
   const [category, setCategory] = useState<number | "">(0);
   const [subject, setSubject] = useState<number | "">(0);
@@ -47,6 +56,10 @@ const UploadPage = () => {
     }
   };
 
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDocumentName(event.target.value);
+  };
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       setSelectedFile(event.target.files[0]);
@@ -74,7 +87,8 @@ const UploadPage = () => {
         selectedFile,
         category,
         subject,
-        type
+        type,
+        documentName || ""
       );
       if (responseStatus == 200) {
         toast({
@@ -142,6 +156,16 @@ const UploadPage = () => {
               value: type.id,
               label: type.name,
             }))}
+          />
+        </Box>
+        <Box w="30%">
+          <Input
+            value={documentName || ""}
+            onChange={handleNameChange}
+            placeholder="Enter document name"
+            required={true}
+            minLength={4}
+            maxLength={20}
           />
         </Box>
 

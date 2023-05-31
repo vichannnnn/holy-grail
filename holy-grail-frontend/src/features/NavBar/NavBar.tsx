@@ -32,6 +32,10 @@ const NavBar = () => {
     navigate("/developer");
   };
 
+  const handlePasswordChange = () => {
+    navigate("/update_password")
+  }
+
   const handleLogout = async () => {
     try {
       logout();
@@ -47,7 +51,13 @@ const NavBar = () => {
   };
 
   return (
-    <Flex align="center" justify="space-between" position="sticky" mb="8%" minWidth="50vw">
+    <Flex
+      align="center"
+      justify="space-between"
+      position="sticky"
+      mb="8%"
+      minWidth="50vw"
+    >
       <RouterLink to="/">
         <NavBarLogo />
       </RouterLink>
@@ -131,6 +141,9 @@ const NavBar = () => {
                     Developer Panel
                   </MenuItem>
                 )}
+                <MenuItem onClick={handlePasswordChange}>
+                  Change Password
+                </MenuItem>
                 <MenuItem onClick={handleLogout}>Log Out</MenuItem>
               </MenuList>
             </Menu>

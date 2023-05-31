@@ -5,13 +5,15 @@ export const createNote = async (
   file: File,
   category: number | "",
   subject: number | "",
-  type: number | ""
+  type: number | "",
+  name: string | ""
 ) => {
   const formData = new FormData();
   formData.append("file", file);
   formData.append("category", String(category));
   formData.append("subject", String(subject));
   formData.append("type", String(type));
+  formData.append("document_name", String(name));
 
   try {
     const response = await apiClient.post("/note/", formData, {
@@ -22,6 +24,7 @@ export const createNote = async (
         category: String(category),
         subject: String(subject),
         type: String(type),
+        document_name: String(name),
       },
     });
     return response.status;

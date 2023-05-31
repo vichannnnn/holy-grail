@@ -1,21 +1,25 @@
 from datetime import datetime
 from typing import Optional
 
+from pydantic import constr
+
 from app.schemas.auth import UploaderSchema
 from app.schemas.base import CustomBaseModel as BaseModel
 from app.schemas.categories import DocumentTypeSchema, CategorySchema, SubjectSchema
+
+DocumentNameStr = constr(min_length=1, max_length=20)
 
 
 class NoteCreateSchema(BaseModel):
     category: int
     subject: int
     type: int
-    document_name: str
+    document_name: DocumentNameStr
 
 
 class NoteUpdateSchema(BaseModel):
     category: Optional[int]
-    document_name: Optional[str]
+    document_name: Optional[DocumentNameStr]
     subject: Optional[int]
     type: Optional[int]
     uploaded_by: Optional[int]

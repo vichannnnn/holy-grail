@@ -12,6 +12,7 @@ import { AuthProvider } from "./providers/AuthProvider";
 import ApprovalPage from "./features/Approval/ApprovalPage";
 import NotFound from "./features/Common/NotFound";
 import DeveloperPage from "./features/Developer/DeveloperPage";
+import ChangePasswordPage from "./features/ChangePassword/ChangePasswordPage";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
             <Route path="/upload" element={<UploadPage />} />
             <Route path="/admin" element={<ApprovalPage />} />
             <Route path="/developer" element={<DeveloperPage />} />
+            <Route path="/update_password" element={<ChangePasswordPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <Footer />

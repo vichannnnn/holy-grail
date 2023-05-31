@@ -31,6 +31,17 @@ interface NotesTableProps {
 
 const VITE_APP_AWS_S3_BUCKET_URL = import.meta.env.VITE_APP_AWS_S3_BUCKET_URL;
 
+function formatDate(dateString: string) {
+  const options: Intl.DateTimeFormatOptions = {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  };
+
+  return new Date(dateString).toLocaleDateString(undefined, options);
+}
+
+
 const NotesTable = ({
   notes,
   categories,
@@ -89,7 +100,9 @@ const NotesTable = ({
                   <TableCell>Category</TableCell>
                   <TableCell>Subject</TableCell>
                   <TableCell>Type</TableCell>
+                  <TableCell>Name</TableCell>
                   <TableCell>Uploaded by</TableCell>
+                  <TableCell>Uploaded on</TableCell>
                   <TableCell>File</TableCell>
                   {isAdmin && <TableCell>Action</TableCell>}
                 </TableRow>
@@ -100,7 +113,9 @@ const NotesTable = ({
                     <TableCell>{note.doc_category?.name}</TableCell>
                     <TableCell>{note.doc_subject?.name}</TableCell>
                     <TableCell>{note.doc_type?.name}</TableCell>
+                    <TableCell>{note.document_name}</TableCell>
                     <TableCell>{note.account?.username}</TableCell>
+                    <TableCell>{formatDate(note.uploaded_on)}</TableCell>
                     <TableCell>
                       <a
                         href={`${VITE_APP_AWS_S3_BUCKET_URL}/${note.file_name}`}
