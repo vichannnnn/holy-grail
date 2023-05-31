@@ -1,15 +1,14 @@
 import { HStack } from "@chakra-ui/react";
 import { Text } from "../../components/Text/Text";
 import { FeatureCard } from "./FeatureCard";
-import ViteLogo from "../../assets/vite.svg";
-import VueLogo from "../../assets/vue.svg";
+import GrailLogo from "../../assets/holy-grail.svg";
 
 const Features = () => {
   return (
     <div id="features">
       <HStack justify="center" spacing={2}>
         <FeatureCard
-          image={ViteLogo}
+          image={GrailLogo}
           headerText="Contribute Notes"
           linkPath="/upload"
         >
@@ -24,7 +23,7 @@ const Features = () => {
           </>
         </FeatureCard>
         <FeatureCard
-          image={VueLogo}
+          image={GrailLogo}
           headerText="View Notes"
           linkPath="/library"
         >

@@ -33,14 +33,13 @@ const VITE_APP_AWS_S3_BUCKET_URL = import.meta.env.VITE_APP_AWS_S3_BUCKET_URL;
 
 function formatDate(dateString: string) {
   const options: Intl.DateTimeFormatOptions = {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric'
+    day: "numeric",
+    month: "long",
+    year: "numeric",
   };
 
   return new Date(dateString).toLocaleDateString(undefined, options);
 }
-
 
 const NotesTable = ({
   notes,

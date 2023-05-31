@@ -41,7 +41,6 @@ const ChangePasswordPage = () => {
   }, [password, repeatPassword]);
 
   const handleUpdatePassword = async (e: React.FormEvent<HTMLFormElement>) => {
-
     e.preventDefault();
     try {
       await apiClient.post("/auth/update_password", {
@@ -70,13 +69,11 @@ const ChangePasswordPage = () => {
 
       if (axiosError.response && axiosError.response.status === 401) {
         errorDescription = "The password you've entered is invalid.";
-
       } else if (axiosError.response && axiosError.response.status === 400) {
         errorDescription =
           "Your password does not match. Please check your password and try again.";
       } else if (axiosError.response && axiosError.response.status === 422) {
-        errorDescription =
-          "Please ensure your new password format is valid";
+        errorDescription = "Please ensure your new password format is valid";
       }
 
       toast({
