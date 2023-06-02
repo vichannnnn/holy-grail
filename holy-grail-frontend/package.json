@@ -21,6 +21,7 @@
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.12.3",
     "@reach/combobox": "^0.18.0",
+    "@types/lodash": "^4.14.195",
     "@types/react-scroll": "^1.8.7",
     "axios": "^1.4.0",
     "classnames": "^2.3.2",
