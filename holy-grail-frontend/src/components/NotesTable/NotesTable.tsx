@@ -23,7 +23,7 @@ interface NotesTableProps {
   onCategoryChange: ComboboxProps["onChange"];
   onSubjectChange: ComboboxProps["onChange"];
   onTypeChange: ComboboxProps["onChange"];
-  pageInfo: { page: number; size: number; total: number };
+  pageInfo: { page: number; size: number; total: number, pages: number };
   handlePageChange: (page: number) => void;
   renderAdditionalColumn?: (note: Note) => JSX.Element | null;
   isAdmin?: boolean;
@@ -71,7 +71,7 @@ const NotesTable = ({
                     <Combobox
                       label="Category"
                       value={category}
-                      onChange={value => {
+                      onChange={(value) => {
                         onCategoryChange(value);
                         handlePageChange(1);
                       }}
@@ -82,7 +82,7 @@ const NotesTable = ({
                     <Combobox
                       label="Subject"
                       value={subject}
-                      onChange={value => {
+                      onChange={(value) => {
                         onSubjectChange(value);
                         handlePageChange(1);
                       }}
@@ -93,7 +93,7 @@ const NotesTable = ({
                     <Combobox
                       label="Type"
                       value={type}
-                      onChange={value => {
+                      onChange={(value) => {
                         onTypeChange(value);
                         handlePageChange(1);
                       }}
