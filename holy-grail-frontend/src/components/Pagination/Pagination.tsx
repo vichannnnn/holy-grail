@@ -7,7 +7,7 @@ interface PaginationProps {
 }
 
 export const Pagination = ({ pageInfo, handlePageChange }: PaginationProps) => {
-  const debouncedHandlePageChange = debounce(handlePageChange, 300);
+  const debouncedHandlePageChange = debounce(handlePageChange, 100);
 
   return (
     <HStack spacing={4} justifyContent="center" mt="10%">
