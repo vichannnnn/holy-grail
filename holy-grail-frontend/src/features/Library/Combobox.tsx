@@ -14,6 +14,7 @@ const Combobox = ({ label, value, onChange, options }: ComboboxProps) => {
   return (
     <ThemeProvider theme={muiTheme}>
       <Autocomplete
+        style={{ width: "30%" }}
         value={options.find((option) => option.value === value) || null}
         options={options}
         onChange={(_, newValue) => onChange(newValue?.value || "")}

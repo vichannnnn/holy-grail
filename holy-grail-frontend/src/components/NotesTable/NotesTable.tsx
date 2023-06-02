@@ -1,12 +1,4 @@
-import {
-  Box,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
+import { Box, Card, CardContent, Grid, Typography, Link } from "@mui/material";
 import { Note } from "../../utils/library/Search";
 import Combobox from "../../features/Library/Combobox";
 import { ComboboxProps } from "../../features/Library/Combobox";
@@ -23,7 +15,7 @@ interface NotesTableProps {
   onCategoryChange: ComboboxProps["onChange"];
   onSubjectChange: ComboboxProps["onChange"];
   onTypeChange: ComboboxProps["onChange"];
-  pageInfo: { page: number; size: number; total: number, pages: number };
+  pageInfo: { page: number; size: number; total: number; pages: number };
   handlePageChange: (page: number) => void;
   renderAdditionalColumn?: (note: Note) => JSX.Element | null;
   isAdmin?: boolean;
@@ -62,85 +54,102 @@ const NotesTable = ({
   return (
     <Box>
       <ThemeProvider theme={muiTheme}>
-        <Box display="flex" justifyContent="center">
-          <TableContainer sx={{ maxWidth: "80%" }}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell style={{ borderBottom: "none" }}>
-                    <Combobox
-                      label="Category"
-                      value={category}
-                      onChange={(value) => {
-                        onCategoryChange(value);
-                        handlePageChange(1);
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          sx={{ width: "100%" }}
+        >
+          <Box
+            display="flex"
+            justifyContent="space-around"
+            marginBottom={2}
+            sx={{ width: "100%" }}
+          >
+            <Combobox
+              label="Category"
+              value={category}
+              onChange={(value) => {
+                onCategoryChange(value);
+                handlePageChange(1);
+              }}
+              options={categories}
+            />
+            <Combobox
+              label="Subject"
+              value={subject}
+              onChange={(value) => {
+                onSubjectChange(value);
+                handlePageChange(1);
+              }}
+              options={subjects}
+            />
+            <Combobox
+              label="Type"
+              value={type}
+              onChange={(value) => {
+                onTypeChange(value);
+                handlePageChange(1);
+              }}
+              options={types}
+            />
+          </Box>
+          <Grid container spacing={2} sx={{ width: "100%" }}>
+            {" "}
+            {notes.map((note: Note) => (
+              <Grid item xs={12} sm={6} md={4} lg={3} key={note.id}>
+                <Card
+                  sx={{
+                    height: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <CardContent sx={{ flexGrow: 1 }}>
+                    <Typography
+                      mb="10%"
+                      component="div"
+                      fontWeight="bold"
+                      style={{
+                        height: '3em',
+                        overflow: 'hidden'
                       }}
-                      options={categories}
-                    />
-                  </TableCell>
-                  <TableCell style={{ borderBottom: "none" }}>
-                    <Combobox
-                      label="Subject"
-                      value={subject}
-                      onChange={(value) => {
-                        onSubjectChange(value);
-                        handlePageChange(1);
-                      }}
-                      options={subjects}
-                    />
-                  </TableCell>
-                  <TableCell style={{ borderBottom: "none" }}>
-                    <Combobox
-                      label="Type"
-                      value={type}
-                      onChange={(value) => {
-                        onTypeChange(value);
-                        handlePageChange(1);
-                      }}
-                      options={types}
-                    />
-                  </TableCell>
-                  {renderAdditionalColumn && (
-                    <TableCell style={{ borderBottom: "none" }}></TableCell>
-                  )}
-                </TableRow>
-                <TableRow>
-                  <TableCell>Category</TableCell>
-                  <TableCell>Subject</TableCell>
-                  <TableCell>Type</TableCell>
-                  <TableCell>Name</TableCell>
-                  <TableCell>Uploaded by</TableCell>
-                  <TableCell>Uploaded on</TableCell>
-                  <TableCell>File</TableCell>
-                  {isAdmin && <TableCell>Action</TableCell>}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {notes.map((note: Note) => (
-                  <TableRow key={note.id}>
-                    <TableCell>{note.doc_category?.name}</TableCell>
-                    <TableCell>{note.doc_subject?.name}</TableCell>
-                    <TableCell>{note.doc_type?.name}</TableCell>
-                    <TableCell>{note.document_name}</TableCell>
-                    <TableCell>{note.account?.username}</TableCell>
-                    <TableCell>{formatDate(note.uploaded_on)}</TableCell>
-                    <TableCell>
-                      <a
-                        href={`${VITE_APP_AWS_S3_BUCKET_URL}/${note.file_name}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        View PDF
-                      </a>
-                    </TableCell>
-                    <TableCell>
-                      {renderAdditionalColumn && renderAdditionalColumn(note)}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                    >
+                      {note.document_name}
+                    </Typography>
+                    <Typography variant="body2">
+                      Category: {note.doc_category?.name}
+                    </Typography>
+                    <Typography variant="body2">
+                      Subject: {note.doc_subject?.name}
+                    </Typography>
+                    <Typography variant="body2">
+                      Type: {note.doc_type?.name}
+                    </Typography>
+                    <Typography variant="body2">
+                      Uploaded by: {note.account?.username}
+                    </Typography>
+                    <Typography variant="body2">
+                      Uploaded on: {formatDate(note.uploaded_on)}
+                    </Typography>
+                  </CardContent>
+                  <Box sx={{ p: 2 }}>
+                    <Link
+                      href={`${VITE_APP_AWS_S3_BUCKET_URL}/${note.file_name}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      underline="always"
+                    >
+                      View PDF
+                    </Link>
+                    {isAdmin &&
+                      renderAdditionalColumn &&
+                      renderAdditionalColumn(note)}
+                  </Box>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
         </Box>
       </ThemeProvider>
       <Pagination pageInfo={pageInfo} handlePageChange={handlePageChange} />

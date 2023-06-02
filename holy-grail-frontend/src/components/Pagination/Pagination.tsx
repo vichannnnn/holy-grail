@@ -1,5 +1,5 @@
 import { Button, HStack, Text } from "@chakra-ui/react";
-import debounce from 'lodash/debounce';
+import debounce from "lodash/debounce";
 
 interface PaginationProps {
   pageInfo: { page: number; size: number; total: number; pages: number };
