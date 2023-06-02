@@ -1,7 +1,9 @@
-from app.db.base_class import Base
-from app.crud.base import CRUD
-from sqlalchemy.orm import Mapped, mapped_column, relationship
 from typing import TYPE_CHECKING
+
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from app.crud.base import CRUD
+from app.db.base_class import Base
 
 if TYPE_CHECKING:
     from app.models.library import Library
@@ -14,7 +16,7 @@ class CategoryLevel(Base, CRUD["category_level"]):
         primary_key=True,
         index=True,
     )
-    name: Mapped[str] = mapped_column(nullable=False)
+    name: Mapped[str] = mapped_column(nullable=False, unique=True)
     documents: Mapped["Library"] = relationship(
         back_populates="doc_category", uselist=True
     )
@@ -27,7 +29,7 @@ class Subjects(Base, CRUD["subjects"]):
         primary_key=True,
         index=True,
     )
-    name: Mapped[str] = mapped_column(nullable=False)
+    name: Mapped[str] = mapped_column(nullable=False, unique=True)
     documents: Mapped["Library"] = relationship(
         back_populates="doc_subject", uselist=True
     )
@@ -40,5 +42,5 @@ class DocumentTypes(Base, CRUD["documents"]):
         primary_key=True,
         index=True,
     )
-    name: Mapped[str] = mapped_column(nullable=False)
+    name: Mapped[str] = mapped_column(nullable=False, unique=True)
     documents: Mapped["Library"] = relationship(back_populates="doc_type", uselist=True)

@@ -46,7 +46,7 @@ class Library(Base):
         nullable=False,
         index=True,
     )
-    document_name: Mapped[str] = mapped_column(nullable=False, unique=False)
+    document_name: Mapped[str] = mapped_column(nullable=False, unique=True)
     file_name: Mapped[str] = mapped_column(nullable=False, unique=True)
     view_count: Mapped[int] = mapped_column(server_default=text("0"), nullable=False)
     uploaded_by: Mapped[int] = mapped_column(
