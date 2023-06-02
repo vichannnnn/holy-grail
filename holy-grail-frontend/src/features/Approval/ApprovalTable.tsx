@@ -81,7 +81,6 @@ const ApprovalTable = () => {
 
   const handleApprove = async (id: number) => {
     try {
-      console.log(id);
       await approveNote(id);
       filterNotes();
     } catch (error) {

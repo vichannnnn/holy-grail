@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect } from "react";
 import apiClient from "../api/apiClient";
-import { isTokenExpired } from "../auth/auth";
+import { isTokenExpired } from "../utils/auth/CheckToken";
 
 export interface User {
   user_id: number;
@@ -40,7 +40,7 @@ export const AuthProvider: React.FC<{
       if (user && isTokenExpired()) {
         logout();
       }
-    }, 60 * 1000);
+    }, 60);
 
     return () => {
       clearInterval(intervalId);
