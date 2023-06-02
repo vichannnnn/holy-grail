@@ -2,6 +2,7 @@ import datetime
 from typing import TYPE_CHECKING, Optional
 
 from fastapi import UploadFile, HTTPException
+from sqlalchemy import exc as SQLAlchemyExceptions
 from sqlalchemy import func, ForeignKey, select, update, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Mapped, mapped_column, relationship, selectinload
@@ -80,9 +81,13 @@ class Library(Base):
             file_name = await save_file(uploaded_file, extension)
             data_json["file_name"] = file_name
 
-        obj = Library(**data_json)
-        session.add(obj)
-        await session.commit()
+        try:
+            obj = Library(**data_json)
+            session.add(obj)
+            await session.commit()
+
+        except SQLAlchemyExceptions.IntegrityError as exc:
+            raise AppError.DOCUMENT_NAME_ALREADY_EXISTS_ERROR from exc
         return obj
 
     @classmethod

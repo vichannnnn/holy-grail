@@ -26,6 +26,12 @@ class AppError:
         headers={"WWW-Authenticate": "Bearer"},
     )
 
+    DOCUMENT_NAME_ALREADY_EXISTS_ERROR = HTTPException(
+        status_code=status.HTTP_409_CONFLICT,
+        detail="Document name already exists",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+
     PASSWORD_MISMATCH_ERROR = HTTPException(
         status_code=status.HTTP_400_BAD_REQUEST,
         detail="Password and repeat password are not identical",
