@@ -102,8 +102,6 @@ class Library(Base):
             doc_type: Optional[str] = None,
     ):
         stmt = select(cls).where(cls.approved == approved)
-        count_stmt = select(func.count()).select_from(stmt)
-        total = await session.scalar(count_stmt)
 
         if category:
             stmt = stmt.where(cls.doc_category.has(name=category))
@@ -113,6 +111,9 @@ class Library(Base):
 
         if doc_type:
             stmt = stmt.where(cls.doc_type.has(name=doc_type))
+
+        count_stmt = select(func.count()).select_from(stmt)
+        total = await session.scalar(count_stmt)
 
         stmt = stmt.limit(size).offset((page - 1) * size)
         stmt = stmt.options(
