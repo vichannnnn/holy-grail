@@ -111,8 +111,8 @@ const NotesTable = ({
                       component="div"
                       fontWeight="bold"
                       style={{
-                        height: '3em',
-                        overflow: 'hidden'
+                        height: "3em",
+                        overflow: "hidden",
                       }}
                     >
                       {note.document_name}

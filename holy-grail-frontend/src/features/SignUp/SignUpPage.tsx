@@ -7,6 +7,7 @@ import {
   VStack,
   Link,
   useToast,
+  Box,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import apiClient from "../../api/apiClient";
@@ -168,7 +169,9 @@ const SignUpPage = () => {
             </Button>
           </VStack>
         </form>
-        <Text mt="30%">
+      </AccountForm>
+      <Box alignItems="center">
+        <Text mt="10%">
           Already a member?{" "}
           <Link
             as="button"
@@ -178,7 +181,7 @@ const SignUpPage = () => {
             Log in here.
           </Link>
         </Text>
-      </AccountForm>
+      </Box>
     </>
   );
 };

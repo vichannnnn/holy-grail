@@ -7,6 +7,7 @@ import {
   VStack,
   Link,
   useToast,
+  Box,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../../providers/AuthProvider";
@@ -80,12 +81,6 @@ const LoginPage = () => {
             </Button>
           </VStack>
         </form>
-        <Text mt="30%">
-          Not a member?{" "}
-          <Link as="button" onClick={handleRegister} textDecoration="underline">
-            Register now.
-          </Link>
-        </Text>
         {/*<Text>*/}
         {/*  Forgot your password?{" "}*/}
         {/*  <Link as="button" textDecoration="underline">*/}
@@ -93,6 +88,14 @@ const LoginPage = () => {
         {/*  </Link>*/}
         {/*</Text>*/}
       </AccountForm>
+      <Box alignItems="center">
+        <Text mt="10%">
+          Not a member?{" "}
+          <Link as="button" onClick={handleRegister} textDecoration="underline">
+            Register now.
+          </Link>
+        </Text>
+      </Box>
     </>
   );
 };
