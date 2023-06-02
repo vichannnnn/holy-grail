@@ -71,7 +71,10 @@ const NotesTable = ({
                     <Combobox
                       label="Category"
                       value={category}
-                      onChange={onCategoryChange}
+                      onChange={value => {
+                        onCategoryChange(value);
+                        handlePageChange(1);
+                      }}
                       options={categories}
                     />
                   </TableCell>
@@ -79,7 +82,10 @@ const NotesTable = ({
                     <Combobox
                       label="Subject"
                       value={subject}
-                      onChange={onSubjectChange}
+                      onChange={value => {
+                        onSubjectChange(value);
+                        handlePageChange(1);
+                      }}
                       options={subjects}
                     />
                   </TableCell>
@@ -87,7 +93,10 @@ const NotesTable = ({
                     <Combobox
                       label="Type"
                       value={type}
-                      onChange={onTypeChange}
+                      onChange={value => {
+                        onTypeChange(value);
+                        handlePageChange(1);
+                      }}
                       options={types}
                     />
                   </TableCell>

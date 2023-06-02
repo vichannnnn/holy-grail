@@ -90,6 +90,21 @@ const NotesApplication = () => {
     }
   };
 
+  const handleCategoryChange = (newValue: number | "") => {
+    setCategory(Number(newValue));
+    setPageInfo({ ...pageInfo, page: 1 });
+  };
+
+  const handleSubjectChange = (newValue: number | "") => {
+    setSubject(Number(newValue));
+    setPageInfo({ ...pageInfo, page: 1 });
+  };
+
+  const handleTypeChange = (newValue: number | "") => {
+    setType(Number(newValue));
+    setPageInfo({ ...pageInfo, page: 1 });
+  };
+
   // const renderNotes = () => {
   //   return notes.items.map((note: Note) => (
   //     <TableRow key={note.id}>
@@ -120,9 +135,9 @@ const NotesApplication = () => {
         category={category !== "" ? Number(category) : ""}
         subject={subject !== "" ? Number(subject) : ""}
         type={type !== "" ? Number(type) : ""}
-        onCategoryChange={(newValue) => setCategory(Number(newValue))}
-        onSubjectChange={(newValue) => setSubject(Number(newValue))}
-        onTypeChange={(newValue) => setType(Number(newValue))}
+        onCategoryChange={handleCategoryChange}
+        onSubjectChange={handleSubjectChange}
+        onTypeChange={handleTypeChange}
         pageInfo={pageInfo}
         handlePageChange={handlePageChange}
         isAdmin={Boolean(user?.role && user.role >= 2)}
