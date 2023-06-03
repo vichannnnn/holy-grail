@@ -26,7 +26,7 @@ const Features = () => {
               You can upload your notes to share with other students in need!
               Just click here and make sure that you're logged on.
             </Text>
-          <Box/>
+          </Box>
         </FeatureCard>
         <FeatureCard
           image={GrailLogo}
