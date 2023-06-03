@@ -9,7 +9,7 @@ export const AccountForm = ({ children }: BoxProps) => {
         justifyContent="center"
         width="100%"
       >
-        <Box width={["100%", "80%", "65%", "50%"]} textAlign="left">
+        <Box width={["100%", "70%", "50%", "30%"]} textAlign="left">
           {children}
         </Box>
       </Flex>

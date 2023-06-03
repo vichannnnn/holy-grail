@@ -64,7 +64,7 @@ const NotesTable = ({
             display="flex"
             justifyContent="space-around"
             marginBottom={2}
-            sx={{ width: "100%" }}
+            sx={{ width: "80%" }}
           >
             <Combobox
               label="Category"
@@ -94,7 +94,7 @@ const NotesTable = ({
               options={types}
             />
           </Box>
-          <Grid container spacing={2} sx={{ width: "100%" }}>
+          <Grid container mt="3%" spacing={2} sx={{ width: "80%" }}>
             {" "}
             {notes.map((note: Note) => (
               <Grid item xs={12} sm={6} md={4} lg={3} key={note.id}>
