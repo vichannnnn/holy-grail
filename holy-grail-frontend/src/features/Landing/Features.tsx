@@ -1,12 +1,19 @@
-import { HStack } from "@chakra-ui/react";
+import { Box, HStack } from "@chakra-ui/react";
 import { Text } from "../../components/Text/Text";
 import { FeatureCard } from "./FeatureCard";
 import GrailLogo from "../../assets/holy-grail.svg";
+import { Grid } from "@chakra-ui/react";
 
 const Features = () => {
   return (
-    <div id="features">
-      <HStack justify="center" spacing={2}>
+
+      <Box id="features" display="flex" justifyContent="center" >
+      <Grid
+        templateColumns="repeat(2, 1fr)"
+        gap={6}
+        alignItems="stretch"
+      >
+
         <FeatureCard
           image={GrailLogo}
           headerText="Contribute Notes"
@@ -24,7 +31,7 @@ const Features = () => {
         </FeatureCard>
         <FeatureCard
           image={GrailLogo}
-          headerText="View Notes"
+          headerText="View Notes Repository"
           linkPath="/library"
         >
           <>
@@ -53,8 +60,9 @@ const Features = () => {
           </Text>
         </>
       </FeatureCard> */}
-      </HStack>
-    </div>
+    </Grid>
+      </Box>
+
   );
 };
 
