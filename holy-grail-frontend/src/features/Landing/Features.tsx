@@ -9,17 +9,16 @@ const Features = () => {
 
       <Box id="features" display="flex" justifyContent="center" >
       <Grid
-        templateColumns="repeat(2, 1fr)"
+        templateColumns={{base: "repeat(1, 1fr)", md: "repeat(2, 1fr)"}}
         gap={6}
         alignItems="stretch"
       >
-
         <FeatureCard
           image={GrailLogo}
           headerText="Contribute Notes"
           linkPath="/upload"
         >
-          <>
+          <Box maxHeight={{ base: "100px", md: "auto" }} overflow="auto">
             <Text color="grey" mb={4}>
               Have notes that you don't need anymore or want to share?
             </Text>
@@ -27,14 +26,14 @@ const Features = () => {
               You can upload your notes to share with other students in need!
               Just click here and make sure that you're logged on.
             </Text>
-          </>
+          <Box/>
         </FeatureCard>
         <FeatureCard
           image={GrailLogo}
           headerText="View Notes Repository"
           linkPath="/library"
         >
-          <>
+          <Box maxHeight={{ base: "100px", md: "auto" }} overflow="auto">
             <Text color="grey" mb={4}>
               Do you need more practice papers or notes?
             </Text>
@@ -43,7 +42,7 @@ const Features = () => {
               based on your level and subject.
             </Text>
             <Text color="grey">Click here to find out more!</Text>
-          </>
+          <Box/>
         </FeatureCard>
         {/* <FeatureCard image={ReactLogo} headerText="Download Notes">
         <>
