@@ -165,7 +165,7 @@ const UploadPage = () => {
             placeholder="Enter document name"
             required={true}
             minLength={4}
-            maxLength={50}
+            maxLength={100}
           />
         </Box>
 
