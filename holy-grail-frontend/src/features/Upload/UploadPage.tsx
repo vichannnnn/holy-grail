@@ -3,7 +3,6 @@ import {
   Button,
   VStack,
   Heading,
-  Box,
   Text,
   useToast,
   Input,
@@ -19,6 +18,7 @@ import { createNote } from "../../utils/actions/CreateNote";
 import { useContext } from "react";
 import AuthContext from "../../providers/AuthProvider";
 import { useNavigate } from "react-router-dom";
+import { useMediaQuery } from 'react-responsive';
 
 const UploadPage = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -37,6 +37,7 @@ const UploadPage = () => {
   const toast = useToast();
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+  const isMobile = useMediaQuery({ query: '(max-width: 600px)' });
 
   useEffect(() => {
     fetchData().then(({ categories, subjects, types }) => {
@@ -125,52 +126,53 @@ const UploadPage = () => {
         <Heading mt={8} size="xl">
           Upload Notes
         </Heading>
-        <Box w="30%">
-          <Combobox
-            label="Category"
-            value={category !== "" ? Number(category) : ""}
-            onChange={(newValue) => setCategory(Number(newValue))}
-            options={categories.map((category) => ({
-              value: category.id,
-              label: category.name,
-            }))}
-          />
-        </Box>
-        <Box w="30%">
-          <Combobox
-            label="Subject"
-            value={subject !== "" ? Number(subject) : ""}
-            onChange={(newValue) => setSubject(Number(newValue))}
-            options={subjects.map((subject) => ({
-              value: subject.id,
-              label: subject.name,
-            }))}
-          />
-        </Box>
-        <Box w="30%">
-          <Combobox
-            label="Type"
-            value={type !== "" ? Number(type) : ""}
-            onChange={(newValue) => setType(Number(newValue))}
-            options={types.map((type) => ({
-              value: type.id,
-              label: type.name,
-            }))}
-          />
-        </Box>
-        <Box w="30%">
-          <Input
-            value={documentName || ""}
-            onChange={handleNameChange}
-            placeholder="Enter document name"
-            required={true}
-            minLength={4}
-            maxLength={100}
-          />
-        </Box>
+
+        <Combobox
+          label="Category"
+          value={category !== "" ? Number(category) : ""}
+          style={{ width: isMobile ? "90%" : "30%" }}
+          onChange={(newValue) => setCategory(Number(newValue))}
+          options={categories.map((category) => ({
+            value: category.id,
+            label: category.name,
+          }))}
+        />
+
+        <Combobox
+          label="Subject"
+          value={subject !== "" ? Number(subject) : ""}
+          style={{ width: isMobile ? "90%" : "30%" }}
+          onChange={(newValue) => setSubject(Number(newValue))}
+          options={subjects.map((subject) => ({
+            value: subject.id,
+            label: subject.name,
+          }))}
+        />
+
+        <Combobox
+          label="Type"
+          value={type !== "" ? Number(type) : ""}
+          style={{ width: isMobile ? "90%" : "30%" }}
+          onChange={(newValue) => setType(Number(newValue))}
+          options={types.map((type) => ({
+            value: type.id,
+            label: type.name,
+          }))}
+        />
+
+        <Input
+          width={isMobile ? "90%" : "30%" }
+          value={documentName || ""}
+          onChange={handleNameChange}
+          placeholder="Enter document name"
+          required={true}
+          minLength={4}
+          maxLength={100}
+        />
 
         <input
           ref={inputFileRef}
+          width={isMobile ? "90%" : "30%"}
           type="file"
           accept="application/pdf"
           // , text/plain, application/vnd.openxmlformats-officedocument.wordprocessingml.document

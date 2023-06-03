@@ -4,6 +4,7 @@ import Combobox from "../../features/Library/Combobox";
 import { ComboboxProps } from "../../features/Library/Combobox";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Pagination } from "../Pagination/Pagination";
+import { useMediaQuery } from "react-responsive";
 interface NotesTableProps {
   notes: Note[];
   categories: ComboboxProps["options"];
@@ -50,6 +51,7 @@ const NotesTable = ({
   isAdmin,
 }: NotesTableProps) => {
   const muiTheme = createTheme();
+  const isMobile = useMediaQuery({ query: '(max-width: 600px)' });
 
   return (
     <Box>
@@ -62,6 +64,7 @@ const NotesTable = ({
         >
           <Box
             display="flex"
+            flexDirection={isMobile ? "column" : "row"}
             justifyContent="space-around"
             marginBottom={2}
             sx={{ width: "90%" }}
@@ -74,7 +77,7 @@ const NotesTable = ({
                 handlePageChange(1);
               }}
               options={categories}
-              style={{ width: "30%" }}
+              style={{ width: isMobile ? "100%" : "30%" }}
             />
             <Combobox
               label="Subject"
@@ -84,7 +87,8 @@ const NotesTable = ({
                 handlePageChange(1);
               }}
               options={subjects}
-              style={{ width: "30%" }}
+              style={{ width: isMobile ? "100%" : "30%" }}
+
             />
             <Combobox
               label="Type"
@@ -94,7 +98,8 @@ const NotesTable = ({
                 handlePageChange(1);
               }}
               options={types}
-              style={{ width: "30%" }}
+              style={{ width: isMobile ? "100%" : "30%" }}
+
             />
           </Box>
           <Grid container mt="3%" spacing={2} sx={{ width: "90%" }}>
