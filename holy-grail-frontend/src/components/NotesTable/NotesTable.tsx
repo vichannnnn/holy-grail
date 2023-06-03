@@ -17,7 +17,7 @@ interface NotesTableProps {
   onTypeChange: ComboboxProps["onChange"];
   pageInfo: { page: number; size: number; total: number; pages: number };
   handlePageChange: (page: number) => void;
-  renderAdditionalColumn?: (note: Note) => JSX.Element | null;
+  renderAdminActions?: (note: Note) => JSX.Element | null;
   isAdmin?: boolean;
 }
 
@@ -46,7 +46,7 @@ const NotesTable = ({
   onTypeChange,
   pageInfo,
   handlePageChange,
-  renderAdditionalColumn,
+  renderAdminActions,
   isAdmin,
 }: NotesTableProps) => {
   const muiTheme = createTheme();
@@ -74,6 +74,7 @@ const NotesTable = ({
                 handlePageChange(1);
               }}
               options={categories}
+              style={{ width: "30%" }}
             />
             <Combobox
               label="Subject"
@@ -83,6 +84,7 @@ const NotesTable = ({
                 handlePageChange(1);
               }}
               options={subjects}
+              style={{ width: "30%" }}
             />
             <Combobox
               label="Type"
@@ -92,6 +94,7 @@ const NotesTable = ({
                 handlePageChange(1);
               }}
               options={types}
+              style={{ width: "30%" }}
             />
           </Box>
           <Grid container mt="3%" spacing={2} sx={{ width: "80%" }}>
@@ -103,8 +106,20 @@ const NotesTable = ({
                     height: "100%",
                     display: "flex",
                     flexDirection: "column",
+                    position: "relative",
                   }}
                 >
+                  {isAdmin && renderAdminActions && (
+                    <Box
+                      sx={{
+                        position: "absolute",
+                        right: "5px",
+                        top: "10px",
+                      }}
+                    >
+                      {renderAdminActions(note)}
+                    </Box>
+                  )}
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography
                       mb="10%"
@@ -142,9 +157,6 @@ const NotesTable = ({
                     >
                       View PDF
                     </Link>
-                    {isAdmin &&
-                      renderAdditionalColumn &&
-                      renderAdditionalColumn(note)}
                   </Box>
                 </Card>
               </Grid>

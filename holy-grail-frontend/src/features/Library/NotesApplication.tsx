@@ -1,6 +1,4 @@
 import { useState, useEffect, useContext } from "react";
-import { Button, Box, Stack } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
 import {
   fetchData,
   fetchApprovedNotes,
@@ -13,6 +11,7 @@ import DeleteAlert from "../Approval/DeleteAlert";
 import AuthContext from "../../providers/AuthProvider";
 import NotesTable from "../../components/NotesTable/NotesTable";
 import deleteNote from "../../utils/actions/DeleteNote";
+import AdminDeleteIcon from "../../components/AdminDeleteIcon/AdminDeleteIcon";
 
 const NotesApplication = () => {
   const [notes, setNotes] = useState<PaginatedNotes>({
@@ -147,25 +146,13 @@ const NotesApplication = () => {
         pageInfo={pageInfo}
         handlePageChange={handlePageChange}
         isAdmin={Boolean(user?.role && user.role >= 2)}
-        renderAdditionalColumn={(note) =>
+        renderAdminActions={(note) =>
           user && user.role >= 2 ? (
-            <Box sx={{ display: "flex", justifyContent: "center" }}>
-              <Stack spacing={2} direction="row">
-                <Button
-                  size="small"
-                  color="error"
-                  variant="outlined"
-                  startIcon={<DeleteIcon />}
-                  onClick={() => {
-                    setIsAlertOpen(true);
-                    setNoteId(note.id);
-                  }}
-                  sx={{ fontSize: "12px" }}
-                >
-                  Delete
-                </Button>
-              </Stack>
-            </Box>
+            <AdminDeleteIcon
+              setIsAlertOpen={setIsAlertOpen}
+              setNoteId={setNoteId}
+              noteId={note.id}
+            />
           ) : null
         }
       />

@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import { Button, Box, Stack } from "@mui/material";
+import { useState, useEffect, useContext } from "react";
 import {
   fetchData,
   fetchPendingApprovalNotes,
@@ -12,8 +11,10 @@ import approveNote from "../../utils/actions/ApproveNote";
 import deleteNote from "../../utils/actions/DeleteNote";
 import DeleteAlert from "./DeleteAlert";
 import NotesTable from "../../components/NotesTable/NotesTable";
-import SendIcon from "@mui/icons-material/Send";
-import DeleteIcon from "@mui/icons-material/Delete";
+import AuthContext from "../../providers/AuthProvider";
+import AdminApproveIcon from "../../components/AdminApproveIcon/AdminApproveIcon";
+import AdminDeleteIcon from "../../components/AdminDeleteIcon/AdminDeleteIcon";
+import { Box } from "@chakra-ui/react";
 
 const ApprovalTable = () => {
   const [notes, setNotes] = useState<PaginatedNotes>({
@@ -23,12 +24,18 @@ const ApprovalTable = () => {
     size: 0,
     total: 0,
   });
+  const { user } = useContext(AuthContext);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [noteId, setNoteId] = useState<number | null>(null);
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [subjects, setSubjects] = useState<SubjectType[]>([]);
   const [types, setTypes] = useState<DocumentType[]>([]);
-  const [pageInfo, setPageInfo] = useState({ page: 1, size: 20, total: 0 });
+  const [pageInfo, setPageInfo] = useState({
+    page: 1,
+    pages: 1,
+    size: 20,
+    total: 0,
+  });
 
   const [category, setCategory] = useState<number | "">(0);
   const [subject, setSubject] = useState<number | "">(0);
@@ -63,6 +70,7 @@ const ApprovalTable = () => {
       setNotes(response);
       setPageInfo({
         page: response.page,
+        pages: response.pages,
         size: response.size,
         total: response.total,
       });
@@ -149,35 +157,22 @@ const ApprovalTable = () => {
         onTypeChange={(newValue) => setType(Number(newValue))}
         pageInfo={pageInfo}
         handlePageChange={handlePageChange}
-        renderAdditionalColumn={(note) => (
-          <Box sx={{ display: "flex", justifyContent: "center" }}>
-            <Stack spacing={2} direction="row">
-              <Button
-                size="small"
-                color="primary"
-                variant="contained"
-                startIcon={<SendIcon />}
-                onClick={() => handleApprove(note.id)}
-                sx={{ fontSize: "12px" }}
-              >
-                Approve
-              </Button>
-              <Button
-                size="small"
-                color="error"
-                variant="outlined"
-                startIcon={<DeleteIcon />}
-                onClick={() => {
-                  setIsAlertOpen(true);
-                  setNoteId(note.id);
-                }}
-                sx={{ fontSize: "12px" }}
-              >
-                Delete
-              </Button>
-            </Stack>
-          </Box>
-        )}
+        isAdmin={Boolean(user?.role && user.role >= 2)}
+        renderAdminActions={(note) =>
+          user && user.role >= 2 ? (
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
+              <AdminApproveIcon
+                handleApprove={handleApprove}
+                noteId={note.id}
+              />
+              <AdminDeleteIcon
+                setIsAlertOpen={setIsAlertOpen}
+                setNoteId={setNoteId}
+                noteId={note.id}
+              />
+            </Box>
+          ) : null
+        }
       />
       <DeleteAlert
         isOpen={isAlertOpen}
