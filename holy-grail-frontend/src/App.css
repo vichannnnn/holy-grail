@@ -1,10 +1,19 @@
+/*#root {*/
+/*  max-width: 1280px;*/
+/*  width: 80vW;*/
+/*  padding: 2rem;*/
+/*  text-align: center;*/
+/*  background-color: white;*/
+/*  margin: 0 auto;*/
+/*}*/
+
 #root {
   max-width: 1280px;
-  width: 80vW;
+  margin: 0 auto;
   padding: 2rem;
   text-align: center;
   background-color: white;
-  margin: 0 auto;
+
 }
 
 .logo {
