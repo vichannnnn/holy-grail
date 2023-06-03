@@ -18,7 +18,7 @@ import { createNote } from "../../utils/actions/CreateNote";
 import { useContext } from "react";
 import AuthContext from "../../providers/AuthProvider";
 import { useNavigate } from "react-router-dom";
-import { useMediaQuery } from 'react-responsive';
+import { useMediaQuery } from "react-responsive";
 
 const UploadPage = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -37,7 +37,7 @@ const UploadPage = () => {
   const toast = useToast();
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
-  const isMobile = useMediaQuery({ query: '(max-width: 600px)' });
+  const isMobile = useMediaQuery({ query: "(max-width: 600px)" });
 
   useEffect(() => {
     fetchData().then(({ categories, subjects, types }) => {
@@ -161,7 +161,7 @@ const UploadPage = () => {
         />
 
         <Input
-          width={isMobile ? "90%" : "30%" }
+          width={isMobile ? "90%" : "30%"}
           value={documentName || ""}
           onChange={handleNameChange}
           placeholder="Enter document name"

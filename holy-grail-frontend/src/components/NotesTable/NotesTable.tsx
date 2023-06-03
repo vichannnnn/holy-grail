@@ -51,7 +51,7 @@ const NotesTable = ({
   isAdmin,
 }: NotesTableProps) => {
   const muiTheme = createTheme();
-  const isMobile = useMediaQuery({ query: '(max-width: 600px)' });
+  const isMobile = useMediaQuery({ query: "(max-width: 600px)" });
 
   return (
     <Box>
@@ -88,7 +88,6 @@ const NotesTable = ({
               }}
               options={subjects}
               style={{ width: isMobile ? "100%" : "30%" }}
-
             />
             <Combobox
               label="Type"
@@ -99,7 +98,6 @@ const NotesTable = ({
               }}
               options={types}
               style={{ width: isMobile ? "100%" : "30%" }}
-
             />
           </Box>
           <Grid container mt="3%" spacing={2} sx={{ width: "90%" }}>

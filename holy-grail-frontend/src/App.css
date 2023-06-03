@@ -1,3 +1,16 @@
+
+@media (max-width: 600px) {
+  #root {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+    background-color: white;
+
+  }
+}
+
+@media (min-width: 601px) {
 #root {
   max-width: 1280px;
   width: 80vW;
@@ -6,15 +19,7 @@
   background-color: white;
   margin: 0 auto;
 }
-
-/*#root {*/
-/*  max-width: 1280px;*/
-/*  margin: 0 auto;*/
-/*  padding: 2rem;*/
-/*  text-align: center;*/
-/*  background-color: white;*/
-
-/*}*/
+}
 
 .logo {
   height: 6em;

@@ -89,8 +89,8 @@ const ChangePasswordPage = () => {
   return (
     <>
       <AccountForm>
-        <Title mb="5%">Sign up</Title>
-        <Text mb="15%">Create an account to access all features.</Text>
+        <Title mb="5%">Update Password</Title>
+        <Text mb="15%">You can change your password here.</Text>
 
         <form onSubmit={handleUpdatePassword}>
           <VStack spacing="6">
@@ -135,16 +135,6 @@ const ChangePasswordPage = () => {
             </Button>
           </VStack>
         </form>
-        <Text mt="30%">
-          Already a member?{" "}
-          <Link
-            as="button"
-            onClick={() => navigate("/login")}
-            textDecoration="underline"
-          >
-            Log in here.
-          </Link>
-        </Text>
       </AccountForm>
     </>
   );

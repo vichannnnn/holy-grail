@@ -18,9 +18,13 @@ import { AccountForm } from "../../components/AccountForm/AccountForm";
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { login } = useContext(AuthContext);
+  const { user, login } = useContext(AuthContext);
   const toast = useToast();
   const navigate = useNavigate();
+
+  if (user) {
+    navigate("/");
+  }
 
   const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
