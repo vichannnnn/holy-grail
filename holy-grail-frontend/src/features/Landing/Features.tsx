@@ -42,7 +42,7 @@ const Features = () => {
               based on your level and subject.
             </Text>
             <Text color="grey">Click here to find out more!</Text>
-          <Box/>
+          </Box>
         </FeatureCard>
         {/* <FeatureCard image={ReactLogo} headerText="Download Notes">
         <>
