@@ -91,18 +91,18 @@ const NavBar = () => {
             <RouterLink to="/">
               <MenuItem>Home</MenuItem>
             </RouterLink>
-            <Link to="about" smooth={true} duration={500}>
+            <RouterLink to="/#about">
               <MenuItem>About</MenuItem>
-            </Link>
+            </RouterLink>
             <RouterLink to="/library">
               <MenuItem>Library</MenuItem>
             </RouterLink>
-            <Link to="features" smooth={true} duration={500}>
+            <RouterLink to="/#features">
               <MenuItem>Features</MenuItem>
-            </Link>
-            <Link to="faq" smooth={true} duration={500}>
+            </RouterLink>
+            <RouterLink to="/#faq">
               <MenuItem>FAQ</MenuItem>
-            </Link>
+            </RouterLink>
             {user ? (
               <>
                 {user.role > 1 && (
