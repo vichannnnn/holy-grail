@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useCallback } from "react";
 import {
   fetchData,
   fetchPendingApprovalNotes,
@@ -53,7 +53,7 @@ const ApprovalTable = () => {
     });
   }, []);
 
-  const filterNotes = () => {
+  const filterNotes = useCallback(() => {
     fetchPendingApprovalNotes({
       category:
         category !== 0
@@ -75,11 +75,20 @@ const ApprovalTable = () => {
         total: response.total,
       });
     });
-  };
+  }, [
+    category,
+    subject,
+    type,
+    pageInfo.page,
+    pageInfo.size,
+    categories,
+    subjects,
+    types,
+  ]);
 
   useEffect(() => {
     filterNotes();
-  }, [category, subject, type, pageInfo.page]);
+  }, [filterNotes]);
 
   const handlePageChange = (newPage: number) => {
     if (newPage >= 1 && newPage <= Math.ceil(pageInfo.total / pageInfo.size)) {
@@ -179,7 +188,9 @@ const ApprovalTable = () => {
         onClose={() => setIsAlertOpen(false)}
         onConfirm={() => {
           if (noteId !== null) {
-            handleDelete(noteId);
+            handleDelete(noteId)
+              .then(() => null)
+              .catch((err) => console.error(err));
           }
         }}
       />
