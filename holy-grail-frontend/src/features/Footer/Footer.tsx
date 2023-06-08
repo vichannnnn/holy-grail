@@ -7,32 +7,34 @@ import {
   Flex,
   Image,
 } from "@chakra-ui/react";
-import FooterLogo from "../../assets/placeholder-footer.svg";
+import GrailLogo from "../../assets/holy-grail.svg";
 import { Link as RouterLink } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <Flex alignItems="start" justify="space-evenly" mt="12%">
-      <Flex maxWidth="30%" direction="column" alignItems="flex-start">
-        <VStack>
-          <Image src={FooterLogo} alt="Placeholder image" mb="10%" />
+    <div align="center">
+      <Image src={GrailLogo} alt="Placeholder image" mb="5%" w={["15%", "5%"]}/>
+      <Flex justifyContent="space-between" alignItems="start" ml="auto" mr="auto">
+        <VStack alignItems="start" spacing={2} ml="auto" mr="auto">
+          <Heading size={["sm", "md"]}>Information</Heading>
+          <RouterLink to="/#about">
+            <Text fontSize={["12px", "15px"]}>About us</Text>
+          </RouterLink>
+          <RouterLink to="/#features">
+            <Text fontSize={["12px", "15px"]}>Features</Text>
+          </RouterLink>
+          <RouterLink to="/#faq">
+            <Text fontSize={["12px", "15px"]}>FAQ</Text>
+          </RouterLink>
         </VStack>
-        <Box textAlign="left">
-          <Text fontSize="sm">I honestly don't know what to put here yet.</Text>
-        </Box>
-      </Flex>
-      <VStack alignItems="start" spacing={2}>
-        <Heading size="sm">Information</Heading>
-        <RouterLink to="/#about">About us</RouterLink>
-        <RouterLink to="/#features">Features</RouterLink>
-        <RouterLink to="/#faq">FAQ</RouterLink>
-      </VStack>
 
-      <VStack alignItems="start" spacing={2}>
-        <Heading size="sm">My Account</Heading>
-        {/*<RouterLink to="/login">Login</RouterLink>*/}
-      </VStack>
-    </Flex>
+        <VStack alignItems="start" spacing={2} ml="auto" mr="auto">
+          <Heading size="sm">My Account</Heading>
+          {/*<RouterLink to="/login">Login</RouterLink>*/}
+        </VStack>
+      </Flex>
+    </div>
+
   );
 };
 
