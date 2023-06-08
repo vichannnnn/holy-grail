@@ -30,6 +30,7 @@ services:
     depends_on:
       - db
     environment:
+      BACKEND_URL: ${BACKEND_URL}
       CELERY_BROKER_URL: ${REDIS_URL}
       CELERY_RESULT_BACKEND: ${REDIS_URL}
       POSTGRES_DB: ${POSTGRES_DB}
@@ -44,6 +45,7 @@ services:
       AWS_S3_BUCKET_NAME: ${AWS_S3_BUCKET_NAME}
       AWS_S3_ACCESS_KEY_ID: ${AWS_S3_ACCESS_KEY_ID}
       AWS_S3_SECRET_ACCESS_KEY: ${AWS_S3_SECRET_ACCESS_KEY}
+      MAILTRAP_BEARER_TOKEN: ${MAILTRAP_BEARER_TOKEN}
     restart: unless-stopped
     volumes:
       - ./holy-grail-backend/backend:/app
@@ -80,6 +82,7 @@ services:
 
   scheduler:
     environment:
+      BACKEND_URL: ${BACKEND_URL}
       CELERY_BROKER_URL: ${REDIS_URL}
       CELERY_RESULT_BACKEND: ${REDIS_URL}
       TASK_RUNNER_DATABASE_URL: ${TASK_RUNNER_DATABASE_URL}

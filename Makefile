@@ -2,6 +2,7 @@
 SHELL = bash
 
 backend_container := backend
+backend_container_name := holy-grail-backend
 frontend_container := frontend
 
 -include ./Makefile.properties
@@ -25,7 +26,7 @@ down:
 	docker compose -f docker-compose.$(version).yml down
 
 runserver:
-	docker exec -it $(backend_container) uvicorn app.main:app --port 9000 --host 0.0.0.0 --reload
+	docker exec -it $(backend_container_name) uvicorn app.main:app --port 9000 --host 0.0.0.0 --reload
 
 buildbackend:
 	docker compose -f docker-compose.$(version).yml up -d --build $(backend_container)
@@ -34,7 +35,7 @@ buildfrontend:
 	docker compose -f docker-compose.$(version).yml up -d --build $(frontend_container)
 
 migrate:
-	$docker compose -f docker-compose.$(version).yml run --rm $(backend_container) alembic upgrade head
+	docker compose -f docker-compose.$(version).yml run --rm $(backend_container) alembic upgrade head
 
 migrations:
 	docker compose -f docker-compose.$(version).yml run --rm $(backend_container) alembic revision --autogenerate -m $(name)

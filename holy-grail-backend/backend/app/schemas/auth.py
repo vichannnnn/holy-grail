@@ -1,7 +1,7 @@
 from enum import IntEnum
 from typing import Optional
 
-from pydantic import constr
+from pydantic import constr, EmailStr
 
 from app.schemas.base import CustomBaseModel as BaseModel
 
@@ -17,13 +17,13 @@ class RoleEnum(IntEnum):
 
 class AccountRegisterSchema(BaseModel):
     username: username_validator  # type: ignore
-    # email: EmailStr
+    email: EmailStr  # type: ignore
     password: password_validator  # type: ignore
     repeat_password: password_validator  # type: ignore
 
 
 class AccountUpdatePasswordSchema(BaseModel):
-    # email: Optional[EmailStr]
+    email: Optional[EmailStr]  # type: ignore
     before_password: Optional[password_validator]  # type: ignore
     password: Optional[password_validator]  # type: ignore
     repeat_password: Optional[password_validator]  # type: ignore
@@ -36,9 +36,10 @@ class AccountSchema(AccountRegisterSchema):
 
 class CurrentUserSchema(BaseModel):
     user_id: int
-    # email: EmailStr
+    email: EmailStr  # type: ignore
     username: username_validator  # type: ignore
     role: RoleEnum
+    verified: bool
 
 
 class UpdateUserRoleSchema(BaseModel):

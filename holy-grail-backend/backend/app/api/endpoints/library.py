@@ -19,7 +19,7 @@ async def create_note(
         request: Request,
         data: NoteCreateSchema = Depends(),
         file: UploadFile = File(None),
-        authenticated: Account = Depends(Authenticator.get_current_user),
+        authenticated: Account = Depends(Authenticator.get_verified_user),
         session: AsyncSession = Depends(get_session),
 ):
     note = await Library.create(

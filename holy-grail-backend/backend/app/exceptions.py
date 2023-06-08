@@ -2,9 +2,39 @@ from fastapi import HTTPException, status
 
 
 class AppError:
+    PASSWORD_MISMATCH_ERROR = HTTPException(
+        status_code=status.HTTP_400_BAD_REQUEST,
+        detail="Password and repeat password are not identical",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+
+    USER_EMAIL_ALREADY_VERIFIED_ERROR = HTTPException(
+        status_code=status.HTTP_400_BAD_REQUEST,
+        detail="User email is already verified",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+
+    INVALID_EMAIL_VERIFICATION_TOKEN = HTTPException(
+        status_code=status.HTTP_400_BAD_REQUEST,
+        detail="Email verification token is invalid",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+
+    ACCOUNT_ALREADY_VERIFIED = HTTPException(
+        status_code=status.HTTP_400_BAD_REQUEST,
+        detail="Account is already verified",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+
     INVALID_CREDENTIALS_ERROR = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+
+    USER_EMAIL_NOT_VERIFIED_ERROR = HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN,
+        detail="User email not verified yet",
         headers={"WWW-Authenticate": "Bearer"},
     )
 
@@ -32,8 +62,6 @@ class AppError:
         headers={"WWW-Authenticate": "Bearer"},
     )
 
-    PASSWORD_MISMATCH_ERROR = HTTPException(
-        status_code=status.HTTP_400_BAD_REQUEST,
-        detail="Password and repeat password are not identical",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
+
+
+
