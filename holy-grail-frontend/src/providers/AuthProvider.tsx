@@ -5,8 +5,9 @@ import { isTokenExpired } from "../utils/auth/CheckToken";
 export interface User {
   user_id: number;
   username: string;
-  // email: string;
+  email: string;
   role: number;
+  verified: boolean;
 }
 
 interface AuthContextType {

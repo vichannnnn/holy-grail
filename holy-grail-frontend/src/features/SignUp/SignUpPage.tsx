@@ -20,9 +20,9 @@ import { AccountForm } from "../../components/AccountForm/AccountForm";
 const SignUpPage = () => {
   const [username, setUsername] = useState("");
   const [usernameValid, setUsernameValid] = useState(true);
-  // const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
+  const [email, setEmail] = useState("");
   const toast = useToast();
   const navigate = useNavigate();
 
@@ -68,7 +68,7 @@ const SignUpPage = () => {
         username: username,
         password: password,
         repeat_password: repeatPassword,
-        // email: email,
+        email: email,
       });
 
       toast({
@@ -128,15 +128,15 @@ const SignUpPage = () => {
                 required
               />
             </FormControl>
-            {/*<FormControl id="email">*/}
-            {/*  <FormLabel>Email address</FormLabel>*/}
-            {/*  <Input*/}
-            {/*    type="email"*/}
-            {/*    value={email}*/}
-            {/*    onChange={(e) => setEmail(e.target.value)}*/}
-            {/*    required*/}
-            {/*  />*/}
-            {/*</FormControl>*/}
+            <FormControl id="email">
+              <FormLabel>Email address</FormLabel>
+              <Input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </FormControl>
             <FormControl id="password">
               <FormLabel>Password</FormLabel>
               <Input
