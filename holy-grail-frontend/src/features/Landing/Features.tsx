@@ -6,7 +6,14 @@ import { Grid } from "@chakra-ui/react";
 
 const Features = () => {
   return (
-    <Box id="features" display="flex" justifyContent="center">
+    <Box
+      id="features"
+      display="flex"
+      justifyContent="center"
+      w="90%"
+      ml="auto"
+      mr="auto"
+    >
       <Grid
         templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(2, 1fr)" }}
         gap={6}

@@ -52,14 +52,17 @@ const NavBar = () => {
 
   return (
     <Flex
-      align="center"
+      width="100%"
+      top="0"
+      zIndex="10"
+      alignItems="center"
       justify="space-between"
       position="sticky"
-      mb="8%"
       minWidth="50vw"
+      background="white"
     >
       <RouterLink to="/">
-        <NavBarLogo />
+        <NavBarLogo size="10%" />
       </RouterLink>
       {isDesktop ? (
         <>

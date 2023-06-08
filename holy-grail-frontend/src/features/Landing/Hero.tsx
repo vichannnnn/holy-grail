@@ -6,8 +6,15 @@ import { HeroBox } from "../../components/HeroBox/HeroBox";
 
 const Hero = () => {
   return (
-    <Flex justifyContent="space-between" mb="10%" minH="40vh" bgColor="white">
-      <HeroBox textAlign="left">
+    <Flex
+      display="flex"
+      minHeight="30vh"
+      mt={["0%", "10%"]}
+      mb="10%"
+      bgColor="white"
+      alignItems="center"
+    >
+      <HeroBox textAlign="left" w="60%">
         <Title mb="3%" lineHeight="1">
           A central repository for your notes
         </Title>

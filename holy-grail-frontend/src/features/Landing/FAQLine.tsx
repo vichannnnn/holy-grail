@@ -3,6 +3,7 @@ import {
   AccordionButton,
   AccordionPanel,
   Box,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import { Text } from "../../components/Text/Text";
@@ -13,6 +14,8 @@ type FAQLineProps = {
 };
 
 const FAQLine = ({ question, children }: FAQLineProps) => {
+  const isDesktop = useBreakpointValue({ base: false, lg: true });
+
   return (
     <AccordionItem borderColor="transparent">
       {({ isExpanded }) => (
@@ -35,9 +38,9 @@ const FAQLine = ({ question, children }: FAQLineProps) => {
               <Text>{question}</Text>
             </Box>
             {isExpanded ? (
-              <MinusIcon w={5} h={5} mr={3} />
+              <MinusIcon w={isDesktop ? 5 : 3} h={isDesktop ? 5 : 3} mr={3} />
             ) : (
-              <AddIcon w={5} h={5} mr={3} />
+              <AddIcon w={isDesktop ? 5 : 3} h={isDesktop ? 5 : 3} mr={3} />
             )}
           </AccordionButton>
 

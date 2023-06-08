@@ -7,24 +7,23 @@ import { Link as RouterLink } from "react-router-dom";
 const FAQ = () => {
   return (
     <div id="faq">
-      <Text fontSize="5xl" fontWeight="bold" mt="10%">
+      <Text fontSize="5xl" fontWeight="bold" mt={["20%", "10%"]}>
         FAQ's
       </Text>
       <Text mt="3%">Need help? We've got you covered!</Text>
-      <Flex align="center" justifyContent="center" minH="100vh">
+      <Flex align="center" justifyContent="center">
         <Accordion
           defaultIndex={[0]}
-          mt="10%"
-          mb="30%"
+          mt="5%"
+          mb="10%"
           allowMultiple
           allowToggle
-          maxW="80%"
-          width="100%"
-          borderWidth="0"
+          maxWidth="80%"
+          width="80%"
         >
           <FAQLine question="What is the Holy Grail?">
             <Text mb={4} textAlign="left"></Text>
-            <Text textAlign="left">
+            <Text textAlign="left" color="grey">
               Holy Grail is a collaborative initiative undertaken by students to
               compile a repository of notes and practice papers.
               <br></br>
@@ -38,12 +37,12 @@ const FAQ = () => {
           </FAQLine>
 
           <FAQLine question="How do I use the Holy Grail?">
-            <Text mb={4} textAlign="left">
+            <Text mb={4} textAlign="left" color="grey">
               You can access the resources uploaded over{" "}
               <RouterLink to="/library">
                 <TextLink
                   display="inline"
-                  color="blue"
+                  color="steelblue"
                   children="here at the Library"
                 />
               </RouterLink>
@@ -53,10 +52,10 @@ const FAQ = () => {
           </FAQLine>
 
           <FAQLine question="How do I contribute my notes to the Holy Grail?">
-            <Text mb={4} textAlign="left">
+            <Text mb={4} textAlign="left" color="grey">
               You can upload the notes that you want to share over{" "}
               <RouterLink to="/upload">
-                <TextLink display="inline" color="blue" children="here" />
+                <TextLink display="inline" color="steelblue" children="here" />
               </RouterLink>
               .<br></br>
               <br></br>
@@ -66,7 +65,7 @@ const FAQ = () => {
             </Text>
           </FAQLine>
           <FAQLine question="Will the Holy Grail always be free?">
-            <Text mb={4} textAlign="left">
+            <Text mb={4} textAlign="left" color="grey">
               Yes. The entire project and application is done out of initiative
               and will always be free.
             </Text>
