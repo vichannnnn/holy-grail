@@ -13,8 +13,18 @@ import { Link as RouterLink } from "react-router-dom";
 const Footer = () => {
   return (
     <div align="center">
-      <Image src={GrailLogo} alt="Placeholder image" mb="5%" w={["15%", "5%"]}/>
-      <Flex justifyContent="space-between" alignItems="start" ml="auto" mr="auto">
+      <Image
+        src={GrailLogo}
+        alt="Placeholder image"
+        mb="5%"
+        w={["15%", "5%"]}
+      />
+      <Flex
+        justifyContent="space-between"
+        alignItems="start"
+        ml="auto"
+        mr="auto"
+      >
         <VStack alignItems="start" spacing={2} ml="auto" mr="auto">
           <Heading size={["sm", "md"]}>Information</Heading>
           <RouterLink to="/#about">
@@ -34,7 +44,6 @@ const Footer = () => {
         </VStack>
       </Flex>
     </div>
-
   );
 };
 
