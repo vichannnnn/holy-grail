@@ -82,6 +82,7 @@ const NavBar = () => {
       justify="space-between"
       position="sticky"
       minWidth="50vw"
+      background="white"
     >
       <RouterLink to="/">
         <NavBarLogo />
