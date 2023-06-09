@@ -58,7 +58,7 @@ const LoginPage = () => {
     <>
       <AccountForm>
         <Title mb="5%">Log in</Title>
-        <Text mb="15%">Enter your credentials to access your account.</Text>
+        <Text mb="10%">Enter your credentials to access your account.</Text>
 
         <form onSubmit={handleLogin}>
           <VStack spacing="6">
@@ -91,15 +91,15 @@ const LoginPage = () => {
         {/*    Click here.*/}
         {/*  </Link>*/}
         {/*</Text>*/}
+        <Box textAlign="center">
+          <Text mt="5%" fontSize={["sm", "md"]}>
+            Not a member?{" "}
+            <Link as="button" onClick={handleRegister} textDecoration="underline">
+              Register now.
+            </Link>
+          </Text>
+        </Box>
       </AccountForm>
-      <Box alignItems="center">
-        <Text mt="10%">
-          Not a member?{" "}
-          <Link as="button" onClick={handleRegister} textDecoration="underline">
-            Register now.
-          </Link>
-        </Text>
-      </Box>
     </>
   );
 };

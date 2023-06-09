@@ -62,7 +62,7 @@ const NavBar = () => {
       background="white"
     >
       <RouterLink to="/">
-        <NavBarLogo size="10%" />
+        <NavBarLogo/>
       </RouterLink>
       {isDesktop ? (
         <>
