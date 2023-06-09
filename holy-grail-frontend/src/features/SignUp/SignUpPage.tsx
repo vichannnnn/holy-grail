@@ -115,7 +115,7 @@ const SignUpPage = () => {
     <>
       <AccountForm>
         <Title mb="5%">Sign up</Title>
-        <Text mb="15%">Create an account to access all features.</Text>
+        <Text mb="10%">Create an account to access all features.</Text>
 
         <form onSubmit={handleRegister}>
           <VStack spacing="6">
@@ -169,19 +169,19 @@ const SignUpPage = () => {
             </Button>
           </VStack>
         </form>
+        <Box textAlign="center">
+          <Text Text mt="5%" fontSize={["sm", "md"]}>
+            Already a member?{" "}
+            <Link
+                as="button"
+                onClick={() => navigate("/login")}
+                textDecoration="underline"
+            >
+              Log in here.
+            </Link>
+          </Text>
+        </Box>
       </AccountForm>
-      <Box alignItems="center">
-        <Text mt="10%">
-          Already a member?{" "}
-          <Link
-            as="button"
-            onClick={() => navigate("/login")}
-            textDecoration="underline"
-          >
-            Log in here.
-          </Link>
-        </Text>
-      </Box>
     </>
   );
 };
