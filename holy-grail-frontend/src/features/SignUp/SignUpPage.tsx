@@ -73,7 +73,7 @@ const SignUpPage = () => {
 
       toast({
         title: "Account successfully created.",
-        description: `You can now log in with your credentials.`,
+        description: `A verification email has been sent to your email (${email}). You won't be able to upload resources until you have verified your email.`,
         status: "success",
         duration: 5000,
         isClosable: true,

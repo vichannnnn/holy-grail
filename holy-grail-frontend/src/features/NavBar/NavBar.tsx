@@ -1,5 +1,4 @@
 import {
-  Box,
   Flex,
   Menu,
   MenuButton,
@@ -13,7 +12,6 @@ import { HamburgerIcon } from "@chakra-ui/icons";
 import { NavBarRightButton } from "./NavBarRightButton";
 import { TextLink } from "../../components/TextLink/TextLink";
 import { NavBarLogo } from "./NavBarLogo";
-import { Link } from "react-scroll";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import AuthContext from "../../providers/AuthProvider";
@@ -59,7 +57,6 @@ const NavBar = () => {
       justify="space-between"
       position="sticky"
       minWidth="50vw"
-      background="white"
     >
       <RouterLink to="/">
         <NavBarLogo />
