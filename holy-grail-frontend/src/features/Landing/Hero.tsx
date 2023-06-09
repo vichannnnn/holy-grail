@@ -26,7 +26,7 @@ const Hero = () => {
         </Button> */}
       </HeroBox>
       <Box w="40%">
-        <Image src={HeroLogo} alt="Placeholder image" />
+        <Image src={HeroLogo} padding="15%" alt="Placeholder image" />
       </Box>
     </Flex>
   );
