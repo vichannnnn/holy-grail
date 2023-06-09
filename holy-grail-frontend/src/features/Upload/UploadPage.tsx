@@ -108,10 +108,11 @@ const UploadPage = () => {
           duration: 5000,
           isClosable: true,
         });
-      } else if (responseStatus === 401 ) {
+      } else if (responseStatus === 401) {
         toast({
           title: "Your account has not been verified yet.",
-          description: "Please verify your account with the verification mail sent to your email.",
+          description:
+            "Please verify your account with the verification mail sent to your email.",
           status: "error",
           duration: 5000,
           isClosable: true,

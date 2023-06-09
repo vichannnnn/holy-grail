@@ -14,7 +14,7 @@ import { TextLink } from "../../components/TextLink/TextLink";
 import { NavBarLogo } from "./NavBarLogo";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useContext } from "react";
-import AuthContext from "../../providers/AuthProvider";
+import AuthContext, { User } from "../../providers/AuthProvider";
 
 const NavBar = () => {
   const { user, logout } = useContext(AuthContext);
@@ -115,6 +115,16 @@ const NavBar = () => {
                     Developer Panel
                   </MenuItem>
                 )}
+                {
+                  <MenuItem onClick={handlePasswordChange}>
+                    Change Password
+                  </MenuItem>
+                }
+                {!user.verified && (
+                  <MenuItem onClick={handleDevButtonClick}>
+                    Resend Verification Email
+                  </MenuItem>
+                )}
                 <MenuItem onClick={handleLogout}>Log Out</MenuItem>
               </>
             ) : (
@@ -141,9 +151,16 @@ const NavBar = () => {
                     Developer Panel
                   </MenuItem>
                 )}
-                <MenuItem onClick={handlePasswordChange}>
-                  Change Password
-                </MenuItem>
+                {
+                  <MenuItem onClick={handlePasswordChange}>
+                    Change Password
+                  </MenuItem>
+                }
+                {!user.verified && (
+                  <MenuItem onClick={handleDevButtonClick}>
+                    Resend Verification Email
+                  </MenuItem>
+                )}
                 <MenuItem onClick={handleLogout}>Log Out</MenuItem>
               </MenuList>
             </Menu>

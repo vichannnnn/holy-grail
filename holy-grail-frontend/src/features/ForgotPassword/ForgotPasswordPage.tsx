@@ -84,18 +84,18 @@ const ForgotPasswordPage = () => {
             </Button>
           </VStack>
         </form>
-      <Box textAlign="center">
-        <Text mt="5%" fontSize={["sm", "md"]}>
-          Already a member?{" "}
-          <Link
-            as="button"
-            onClick={() => navigate("/login")}
-            textDecoration="underline"
-          >
-            Log in here.
-          </Link>
-        </Text>
-      </Box>
+        <Box textAlign="center">
+          <Text mt="5%" fontSize={["sm", "md"]}>
+            Already a member?{" "}
+            <Link
+              as="button"
+              onClick={() => navigate("/login")}
+              textDecoration="underline"
+            >
+              Log in here.
+            </Link>
+          </Text>
+        </Box>
       </AccountForm>
     </>
   );
