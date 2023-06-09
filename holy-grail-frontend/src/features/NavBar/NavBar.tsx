@@ -15,6 +15,8 @@ import { NavBarLogo } from "./NavBarLogo";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import AuthContext, { User } from "../../providers/AuthProvider";
+import approveNote from "../../utils/actions/ApproveNote";
+import { resendVerificationEmail } from "../../utils/auth/ResendVerificationEmail";
 
 const NavBar = () => {
   const { user, logout } = useContext(AuthContext);
@@ -41,6 +43,29 @@ const NavBar = () => {
       toast({
         title: "Logout failed.",
         description: "An error occurred while logging out.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
+
+  const handleResendVerificationEmail = async () => {
+    try {
+      await resendVerificationEmail();
+      toast({
+        title: "Verification email resent successfully.",
+        description:
+          "Please check your email for the verification mail sent to you.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: "Failed to resend verification email.",
+        description: "An error occurred while sending.",
         status: "error",
         duration: 3000,
         isClosable: true,
@@ -121,7 +146,7 @@ const NavBar = () => {
                   </MenuItem>
                 }
                 {!user.verified && (
-                  <MenuItem onClick={handleDevButtonClick}>
+                  <MenuItem onClick={handleResendVerificationEmail}>
                     Resend Verification Email
                   </MenuItem>
                 )}
@@ -157,7 +182,7 @@ const NavBar = () => {
                   </MenuItem>
                 }
                 {!user.verified && (
-                  <MenuItem onClick={handleDevButtonClick}>
+                  <MenuItem onClick={handleResendVerificationEmail}>
                     Resend Verification Email
                   </MenuItem>
                 )}
