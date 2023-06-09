@@ -84,9 +84,8 @@ const ForgotPasswordPage = () => {
             </Button>
           </VStack>
         </form>
-      </AccountForm>
-      <Box alignItems="center">
-        <Text mt="10%">
+      <Box textAlign="center">
+        <Text mt="5%" fontSize={["sm", "md"]}>
           Already a member?{" "}
           <Link
             as="button"
@@ -97,6 +96,7 @@ const ForgotPasswordPage = () => {
           </Link>
         </Text>
       </Box>
+      </AccountForm>
     </>
   );
 };
