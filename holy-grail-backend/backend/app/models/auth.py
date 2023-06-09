@@ -30,7 +30,7 @@ from app.schemas.auth import (
 
 if TYPE_CHECKING:
     from app.models.library import Library
-from app.email_handler import send_email_verification_mail, send_reset_password_mail
+from app.email_handler import send_email_verification_mail, send_reset_password_mail, send_new_password_mail
 import random
 
 BACKEND_URL = environ["BACKEND_URL"]
@@ -409,8 +409,17 @@ class Account(Base, CRUD["Account"]):
             raise AppError.INVALID_EMAIL_VERIFICATION_TOKEN
 
         password = generate_password()
+
+        await send_new_password_mail(
+            sender_name="Cute Bot",
+            username=account.username,
+            from_email="do-not-reply@grail.moe",
+            to_email=account.email,
+            password=password,
+        )
+
         account.password = Authenticator.pwd_context.hash(password)
         account.reset_password_token = None
         await session.commit()
 
-        return password
+        return status.HTTP_200_OK

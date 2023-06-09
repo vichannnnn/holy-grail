@@ -54,6 +54,10 @@ const LoginPage = () => {
     navigate("/register");
   };
 
+  const handleForgotPassword = () => {
+    navigate("/forgot_password");
+  };
+
   return (
     <>
       <AccountForm>
@@ -94,8 +98,22 @@ const LoginPage = () => {
         <Box textAlign="center">
           <Text mt="5%" fontSize={["sm", "md"]}>
             Not a member?{" "}
-            <Link as="button" onClick={handleRegister} textDecoration="underline">
+            <Link
+              as="button"
+              onClick={handleRegister}
+              textDecoration="underline"
+            >
               Register now.
+            </Link>
+          </Text>
+          <Text mt="5%" fontSize={["sm", "md"]}>
+            Forgot your password?{" "}
+            <Link
+              as="button"
+              onClick={handleForgotPassword}
+              textDecoration="underline"
+            >
+              Click here.
             </Link>
           </Text>
         </Box>

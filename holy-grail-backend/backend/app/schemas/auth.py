@@ -54,3 +54,7 @@ class AuthSchema(BaseModel):
 class UploaderSchema(BaseModel):
     user_id: int
     username: username_validator
+
+
+class SendPasswordResetEmailSchema(BaseModel):
+    email: EmailStr

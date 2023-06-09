@@ -1,6 +1,5 @@
 import jwt
-from fastapi import APIRouter, Depends, Request
-from pydantic import EmailStr
+from fastapi import APIRouter, Depends, Request, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import get_session
@@ -12,13 +11,14 @@ from app.schemas.auth import (
     CurrentUserSchema,
     AccountRegisterSchema,
     AccountUpdatePasswordSchema,
+    SendPasswordResetEmailSchema
 )
 
 router = APIRouter()
 
 
 @router.post("/create", response_model=CurrentUserSchema)
-@limiter.limit("5/minute")
+@limiter.limit("2/5minute")
 async def create_account(
         request: Request,
         data: AccountRegisterSchema,
@@ -77,7 +77,7 @@ async def verify_email(token: str, session: AsyncSession = Depends(get_session))
 
 
 @router.post("/resend_email_verification_token")
-@limiter.limit("1/minute")
+@limiter.limit("2/5minute")
 async def resend_verify_email_token(
         request: Request,
         session: AsyncSession = Depends(get_session),
@@ -89,19 +89,19 @@ async def resend_verify_email_token(
     return {"message": "Email verification resent to your email."}
 
 
-@router.post("/send_reset_password_mail/{email}")
-# @limiter.limit("1/5minute")
+@router.post("/send_reset_password_mail")
+@limiter.limit("2/5minute")
 async def reset_password(
-        email: EmailStr, request: Request, session: AsyncSession = Depends(get_session)
+        data: SendPasswordResetEmailSchema, request: Request, session: AsyncSession = Depends(get_session)
 ):
-    await Account().send_reset_email(session, email)
+    await Account().send_reset_email(session, data.email)
     return {"message": "Password reset mail sent to your email."}
 
 
 @router.get("/reset_password/{token}")
-@limiter.limit("1/5minute")
+@limiter.limit("2/5minute")
 async def reset_password(
         token: str, request: Request, session: AsyncSession = Depends(get_session)
 ):
-    password = await Account().reset_password(session, token)
-    return {"password": password}
+    await Account().reset_password(session, token)
+    return status.HTTP_200_OK

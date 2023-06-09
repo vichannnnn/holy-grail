@@ -22,19 +22,19 @@ const ForgotPasswordPage = () => {
   const navigate = useNavigate();
 
   const handleResetPassword = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     try {
-      await apiClient.post("/auth/reset_password", {
+      await apiClient.post("/auth/send_reset_password_mail", {
         email: email,
       });
 
       toast({
-        title: "Account successfully created.",
-        description: `You can now log in with your credentials.`,
+        title: "Password reset email successfully sent.",
+        description: `Please check your email for the email sent to you.`,
         status: "success",
         duration: 5000,
         isClosable: true,
       });
-      navigate("/");
     } catch (error) {
       let errorDescription =
         "Unable to reset password. Please check your input and try again.";
@@ -46,61 +46,59 @@ const ForgotPasswordPage = () => {
       const axiosError = error as AxiosError<ErrorResponseData>;
 
       if (axiosError.response && axiosError.response.status === 429) {
-        if (axiosError.response.data.detail === "Email already exists") {
-          errorDescription =
-            "You're doing this too fast. Please try again later.";
-        }
-
-        toast({
-          title: "Reset Password failed.",
-          description: errorDescription,
-          status: "error",
-          duration: 3000,
-          isClosable: true,
-        });
+        errorDescription =
+          "You're doing this too fast. Please try again later.";
       }
+
+      toast({
+        title: "Reset Password failed.",
+        description: errorDescription,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
     }
-
-    return (
-      <>
-        <AccountForm>
-          <Title mb="5%">Forgot Password</Title>
-          <Text mb="15%">
-            Please enter the email you registered with to reset your password.
-          </Text>
-
-          <form onSubmit={handleResetPassword}>
-            <VStack spacing="6">
-              <FormControl id="email">
-                <FormLabel>Email address</FormLabel>
-                <Input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-              </FormControl>
-              <Button type="submit" colorScheme="blue" w="100%">
-                Reset Password
-              </Button>
-            </VStack>
-          </form>
-        </AccountForm>
-        <Box alignItems="center">
-          <Text mt="10%">
-            Already a member?{" "}
-            <Link
-              as="button"
-              onClick={() => navigate("/login")}
-              textDecoration="underline"
-            >
-              Log in here.
-            </Link>
-          </Text>
-        </Box>
-      </>
-    );
   };
+
+  return (
+    <>
+      <AccountForm>
+        <Title mb="5%">Forgot Password</Title>
+        <Text mb="15%">
+          Please enter the email you registered with to reset your password.
+        </Text>
+
+        <form onSubmit={handleResetPassword}>
+          <VStack spacing="6">
+            <FormControl id="email">
+              <FormLabel>Email address</FormLabel>
+              <Input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </FormControl>
+            <Button type="submit" colorScheme="blue" w="100%">
+              Reset Password
+            </Button>
+          </VStack>
+        </form>
+      </AccountForm>
+      <Box alignItems="center">
+        <Text mt="10%">
+          Already a member?{" "}
+          <Link
+            as="button"
+            onClick={() => navigate("/login")}
+            textDecoration="underline"
+          >
+            Log in here.
+          </Link>
+        </Text>
+      </Box>
+    </>
+  );
 };
 
 export default ForgotPasswordPage;

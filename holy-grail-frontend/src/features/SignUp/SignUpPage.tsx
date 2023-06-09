@@ -170,12 +170,12 @@ const SignUpPage = () => {
           </VStack>
         </form>
         <Box textAlign="center">
-          <Text Text mt="5%" fontSize={["sm", "md"]}>
+          <Text mt="5%" fontSize={["sm", "md"]}>
             Already a member?{" "}
             <Link
-                as="button"
-                onClick={() => navigate("/login")}
-                textDecoration="underline"
+              as="button"
+              onClick={() => navigate("/login")}
+              textDecoration="underline"
             >
               Log in here.
             </Link>
