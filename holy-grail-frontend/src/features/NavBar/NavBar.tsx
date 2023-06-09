@@ -15,7 +15,6 @@ import { NavBarLogo } from "./NavBarLogo";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import AuthContext, { User } from "../../providers/AuthProvider";
-import approveNote from "../../utils/actions/ApproveNote";
 import { resendVerificationEmail } from "../../utils/auth/ResendVerificationEmail";
 
 const NavBar = () => {
