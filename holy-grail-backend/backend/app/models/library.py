@@ -65,11 +65,11 @@ class Library(Base):
 
     @classmethod
     async def create(
-            cls,
-            session: AsyncSession,
-            uploaded_file: UploadFile,
-            uploaded_by: int,
-            data: NoteCreateSchema,
+        cls,
+        session: AsyncSession,
+        uploaded_file: UploadFile,
+        uploaded_by: int,
+        data: NoteCreateSchema,
     ):
         if uploaded_file.content_type not in accepted_types.keys():
             raise AppError.INVALID_FILE_TYPE_ERROR
@@ -92,14 +92,14 @@ class Library(Base):
 
     @classmethod
     async def get_all(
-            cls,
-            session: AsyncSession,
-            page: int,
-            size: int,
-            approved: bool = True,
-            category: Optional[str] = None,
-            subject: Optional[str] = None,
-            doc_type: Optional[str] = None,
+        cls,
+        session: AsyncSession,
+        page: int,
+        size: int,
+        approved: bool = True,
+        category: Optional[str] = None,
+        subject: Optional[str] = None,
+        doc_type: Optional[str] = None,
     ):
         stmt = select(cls).where(cls.approved == approved)
 
@@ -155,7 +155,7 @@ class Library(Base):
 
     @classmethod
     async def update(
-            cls: Base, session: AsyncSession, id: int, authenticated: Account, data: dict
+        cls: Base, session: AsyncSession, id: int, authenticated: Account, data: dict
     ):
         stmt = update(cls)
         fetch_stmt = select(cls)

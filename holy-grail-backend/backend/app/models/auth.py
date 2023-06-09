@@ -1,3 +1,5 @@
+import string
+import traceback
 from datetime import datetime, timedelta
 from os import environ
 from typing import TYPE_CHECKING, Union
@@ -28,12 +30,31 @@ from app.schemas.auth import (
 
 if TYPE_CHECKING:
     from app.models.library import Library
-from app.email_handler import send_mail
+from app.email_handler import send_email_verification_mail, send_reset_password_mail
+import random
 
 BACKEND_URL = environ["BACKEND_URL"]
 ACCESS_TOKEN_EXPIRE_MINUTES = int(environ["ACCESS_TOKEN_EXPIRE_MINUTES"])
 ALGORITHM = environ["ALGORITHM"]
 SECRET_KEY = environ["SECRET_KEY"]
+
+
+def generate_password():
+    letter_group = string.ascii_letters
+    digit_group = string.digits
+    special_group = "@$!%*?&^"
+
+    password = [
+        random.choice(letter_group),
+        random.choice(digit_group),
+        random.choice(special_group),
+    ]
+    all_characters = letter_group + digit_group + special_group
+    password += random.choices(all_characters, k=5)  # k=5 to make total length 8
+
+    random.shuffle(password)
+
+    return "".join(password)
 
 
 class Authenticator:
@@ -64,7 +85,7 @@ class Authenticator:
                             username=username,
                             role=user.role,
                             email=user.email,
-                            verified=user.verified
+                            verified=user.verified,
                         )
 
         except JWTError as exc:
@@ -86,7 +107,7 @@ class Authenticator:
                         username=username,
                         role=user.role,
                         email=user.email,
-                        verified=user.verified
+                        verified=user.verified,
                     )
 
         except JWTError as exc:
@@ -109,7 +130,7 @@ class Authenticator:
                             username=username,
                             role=user.role,
                             email=user.email,
-                            verified=user.verified
+                            verified=user.verified,
                         )
 
         except JWTError as exc:
@@ -132,7 +153,7 @@ class Authenticator:
                             username=username,
                             role=user.role,
                             email=user.email,
-                            verified=user.verified
+                            verified=user.verified,
                         )
 
         except JWTError as exc:
@@ -162,6 +183,7 @@ class Account(Base, CRUD["Account"]):
     role: Mapped[int] = mapped_column(nullable=False, server_default=text("1"))
     verified: Mapped[bool] = mapped_column(nullable=False, server_default="f")
     email_verification_token: Mapped[str] = mapped_column(nullable=True)
+    reset_password_token: Mapped[str] = mapped_column(nullable=True)
 
     async def register(
             self, session: AsyncSession, data: AccountRegisterSchema
@@ -180,7 +202,7 @@ class Account(Base, CRUD["Account"]):
                 "username": self.username,
                 "email": self.email,
                 "role": self.role,
-                "verified": self.verified
+                "verified": self.verified,
             }
 
             await self.send_verification_email(session, data.email, data.username)
@@ -206,7 +228,7 @@ class Account(Base, CRUD["Account"]):
             "username": credentials.username,
             "email": credentials.email,
             "role": credentials.role,
-            "verified": credentials.verified
+            "verified": credentials.verified,
         }
         current_user = CurrentUserSchema(**user_data)
         return current_user
@@ -294,7 +316,6 @@ class Account(Base, CRUD["Account"]):
 
     @classmethod
     async def verify_email(cls, session: AsyncSession, token: str):
-
         try:
             stmt = select(Account).where(Account.email_verification_token == token)
             res = await session.execute(stmt)
@@ -310,16 +331,18 @@ class Account(Base, CRUD["Account"]):
         account.email_verification_token = None
         await session.commit()
 
-    async def send_verification_email(self, session: AsyncSession, email: EmailStr, username: str):
+    async def send_verification_email(
+            self, session: AsyncSession, email: EmailStr, username: str
+    ):
         token = uuid4().hex
         confirm_url = f"{BACKEND_URL}/api/v1/auth/verify/{token}"
 
-        await send_mail(
+        await send_email_verification_mail(
             sender_name="Cute Bot",
             username=username,
             from_email="do-not-reply@grail.moe",
             to_email=email,
-            confirm_url=confirm_url
+            confirm_url=confirm_url,
         )
 
         stmt = (
@@ -343,3 +366,51 @@ class Account(Base, CRUD["Account"]):
             await self.send_verification_email(session, res.email, self.username)
         else:
             raise AppError.USER_EMAIL_ALREADY_VERIFIED_ERROR
+
+    @classmethod
+    async def send_reset_email(cls: Base, session: AsyncSession, email: EmailStr):
+        token = uuid4().hex
+        confirm_url = f"{BACKEND_URL}/api/v1/auth/reset_password/{token}"
+
+        stmt = select(cls).where(cls.email == email)
+        result = await session.execute(stmt)
+        account = result.scalar()
+
+        try:
+            await send_reset_password_mail(
+                sender_name="Cute Bot",
+                username=account.username,
+                from_email="do-not-reply@grail.moe",
+                to_email=email,
+                confirm_url=confirm_url,
+            )
+
+        except:
+            traceback.print_exc()
+            return status.HTTP_200_OK
+
+        stmt = (
+            update(Account)
+            .returning(Account)
+            .where(Account.user_id == account.user_id)
+            .values({"reset_password_token": token})
+        )
+        await session.execute(stmt)
+        await session.commit()
+
+    @classmethod
+    async def reset_password(cls, session: AsyncSession, token: str):
+        try:
+            stmt = select(Account).where(Account.reset_password_token == token)
+            res = await session.execute(stmt)
+            account = res.scalars().one()
+
+        except SQLAlchemyExceptions.NoResultFound:
+            raise AppError.INVALID_EMAIL_VERIFICATION_TOKEN
+
+        password = generate_password()
+        account.password = Authenticator.pwd_context.hash(password)
+        account.reset_password_token = None
+        await session.commit()
+
+        return password

@@ -1,5 +1,6 @@
 import jwt
 from fastapi import APIRouter, Depends, Request
+from pydantic import EmailStr
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import get_session
@@ -86,3 +87,21 @@ async def resend_verify_email_token(
         session, authenticated.user_id, authenticated.username
     )
     return {"message": "Email verification resent to your email."}
+
+
+@router.post("/send_reset_password_mail/{email}")
+# @limiter.limit("1/5minute")
+async def reset_password(
+        email: EmailStr, request: Request, session: AsyncSession = Depends(get_session)
+):
+    await Account().send_reset_email(session, email)
+    return {"message": "Password reset mail sent to your email."}
+
+
+@router.get("/reset_password/{token}")
+@limiter.limit("1/5minute")
+async def reset_password(
+        token: str, request: Request, session: AsyncSession = Depends(get_session)
+):
+    password = await Account().reset_password(session, token)
+    return {"password": password}

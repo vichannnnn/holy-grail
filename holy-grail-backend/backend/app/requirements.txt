@@ -17,6 +17,7 @@ PyJWT==2.7.0
 starlette_validation_uploadfile
 slowapi
 boto3==1.26.139
+mailtrap
 
 
 # LINTING

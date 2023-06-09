@@ -61,7 +61,3 @@ class AppError:
         detail="Document name already exists",
         headers={"WWW-Authenticate": "Bearer"},
     )
-
-
-
-
