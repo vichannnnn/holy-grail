@@ -60,12 +60,15 @@ const NotesTable = ({
           display="flex"
           flexDirection="column"
           alignItems="center"
-          sx={{ width: "100%" }}
+          mr="auto"
+          ml="auto"
+          sx={{ width: "80%" }}
         >
           <Box
             display="flex"
             flexDirection={isMobile ? "column" : "row"}
             justifyContent="space-around"
+            gap={2}
             marginBottom={2}
             sx={{ width: "90%" }}
           >

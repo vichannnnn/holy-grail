@@ -19,7 +19,7 @@ const FAQ = () => {
           allowMultiple
           allowToggle
           maxWidth="80%"
-          width="80%"
+          width={["80%", "40%"]}
         >
           <FAQLine question="What is the Holy Grail?">
             <Text mb={4} textAlign="left"></Text>
