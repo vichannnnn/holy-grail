@@ -13,8 +13,9 @@ const Hero = () => {
       mb="auto"
       bgColor="white"
       alignItems="center"
+      padding="0 20%"
     >
-      <Box w="50%" ml="auto" mr="auto" display={["flex", "none"]}>
+      <Box w="50%" mt="10%" ml="auto" mr="auto" display={["flex", "none"]}>
         <Image src={HeroLogo} padding="15% 0 15% 15%" alt="" />
       </Box>
       <HeroBox textAlign={["center", "left"]} w={["100%", "60%"]}>

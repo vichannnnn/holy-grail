@@ -15,17 +15,17 @@ const Footer = () => {
     <div align="center">
       <Image
         src={GrailLogo}
-        alt="Placeholder image"
-        mb="5%"
+        alt=""
+        mb="3%"
+        mt="3%"
         w={["15%", "5%"]}
       />
       <Flex
         justifyContent="space-between"
         alignItems="start"
-        ml="auto"
-        mr="auto"
+        maxWidth="80%"
       >
-        <VStack alignItems="start" spacing={2} ml="auto" mr="auto">
+        <VStack alignItems="start" spacing={2} ml="auto" mr="auto" mb="3%">
           <Heading size={["sm", "md"]}>Information</Heading>
           <RouterLink to="/#about">
             <Text fontSize={["12px", "15px"]}>About us</Text>

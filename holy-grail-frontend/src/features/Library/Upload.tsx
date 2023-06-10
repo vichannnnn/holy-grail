@@ -6,13 +6,13 @@ import { Title } from "../../components/Title/Title";
 const Upload = () => {
   return (
     <div id="upload">
-      <Flex direction="column" bgColor="white">
-        <Title>Library</Title>
-        <Text fontSize="xl" mt="3%">
+      <Flex direction="column" bgColor="white" mt="5%" mr="auto" ml="auto" maxW="80%">
+        <Title fontSize={["3xl", "7xl"]}>Library</Title>
+        <Text mt="5%">
           This is where the catalogues of notes and practice papers are stored
           at.
         </Text>
-        <Text fontSize="xl">
+        <Text>
           You can upload notes into the library subjected to approval of the
           administrator, just hit the button below!
         </Text>
@@ -23,7 +23,7 @@ const Upload = () => {
         border="2px"
         bg="teal"
         color="white"
-        mb="10%"
+        mb="5%"
       />
     </div>
   );

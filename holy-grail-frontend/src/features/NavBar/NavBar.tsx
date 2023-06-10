@@ -74,14 +74,14 @@ const NavBar = () => {
 
   return (
     <Flex
-      width="100%"
       top="0"
       zIndex="10"
       alignItems="center"
       justify="space-between"
       position="sticky"
       background="white"
-      padding="1rem"
+      padding="0.5rem 10%"
+      borderBottom="1px solid lightgrey"
     >
       <RouterLink to="/">
         <NavBarLogo />

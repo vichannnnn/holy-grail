@@ -18,6 +18,7 @@ const Features = () => {
         templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(2, 1fr)" }}
         gap={6}
         alignItems="stretch"
+        maxWidth="80%"
       >
         <FeatureCard
           image={GrailLogo}
