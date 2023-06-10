@@ -18,7 +18,7 @@ router = APIRouter()
 
 
 @router.post("/create", response_model=CurrentUserSchema)
-# @limiter.limit("2/5minute")
+@limiter.limit("2/5minute")
 async def create_account(
         request: Request,
         data: AccountRegisterSchema,
@@ -99,7 +99,6 @@ async def reset_password(
 
 
 @router.get("/reset_password/{token}")
-@limiter.limit("2/5minute")
 async def reset_password(
         token: str, request: Request, session: AsyncSession = Depends(get_session)
 ):
