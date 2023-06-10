@@ -43,7 +43,7 @@ const ChangePasswordPage = () => {
   const handleUpdatePassword = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await apiClient.post("/auth/update-password", {
+      await apiClient.post("/auth/update_password", {
         before_password: beforePassword,
         password: password,
         repeat_password: repeatPassword,
