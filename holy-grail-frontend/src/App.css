@@ -3,6 +3,7 @@
     text-align: center;
     background-color: white;
     max-width: 1280px;
+    min-width: 80vW;
     box-sizing: border-box;
     padding: 0 2rem 2rem 2rem;
 }
