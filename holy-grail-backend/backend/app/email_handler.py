@@ -7,7 +7,7 @@ MAILTRAP_BEARER_TOKEN = environ["MAILTRAP_BEARER_TOKEN"]
 MAILTRAP_API_KEY = environ["MAILTRAP_API_KEY"]
 
 
-async def send_email_verification_mail(
+def send_email_verification_mail(
         sender_name: str,
         from_email: str,
         to_email: EmailStr,
@@ -29,12 +29,12 @@ async def send_email_verification_mail(
         "Content-Type": "application/json",
     }
 
-    async with httpx.AsyncClient() as client:
-        response = await client.post(url, headers=headers, json=payload)
+    with httpx.Client() as client:
+        response = client.post(url, headers=headers, json=payload)
         return response.status_code
 
 
-async def send_reset_password_mail(
+def send_reset_password_mail(
         sender_name: str,
         from_email: str,
         to_email: EmailStr,
@@ -56,12 +56,12 @@ async def send_reset_password_mail(
         "Content-Type": "application/json",
     }
 
-    async with httpx.AsyncClient() as client:
-        response = await client.post(url, headers=headers, json=payload)
+    with httpx.Client() as client:
+        response = client.post(url, headers=headers, json=payload)
         return response.status_code
 
 
-async def send_new_password_mail(
+def send_new_password_mail(
         sender_name: str,
         from_email: str,
         to_email: EmailStr,
@@ -85,6 +85,6 @@ async def send_new_password_mail(
         "Content-Type": "application/json",
     }
 
-    async with httpx.AsyncClient() as client:
-        response = await client.post(url, headers=headers, json=payload)
+    with httpx.Client() as client:
+        response = client.post(url, headers=headers, json=payload)
         return response.status_code

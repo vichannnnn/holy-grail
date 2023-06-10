@@ -18,7 +18,7 @@ router = APIRouter()
 
 
 @router.post("/create", response_model=CurrentUserSchema)
-@limiter.limit("2/5minute")
+# @limiter.limit("2/5minute")
 async def create_account(
         request: Request,
         data: AccountRegisterSchema,
