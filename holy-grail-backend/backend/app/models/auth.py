@@ -32,6 +32,7 @@ if TYPE_CHECKING:
     from app.models.library import Library
 from app.email_handler import send_email_verification_mail, send_reset_password_mail, send_new_password_mail
 import random
+from app.tasks.verify_email import send_verification_email_task
 
 BACKEND_URL = environ["BACKEND_URL"]
 FRONTEND_URL = environ["FRONTEND_URL"]
@@ -206,7 +207,7 @@ class Account(Base, CRUD["Account"]):
                 "verified": self.verified,
             }
 
-            await self.send_verification_email(session, data.email, data.username)
+            send_verification_email_task.delay(self.user_id, data.email, data.username)
 
             current_user = CurrentUserSchema(**user_data)
             return current_user

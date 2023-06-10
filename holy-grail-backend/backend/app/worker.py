@@ -1,9 +1,10 @@
 import os
+
 from celery import Celery  # type: ignore
 
 celery_app = Celery(
     "tasks",
-    include=["app.tasks.health_check"],
+    include=["app.tasks.health_check", "app.tasks.verify_email"],
 )
 celery_app.conf.timezone = "Asia/Singapore"
 
