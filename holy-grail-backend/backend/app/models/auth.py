@@ -33,6 +33,7 @@ if TYPE_CHECKING:
 import random
 from app.tasks.verify_email import send_verification_email_task
 from app.tasks.reset_password_email import send_reset_password_email_task
+from app.tasks.new_password_email import send_new_password_email_task
 
 BACKEND_URL = environ["BACKEND_URL"]
 FRONTEND_URL = environ["FRONTEND_URL"]
@@ -415,7 +416,7 @@ class Account(Base, CRUD["Account"]):
 
         password = generate_password()
 
-        send_new_password_mail_task.delay(
+        send_new_password_email_task.delay(
             sender_name="Cute Bot",
             username=account.username,
             from_email="do-not-reply@grail.moe",
