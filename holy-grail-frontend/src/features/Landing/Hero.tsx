@@ -7,14 +7,17 @@ import { HeroBox } from "../../components/HeroBox/HeroBox";
 const Hero = () => {
   return (
     <Flex
-      display="flex"
-      minHeight="30vh"
-      mt={["0%", "10%"]}
-      mb="10%"
+      display={["column", "flex"]}
+      minHeight={["40vh", "60vh"]}
+      mt={["0%", "auto"]}
+      mb="auto"
       bgColor="white"
       alignItems="center"
     >
-      <HeroBox textAlign="left" w="60%">
+      <Box w="50%" ml="auto" mr="auto" display={["flex", "none"]}>
+        <Image src={HeroLogo} padding="15% 0 15% 15%" alt="" />
+      </Box>
+      <HeroBox textAlign={["center", "left"]} w={["100%", "60%"]}>
         <Title mb="3%" lineHeight="1">
           A central repository for your notes
         </Title>
@@ -25,7 +28,7 @@ const Hero = () => {
           Get Started
         </Button> */}
       </HeroBox>
-      <Box w="40%">
+      <Box w="30%" ml="auto" display={["none", "flex"]}>
         <Image src={HeroLogo} padding="15% 0 15% 15%" alt="" />
       </Box>
     </Flex>
