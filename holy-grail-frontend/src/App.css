@@ -1,22 +1,10 @@
 #root {
-  margin: 0 auto;
-  padding: 1rem;
-  text-align: center;
-  background-color: white;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-
-@media (min-width: 768px) {
-  #root {
-    max-width: 1280px;
-    width: 80vW;
-    padding: 0 2rem 2rem 2rem;
+    margin: 0 auto;
     text-align: center;
     background-color: white;
-    margin: 0 auto;
-  }
+    max-width: 1280px;
+    box-sizing: border-box;
+    padding: 0 2rem 2rem 2rem;
 }
 
 .logo {
@@ -41,16 +29,16 @@
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
 .card {
   padding: 2em;
 }
 
 .read-the-docs {
   color: #888;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
 }
