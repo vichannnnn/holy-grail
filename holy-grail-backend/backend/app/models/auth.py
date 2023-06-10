@@ -418,7 +418,7 @@ class Account(Base, CRUD["Account"]):
 
         send_new_password_email_task.delay(
             username=account.username,
-            to_email=account.email,
+            email=account.email,
             password=password,
         )
 
