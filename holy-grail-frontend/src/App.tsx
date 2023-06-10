@@ -14,6 +14,7 @@ import NotFound from "./features/Common/NotFound";
 import DeveloperPage from "./features/Developer/DeveloperPage";
 import ChangePasswordPage from "./features/ChangePassword/ChangePasswordPage";
 import ForgotPasswordPage from "./features/ForgotPassword/ForgotPasswordPage";
+import ResetPasswordPage from "./features/ResetPassword/ResetPasswordPage";
 
 function App() {
   return (
@@ -29,8 +30,9 @@ function App() {
             <Route path="/upload" element={<UploadPage />} />
             <Route path="/admin" element={<ApprovalPage />} />
             <Route path="/developer" element={<DeveloperPage />} />
-            <Route path="/forgot_password" element={<ForgotPasswordPage />} />
-            <Route path="/update_password" element={<ChangePasswordPage />} />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/update-password" element={<ChangePasswordPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <Footer />

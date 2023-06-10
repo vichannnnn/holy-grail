@@ -32,7 +32,7 @@ const NavBar = () => {
   };
 
   const handlePasswordChange = () => {
-    navigate("/update_password");
+    navigate("/update-password");
   };
 
   const handleLogout = async () => {

@@ -20,6 +20,12 @@ class AppError:
         headers={"WWW-Authenticate": "Bearer"},
     )
 
+    INVALID_PASSWORD_RESET_TOKEN = HTTPException(
+        status_code=status.HTTP_400_BAD_REQUEST,
+        detail="Password reset token is invalid",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+
     ACCOUNT_ALREADY_VERIFIED = HTTPException(
         status_code=status.HTTP_400_BAD_REQUEST,
         detail="Account is already verified",

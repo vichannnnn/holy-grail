@@ -34,6 +34,7 @@ from app.email_handler import send_email_verification_mail, send_reset_password_
 import random
 
 BACKEND_URL = environ["BACKEND_URL"]
+FRONTEND_URL = environ["FRONTEND_URL"]
 ACCESS_TOKEN_EXPIRE_MINUTES = int(environ["ACCESS_TOKEN_EXPIRE_MINUTES"])
 ALGORITHM = environ["ALGORITHM"]
 SECRET_KEY = environ["SECRET_KEY"]
@@ -370,7 +371,7 @@ class Account(Base, CRUD["Account"]):
     @classmethod
     async def send_reset_email(cls: Base, session: AsyncSession, email: EmailStr):
         token = uuid4().hex
-        confirm_url = f"{BACKEND_URL}/api/v1/auth/reset_password/{token}"
+        confirm_url = f"{FRONTEND_URL}/reset-password?token={token}"
 
         stmt = select(cls).where(cls.email == email)
         result = await session.execute(stmt)
@@ -406,7 +407,7 @@ class Account(Base, CRUD["Account"]):
             account = res.scalars().one()
 
         except SQLAlchemyExceptions.NoResultFound:
-            raise AppError.INVALID_EMAIL_VERIFICATION_TOKEN
+            raise AppError.INVALID_PASSWORD_RESET_TOKEN
 
         password = generate_password()
 

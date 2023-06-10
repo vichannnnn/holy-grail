@@ -55,7 +55,7 @@ const LoginPage = () => {
   };
 
   const handleForgotPassword = () => {
-    navigate("/forgot_password");
+    navigate("/forgot-password");
   };
 
   return (
