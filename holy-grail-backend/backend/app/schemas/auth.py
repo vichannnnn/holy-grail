@@ -58,3 +58,12 @@ class UploaderSchema(BaseModel):
 
 class SendPasswordResetEmailSchema(BaseModel):
     email: EmailStr
+
+
+class SendNewPasswordSchema(BaseModel):
+    token: str
+
+
+class VerifyEmailSchema(BaseModel):
+    token: str
+
