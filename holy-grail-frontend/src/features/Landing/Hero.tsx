@@ -19,14 +19,14 @@ const Hero = () => {
           A central repository for your notes
         </Title>
         <Text mt="5%">
-          Every resources you need for your studies consolidated in a library.
+          Every resource you need for your studies consolidated in a library.
         </Text>
         {/* <Button mt="15%" colorScheme="teal">
           Get Started
         </Button> */}
       </HeroBox>
       <Box w="40%">
-        <Image src={HeroLogo} padding="15%" alt="Placeholder image" />
+        <Image src={HeroLogo} padding="15% 0 15% 15%" alt="" />
       </Box>
     </Flex>
   );
