@@ -9,7 +9,7 @@ FRONTEND_URL = environ["FRONTEND_URL"]
 
 
 @celery_app.task
-def send_new_password_email_task(email: EmailStr, username: str, confirm_url: str, password: str):
+def send_new_password_email_task(email: EmailStr, username: str, password: str):
     try:
         send_new_password_mail(
             sender_name="Cute Bot",

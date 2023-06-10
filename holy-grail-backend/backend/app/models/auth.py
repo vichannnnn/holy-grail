@@ -417,9 +417,7 @@ class Account(Base, CRUD["Account"]):
         password = generate_password()
 
         send_new_password_email_task.delay(
-            sender_name="Cute Bot",
             username=account.username,
-            from_email="do-not-reply@grail.moe",
             to_email=account.email,
             password=password,
         )
