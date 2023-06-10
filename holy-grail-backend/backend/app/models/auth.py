@@ -336,7 +336,7 @@ class Account(Base, CRUD["Account"]):
             self, session: AsyncSession, email: EmailStr, username: str
     ):
         token = uuid4().hex
-        confirm_url = f"{BACKEND_URL}/api/v1/auth/verify/{token}"
+        confirm_url = f"{FRONTEND_URL}/verify-account?token={token}"
 
         await send_email_verification_mail(
             sender_name="Cute Bot",

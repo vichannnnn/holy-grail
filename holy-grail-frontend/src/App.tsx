@@ -15,6 +15,7 @@ import DeveloperPage from "./features/Developer/DeveloperPage";
 import ChangePasswordPage from "./features/ChangePassword/ChangePasswordPage";
 import ForgotPasswordPage from "./features/ForgotPassword/ForgotPasswordPage";
 import ResetPasswordPage from "./features/ResetPassword/ResetPasswordPage";
+import AccountVerifyPage from "./features/AccountVerify/AccountVerifyPage";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="/update-password" element={<ChangePasswordPage />} />
             <Route path="/reset-password" element={<ResetPasswordPage />} />
+            <Route path="/verify-account" element={<AccountVerifyPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <Footer />
