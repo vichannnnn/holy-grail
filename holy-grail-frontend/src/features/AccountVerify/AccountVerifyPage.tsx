@@ -68,10 +68,12 @@ const VerifyAccountPage = () => {
         <Text mt="10%" mb="15%">{resetStatus}</Text>
       ) : isFailed ? (
         <Text mt="10%" mb="15%">
-          The account verification link is invalid or has expired. Please{" "}
+          The account verification link is invalid or has expired. Please click{" "}
           <Link onClick={handleResendVerificationEmail} textDecoration="underline">
-            Click here.
+            here
           </Link>
+          {" "}
+          to send another verification email.
         </Text>
       ) : null}
     </>

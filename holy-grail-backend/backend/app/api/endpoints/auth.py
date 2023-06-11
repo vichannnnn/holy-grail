@@ -11,7 +11,9 @@ from app.schemas.auth import (
     CurrentUserSchema,
     AccountRegisterSchema,
     AccountUpdatePasswordSchema,
-    SendPasswordResetEmailSchema
+    SendPasswordResetEmailSchema,
+    SendNewPasswordSchema,
+    VerifyEmailSchema
 )
 
 router = APIRouter()
@@ -68,9 +70,9 @@ async def user_login(
     }
 
 
-@router.get("/verify/{token}")
-async def verify_email(token: str, session: AsyncSession = Depends(get_session)):
-    await Account.verify_email(session, token)
+@router.post("/verify")
+async def verify_email(data: VerifyEmailSchema, session: AsyncSession = Depends(get_session)):
+    await Account.verify_email(session, data.token)
     return {
         "success": "Email verification successful. Your account can access all the features now."
     }
@@ -98,10 +100,9 @@ async def reset_password(
     return {"message": "Password reset mail sent to your email."}
 
 
-@router.get("/reset_password/{token}")
-@limiter.limit("2/5minute")
+@router.post("/reset_password")
 async def reset_password(
-        token: str, request: Request, session: AsyncSession = Depends(get_session)
+        data: SendNewPasswordSchema, request: Request, session: AsyncSession = Depends(get_session)
 ):
-    await Account().reset_password(session, token)
+    await Account().reset_password(session, data.token)
     return status.HTTP_200_OK

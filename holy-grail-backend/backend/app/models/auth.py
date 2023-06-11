@@ -30,8 +30,10 @@ from app.schemas.auth import (
 
 if TYPE_CHECKING:
     from app.models.library import Library
-from app.email_handler import send_email_verification_mail, send_reset_password_mail, send_new_password_mail
 import random
+from app.tasks.verify_email import send_verification_email_task
+from app.tasks.reset_password_email import send_reset_password_email_task
+from app.tasks.new_password_email import send_new_password_email_task
 
 BACKEND_URL = environ["BACKEND_URL"]
 FRONTEND_URL = environ["FRONTEND_URL"]
@@ -206,7 +208,19 @@ class Account(Base, CRUD["Account"]):
                 "verified": self.verified,
             }
 
-            await self.send_verification_email(session, data.email, data.username)
+            self.email_verification_token = uuid4().hex
+            confirm_url = f"{FRONTEND_URL}/verify-account?token={self.email_verification_token}"
+
+            send_verification_email_task.delay(data.email, data.username, confirm_url)
+
+            stmt = (
+                update(Account)
+                .returning(Account)
+                .where(Account.user_id == self.user_id)
+                .values({"email_verification_token": self.email_verification_token})
+            )
+            await session.execute(stmt)
+            await session.commit()
 
             current_user = CurrentUserSchema(**user_data)
             return current_user
@@ -335,22 +349,16 @@ class Account(Base, CRUD["Account"]):
     async def send_verification_email(
             self, session: AsyncSession, email: EmailStr, username: str
     ):
-        token = uuid4().hex
-        confirm_url = f"{FRONTEND_URL}/verify-account?token={token}"
+        self.email_verification_token = uuid4().hex
+        confirm_url = f"{FRONTEND_URL}/verify-account?token={self.email_verification_token}"
 
-        await send_email_verification_mail(
-            sender_name="Cute Bot",
-            username=username,
-            from_email="do-not-reply@grail.moe",
-            to_email=email,
-            confirm_url=confirm_url,
-        )
+        send_verification_email_task.delay(email, username, confirm_url)
 
         stmt = (
             update(Account)
             .returning(Account)
             .where(Account.user_id == self.user_id)
-            .values({"email_verification_token": token})
+            .values({"email_verification_token": self.email_verification_token})
         )
         await session.execute(stmt)
         await session.commit()
@@ -364,7 +372,10 @@ class Account(Base, CRUD["Account"]):
         res = await self.get(session=session, user_id=user_id)
 
         if not res.verified:
-            await self.send_verification_email(session, res.email, self.username)
+            self.email_verification_token = uuid4().hex
+            confirm_url = f"{FRONTEND_URL}/verify-account?token={self.email_verification_token}"
+            send_verification_email_task.delay(res.email, res.username, confirm_url)
+
         else:
             raise AppError.USER_EMAIL_ALREADY_VERIFIED_ERROR
 
@@ -378,13 +389,7 @@ class Account(Base, CRUD["Account"]):
         account = result.scalar()
 
         try:
-            await send_reset_password_mail(
-                sender_name="Cute Bot",
-                username=account.username,
-                from_email="do-not-reply@grail.moe",
-                to_email=email,
-                confirm_url=confirm_url,
-            )
+            send_reset_password_email_task.delay(email, account.username, confirm_url)
 
         except:
             traceback.print_exc()
@@ -411,11 +416,9 @@ class Account(Base, CRUD["Account"]):
 
         password = generate_password()
 
-        await send_new_password_mail(
-            sender_name="Cute Bot",
+        send_new_password_email_task.delay(
             username=account.username,
-            from_email="do-not-reply@grail.moe",
-            to_email=account.email,
+            email=account.email,
             password=password,
         )
 
