@@ -4,8 +4,12 @@ from celery import Celery  # type: ignore
 
 celery_app = Celery(
     "tasks",
-    include=["app.tasks.health_check", "app.tasks.verify_email", "app.tasks.reset_password_email",
-             "app.tasks.new_password_email"],
+    include=[
+        "app.tasks.health_check",
+        "app.tasks.verify_email",
+        "app.tasks.reset_password_email",
+        "app.tasks.new_password_email",
+    ],
 )
 celery_app.conf.timezone = "Asia/Singapore"
 

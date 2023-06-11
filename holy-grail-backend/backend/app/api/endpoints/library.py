@@ -5,6 +5,7 @@ from fastapi_pagination import Page
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import get_session
+from app.limiter import limiter
 from app.models.auth import Account, Authenticator
 from app.models.library import Library
 from app.schemas.library import NoteCreateSchema, NoteUpdateSchema, NoteSchema
@@ -14,7 +15,7 @@ notes_router = APIRouter()
 
 
 @router.post("/")
-# @limiter.limit("5/minute")
+@limiter.limit("5/minute")
 async def create_note(
     request: Request,
     data: NoteCreateSchema = Depends(),

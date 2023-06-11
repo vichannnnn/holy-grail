@@ -16,10 +16,9 @@ def send_new_password_email_task(email: EmailStr, username: str, password: str):
             username=username,
             from_email="do-not-reply@grail.moe",
             to_email=email,
-            password=password
+            password=password,
         )
         return {"success": f"new password email sent to {username}"}
-
 
     except Exception as e:
         print(str(e))
