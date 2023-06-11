@@ -15,7 +15,7 @@ app = FastAPI(
     redoc_url=None if os.getenv("PRODUCTION") == "true" else "/redoc",
 )
 app.state.limiter = limiter
-app.add_middleware(ValidateUploadFileMiddleware, app_path="/note/", max_size=104857600)
+app.add_middleware(ValidateUploadFileMiddleware, app_path="/note/", max_size=1048576000)
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 app.add_middleware(

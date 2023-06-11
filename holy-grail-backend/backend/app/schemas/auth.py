@@ -36,7 +36,7 @@ class AccountSchema(AccountRegisterSchema):
 
 class CurrentUserSchema(BaseModel):
     user_id: int
-    email: EmailStr  # type: ignore
+    email: Optional[EmailStr]  # type: ignore
     username: username_validator  # type: ignore
     role: RoleEnum
     verified: bool
