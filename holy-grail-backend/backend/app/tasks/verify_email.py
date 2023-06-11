@@ -20,6 +20,5 @@ def send_verification_email_task(email: EmailStr, username: str, confirm_url: st
         )
         return {"success": f"verification email sent to {username}"}
 
-
     except Exception as e:
         print(str(e))

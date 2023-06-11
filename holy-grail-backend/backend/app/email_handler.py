@@ -8,11 +8,11 @@ MAILTRAP_API_KEY = environ["MAILTRAP_API_KEY"]
 
 
 def send_email_verification_mail(
-        sender_name: str,
-        from_email: str,
-        to_email: EmailStr,
-        confirm_url: str,
-        username: str,
+    sender_name: str,
+    from_email: str,
+    to_email: EmailStr,
+    confirm_url: str,
+    username: str,
 ):
     url = "https://send.api.mailtrap.io/api/send"
 
@@ -35,11 +35,11 @@ def send_email_verification_mail(
 
 
 def send_reset_password_mail(
-        sender_name: str,
-        from_email: str,
-        to_email: EmailStr,
-        confirm_url: str,
-        username: str,
+    sender_name: str,
+    from_email: str,
+    to_email: EmailStr,
+    confirm_url: str,
+    username: str,
 ):
     url = "https://send.api.mailtrap.io/api/send"
 
@@ -62,11 +62,7 @@ def send_reset_password_mail(
 
 
 def send_new_password_mail(
-        sender_name: str,
-        from_email: str,
-        to_email: EmailStr,
-        username: str,
-        password: str
+    sender_name: str, from_email: str, to_email: EmailStr, username: str, password: str
 ):
     url = "https://send.api.mailtrap.io/api/send"
 
@@ -75,8 +71,8 @@ def send_new_password_mail(
         "from": {"email": from_email, "name": sender_name},
         "subject": "Your New Password for Holy Grail",
         "text": f"Hi {username}, \n\nThis is your temporary password: \n\n"
-                f"{password}\n\n"
-                f"Please make sure to change your password ASAP after you log in.",
+        f"{password}\n\n"
+        f"Please make sure to change your password ASAP after you log in.",
     }
 
     headers = {

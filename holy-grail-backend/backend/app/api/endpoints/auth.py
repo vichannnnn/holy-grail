@@ -13,7 +13,7 @@ from app.schemas.auth import (
     AccountUpdatePasswordSchema,
     SendPasswordResetEmailSchema,
     SendNewPasswordSchema,
-    VerifyEmailSchema
+    VerifyEmailSchema,
 )
 
 router = APIRouter()
@@ -22,9 +22,9 @@ router = APIRouter()
 @router.post("/create", response_model=CurrentUserSchema)
 @limiter.limit("2/5minute")
 async def create_account(
-        request: Request,
-        data: AccountRegisterSchema,
-        session: AsyncSession = Depends(get_session),
+    request: Request,
+    data: AccountRegisterSchema,
+    session: AsyncSession = Depends(get_session),
 ):
     if data.password != data.repeat_password:
         raise AppError.PASSWORD_MISMATCH_ERROR
@@ -35,9 +35,9 @@ async def create_account(
 
 @router.post("/update_password")
 async def user_update_password(
-        data: AccountUpdatePasswordSchema,
-        session: AsyncSession = Depends(get_session),
-        authenticated: Account = Depends(Authenticator.get_current_user),
+    data: AccountUpdatePasswordSchema,
+    session: AsyncSession = Depends(get_session),
+    authenticated: Account = Depends(Authenticator.get_current_user),
 ):
     credentials = await Account.update_password(session, authenticated.user_id, data)
     return credentials
@@ -45,15 +45,15 @@ async def user_update_password(
 
 @router.get("/get", response_model=CurrentUserSchema)
 async def get_account_name(
-        user: AuthSchema = Depends(Authenticator.get_current_user),
+    user: AuthSchema = Depends(Authenticator.get_current_user),
 ):
     return user
 
 
 @router.post("/login")
 async def user_login(
-        data: AuthSchema,
-        session: AsyncSession = Depends(get_session),
+    data: AuthSchema,
+    session: AsyncSession = Depends(get_session),
 ):
     credentials = await Account.login(session, data.username, data.password)
 
@@ -71,7 +71,9 @@ async def user_login(
 
 
 @router.post("/verify")
-async def verify_email(data: VerifyEmailSchema, session: AsyncSession = Depends(get_session)):
+async def verify_email(
+    data: VerifyEmailSchema, session: AsyncSession = Depends(get_session)
+):
     await Account.verify_email(session, data.token)
     return {
         "success": "Email verification successful. Your account can access all the features now."
@@ -81,9 +83,9 @@ async def verify_email(data: VerifyEmailSchema, session: AsyncSession = Depends(
 @router.post("/resend_email_verification_token")
 @limiter.limit("2/5minute")
 async def resend_verify_email_token(
-        request: Request,
-        session: AsyncSession = Depends(get_session),
-        authenticated: Account = Depends(Authenticator.get_current_user),
+    request: Request,
+    session: AsyncSession = Depends(get_session),
+    authenticated: Account = Depends(Authenticator.get_current_user),
 ):
     await Account().resend_email_verification_token(
         session, authenticated.user_id, authenticated.username
@@ -94,7 +96,9 @@ async def resend_verify_email_token(
 @router.post("/send_reset_password_mail")
 @limiter.limit("2/5minute")
 async def reset_password(
-        data: SendPasswordResetEmailSchema, request: Request, session: AsyncSession = Depends(get_session)
+    data: SendPasswordResetEmailSchema,
+    request: Request,
+    session: AsyncSession = Depends(get_session),
 ):
     await Account().send_reset_email(session, data.email)
     return {"message": "Password reset mail sent to your email."}
@@ -102,7 +106,9 @@ async def reset_password(
 
 @router.post("/reset_password")
 async def reset_password(
-        data: SendNewPasswordSchema, request: Request, session: AsyncSession = Depends(get_session)
+    data: SendNewPasswordSchema,
+    request: Request,
+    session: AsyncSession = Depends(get_session),
 ):
     await Account().reset_password(session, data.token)
     return status.HTTP_200_OK

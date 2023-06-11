@@ -66,4 +66,3 @@ class SendNewPasswordSchema(BaseModel):
 
 class VerifyEmailSchema(BaseModel):
     token: str
-

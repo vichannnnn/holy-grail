@@ -20,6 +20,5 @@ def send_reset_password_email_task(email: EmailStr, username: str, confirm_url: 
         )
         return {"success": f"reset password email sent to {username}"}
 
-
     except Exception as e:
         print(str(e))

@@ -74,9 +74,9 @@ class Authenticator:
 
     @classmethod
     async def get_verified_user(
-            cls,
-            token: str = Depends(oauth2_scheme),
-            session: AsyncSession = Depends(get_session),
+        cls,
+        token: str = Depends(oauth2_scheme),
+        session: AsyncSession = Depends(get_session),
     ) -> CurrentUserSchema:
         try:
             payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
@@ -97,9 +97,9 @@ class Authenticator:
 
     @classmethod
     async def get_current_user(
-            cls,
-            token: str = Depends(oauth2_scheme),
-            session: AsyncSession = Depends(get_session),
+        cls,
+        token: str = Depends(oauth2_scheme),
+        session: AsyncSession = Depends(get_session),
     ) -> CurrentUserSchema:
         try:
             payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
@@ -119,9 +119,9 @@ class Authenticator:
 
     @classmethod
     async def get_admin(
-            cls,
-            token: str = Depends(oauth2_scheme),
-            session: AsyncSession = Depends(get_session),
+        cls,
+        token: str = Depends(oauth2_scheme),
+        session: AsyncSession = Depends(get_session),
     ) -> CurrentUserSchema:
         try:
             payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
@@ -142,9 +142,9 @@ class Authenticator:
 
     @classmethod
     async def get_developer(
-            cls,
-            token: str = Depends(oauth2_scheme),
-            session: AsyncSession = Depends(get_session),
+        cls,
+        token: str = Depends(oauth2_scheme),
+        session: AsyncSession = Depends(get_session),
     ) -> CurrentUserSchema:
         try:
             payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
@@ -189,7 +189,7 @@ class Account(Base, CRUD["Account"]):
     reset_password_token: Mapped[str] = mapped_column(nullable=True)
 
     async def register(
-            self, session: AsyncSession, data: AccountRegisterSchema
+        self, session: AsyncSession, data: AccountRegisterSchema
     ) -> CurrentUserSchema:
         self.username = data.username
         self.password = Authenticator.pwd_context.hash(data.password)
@@ -209,7 +209,9 @@ class Account(Base, CRUD["Account"]):
             }
 
             self.email_verification_token = uuid4().hex
-            confirm_url = f"{FRONTEND_URL}/verify-account?token={self.email_verification_token}"
+            confirm_url = (
+                f"{FRONTEND_URL}/verify-account?token={self.email_verification_token}"
+            )
 
             send_verification_email_task.delay(data.email, data.username, confirm_url)
 
@@ -231,7 +233,7 @@ class Account(Base, CRUD["Account"]):
 
     @classmethod
     async def login(
-            cls, session: AsyncSession, username: str, password: str
+        cls, session: AsyncSession, username: str, password: str
     ) -> Union[CurrentUserSchema, bool]:
         if not (credentials := await Account.select_from_username(session, username)):
             return False
@@ -250,11 +252,11 @@ class Account(Base, CRUD["Account"]):
 
     @classmethod
     async def update_password(
-            cls, session: AsyncSession, user_id: int, data: AccountUpdatePasswordSchema
+        cls, session: AsyncSession, user_id: int, data: AccountUpdatePasswordSchema
     ):
         curr_cred = await Account.get(session, user_id=user_id)
         if not Authenticator.pwd_context.verify(
-                data.before_password, curr_cred.password
+            data.before_password, curr_cred.password
         ):
             raise AppError.INVALID_CREDENTIALS_ERROR
 
@@ -347,10 +349,12 @@ class Account(Base, CRUD["Account"]):
         await session.commit()
 
     async def send_verification_email(
-            self, session: AsyncSession, email: EmailStr, username: str
+        self, session: AsyncSession, email: EmailStr, username: str
     ):
         self.email_verification_token = uuid4().hex
-        confirm_url = f"{FRONTEND_URL}/verify-account?token={self.email_verification_token}"
+        confirm_url = (
+            f"{FRONTEND_URL}/verify-account?token={self.email_verification_token}"
+        )
 
         send_verification_email_task.delay(email, username, confirm_url)
 
@@ -364,7 +368,7 @@ class Account(Base, CRUD["Account"]):
         await session.commit()
 
     async def resend_email_verification_token(
-            self, session: AsyncSession, user_id: int, username: str
+        self, session: AsyncSession, user_id: int, username: str
     ):
         self.user_id = user_id
         self.username = username
@@ -373,7 +377,9 @@ class Account(Base, CRUD["Account"]):
 
         if not res.verified:
             self.email_verification_token = uuid4().hex
-            confirm_url = f"{FRONTEND_URL}/verify-account?token={self.email_verification_token}"
+            confirm_url = (
+                f"{FRONTEND_URL}/verify-account?token={self.email_verification_token}"
+            )
             send_verification_email_task.delay(res.email, res.username, confirm_url)
 
         else:
