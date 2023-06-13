@@ -2,7 +2,7 @@
 
 # Holy Grail
 
-[![codecov](https://codecov.io/gh/vichannnnn/holy-grail/branch/main/graph/badge.svg)](https://codecov.io/gh/vichannnnn/holy-grail/tree/master)
+[![codecov](https://codecov.io/gh/vichannnnn/holy-grail/branch/master/graph/badge.svg?token=XZ7kyGt5PU)](https://codecov.io/gh/vichannnnn/holy-grail/tree/master)
 [![Python](https://img.shields.io/badge/python-3.8-blue.svg)](https://www.python.org/)
 [![Docker](https://img.shields.io/badge/built%20with-Docker-blue)](https://www.docker.com/)
 [![CI](https://github.com/vichannnnn/holy-grail/actions/workflows/codecov.yml/badge.svg)](https://github.com/vichannnnn/holy-grail/actions)
