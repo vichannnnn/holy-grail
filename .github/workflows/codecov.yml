@@ -33,7 +33,12 @@ jobs:
         if: steps.get_branch.outputs.BRANCH_NAME == 'master'
 
       - name: Run tests with coverage
-        run: make coverage
+        run: make coverage version="dev"
+        if: steps.get_branch.outputs.BRANCH_NAME == 'dev'
+
+      - name: Run tests with coverage
+        run: make coverage version="prod"
+        if: steps.get_branch.outputs.BRANCH_NAME == 'master'
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
