@@ -2,10 +2,10 @@
 
 # Holy Grail
 
-[![codecov](https://codecov.io/gh/vichannnnn/fastapi-boilerplate/branch/main/graph/badge.svg)](https://codecov.io/gh/vichannnnn/fastapi-boilerplate)
+[![codecov](https://codecov.io/gh/vichannnnn/holy-grail/branch/main/graph/badge.svg)](https://codecov.io/gh/vichannnnn/holy-grail)
 [![Python](https://img.shields.io/badge/python-3.8-blue.svg)](https://www.python.org/)
 [![Docker](https://img.shields.io/badge/built%20with-Docker-blue)](https://www.docker.com/)
-[![CI](https://github.com/vichannnnn/fastapi-boilerplate/actions/workflows/codecov.yml/badge.svg)](https://github.com/vichannnnn/fastapi-boilerplate/actions)
+[![CI](https://github.com/vichannnnn/holy-grail/actions/workflows/codecov.yml/badge.svg)](https://github.com/vichannnnn/holy-grail/actions)
 
 This is a monorepo for the Holy Grail webapp consisting of a few services: Celery task runner, Redis broker, Postgres
 database, FastAPI backend and React Frontend.
