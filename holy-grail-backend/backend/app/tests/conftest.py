@@ -1,19 +1,17 @@
 import asyncio
 from typing import AsyncGenerator
-from app.api.deps import get_session
-from app.main import app
-from app.db.base_class import Base
 
-from app import models
-from app import schemas
-
+import pytest
 from fastapi.testclient import TestClient
 from pydantic import PostgresDsn
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import NullPool
-import pytest
 
+from app import schemas
+from app.api.deps import get_session
+from app.db.base_class import Base
+from app.main import app
 
 SQLALCHEMY_DATABASE_URL = PostgresDsn.build(
     scheme="postgresql+asyncpg",
@@ -66,7 +64,8 @@ def not_authenticated_client():
 
 @pytest.fixture(name="test_valid_user", scope="function")
 def test_valid_user():
-    yield schemas.auth.AccountSchema(username="username", password="password")
+    yield schemas.auth.AccountSchema(username="username", password="Password123!", repeat_password="Password123!",
+                                     email="test@gmail.com")
 
 
 @pytest.fixture(name="test_book_insert", scope="function")

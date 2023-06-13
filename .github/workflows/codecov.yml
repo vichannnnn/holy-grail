@@ -20,7 +20,7 @@ jobs:
         run: cp .env_example .env
 
       - name: Build Docker image
-        run: make runbackend
+        run: make build version="dev"
 
       - name: Run tests with coverage
         run: make coverage
