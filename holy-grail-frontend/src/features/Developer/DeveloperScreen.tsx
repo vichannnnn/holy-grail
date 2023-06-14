@@ -19,7 +19,13 @@ import {
   createSubject,
   createDocumentType,
 } from "../../utils/actions/CreateCategory";
+import {
+  deleteSubject,
+  deleteCategory,
+  deleteDocumentType,
+} from "../../utils/actions/DeleteCategory";
 import AddModal from "./AddModal";
+import DeleteModal from "./DeleteModal";
 import { TabContent } from "./TabContent";
 import { TabContentUsers } from "./TabContentUsers";
 import { updateUserRole, fetchAllUsers } from "../../utils/actions/UpdateUser";
@@ -37,6 +43,9 @@ const DeveloperScreen = () => {
   const [editId, setEditId] = useState<number | null>(null);
   const [editType, setEditType] = useState<DataTypeKey | null>(null);
   const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
+  const [deleteId, setDeleteId] = useState<number | null>(null);
+  const [deleteType, setDeleteType] = useState<DataTypeKey | null>(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const [addType, setAddType] = useState<DataTypeKey | null>(null);
 
   const [users, setUsers] = useState<User[]>([]);
@@ -75,10 +84,24 @@ const DeveloperScreen = () => {
     setEditType(type as DataTypeKey);
   };
 
+  const openDeleteModal = (id: number, type: string) => {
+    setDeleteId(id);
+    setDeleteType(type as DataTypeKey);
+    setIsDeleteModalOpen(true);
+  };
+
+  const closeDeleteModal = () => {
+    setDeleteId(null);
+    setDeleteType(null);
+    setIsDeleteModalOpen(false);
+  };
+
   const closeEditModal = () => {
     setEditId(null);
     setEditType(null);
   };
+
+  
 
   const openEditUserModal = (id: number) => {
     const user = users.find((user) => user.user_id === id);
@@ -109,6 +132,22 @@ const DeveloperScreen = () => {
     closeEditModal();
   };
 
+  const handleDelete = async () => {
+    if (deleteId !== null && deleteType !== null) {
+      if (deleteType === "categories") {
+        
+        await deleteCategory(deleteId);
+      } else if (deleteType === "subjects") {
+        
+        await deleteSubject(deleteId);
+      } else if (deleteType === "types") {
+        await deleteDocumentType(deleteId);
+      }
+      fetchData().then(setData);
+    }
+    closeDeleteModal();
+  };
+
   const handleUpdateUser = async (newRole: RoleEnum) => {
     if (editUserId !== null) {
       await updateUserRole(editUserId, newRole);
@@ -132,10 +171,19 @@ const DeveloperScreen = () => {
           onSubmit={handleAdd}
         />
       )}
+      {isDeleteModalOpen && deleteId !== null && (
+        <DeleteModal
+          isOpen={true}
+          onClose={() => setIsDeleteModalOpen(false)}
+          onSubmit={handleDelete}
+          initialName=""
+          //temporary value until i figure out how to get the name
+        />
+      )}
       <Tabs
         value={value}
         onChange={handleChange}
-        aria-label="basic tabs example"
+        aria-label="tags"
       >
         <Tab label="Categories" />
         <Tab label="Subjects" />
@@ -148,6 +196,7 @@ const DeveloperScreen = () => {
           data={data.categories}
           handleEdit={openEditModal}
           handleAdd={() => openAddModal("categories")}
+          handleDelete={openDeleteModal}
           type="categories"
         />
       )}
@@ -157,6 +206,7 @@ const DeveloperScreen = () => {
           data={data.subjects}
           handleEdit={openEditModal}
           handleAdd={() => openAddModal("subjects")}
+          handleDelete={openDeleteModal}
           type="subjects"
         />
       )}
@@ -166,6 +216,7 @@ const DeveloperScreen = () => {
           data={data.types}
           handleEdit={openEditModal}
           handleAdd={() => openAddModal("types")}
+          handleDelete={openDeleteModal}
           type="types"
         />
       )}

@@ -108,32 +108,31 @@ async def update_notes_type(
     return data
 
 
-#
-# @router.delete("/subject", response_model=SubjectSchema)
-# async def delete_subject(
-#     id: int,
-#     session: AsyncSession = Depends(get_session),
-#     is_admin: bool = Depends(Authenticator.get_developer),
-# ):
-#     data = await Subjects.delete(session, id)
-#     return data
-#
-#
-# @router.delete("/category", response_model=CategorySchema)
-# async def delete_category(
-#     id: int,
-#     session: AsyncSession = Depends(get_session),
-#     is_admin: bool = Depends(Authenticator.get_developer),
-# ):
-#     data = await CategoryLevel.delete(session, id)
-#     return data
-#
-#
-# @router.delete("/document_type", response_model=DocumentTypeSchema)
-# async def delete_notes_type(
-#     id: int,
-#     session: AsyncSession = Depends(get_session),
-#     is_admin: bool = Depends(Authenticator.get_developer),
-# ):
-#     data = await DocumentTypes.delete(session, id)
-#     return data
+
+@router.delete("/subject", response_model=SubjectSchema)
+async def delete_subject(
+    id: int,
+    session: AsyncSession = Depends(get_session),
+    is_admin: bool = Depends(Authenticator.get_developer),
+):
+    data = await Subjects.delete(session, id)
+    return data
+
+
+@router.delete("/category", response_model=CategorySchema)
+async def delete_category(
+    id: int,
+    session: AsyncSession = Depends(get_session),
+    is_admin: bool = Depends(Authenticator.get_developer),
+):
+    data = await CategoryLevel.delete(session, id)
+    return data
+
+@router.delete("/document_type", response_model=DocumentTypeSchema)
+async def delete_notes_type(
+    id: int,
+    session: AsyncSession = Depends(get_session),
+    is_admin: bool = Depends(Authenticator.get_developer),
+):
+    data = await DocumentTypes.delete(session, id)
+    return data

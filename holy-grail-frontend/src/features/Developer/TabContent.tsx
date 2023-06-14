@@ -14,6 +14,7 @@ import {
   TableRow,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from '@mui/icons-material/Delete';
 import React from "react";
 
 type DataTypeKey = "categories" | "subjects" | "types";
@@ -23,6 +24,7 @@ interface TabContentProps {
   data: Array<CategoryType | SubjectType | DocumentType>;
   handleEdit: (id: number, type: DataTypeKey) => void;
   handleAdd: () => void;
+  handleDelete: (id: number, type: DataTypeKey) => void;
   type: DataTypeKey;
 }
 
@@ -30,11 +32,15 @@ export const TabContent = ({
   title,
   data,
   handleEdit,
+  handleDelete,
   handleAdd,
   type,
 }: TabContentProps) => {
   const handleEditClick = (id: number) => {
     handleEdit(id, type);
+  };
+  const handleDeleteClick = (id: number) => {
+    handleDelete(id, type);
   };
 
   return (
@@ -58,9 +64,9 @@ export const TabContent = ({
                 <Button onClick={() => handleEditClick(item.id)}>
                   <EditIcon />
                 </Button>
-                {/*<Button onClick={() => handleDelete(item.id)}>*/}
-                {/*  <DeleteIcon />*/}
-                {/*</Button>*/}
+                <Button onClick={() => handleDeleteClick(item.id)}>
+                  <DeleteIcon />
+                </Button>
               </TableCell>
             </TableRow>
           ))}
