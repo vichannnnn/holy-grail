@@ -1,4 +1,8 @@
-import { CategoryType, DocumentType, SubjectType } from '../../api/utils/library/Search';
+import {
+  CategoryType,
+  DocumentType,
+  SubjectType,
+} from "../../utils/library/Search";
 import {
   Button,
   Paper,
@@ -9,13 +13,13 @@ import {
   TableHead,
   TableRow,
   OutlinedInput,
-} from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
-import { useState, ChangeEvent } from 'react';
-import { ChakraProvider } from '@chakra-ui/react';
-import { Pagination } from '../../components/Pagination/Pagination';
+  TablePagination,
+} from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import React from "react";
+import { Tab } from "@chakra-ui/react";
 
-type DataTypeKey = 'categories' | 'subjects' | 'types';
+type DataTypeKey = "categories" | "subjects" | "types";
 
 interface TabContentProps {
   title: string;
@@ -25,61 +29,92 @@ interface TabContentProps {
   type: DataTypeKey;
 }
 
-export const TabContent = ({ title, data, handleEdit, handleAdd, type }: TabContentProps) => {
-  const [query, setQuery] = useState<string>('');
-  const [page, setPage] = useState<number>(0);
-  const [chunkSize, setChunkSize] = useState<number>(10);
+export const TabContent = ({
+  title,
+  data,
+  handleEdit,
+  handleAdd,
+  type,
+}: TabContentProps) => {
+  const [query, setQuery] = React.useState<string>('');
+  const [page, setPage] = React.useState<number>(0);
+  const [chunkSize, setChunkSize] = React.useState<number>(10);
 
   const handleEditClick = (id: number) => {
     handleEdit(id, type);
   };
 
-  const handleFilterContent = () => {
+  //filter data based on query
+  const handleValidData = () => {
     let validData: Array<CategoryType | SubjectType | DocumentType> = data.filter((option) => {
       return option.name.toLowerCase().includes(query.toLowerCase());
     });
     return validData;
-  };
+  }
 
-  const handlePaging = () => {
+  //paginate data into chunks
+  const handlePaging = () =>{
     let pagedData: Array<Array<CategoryType | SubjectType | DocumentType>> = [];
-    let validData: Array<CategoryType | SubjectType | DocumentType> = handleFilterContent();
-    for (let i = 0; i < validData.length; i += chunkSize) {
-      pagedData.push(validData.slice(i, i + chunkSize));
-    }
+    let validData: Array<CategoryType | SubjectType | DocumentType> = handleValidData();
+    for (let i = 0; i < validData.length; i += chunkSize ) {
+      pagedData.push(
+        validData.slice(i, i + chunkSize)
+      );
+    };
+    console.log(pagedData);
     return pagedData;
-  };
+  }
+  
+
+
+  
+  
 
   return (
     <TableContainer component={Paper}>
       <Table>
         <TableHead>
           <TableRow>
+    
             <TableCell>
               <OutlinedInput
                 sx={{ width: '120%' }}
                 placeholder={`Search for ${title}`}
-                onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                   setQuery(event.target.value);
-                  //go back to first page to prevent overflow
-                  setPage(0);
-                  handleFilterContent();
+                  handleValidData();
+                  
                 }}
               />
+              
             </TableCell>
-
-            <TableCell align='right'>
-              <Button onClick={handleAdd}>+ {title}</Button>
+            
+            <TableCell align="right">
+                <Button onClick={handleAdd}>+ {title}</Button>
             </TableCell>
           </TableRow>
+          <TablePagination 
+            count={handleValidData().length}
+            onPageChange={(event: React.MouseEvent<HTMLButtonElement> | null, page: number) =>{
+              setPage(page);
+            }}
+            page={page}
+            rowsPerPage={chunkSize}
+            rowsPerPageOptions={[5,10,15,20]}
+            onRowsPerPageChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+              setChunkSize(parseInt(event.target.value));
+              handlePaging();
+            }}
+          /> 
         </TableHead>
         <TableBody>
+
           {(handlePaging()[page] || []).map((item) => (
             <TableRow key={item.id}>
-              <TableCell component='th' scope='row'>
+              <TableCell component="th" scope="row">
                 {item.name}
               </TableCell>
-              <TableCell align='right'>
+              <TableCell align="right">
                 <Button onClick={() => handleEditClick(item.id)}>
                   <EditIcon />
                 </Button>
@@ -89,26 +124,11 @@ export const TabContent = ({ title, data, handleEdit, handleAdd, type }: TabCont
               </TableCell>
             </TableRow>
           ))}
-          <TableRow>
-            <TableCell colSpan={2}>
-              <ChakraProvider>
-                <Pagination
-                  pageInfo={{
-                    page: page + 1,
-                    size: chunkSize,
-                    total: handleFilterContent().length,
-                    pages: handlePaging().length,
-                  }}
-                  handlePageChange={(newPage: number) => {
-                    setPage(newPage - 1);
-                  }}
-                  styles={{ mt: '0%' }}
-                />
-              </ChakraProvider>
-            </TableCell>
-          </TableRow>
         </TableBody>
+        
       </Table>
+      
     </TableContainer>
+    
   );
 };
