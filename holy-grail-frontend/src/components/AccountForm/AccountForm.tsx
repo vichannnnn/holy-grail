@@ -14,9 +14,7 @@ export const AccountForm = ({ children }: BoxProps) => {
         mt="10%"
         mb="10%"
       >
-        <Box textAlign="left">
-          {children}
-        </Box>
+        <Box textAlign="left">{children}</Box>
       </Flex>
     </>
   );
