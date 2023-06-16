@@ -46,14 +46,15 @@ const ResetPasswordPage = () => {
       <Title mt="15%">Reset Password</Title>
 
       {resetStatus ? (
-        <Text mt="10%" mb="15%">{resetStatus}</Text>
+        <Text mt="10%" mb="15%">
+          {resetStatus}
+        </Text>
       ) : isFailed ? (
         <Text mt="10%" mb="15%">
           The password reset link is invalid or has expired. Please click{" "}
           <Link onClick={handleForgotPassword} textDecoration="underline">
             here
-          </Link>
-          {" "}
+          </Link>{" "}
           to reset your password again.
         </Text>
       ) : null}

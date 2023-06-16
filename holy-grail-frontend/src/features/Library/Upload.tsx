@@ -6,7 +6,14 @@ import { Title } from "../../components/Title/Title";
 const Upload = () => {
   return (
     <div id="upload">
-      <Flex direction="column" bgColor="white" mt="5%" mr="auto" ml="auto" maxW="80%">
+      <Flex
+        direction="column"
+        bgColor="white"
+        mt="5%"
+        mr="auto"
+        ml="auto"
+        maxW="80%"
+      >
         <Title fontSize={["3xl", "7xl"]}>Library</Title>
         <Text mt="5%">
           This is where the catalogues of notes and practice papers are stored
