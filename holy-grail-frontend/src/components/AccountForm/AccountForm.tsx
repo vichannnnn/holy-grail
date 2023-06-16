@@ -1,20 +1,21 @@
-import { Box, BoxProps } from '@mui/material';
+import { Box, BoxProps, Flex } from "@chakra-ui/react";
 
 export const AccountForm = ({ children }: BoxProps) => {
   return (
     <>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          width: '100%',
-          minHeight: '85vh',
-          margin: '10% auto 10% auto',
-        }}
+      <Flex
+        flexDirection="column"
+        display="flex"
+        alignItems="center"
+        width={["80%", "100%"]}
+        minH="85vh"
+        ml="auto"
+        mr="auto"
+        mt="10%"
+        mb="10%"
       >
-        <Box sx={{ textAlign: 'left' }}>{children}</Box>
-      </Box>
+        <Box textAlign="left">{children}</Box>
+      </Flex>
     </>
   );
 };

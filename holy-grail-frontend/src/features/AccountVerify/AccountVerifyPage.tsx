@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { verifyAccount } from '../../api/utils/auth/VerifyAccount';
-import { Link, useToast } from '@chakra-ui/react';
-import { resendVerificationEmail } from '../../api/utils/auth/ResendVerificationEmail';
-import '../SignIn/login.css';
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { Title } from "../../components/Title/Title";
+import { Text } from "../../components/Text/Text";
+import { verifyAccount } from "../../utils/auth/VerifyAccount";
+import { Link, useToast } from "@chakra-ui/react";
+import { resendVerificationEmail } from "../../utils/auth/ResendVerificationEmail";
 
 const VerifyAccountPage = () => {
   const [token, setToken] = useState<string | null>(null);
@@ -18,14 +19,14 @@ const VerifyAccountPage = () => {
 
   useEffect(() => {
     const query = parseQuery(location.search);
-    const token = query.get('token');
+    const token = query.get("token");
     setToken(token);
 
     if (token) {
       verifyAccount(token)
         .then(() => {
           setResetStatus(
-            'Your account has been successfully verified. You can now upload resources.',
+            "Your account has been successfully verified. You can now upload resources."
           );
         })
         .catch(() => {
@@ -40,18 +41,19 @@ const VerifyAccountPage = () => {
     try {
       await resendVerificationEmail();
       toast({
-        title: 'Verification email resent successfully.',
-        description: 'Please check your email for the verification mail sent to you.',
-        status: 'success',
+        title: "Verification email resent successfully.",
+        description:
+          "Please check your email for the verification mail sent to you.",
+        status: "success",
         duration: 3000,
         isClosable: true,
       });
     } catch (error) {
       console.error(error);
       toast({
-        title: 'Failed to resend verification email.',
-        description: 'An error occurred while sending.',
-        status: 'error',
+        title: "Failed to resend verification email.",
+        description: "An error occurred while sending.",
+        status: "error",
         duration: 3000,
         isClosable: true,
       });
@@ -59,23 +61,26 @@ const VerifyAccountPage = () => {
   };
 
   return (
-    <section className='resetPw section container'>
-      <div>
-        <div className='login__title'>Account Verification</div>
+    <>
+      <Title mt="15%">Account Verification</Title>
 
-        {resetStatus ? (
-          <div className='section__subtitle'>{resetStatus}</div>
-        ) : isFailed ? (
-          <div className='section__subtitle'>
-            The account verification link is invalid or has expired. Please click{' '}
-            <Link as='button' onClick={handleResendVerificationEmail} textDecoration='underline'>
-              here
-            </Link>{' '}
-            to send another verification email.
-          </div>
-        ) : null}
-      </div>
-    </section>
+      {resetStatus ? (
+        <Text mt="10%" mb="15%">
+          {resetStatus}
+        </Text>
+      ) : isFailed ? (
+        <Text mt="10%" mb="15%">
+          The account verification link is invalid or has expired. Please click{" "}
+          <Link
+            onClick={handleResendVerificationEmail}
+            textDecoration="underline"
+          >
+            here
+          </Link>{" "}
+          to send another verification email.
+        </Text>
+      ) : null}
+    </>
   );
 };
 
