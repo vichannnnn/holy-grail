@@ -1,6 +1,6 @@
-import { Box, IconButton } from '@mui/material';
-import ModeEditIcon from '@mui/icons-material/ModeEdit';
-import { Note } from '../../api/utils/library/Search';
+import { Box, IconButton } from "@mui/material";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import { Note } from "../../utils/library/Search";
 
 interface AdminEditIconProps {
   noteId: number;
@@ -17,10 +17,10 @@ const AdminEditIcon = ({
   noteProperties,
   setNoteProperties,
 }: AdminEditIconProps) => (
-  <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+  <Box sx={{ display: "flex", justifyContent: "center" }}>
     <IconButton
-      size='small'
-      color='primary'
+      size="small"
+      color="primary"
       onClick={() => {
         setIsEditOpen(true);
         setNoteId(noteId);
