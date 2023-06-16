@@ -47,10 +47,10 @@ const EditModal: React.FC<EditModalProps>  = ({
   const cancelRef = useRef<HTMLButtonElement | null>(null);
 
   
-  const [newCategory, setNewCategory] = React.useState<number|"">(category);
-  const [newSubject, setNewSubject] = React.useState<number|"">(subject);
-  const [newType, setNewType] = React.useState<number|"">(type);
-  const [newDocName, setNewDocName] = React.useState<string|"">(documentName);
+  const [newCategory, setNewCategory] = React.useState<number|"">("");
+  const [newSubject, setNewSubject] = React.useState<number|"">("");
+  const [newType, setNewType] = React.useState<number|"">("");
+  const [newDocName, setNewDocName] = React.useState<string|"">("");
 
   const muiTheme = createTheme();
   return (
@@ -65,15 +65,17 @@ const EditModal: React.FC<EditModalProps>  = ({
               <TextField 
                 variant={"filled"} 
                 label={"Title"} 
-                value={newDocName} 
-                onChange={(e) => setNewDocName(e.target.value)}
+                value={newDocName || documentName} 
+                onChange={(e) => {
+                  setNewDocName(e.target.value)
+                }}
                 sx={{marginBottom: "2%"}}
                 />
             </ThemeProvider>
 
             <Combobox
               label="Category" 
-              value={newCategory}
+              value={newCategory || category}
               options={categories} 
               onChange={(newValue) => setNewCategory(newValue)}
               extras={{disablePortal: true}}
@@ -81,7 +83,7 @@ const EditModal: React.FC<EditModalProps>  = ({
             />
             <Combobox
               label="Subject" 
-              value={newSubject}
+              value={newSubject || subject}
               options={subjects} 
               onChange={(newValue) => setNewSubject(newValue)}
               extras={{disablePortal: true}}
@@ -89,7 +91,7 @@ const EditModal: React.FC<EditModalProps>  = ({
             />
             <Combobox
               label="Type" 
-              value={newType}
+              value={newType || type}
               options={types} 
               onChange={(newValue) => setNewType(newValue)}
               extras={{disablePortal: true}}
@@ -103,7 +105,11 @@ const EditModal: React.FC<EditModalProps>  = ({
             <Button 
             colorScheme="green" 
             onClick={()=>{
-              onConfirm(newCategory, newSubject, newType, newDocName);
+              setNewCategory('');
+              setNewSubject('');
+              setNewDocName('');
+              setNewType('');
+              onConfirm(newCategory || category, newSubject || subject, newType || type, newDocName || documentName);
               onClose();
             }} 
             ml={3}

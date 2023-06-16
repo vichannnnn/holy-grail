@@ -19,7 +19,7 @@ import AdminApproveIcon from "../../components/AdminApproveIcon/AdminApproveIcon
 import AdminDeleteIcon from "../../components/AdminDeleteIcon/AdminDeleteIcon";
 import AdminEditIcon from "../../components/AdminEditIcon/AdminEditIcon";
 import { Box } from "@chakra-ui/react";
-import { initial } from "lodash";
+
 
 const ApprovalTable = () => {
   const [notes, setNotes] = useState<PaginatedNotes>({
@@ -209,18 +209,22 @@ const ApprovalTable = () => {
           }
         }}
       />
+      
       <EditModal
         isOpen={isEditOpen}
         onClose={() => setIsEditOpen(false)}
         onConfirm={(newCategory: number|"", newSubject: number|"", newType:number|"", newDocName:string|"") => {
+          console.log(noteInitialProperties);
           updateNote(noteId, noteInitialProperties?.uploaded_by, newCategory, newSubject, newType, newDocName)
             .then(() => null)
             .catch((err) => console.error(err));
+          
           filterNotes();
         }}
         categories={categories.map((c) => ({ value: c.id, label: c.name }))}
         subjects={subjects.map((s) => ({ value: s.id, label: s.name }))}
         types={types.map((t) => ({ value: t.id, label: t.name }))}
+        
         category={noteInitialProperties ? noteInitialProperties.category : ""}
         subject={noteInitialProperties ? noteInitialProperties.subject : ""}
         type={noteInitialProperties ? noteInitialProperties.type : ""}
