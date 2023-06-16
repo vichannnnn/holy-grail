@@ -20,7 +20,6 @@ import AdminDeleteIcon from "../../components/AdminDeleteIcon/AdminDeleteIcon";
 import AdminEditIcon from "../../components/AdminEditIcon/AdminEditIcon";
 import { Box } from "@chakra-ui/react";
 
-
 const ApprovalTable = () => {
   const [notes, setNotes] = useState<PaginatedNotes>({
     items: [],
@@ -34,7 +33,8 @@ const ApprovalTable = () => {
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
 
   const [noteId, setNoteId] = useState<number | null>(null);
-  const [noteInitialProperties, setNoteInitialProperties] = useState<Note | null>(null);
+  const [noteInitialProperties, setNoteInitialProperties] =
+    useState<Note | null>(null);
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [subjects, setSubjects] = useState<SubjectType[]>([]);
   const [types, setTypes] = useState<DocumentType[]>([]);
@@ -209,26 +209,36 @@ const ApprovalTable = () => {
           }
         }}
       />
-      
+
       <EditModal
         isOpen={isEditOpen}
         onClose={() => setIsEditOpen(false)}
-        onConfirm={(newCategory: number|"", newSubject: number|"", newType:number|"", newDocName:string|"") => {
-          
-          updateNote(noteId, noteInitialProperties?.uploaded_by, newCategory, newSubject, newType, newDocName)
+        onConfirm={(
+          newCategory: number | "",
+          newSubject: number | "",
+          newType: number | "",
+          newDocName: string | ""
+        ) => {
+          updateNote(
+            noteId,
+            noteInitialProperties?.uploaded_by,
+            newCategory,
+            newSubject,
+            newType,
+            newDocName
+          )
             .then(() => filterNotes())
             .catch((err) => console.error(err));
-          
-          
         }}
         categories={categories.map((c) => ({ value: c.id, label: c.name }))}
         subjects={subjects.map((s) => ({ value: s.id, label: s.name }))}
         types={types.map((t) => ({ value: t.id, label: t.name }))}
-        
         category={noteInitialProperties ? noteInitialProperties.category : ""}
         subject={noteInitialProperties ? noteInitialProperties.subject : ""}
         type={noteInitialProperties ? noteInitialProperties.type : ""}
-        documentName={noteInitialProperties ? noteInitialProperties.document_name : ""}
+        documentName={
+          noteInitialProperties ? noteInitialProperties.document_name : ""
+        }
       />
     </>
   );

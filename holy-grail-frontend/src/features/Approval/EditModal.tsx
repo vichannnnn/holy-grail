@@ -1,9 +1,8 @@
 import React, { useRef } from "react";
 
-import Combobox, {ComboboxProps} from "../../features/Library/Combobox";
+import Combobox, { ComboboxProps } from "../../features/Library/Combobox";
 import { TextField } from "@mui/material";
 import {
-
   AlertDialog,
   AlertDialogBody,
   AlertDialogFooter,
@@ -14,15 +13,15 @@ import {
 } from "@chakra-ui/react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-
-
-
-
-
 interface EditModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onConfirm: (newCategory: number|"", newSubject: number|"", newType:number|"", newDocName:string|"") => void;
+  onConfirm: (
+    newCategory: number | "",
+    newSubject: number | "",
+    newType: number | "",
+    newDocName: string | ""
+  ) => void;
   categories: ComboboxProps["options"];
   subjects: ComboboxProps["options"];
   types: ComboboxProps["options"];
@@ -32,7 +31,7 @@ interface EditModalProps {
   documentName: string;
 }
 
-const EditModal: React.FC<EditModalProps>  = ({
+const EditModal: React.FC<EditModalProps> = ({
   isOpen,
   onClose,
   onConfirm,
@@ -46,15 +45,18 @@ const EditModal: React.FC<EditModalProps>  = ({
 }) => {
   const cancelRef = useRef<HTMLButtonElement | null>(null);
 
-  
-  const [newCategory, setNewCategory] = React.useState<number|"">("");
-  const [newSubject, setNewSubject] = React.useState<number|"">("");
-  const [newType, setNewType] = React.useState<number|"">("");
-  const [newDocName, setNewDocName] = React.useState<string|"">("");
+  const [newCategory, setNewCategory] = React.useState<number | "">("");
+  const [newSubject, setNewSubject] = React.useState<number | "">("");
+  const [newType, setNewType] = React.useState<number | "">("");
+  const [newDocName, setNewDocName] = React.useState<string | "">("");
 
   const muiTheme = createTheme();
   return (
-    <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
+    <AlertDialog
+      isOpen={isOpen}
+      leastDestructiveRef={cancelRef}
+      onClose={onClose}
+    >
       <AlertDialogOverlay>
         <AlertDialogContent>
           <AlertDialogHeader fontSize="lg" fontWeight="bold">
@@ -62,57 +64,62 @@ const EditModal: React.FC<EditModalProps>  = ({
           </AlertDialogHeader>
           <AlertDialogBody>
             <ThemeProvider theme={muiTheme}>
-              <TextField 
-                variant={"filled"} 
-                label={"Title"} 
-                value={newDocName || documentName} 
+              <TextField
+                variant={"filled"}
+                label={"Title"}
+                value={newDocName || documentName}
                 onChange={(e) => {
-                  setNewDocName(e.target.value)
+                  setNewDocName(e.target.value);
                 }}
-                sx={{marginBottom: "2%"}}
-                />
+                sx={{ marginBottom: "2%" }}
+              />
             </ThemeProvider>
 
             <Combobox
-              label="Category" 
+              label="Category"
               value={newCategory || category}
-              options={categories} 
+              options={categories}
               onChange={(newValue) => setNewCategory(newValue)}
-              extras={{disablePortal: true}}
-              style={{marginBottom: "2%"}}
+              extras={{ disablePortal: true }}
+              style={{ marginBottom: "2%" }}
             />
             <Combobox
-              label="Subject" 
+              label="Subject"
               value={newSubject || subject}
-              options={subjects} 
+              options={subjects}
               onChange={(newValue) => setNewSubject(newValue)}
-              extras={{disablePortal: true}}
-              style={{marginBottom: "2%"}}
+              extras={{ disablePortal: true }}
+              style={{ marginBottom: "2%" }}
             />
             <Combobox
-              label="Type" 
+              label="Type"
               value={newType || type}
-              options={types} 
+              options={types}
               onChange={(newValue) => setNewType(newValue)}
-              extras={{disablePortal: true}}
-              style={{marginBottom: "2%"}}
+              extras={{ disablePortal: true }}
+              style={{ marginBottom: "2%" }}
             />
           </AlertDialogBody>
           <AlertDialogFooter>
             <Button ref={cancelRef} onClick={onClose}>
               Cancel
             </Button>
-            <Button 
-            colorScheme="green" 
-            onClick={()=>{
-              setNewCategory('');
-              setNewSubject('');
-              setNewDocName('');
-              setNewType('');
-              onConfirm(newCategory || category, newSubject || subject, newType || type, newDocName || documentName);
-              onClose();
-            }} 
-            ml={3}
+            <Button
+              colorScheme="green"
+              onClick={() => {
+                setNewCategory("");
+                setNewSubject("");
+                setNewDocName("");
+                setNewType("");
+                onConfirm(
+                  newCategory || category,
+                  newSubject || subject,
+                  newType || type,
+                  newDocName || documentName
+                );
+                onClose();
+              }}
+              ml={3}
             >
               Save Changes
             </Button>

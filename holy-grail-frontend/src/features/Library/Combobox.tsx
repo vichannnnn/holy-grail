@@ -4,7 +4,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { CSSProperties } from "react";
 
 export interface Extras {
-  disablePortal?: boolean
+  disablePortal?: boolean;
 }
 export interface ComboboxProps {
   label: string;
@@ -21,7 +21,7 @@ const Combobox = ({
   onChange,
   options,
   style,
-  extras
+  extras,
 }: ComboboxProps) => {
   const muiTheme = createTheme();
   return (

@@ -115,7 +115,6 @@ const NotesTable = ({
                     position: "relative",
                   }}
                 >
-                  
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography
                       mb="5%"
@@ -157,7 +156,7 @@ const NotesTable = ({
                   {isAdmin && renderAdminActions && (
                     <Box
                       sx={{
-                        margin: "3%"
+                        margin: "3%",
                       }}
                     >
                       {renderAdminActions(note)}
