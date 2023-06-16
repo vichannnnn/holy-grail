@@ -115,20 +115,10 @@ const NotesTable = ({
                     position: "relative",
                   }}
                 >
-                  {isAdmin && renderAdminActions && (
-                    <Box
-                      sx={{
-                        position: "absolute",
-                        right: "5px",
-                        top: "10px",
-                      }}
-                    >
-                      {renderAdminActions(note)}
-                    </Box>
-                  )}
+                  
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography
-                      mb="10%"
+                      mb="5%"
                       component="div"
                       fontWeight="bold"
                       style={{
@@ -164,6 +154,15 @@ const NotesTable = ({
                       View PDF
                     </Link>
                   </Box>
+                  {isAdmin && renderAdminActions && (
+                    <Box
+                      sx={{
+                        margin: "3%"
+                      }}
+                    >
+                      {renderAdminActions(note)}
+                    </Box>
+                  )}
                 </Card>
               </Grid>
             ))}

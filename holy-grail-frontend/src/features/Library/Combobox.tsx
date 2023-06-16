@@ -9,6 +9,7 @@ export interface ComboboxProps {
   onChange: (newValue: number | "") => void;
   options: { value: number; label: string }[];
   style?: CSSProperties;
+  extras?: any; // extra properties to give to the combobox
 }
 
 const Combobox = ({
@@ -17,6 +18,7 @@ const Combobox = ({
   onChange,
   options,
   style,
+  extras
 }: ComboboxProps) => {
   const muiTheme = createTheme();
   return (
@@ -25,10 +27,12 @@ const Combobox = ({
         style={style}
         value={options.find((option) => option.value === value) || null}
         options={options}
-        onChange={(_, newValue) => onChange(newValue?.value || "")}
+        onChange={(_, newValue: any) => onChange(newValue?.value || "")}
+        // please help: i dont think i broke anything but why does typehinting newValue as any work?
         renderInput={(params) => <TextField {...params} label={label} />}
         isOptionEqualToValue={(option, value) => option.value === value?.value}
         getOptionLabel={(option) => option.label}
+        {...extras}
       />
     </ThemeProvider>
   );
