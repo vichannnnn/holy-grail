@@ -214,12 +214,12 @@ const ApprovalTable = () => {
         isOpen={isEditOpen}
         onClose={() => setIsEditOpen(false)}
         onConfirm={(newCategory: number|"", newSubject: number|"", newType:number|"", newDocName:string|"") => {
-          console.log(noteInitialProperties);
+          
           updateNote(noteId, noteInitialProperties?.uploaded_by, newCategory, newSubject, newType, newDocName)
-            .then(() => null)
+            .then(() => filterNotes())
             .catch((err) => console.error(err));
           
-          filterNotes();
+          
         }}
         categories={categories.map((c) => ({ value: c.id, label: c.name }))}
         subjects={subjects.map((s) => ({ value: s.id, label: s.name }))}
