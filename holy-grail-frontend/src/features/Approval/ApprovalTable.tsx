@@ -32,7 +32,7 @@ const ApprovalTable = () => {
   const [isAlertOpen, setIsAlertOpen] = useState<boolean>(false);
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
 
-  const [noteId, setNoteId] = useState<number | null>(null);
+  const [noteId, setNoteId] = useState<number>(0);
   const [noteInitialProperties, setNoteInitialProperties] =
     useState<Note | null>(null);
   const [categories, setCategories] = useState<CategoryType[]>([]);

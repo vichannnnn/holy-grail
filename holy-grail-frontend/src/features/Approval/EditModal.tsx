@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 
 import Combobox, { ComboboxProps } from "../../features/Library/Combobox";
 import { TextField } from "@mui/material";
@@ -31,7 +31,7 @@ interface EditModalProps {
   documentName: string;
 }
 
-const EditModal: React.FC<EditModalProps> = ({
+const EditModal = ({
   isOpen,
   onClose,
   onConfirm,
@@ -42,13 +42,13 @@ const EditModal: React.FC<EditModalProps> = ({
   subject,
   type,
   documentName,
-}) => {
+}: EditModalProps) => {
   const cancelRef = useRef<HTMLButtonElement | null>(null);
 
-  const [newCategory, setNewCategory] = React.useState<number | "">("");
-  const [newSubject, setNewSubject] = React.useState<number | "">("");
-  const [newType, setNewType] = React.useState<number | "">("");
-  const [newDocName, setNewDocName] = React.useState<string | "">("");
+  const [newCategory, setNewCategory] = useState<number | "">("");
+  const [newSubject, setNewSubject] = useState<number | "">("");
+  const [newType, setNewType] = useState<number | "">("");
+  const [newDocName, setNewDocName] = useState<string | "">("");
 
   const muiTheme = createTheme();
   return (

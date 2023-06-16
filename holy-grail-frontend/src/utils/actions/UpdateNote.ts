@@ -1,7 +1,7 @@
 import apiClient from "../../api/apiClient";
 
 const updateNote = async (
-  noteId: number | null,
+  noteId: number,
   uploaded_by: number | undefined,
   newCategory: number | "",
   newSubject: number | "",
