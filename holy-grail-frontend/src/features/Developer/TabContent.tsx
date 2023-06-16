@@ -61,7 +61,6 @@ export const TabContent = ({
         validData.slice(i, i + chunkSize)
       );
     };
-    console.log(pagedData);
     return pagedData;
   }
   
@@ -82,6 +81,8 @@ export const TabContent = ({
                 placeholder={`Search for ${title}`}
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                   setQuery(event.target.value);
+                  //go back to first page to prevent overflow
+                  setPage(0);
                   handleValidData();
                   
                 }}
@@ -103,6 +104,8 @@ export const TabContent = ({
             rowsPerPageOptions={[5,10,15,20]}
             onRowsPerPageChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               setChunkSize(parseInt(event.target.value));
+              //go back to first page to prevent overflow
+              setPage(0);
               handlePaging();
             }}
           /> 
