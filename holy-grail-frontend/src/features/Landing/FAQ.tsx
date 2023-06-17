@@ -8,7 +8,7 @@ const FAQ = () => {
   return (
     <div id="faq">
       <Text fontSize="5xl" fontWeight="bold" mt={["20%", "10%"]}>
-        FAQ's
+        FAQs
       </Text>
       <Text mt="3%">Need help? We've got you covered!</Text>
       <Flex align="center" justifyContent="center">
@@ -61,7 +61,7 @@ const FAQ = () => {
               <br></br>
               Do note that you can only upload PDF files and you will need an
               account to start uploading your notes. They will only be available
-              to public after approval.
+              to the public after approval.
             </Text>
           </FAQLine>
           <FAQLine question="Will the Holy Grail always be free?">
