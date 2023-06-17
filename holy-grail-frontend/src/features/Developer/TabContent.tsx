@@ -13,10 +13,9 @@ import {
   TableHead,
   TableRow,
   OutlinedInput,
-  TablePagination,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import React, { useState, ChangeEvent, MouseEvent } from "react";
+import { useState, ChangeEvent, MouseEvent } from "react";
 import { ChakraProvider, Flex } from "@chakra-ui/react";
 import { Pagination } from "../../components/Pagination/Pagination";
 
@@ -53,7 +52,6 @@ export const TabContent = ({
     return validData;
   };
 
-  //paginate data into chunks
   const handlePaging = () => {
     let pagedData: Array<Array<CategoryType | SubjectType | DocumentType>> = [];
     let validData: Array<CategoryType | SubjectType | DocumentType> =
@@ -90,7 +88,6 @@ export const TabContent = ({
             <TableCell colSpan={2}>
               <ChakraProvider>
                 <Pagination
-                  // page is 0 indexed, but Pagination component is 1 indexed
                   pageInfo={{
                     page: page + 1,
                     size: chunkSize,
