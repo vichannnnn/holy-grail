@@ -20,9 +20,9 @@ export const Pagination = ({
 
   return (
     <HStack
-      spacing={HStackStyles ? HStackStyles?.spacing : 4}
+      spacing={HStackStyles?.spacing ? HStackStyles.spacing : 4}
       justifyContent="center"
-      mt={HStackStyles ? HStackStyles?.mt : "10%"}
+      mt={HStackStyles?.mt ? HStackStyles.mt : "10%"}
     >
       <Button
         onClick={() => debouncedHandlePageChange(pageInfo.page - 1)}
