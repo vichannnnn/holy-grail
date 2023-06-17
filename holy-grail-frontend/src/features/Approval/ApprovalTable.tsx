@@ -6,14 +6,18 @@ import {
   SubjectType,
   DocumentType,
   PaginatedNotes,
+  Note,
 } from "../../utils/library/Search";
 import approveNote from "../../utils/actions/ApproveNote";
 import deleteNote from "../../utils/actions/DeleteNote";
+import updateNote from "../../utils/actions/UpdateNote";
 import DeleteAlert from "./DeleteAlert";
+import EditModal from "./EditModal";
 import NotesTable from "../../components/NotesTable/NotesTable";
 import AuthContext from "../../providers/AuthProvider";
 import AdminApproveIcon from "../../components/AdminApproveIcon/AdminApproveIcon";
 import AdminDeleteIcon from "../../components/AdminDeleteIcon/AdminDeleteIcon";
+import AdminEditIcon from "../../components/AdminEditIcon/AdminEditIcon";
 import { Box } from "@chakra-ui/react";
 
 const ApprovalTable = () => {
@@ -25,8 +29,12 @@ const ApprovalTable = () => {
     total: 0,
   });
   const { user } = useContext(AuthContext);
-  const [isAlertOpen, setIsAlertOpen] = useState(false);
-  const [noteId, setNoteId] = useState<number | null>(null);
+  const [isAlertOpen, setIsAlertOpen] = useState<boolean>(false);
+  const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
+
+  const [noteId, setNoteId] = useState<number>(0);
+  const [noteInitialProperties, setNoteInitialProperties] =
+    useState<Note | null>(null);
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [subjects, setSubjects] = useState<SubjectType[]>([]);
   const [types, setTypes] = useState<DocumentType[]>([]);
@@ -179,6 +187,13 @@ const ApprovalTable = () => {
                 setNoteId={setNoteId}
                 noteId={note.id}
               />
+              <AdminEditIcon
+                setIsEditOpen={setIsEditOpen}
+                setNoteId={setNoteId}
+                noteId={note.id}
+                noteProperties={note}
+                setNoteProperties={setNoteInitialProperties}
+              />
             </Box>
           ) : null
         }
@@ -193,6 +208,37 @@ const ApprovalTable = () => {
               .catch((err) => console.error(err));
           }
         }}
+      />
+
+      <EditModal
+        isOpen={isEditOpen}
+        onClose={() => setIsEditOpen(false)}
+        onConfirm={(
+          newCategory: number | "",
+          newSubject: number | "",
+          newType: number | "",
+          newDocName: string | ""
+        ) => {
+          updateNote(
+            noteId,
+            noteInitialProperties?.uploaded_by,
+            newCategory,
+            newSubject,
+            newType,
+            newDocName
+          )
+            .then(() => filterNotes())
+            .catch((err) => console.error(err));
+        }}
+        categories={categories.map((c) => ({ value: c.id, label: c.name }))}
+        subjects={subjects.map((s) => ({ value: s.id, label: s.name }))}
+        types={types.map((t) => ({ value: t.id, label: t.name }))}
+        category={noteInitialProperties ? noteInitialProperties.category : ""}
+        subject={noteInitialProperties ? noteInitialProperties.subject : ""}
+        type={noteInitialProperties ? noteInitialProperties.type : ""}
+        documentName={
+          noteInitialProperties ? noteInitialProperties.document_name : ""
+        }
       />
     </>
   );

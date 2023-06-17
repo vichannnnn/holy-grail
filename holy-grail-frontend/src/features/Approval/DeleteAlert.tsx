@@ -15,11 +15,7 @@ interface DeleteAlertProps {
   onConfirm: () => void;
 }
 
-const DeleteAlert: React.FC<DeleteAlertProps> = ({
-  isOpen,
-  onClose,
-  onConfirm,
-}) => {
+const DeleteAlert = ({ isOpen, onClose, onConfirm }: DeleteAlertProps) => {
   const cancelRef = useRef<HTMLButtonElement | null>(null);
 
   return (
