@@ -16,7 +16,7 @@ import PasswordValidationBox from "./PasswordValidationBox";
 import { Text } from "../../components/Text/Text";
 import { Title } from "../../components/Title/Title";
 import { AccountForm } from "../../components/AccountForm/AccountForm";
-import "../SignIn/login.css";
+import "../SignIn/login.css"
 
 const SignUpPage = () => {
   const [username, setUsername] = useState("");
@@ -116,9 +116,7 @@ const SignUpPage = () => {
     <section className="signup section container" id="signup">
       <AccountForm>
         <div className="login__title">Sign up</div>
-        <div className="section__subtitle">
-          Create an account to access all features.
-        </div>
+        <div className="section__subtitle">Create an account to access all features.</div>
 
         <form className="login__fields" onSubmit={handleRegister}>
           <VStack spacing="4">

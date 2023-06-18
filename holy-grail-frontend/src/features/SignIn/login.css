@@ -6,8 +6,6 @@
     padding-top: calc(var(--header-height) + 1rem);
 }
 
-<<<<<<< HEAD
-=======
 .login,
 .forgotPw {
     max-height: calc(80vh - var(--header-height));
@@ -16,7 +14,6 @@
 .resetPw {
     min-height: calc(80vh - var(--header-height));
 }
->>>>>>> bbe493b (new FE (desktop))
 
 .login__title {
     font-size: calc(var(--h2-font-size) * 1.5);

@@ -15,7 +15,7 @@ import PasswordValidationBox from "../SignUp/PasswordValidationBox";
 import { Text } from "../../components/Text/Text";
 import { Title } from "../../components/Title/Title";
 import { AccountForm } from "../../components/AccountForm/AccountForm";
-import "../SignIn/login.css";
+import "../SignIn/login.css"
 
 const ChangePasswordPage = () => {
   const [beforePassword, setBeforePassword] = useState("");
@@ -91,9 +91,7 @@ const ChangePasswordPage = () => {
     <section className="updatePw section container">
       <AccountForm>
         <div className="login__title">Update Password</div>
-        <div className="section__subtitle">
-          You can change your password here.
-        </div>
+        <div className="section__subtitle">You can change your password here.</div>
 
         <form onSubmit={handleUpdatePassword}>
           <VStack spacing="4">

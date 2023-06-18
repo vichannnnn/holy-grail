@@ -12,8 +12,10 @@ import {
 import { useNavigate } from "react-router-dom";
 import apiClient from "../../api/apiClient";
 import { AxiosError } from "axios";
+import { Text } from "../../components/Text/Text";
+import { Title } from "../../components/Title/Title";
 import { AccountForm } from "../../components/AccountForm/AccountForm";
-import "../SignIn/login.css";
+import "../SignIn/login.css"
 
 const ForgotPasswordPage = () => {
   const [email, setEmail] = useState("");
@@ -64,7 +66,9 @@ const ForgotPasswordPage = () => {
       <AccountForm>
         <div className="login__title">Forgot Password</div>
         <div className="section__subtitle">
-          Please enter the email you registered with to reset your password.
+          Please enter the email you registered with to
+          <br />
+          reset your password.
         </div>
 
         <form className="login__fields" onSubmit={handleResetPassword}>

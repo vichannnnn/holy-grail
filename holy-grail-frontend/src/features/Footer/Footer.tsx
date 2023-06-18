@@ -1,35 +1,37 @@
 import Logo from "../../assets/placeholder.svg";
 import { Link as RouterLink } from "react-router-dom";
-import "./footer.css";
+import "./footer.css"
 
 const Footer = () => {
   return (
-    <footer className="footer">
-      <div className="footer__container container">
-        <img className="footer__logoImg" src={Logo} alt="" />
-        <div className="footer__sectionContainer container grid">
-          <div className="footer__section">
-            <div className="footer__title">Information</div>
-            <div className="footer__content">
-              <RouterLink to="/#home">Home</RouterLink>
+      <footer className="footer">
+        <div className="footer__container container">
+          <img className="footer__logoImg" src={Logo} alt=""/>
+          <div className="footer__sectionContainer container grid">
+            <div className="footer__section">
+              <div className="footer__title">Information</div>
+              <div className="footer__content">
+                <RouterLink to="/#home">Home</RouterLink>
+              </div>
+              <div className="footer__content">
+                <RouterLink to="/#library">Library</RouterLink>
+              </div>
+              <div className="footer__content">
+                <RouterLink to="/#FAQ">FAQ</RouterLink>
+              </div>
             </div>
-            <div className="footer__content">
-              <RouterLink to="/#library">Library</RouterLink>
-            </div>
-            <div className="footer__content">
-              <RouterLink to="/#FAQ">FAQ</RouterLink>
+            <div className="footer__section">
+              <div className="footer__title">Account</div>
+              <div className="footer__content">
+                <RouterLink to="/login">Log In</RouterLink>
+              </div>
             </div>
           </div>
-          <div className="footer__section">
-            <div className="footer__title">Account</div>
-            <div className="footer__content">
-              <RouterLink to="/login">Log In</RouterLink>
-            </div>
-          </div>
+          <span className="footer__copy">
+            &#169; 2023 Holy Grail Team
+          </span>
         </div>
-        <span className="footer__copy">&#169; 2023 Holy Grail Team</span>
-      </div>
-    </footer>
+      </footer>
     // <div align="center">
     //   <Image src={GrailLogo} alt="" mb="3%" mt="3%" w={["15%", "5%"]} />
     //   <Flex justifyContent="space-between" alignItems="start" maxWidth="80%">

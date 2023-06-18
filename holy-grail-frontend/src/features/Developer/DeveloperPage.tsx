@@ -1,6 +1,6 @@
 import DeveloperScreen from "./DeveloperScreen";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import "./developer.css";
+import "./developer.css"
 
 const DeveloperPage = () => {
   const muiTheme = createTheme();
