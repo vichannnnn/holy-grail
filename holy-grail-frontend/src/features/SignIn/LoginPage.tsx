@@ -14,7 +14,7 @@ import AuthContext from "../../providers/AuthProvider";
 import { Title } from "../../components/Title/Title";
 import { Text } from "../../components/Text/Text";
 import { AccountForm } from "../../components/AccountForm/AccountForm";
-import "./login.css"
+import "./login.css";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
@@ -63,7 +63,9 @@ const LoginPage = () => {
     <section className="login section container" id="login">
       <AccountForm>
         <div className="login__title">Log in</div>
-        <div className="section__subtitle">Enter your credentials to access your account.</div>
+        <div className="section__subtitle">
+          Enter your credentials to access your account.
+        </div>
 
         <form className="login__fields" onSubmit={handleLogin}>
           <VStack spacing="6">
@@ -94,9 +96,9 @@ const LoginPage = () => {
           <div className="login__footer">
             Forgot your password?{" "}
             <Link
-                as="button"
-                onClick={handleForgotPassword}
-                textDecoration="underline"
+              as="button"
+              onClick={handleForgotPassword}
+              textDecoration="underline"
             >
               Click here.
             </Link>

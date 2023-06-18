@@ -5,7 +5,7 @@ import { ComboboxProps } from "../../features/Library/Combobox";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Pagination } from "../Pagination/Pagination";
 import { useMediaQuery } from "react-responsive";
-import "../../features/Library/library.css"
+import "../../features/Library/library.css";
 
 interface NotesTableProps {
   notes: Note[];
@@ -58,11 +58,7 @@ const NotesTable = ({
   return (
     <Box>
       <ThemeProvider theme={muiTheme}>
-        <Box
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-        >
+        <Box display="flex" flexDirection="column" alignItems="center">
           <Box
             display="flex"
             flexDirection={isMobile ? "column" : "row"}
