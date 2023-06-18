@@ -205,14 +205,8 @@ const Header = () => {
               <RouterLink to="/">
                 <MenuItem>Home</MenuItem>
               </RouterLink>
-              <RouterLink to="/#about">
-                <MenuItem>About</MenuItem>
-              </RouterLink>
               <RouterLink to="/#library">
                 <MenuItem>Library</MenuItem>
-              </RouterLink>
-              <RouterLink to="/#features">
-                <MenuItem>Features</MenuItem>
               </RouterLink>
               <RouterLink to="/#faq">
 >>>>>>> bbe493b (new FE (desktop))

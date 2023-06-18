@@ -95,8 +95,6 @@ img {
   height: auto;
 }
 
-<<<<<<< HEAD
-=======
 /* reusable classes */
 .wave {
   animation-name: wave-animation;  /* Refers to the name of your @keyframes element below */
@@ -118,7 +116,6 @@ img {
   100% { transform: rotate( 0.0deg) }
 }
 
->>>>>>> bbe493b (new FE (desktop))
 .hr.horizontal-divider {
   border-top: 3px solid var(--alt-color)
 }
@@ -187,7 +184,6 @@ img {
   color: var(--text-color);
 }
 
-<<<<<<< HEAD
 .text__link {
   font-weight: var(--font-semi-bold);
   color: steelblue;
@@ -198,8 +194,6 @@ img {
   cursor: pointer;
 }
 
-=======
->>>>>>> bbe493b (new FE (desktop))
 /* layout */
 .container {
   max-width: 1440px;
@@ -252,8 +246,5 @@ img {
   :root {
     --h1-font-size: 2rem;
     --normal-font-size: 0.95rem;
-  }
-  .bold-text {
-    margin-top: 1rem;
   }
 }

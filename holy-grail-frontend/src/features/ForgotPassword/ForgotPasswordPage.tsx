@@ -61,7 +61,6 @@ const ForgotPasswordPage = () => {
         <div className="login__title">Forgot Password</div>
         <div className="section__subtitle">
           Please enter the email you registered with to
-          <br />
           reset your password.
         </div>
 

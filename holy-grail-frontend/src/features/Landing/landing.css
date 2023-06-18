@@ -4,17 +4,7 @@
 
 .library,
 .faq {
-<<<<<<< HEAD
     padding-top: calc(var(--header-height) + 2rem);
-=======
-    padding-top: calc(var(--header-height) + 1rem);
-}
-
-.library__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
->>>>>>> bbe493b (new FE (desktop))
 }
 
 .faq__container {
@@ -34,19 +24,9 @@
     margin-top: 0.5rem;
 }
 
-<<<<<<< HEAD
 @media screen and (max-width: 1080px) {
     .faq__container {
         padding-top: 2rem;
         grid-template-columns: repeat(1, 1fr);
     }
-=======
-.faq__link {
-    font-weight: var(--font-semi-bold);
-    color: steelblue;
-}
-
-.faq__link:hover {
-    text-decoration: underline;
->>>>>>> bbe493b (new FE (desktop))
 }
