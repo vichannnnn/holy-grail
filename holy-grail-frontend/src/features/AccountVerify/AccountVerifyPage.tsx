@@ -64,7 +64,7 @@ const VerifyAccountPage = () => {
   return (
     <section className="resetPw section container">
       <div>
-        <div className="resetPw__title">Account Verification</div>
+        <div className="login__title">Account Verification</div>
 
         {resetStatus ? (
             <div className="section__subtitle">
