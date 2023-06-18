@@ -19,6 +19,7 @@ import { useContext } from "react";
 import AuthContext from "../../providers/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
+import "./upload.css"
 
 const UploadPage = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -130,75 +131,78 @@ const UploadPage = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <VStack spacing={6} w="80%" align="center" mx="auto" mb="30%">
-        <Heading mt={8} size="xl">
-          Upload Notes
-        </Heading>
+    <section className="upload section container">
+      <form onSubmit={handleSubmit}>
+        <div className="section__title">Upload Materials</div>
+        <div className="section__subtitle">
+          Upload your materials here! All submitted materials will be reviewed
+          before being published to the Holy Grail.
+        </div>
+        <div className="upload__file">
+          <Button onClick={handleButtonClick} colorScheme="blue">
+            Upload File
+          </Button>
+          <Text>{fileName || "No file chosen"}</Text>
+        </div>
+        <div className="upload__filter grid">
+          <Combobox
+            label="Category"
+            value={category !== "" ? Number(category) : ""}
+            style={{ width: "90%" }}
+            onChange={(newValue) => setCategory(Number(newValue))}
+            options={categories.map((category) => ({
+              value: category.id,
+              label: category.name,
+            }))}
+          />
 
-        <Combobox
-          label="Category"
-          value={category !== "" ? Number(category) : ""}
-          style={{ width: isMobile ? "90%" : "30%" }}
-          onChange={(newValue) => setCategory(Number(newValue))}
-          options={categories.map((category) => ({
-            value: category.id,
-            label: category.name,
-          }))}
-        />
+          <Combobox
+            label="Subject"
+            value={subject !== "" ? Number(subject) : ""}
+            style={{ width: "90%" }}
+            onChange={(newValue) => setSubject(Number(newValue))}
+            options={subjects.map((subject) => ({
+              value: subject.id,
+              label: subject.name,
+            }))}
+          />
 
-        <Combobox
-          label="Subject"
-          value={subject !== "" ? Number(subject) : ""}
-          style={{ width: isMobile ? "90%" : "30%" }}
-          onChange={(newValue) => setSubject(Number(newValue))}
-          options={subjects.map((subject) => ({
-            value: subject.id,
-            label: subject.name,
-          }))}
-        />
+          <Combobox
+            label="Type"
+            value={type !== "" ? Number(type) : ""}
+            style={{ width: "90%" }}
+            onChange={(newValue) => setType(Number(newValue))}
+            options={types.map((type) => ({
+              value: type.id,
+              label: type.name,
+            }))}
+          />
+        </div>
+        <div className="upload__docName">
+          <Input
+            value={documentName || ""}
+            onChange={handleNameChange}
+            placeholder="Enter document name"
+            required={true}
+            minLength={4}
+            maxLength={100}
+          />
 
-        <Combobox
-          label="Type"
-          value={type !== "" ? Number(type) : ""}
-          style={{ width: isMobile ? "90%" : "30%" }}
-          onChange={(newValue) => setType(Number(newValue))}
-          options={types.map((type) => ({
-            value: type.id,
-            label: type.name,
-          }))}
-        />
-
-        <Input
-          width={isMobile ? "90%" : "30%"}
-          value={documentName || ""}
-          onChange={handleNameChange}
-          placeholder="Enter document name"
-          required={true}
-          minLength={4}
-          maxLength={100}
-        />
-
-        <input
-          ref={inputFileRef}
-          width={isMobile ? "90%" : "30%"}
-          type="file"
-          accept="application/pdf"
-          // , text/plain, application/vnd.openxmlformats-officedocument.wordprocessingml.document
-          onChange={handleFileChange}
-          style={{ display: "none" }}
-        />
-
-        <Button onClick={handleButtonClick} colorScheme="blue">
-          Upload File
-        </Button>
-        <Text>{fileName || "No file chosen"}</Text>
-
-        <Button colorScheme="blue" type="submit">
-          Submit
-        </Button>
-      </VStack>
-    </form>
+          <input
+            ref={inputFileRef}
+            width={isMobile ? "90%" : "30%"}
+            type="file"
+            accept="application/pdf"
+            // , text/plain, application/vnd.openxmlformats-officedocument.wordprocessingml.document
+            onChange={handleFileChange}
+            style={{ display: "none" }}
+          />
+        </div>
+          <Button colorScheme="blue" type="submit">
+            Submit
+          </Button>
+      </form>
+    </section>
   );
 };
 

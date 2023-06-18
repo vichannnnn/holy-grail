@@ -27,12 +27,12 @@ const AddModal = ({ isOpen, onClose, onSubmit }: AddModalProps) => {
     <Dialog open={isOpen} onClose={onClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Add</DialogTitle>
       <DialogContent>
-        <DialogContentText>Please enter the new name.</DialogContentText>
+        <DialogContentText>Please enter the new identifier.</DialogContentText>
         <TextField
           autoFocus
           margin="dense"
           id="name"
-          label="Name"
+          label="Identifier"
           type="text"
           fullWidth
           value={name}

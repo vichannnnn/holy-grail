@@ -5,6 +5,7 @@ import { Text } from "../../components/Text/Text";
 import { verifyAccount } from "../../utils/auth/VerifyAccount";
 import { Link, useToast } from "@chakra-ui/react";
 import { resendVerificationEmail } from "../../utils/auth/ResendVerificationEmail";
+import "../SignIn/login.css"
 
 const VerifyAccountPage = () => {
   const [token, setToken] = useState<string | null>(null);
@@ -61,26 +62,29 @@ const VerifyAccountPage = () => {
   };
 
   return (
-    <>
-      <Title mt="15%">Account Verification</Title>
+    <section className="resetPw section container">
+      <div>
+        <div className="resetPw__title">Account Verification</div>
 
-      {resetStatus ? (
-        <Text mt="10%" mb="15%">
-          {resetStatus}
-        </Text>
-      ) : isFailed ? (
-        <Text mt="10%" mb="15%">
-          The account verification link is invalid or has expired. Please click{" "}
-          <Link
-            onClick={handleResendVerificationEmail}
-            textDecoration="underline"
-          >
-            here
-          </Link>{" "}
-          to send another verification email.
-        </Text>
-      ) : null}
-    </>
+        {resetStatus ? (
+            <div className="section__subtitle">
+              {resetStatus}
+            </div>
+        ) : isFailed ? (
+            <div className="section__subtitle">
+              The account verification link is invalid or has expired. Please click{" "}
+              <Link
+                  as="button"
+                  onClick={handleResendVerificationEmail}
+                  textDecoration="underline"
+              >
+                here
+              </Link>{" "}
+              to send another verification email.
+            </div>
+        ) : null}
+      </div>
+    </section>
   );
 };
 

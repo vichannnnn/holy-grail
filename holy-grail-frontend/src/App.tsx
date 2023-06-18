@@ -17,16 +17,19 @@ import ForgotPasswordPage from "./features/ForgotPassword/ForgotPasswordPage";
 import ResetPasswordPage from "./features/ResetPassword/ResetPasswordPage";
 import AccountVerifyPage from "./features/AccountVerify/AccountVerifyPage";
 
+import Header from "./features/Header/Header";
+
 function App() {
   return (
     <AuthProvider>
       <ChakraProvider>
         <Router>
-          <NavBar />
+          <Header />
+          {/*<NavBar />*/}
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/library" element={<Library />} />
+            {/*<Route path="/library" element={<Library />} />*/}
             <Route path="/register" element={<SignUpPage />} />
             <Route path="/upload" element={<UploadPage />} />
             <Route path="/admin" element={<ApprovalPage />} />

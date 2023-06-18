@@ -1,0 +1,23 @@
+.upload {
+    padding-top: calc(var(--header-height) + 3rem);
+    min-height: calc(70vh - var(--header-height));
+    display: flex;
+    justify-content: center;
+}
+
+.upload__file {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.upload__filter {
+    grid-template-columns: repeat(3, 1fr);
+    padding: 2rem 0;
+    display: flex;
+    justify-content: center;
+}
+
+.upload__docName {
+    padding-bottom: 2rem;
+}
