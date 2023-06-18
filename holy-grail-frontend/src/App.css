@@ -1,8 +1,199 @@
-#root {
-    text-align: center;
-    background-color: white;
-    min-width: 100%;
-    box-sizing: border-box;
+/* font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+:root {
+  --header-height: 3rem;
+
+  /* colors */
+  --hue: 0;
+  --sat: 0%;
+  --title-color: hsl(var(--hue), var(--sat), 20%);
+  --title-color-dark: hsl(var(--hue), var(--sat), 0%);
+  --text-color: hsl(var(--hue), var(--sat), 30%);
+  --body-color: hsl(var(--hue), var(--sat), 98%);
+  --alt-color: hsl(var(--hue), var(--sat), 50%);
+  --container-color: #FFFFFF;
+
+  /* font */
+  --body-font: "Poppins", sans-serif;
+
+  --big-font-size: 3.5rem;
+  --h1-font-size: 2.25rem;
+  --h2-font-size: 1.75rem;
+  --h3-font-size: 1.25rem;
+  --normal-font-size: 1rem;
+  --small-font-size: 0.875rem;
+  --smaller-font-size: 0.813rem;
+  --tiny-font-size: 0.625rem;
+
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semi-bold: 600;
+
+  --mb-0-25: 0.25rem;
+  --mb-0-5: 0.5rem;
+  --mb-0-75: 0.75rem;
+  --mb-1: 1rem;
+  --mb-1-5: 1.5rem;
+  --mb-2: 2rem;
+  --mb-2-5: 2.5rem;
+  --mb-3: 3rem;
+
+  --z-tooltip: 10;
+  --z-fixed: 100;
+  --z-modal: 1000;
+}
+
+*:not(span) {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a {
+  color: var(--title-color);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body,
+button,
+input,
+textarea {
+  font-family: var(--body-font);
+  font-size: var(--normal-font-size);
+}
+
+body {
+  background-color: var(--body-color);
+  color: var(--text-color)
+}
+
+h1, h2, h3 {
+  color: var(--title-color);
+  font-weight: var(--font-semi-bold);
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* reusable classes */
+.wave {
+  animation-name: wave-animation;  /* Refers to the name of your @keyframes element below */
+  animation-duration: 2.5s;        /* Change to speed up or slow down */
+  animation-iteration-count: infinite;  /* Never stop waving :) */
+  transform-origin: 70% 70%;       /* Pivot around the bottom-left palm */
+  display: inline-block;
+  margin-top: 2rem;
+}
+
+@keyframes wave-animation {
+  0% { transform: rotate( 0.0deg) }
+  10% { transform: rotate(14.0deg) }  /* The following five values can be played with to make the waving more or less extreme */
+  20% { transform: rotate(-8.0deg) }
+  30% { transform: rotate(14.0deg) }
+  40% { transform: rotate(-4.0deg) }
+  50% { transform: rotate(10.0deg) }
+  60% { transform: rotate( 0.0deg) }  /* Reset for the last half to pause */
+  100% { transform: rotate( 0.0deg) }
+}
+
+.hr.horizontal-divider {
+  border-top: 3px solid var(--alt-color)
+}
+
+.text-underline {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+}
+
+.bold-text {
+  font-weight: var(--font-semi-bold);
+  font-size: var(--normal-font-size);
+}
+
+.section {
+  padding: 0 2rem;
+}
+
+.section__title {
+  font-size: var(--h1-font-size);
+  color: var(--title-color);
+  font-weight: var(--font-semi-bold);
+}
+
+.section__subtitle {
+  display: block;
+  font-size: var(--normal-font-size);
+  color: var(--alt-color);
+  margin-bottom: 2%;
+}
+
+.sub-section__title {
+  font-size: var(--h2-font-size);
+  font-weight: var(--font-semi-bold);
+}
+
+.section__title,
+.section__subtitle,
+.sub-section__title {
+  margin-left: auto;
+  text-align: left;
+}
+
+.img-caption {
+  margin-top: 2rem;
+  text-align: center;
+}
+.caption__content,
+.caption__title {
+  width: 100%;
+}
+.caption__title {
+  font-weight: var(--font-semi-bold);
+}
+.caption__content {
+  font-size: var(--small-font-size);
+}
+.caption__title,
+.caption__content {
+  display: inline-block;
+  margin: 0 auto;
+}
+
+.button-text {
+  font-weight: var(--font-semi-bold);
+  color: var(--text-color);
+}
+
+/* layout */
+.container {
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.grid {
+  display: grid;
+  gap: 1.5rem;
 }
 
 .logo {

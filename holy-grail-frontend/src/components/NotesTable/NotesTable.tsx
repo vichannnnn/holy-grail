@@ -5,6 +5,8 @@ import { ComboboxProps } from "../../features/Library/Combobox";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Pagination } from "../Pagination/Pagination";
 import { useMediaQuery } from "react-responsive";
+import "../../features/Library/library.css"
+
 interface NotesTableProps {
   notes: Note[];
   categories: ComboboxProps["options"];
@@ -60,18 +62,16 @@ const NotesTable = ({
           display="flex"
           flexDirection="column"
           alignItems="center"
-          mr="auto"
-          ml="auto"
-          sx={{ width: "80%" }}
         >
           <Box
             display="flex"
             flexDirection={isMobile ? "column" : "row"}
-            justifyContent="space-around"
             gap={2}
             marginBottom={2}
-            sx={{ width: "90%" }}
+            sx={{ width: "100%" }}
+            alignItems="center"
           >
+            <div className="bold-text">Filter By:</div>
             <Combobox
               label="Category"
               value={category}
@@ -80,7 +80,7 @@ const NotesTable = ({
                 handlePageChange(1);
               }}
               options={categories}
-              style={{ width: isMobile ? "100%" : "30%" }}
+              style={{ width: isMobile ? "100%" : "15%" }}
             />
             <Combobox
               label="Subject"
@@ -90,7 +90,7 @@ const NotesTable = ({
                 handlePageChange(1);
               }}
               options={subjects}
-              style={{ width: isMobile ? "100%" : "30%" }}
+              style={{ width: isMobile ? "100%" : "15%" }}
             />
             <Combobox
               label="Type"
@@ -100,7 +100,7 @@ const NotesTable = ({
                 handlePageChange(1);
               }}
               options={types}
-              style={{ width: isMobile ? "100%" : "30%" }}
+              style={{ width: isMobile ? "100%" : "15%" }}
             />
           </Box>
           <Grid container mt="3%" spacing={2} sx={{ width: "90%" }}>

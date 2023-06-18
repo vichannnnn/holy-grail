@@ -1,0 +1,8 @@
+.MuiInputBase-input  {
+    height: var(--tiny-font-size) !important;
+}
+.MuiFormLabel-root {
+    font-size: var(--small-font-size) !important;
+    text-align: center !important;
+    top: -8% !important;
+}

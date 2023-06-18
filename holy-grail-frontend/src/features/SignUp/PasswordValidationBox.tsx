@@ -24,7 +24,7 @@ const PasswordValidationBox: React.FC<PasswordValidationBoxProps> = ({
         color={valid ? "green.500" : "red.500"}
         mr={2}
       />
-      <Text>{message}</Text>
+      <div className="signup__validation">{message}</div>
     </HStack>
   );
 
@@ -39,6 +39,7 @@ const PasswordValidationBox: React.FC<PasswordValidationBoxProps> = ({
       maxWidth="400px"
       margin="0 auto"
     >
+      <div className="password__validation">Password check:</div>
       <VStack align="start" spacing={1}>
         {renderValidationMessage(lengthValid, "Between 8 and 30 characters.")}
         {renderValidationMessage(

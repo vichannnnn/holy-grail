@@ -1,6 +1,7 @@
 import Hero from "./Hero";
 import Features from "./Features";
 import About from "./About";
+import LibraryNew from "../Library/LibraryNew"
 import FAQ from "./FAQ";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
@@ -23,7 +24,8 @@ const LandingPage = () => {
     <>
       <Hero />
       {/*<About />*/}
-      <Features />
+      <LibraryNew />
+      {/*<Features />*/}
       <FAQ />
     </>
   );
