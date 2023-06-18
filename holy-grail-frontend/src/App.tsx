@@ -1,9 +1,7 @@
 import "./App.css";
 import { ChakraProvider } from "@chakra-ui/react";
-import NavBar from "./features/NavBar/NavBar";
 import LoginPage from "./features/SignIn/LoginPage";
 import LandingPage from "./features/Landing/LandingPage";
-import Library from "./features/Library/Library";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Footer from "./features/Footer/Footer";
 import SignUpPage from "./features/SignUp/SignUpPage";

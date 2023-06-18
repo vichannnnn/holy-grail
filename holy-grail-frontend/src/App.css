@@ -184,6 +184,16 @@ img {
   color: var(--text-color);
 }
 
+.text__link {
+  font-weight: var(--font-semi-bold);
+  color: steelblue;
+}
+
+.text__link:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 /* layout */
 .container {
   max-width: 1440px;
@@ -229,5 +239,12 @@ img {
 @media (prefers-reduced-motion: no-preference) {
   a:nth-of-type(2) .logo {
     animation: logo-spin infinite 20s linear;
+  }
+}
+
+@media screen and (max-width: 1080px) {
+  :root {
+    --h1-font-size: 2rem;
+    --normal-font-size: 0.95rem;
   }
 }
