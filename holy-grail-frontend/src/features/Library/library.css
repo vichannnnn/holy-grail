@@ -6,3 +6,16 @@
     text-align: center !important;
     top: -8% !important;
 }
+.MuiGrid-root {
+    width: 100% !important;
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 16px !important;
+    text-align: center !important;
+}
+
+@media screen and (max-width: 1080px) {
+    .MuiGrid-root {
+        padding-right: 0 !important;
+    }
+}

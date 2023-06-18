@@ -12,8 +12,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import apiClient from "../../api/apiClient";
 import { AxiosError } from "axios";
-import { Text } from "../../components/Text/Text";
-import { Title } from "../../components/Title/Title";
 import { AccountForm } from "../../components/AccountForm/AccountForm";
 import "../SignIn/login.css";
 
