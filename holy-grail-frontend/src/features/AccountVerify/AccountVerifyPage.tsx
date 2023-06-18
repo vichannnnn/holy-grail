@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { Title } from "../../components/Title/Title";
-import { Text } from "../../components/Text/Text";
 import { verifyAccount } from "../../utils/auth/VerifyAccount";
 import { Link, useToast } from "@chakra-ui/react";
 import { resendVerificationEmail } from "../../utils/auth/ResendVerificationEmail";

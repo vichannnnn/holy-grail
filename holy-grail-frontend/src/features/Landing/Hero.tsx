@@ -10,7 +10,7 @@ const Hero = () => {
       <div className="section__title">
         <span>Hello</span>
         {user ? (
-          <span>{user.username}, welcome back to the Holy Grail</span>
+          <span> {user.username}, welcome back to the Holy Grail</span>
         ) : (
           <span>, welcome to the Holy Grail</span>
         )}

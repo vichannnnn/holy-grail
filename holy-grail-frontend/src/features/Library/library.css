@@ -5,7 +5,6 @@
     font-size: var(--small-font-size) !important;
     text-align: center !important;
     top: -8% !important;
-<<<<<<< HEAD
 }
 .MuiGrid-root {
     width: 100% !important;
@@ -15,30 +14,8 @@
     text-align: center !important;
 }
 
-.table__header {
-    font-weight: var(--font-semi-bold) !important;
-}
-
-.table__header,
-.table__content {
-    padding-left: 0 !important;
-}
-
-.table__content1 {
-    margin: auto 0;
-    font-weight: var(--font-semi-bold);
-}
-
-.table__notes-card {
-    padding: 0.3rem !important;
-    display: flex;
-    justify-content: center !important;
-}
-
 @media screen and (max-width: 1080px) {
     .MuiGrid-root {
         padding-right: 0 !important;
     }
-=======
->>>>>>> bbe493b (new FE (desktop))
 }
