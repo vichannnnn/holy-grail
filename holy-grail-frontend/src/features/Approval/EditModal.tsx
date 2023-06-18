@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 
 import Combobox, { ComboboxProps } from "../../features/Library/Combobox";
 import { TextField } from "@mui/material";
@@ -50,6 +50,13 @@ const EditModal = ({
   const [newType, setNewType] = useState<number | "">("");
   const [newDocName, setNewDocName] = useState<string | "">("");
 
+  useEffect(() => {
+    setNewCategory(category);
+    setNewSubject(subject);
+    setNewType(type);
+    setNewDocName(documentName);
+  }, [isOpen]);
+
   const muiTheme = createTheme();
   return (
     <AlertDialog
@@ -67,7 +74,7 @@ const EditModal = ({
               <TextField
                 variant={"filled"}
                 label={"Title"}
-                value={newDocName || documentName}
+                value={newDocName}
                 onChange={(e) => {
                   setNewDocName(e.target.value);
                 }}
@@ -77,7 +84,7 @@ const EditModal = ({
 
             <Combobox
               label="Category"
-              value={newCategory || category}
+              value={newCategory}
               options={categories}
               onChange={(newValue) => setNewCategory(newValue)}
               extras={{ disablePortal: true }}
@@ -85,7 +92,7 @@ const EditModal = ({
             />
             <Combobox
               label="Subject"
-              value={newSubject || subject}
+              value={newSubject}
               options={subjects}
               onChange={(newValue) => setNewSubject(newValue)}
               extras={{ disablePortal: true }}
@@ -93,7 +100,7 @@ const EditModal = ({
             />
             <Combobox
               label="Type"
-              value={newType || type}
+              value={newType}
               options={types}
               onChange={(newValue) => setNewType(newValue)}
               extras={{ disablePortal: true }}
@@ -111,12 +118,7 @@ const EditModal = ({
                 setNewSubject("");
                 setNewDocName("");
                 setNewType("");
-                onConfirm(
-                  newCategory || category,
-                  newSubject || subject,
-                  newType || type,
-                  newDocName || documentName
-                );
+                onConfirm(newCategory, newSubject, newType, newDocName);
                 onClose();
               }}
               ml={3}
