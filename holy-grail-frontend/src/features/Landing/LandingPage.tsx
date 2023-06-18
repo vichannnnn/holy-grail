@@ -1,5 +1,5 @@
 import Hero from "./Hero";
-import Library from "../Library/Library"
+import Library from "../Library/Library";
 import FAQ from "./FAQ";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";

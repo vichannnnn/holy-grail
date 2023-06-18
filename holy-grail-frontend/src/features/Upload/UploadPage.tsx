@@ -19,7 +19,7 @@ import { useContext } from "react";
 import AuthContext from "../../providers/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
-import "./upload.css"
+import "./upload.css";
 
 const UploadPage = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -198,9 +198,9 @@ const UploadPage = () => {
             style={{ display: "none" }}
           />
         </div>
-          <Button colorScheme="blue" type="submit">
-            Submit
-          </Button>
+        <Button colorScheme="blue" type="submit">
+          Submit
+        </Button>
       </form>
     </section>
   );
