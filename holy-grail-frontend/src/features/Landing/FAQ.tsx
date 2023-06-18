@@ -1,11 +1,21 @@
-import { Accordion, Flex } from "@chakra-ui/react";
-import FAQLine from "./FAQLine";
-import { Text } from "../../components/Text/Text";
-import { TextLink } from "../../components/TextLink/TextLink";
-import { Link as RouterLink } from "react-router-dom";
+import {Link as RouterLink, useNavigate} from "react-router-dom";
 import "./landing.css"
+import {useContext} from "react";
+import AuthContext from "../../providers/AuthProvider";
 
 const FAQ = () => {
+
+  const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
+
+  const handleUploadButtonClick = () => {
+    if (user) {
+      navigate("/upload");
+    } else {
+      navigate("/login");
+    }
+  };
+
   return (
     <section className="faq section container" id="faq">
       <div className="sub-section__title">Frequently Asked Questions</div>
@@ -32,7 +42,7 @@ const FAQ = () => {
           <div className="faq__qn">How do I use the Holy Grail?</div>
           <p className="faq__ans">
             You can access the resources uploaded at the{" "}
-            <RouterLink to="/#library" className="faq__link">
+            <RouterLink to="/#library" className="text__link">
               Library
             </RouterLink>
             {" "}above this section. Anyone is able to freely access
@@ -43,9 +53,9 @@ const FAQ = () => {
           <div className="faq__qn">How can I contribute my materials?</div>
           <p className="faq__ans">
             You can upload the notes that you want to share over{" "}
-            <RouterLink to="/upload" className="faq__link">
+            <a onClick={handleUploadButtonClick} className="text__link">
               here
-            </RouterLink>.
+            </a>.
             Do note that you can only upload PDF files and you will
             need an account to start uploading your notes. They will
             only be available to the public after approval.
