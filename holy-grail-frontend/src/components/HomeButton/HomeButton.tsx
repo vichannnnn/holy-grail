@@ -41,9 +41,7 @@ export const HomeButton = forwardRef<
         h="40px"
         {...props}
       >
-        <div className="button-text">
-          {children}
-        </div>
+        <div className="button-text">{children}</div>
       </Button>
     </>
   );
