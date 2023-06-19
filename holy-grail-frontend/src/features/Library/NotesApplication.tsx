@@ -16,7 +16,7 @@ import deleteNote from "../../utils/actions/DeleteNote";
 import updateNote from "../../utils/actions/UpdateNote";
 import AdminDeleteIcon from "../../components/AdminDeleteIcon/AdminDeleteIcon";
 import AdminEditIcon from "../../components/AdminEditIcon/AdminEditIcon";
-import { Box } from "@chakra-ui/react";
+import { Box } from "@mui/material";
 
 const NotesApplication = () => {
   const [notes, setNotes] = useState<PaginatedNotes>({
