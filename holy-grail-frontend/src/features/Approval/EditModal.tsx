@@ -1,17 +1,17 @@
 import { useRef, useState, useEffect } from "react";
 
 import Combobox, { ComboboxProps } from "../../features/Library/Combobox";
-import { TextField } from "@mui/material";
 import {
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogContent,
-  AlertDialogOverlay,
+  TextField,
+  Modal,
+  Box,
   Button,
-} from "@chakra-ui/react";
+  Typography,
+  Tooltip,
+} from "@mui/material";
+
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { size } from "lodash";
 
 interface EditModalProps {
   isOpen: boolean;
@@ -57,78 +57,130 @@ const EditModal = ({
     setNewDocName(documentName);
   }, [isOpen]);
 
-  const muiTheme = createTheme();
-  return (
-    <AlertDialog
-      isOpen={isOpen}
-      leastDestructiveRef={cancelRef}
-      onClose={onClose}
-    >
-      <AlertDialogOverlay>
-        <AlertDialogContent>
-          <AlertDialogHeader fontSize="lg" fontWeight="bold">
-            Edit Note Properties
-          </AlertDialogHeader>
-          <AlertDialogBody>
-            <ThemeProvider theme={muiTheme}>
-              <TextField
-                variant={"filled"}
-                label={"Title"}
-                value={newDocName}
-                onChange={(e) => {
-                  setNewDocName(e.target.value);
-                }}
-                sx={{ marginBottom: "2%" }}
-              />
-            </ThemeProvider>
+  const validityChecks = () => {
+    let res: Object = {
+      "Title must be between 4 and 100 characters long":
+        newDocName.length >= 4 && newDocName.length <= 100,
+      "Category must be selected": newCategory !== "",
+      "Subject must be selected": newSubject !== "",
+      "Type must be selected": newType !== "",
+    };
 
-            <Combobox
-              label="Category"
-              value={newCategory}
-              options={categories}
-              onChange={(newValue) => setNewCategory(newValue)}
-              extras={{ disablePortal: true }}
-              style={{ marginBottom: "2%" }}
-            />
-            <Combobox
-              label="Subject"
-              value={newSubject}
-              options={subjects}
-              onChange={(newValue) => setNewSubject(newValue)}
-              extras={{ disablePortal: true }}
-              style={{ marginBottom: "2%" }}
-            />
-            <Combobox
-              label="Type"
-              value={newType}
-              options={types}
-              onChange={(newValue) => setNewType(newValue)}
-              extras={{ disablePortal: true }}
-              style={{ marginBottom: "2%" }}
-            />
-          </AlertDialogBody>
-          <AlertDialogFooter>
-            <Button ref={cancelRef} onClick={onClose}>
-              Cancel
-            </Button>
-            <Button
-              colorScheme="green"
-              onClick={() => {
-                setNewCategory("");
-                setNewSubject("");
-                setNewDocName("");
-                setNewType("");
-                onConfirm(newCategory, newSubject, newType, newDocName);
-                onClose();
-              }}
-              ml={3}
-            >
-              Save Changes
-            </Button>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialogOverlay>
-    </AlertDialog>
+    return res;
+  };
+
+  const muiTheme = createTheme();
+  const modalStyle = {
+    position: "absolute" as "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    bgcolor: "background.paper",
+    border: "1px solid #000",
+    borderRadius: "2%",
+    boxShadow: 24,
+    p: 4,
+  };
+
+  return (
+    <ThemeProvider theme={muiTheme}>
+      <Modal open={isOpen} onClose={onClose}>
+        <Box sx={modalStyle}>
+          <Typography
+            sx={{ marginBottom: "4%", fontWeight: "bold", fontSize: "130%" }}
+          >
+            Edit Note Properties
+          </Typography>
+
+          <TextField
+            variant={"outlined"}
+            label={"Title"}
+            value={newDocName}
+            onChange={(e) => {
+              setNewDocName(e.target.value);
+            }}
+            sx={{ marginBottom: "2%", width: "100%" }}
+          />
+
+          <Combobox
+            label="Category"
+            value={newCategory}
+            options={categories}
+            onChange={(newValue) => setNewCategory(newValue)}
+            extras={{ disablePortal: true }}
+            style={{ marginBottom: "2%" }}
+          />
+          <Combobox
+            label="Subject"
+            value={newSubject}
+            options={subjects}
+            onChange={(newValue) => setNewSubject(newValue)}
+            extras={{ disablePortal: true }}
+            style={{ marginBottom: "2%" }}
+          />
+          <Combobox
+            label="Type"
+            value={newType}
+            options={types}
+            onChange={(newValue) => setNewType(newValue)}
+            extras={{ disablePortal: true }}
+            style={{ marginBottom: "2%" }}
+          />
+
+          <Button
+            ref={cancelRef}
+            onClick={onClose}
+            variant="contained"
+            sx={{ margin: "1%" }}
+          >
+            Cancel
+          </Button>
+          <Tooltip
+            title={
+              <Box>
+                {Object.entries(validityChecks()).map(([text, value]) => (
+                  <Typography
+                    sx={{
+                      color: value
+                        ? muiTheme.palette.success.light
+                        : muiTheme.palette.error.light,
+                      fontSize: "0.8rem",
+                    }}
+                  >
+                    {text}
+                  </Typography>
+                ))}
+              </Box>
+            }
+            placement="bottom"
+            arrow
+            leaveDelay={1300}
+          >
+            <span>
+              <Button
+                sx={{ margin: "1%" }}
+                disabled={Object.values(validityChecks()).some(
+                  (elem) => elem === false
+                )}
+                variant="contained"
+                color="success"
+                onClick={() => {
+                  setNewCategory("");
+                  setNewSubject("");
+                  setNewDocName("");
+                  setNewType("");
+                  onConfirm(newCategory, newSubject, newType, newDocName);
+                  onClose();
+                }}
+              >
+                Save Changes
+              </Button>
+            </span>
+          </Tooltip>
+        </Box>
+      </Modal>
+    </ThemeProvider>
   );
 };
 
