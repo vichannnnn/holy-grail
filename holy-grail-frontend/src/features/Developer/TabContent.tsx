@@ -97,7 +97,7 @@ export const TabContent = ({
                   handlePageChange={(newPage: number) => {
                     setPage(newPage - 1);
                   }}
-                  HStackStyles={{ spacing: 10, mt: "0%" }}
+                  styles={{ mt: "0%" }}
                 />
               </ChakraProvider>
             </TableCell>
