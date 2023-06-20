@@ -1,16 +1,18 @@
-import './approval.css';
+import { Box } from "@mui/material";
+import { Text } from "../../components/Text/Text";
+import { Title } from "../../components/Title/Title";
 
 const ApprovalScreen = () => {
   return (
-    <section id='upload'>
-      <div>
-        <div className='approval__title'>Administrator Panel</div>
-        <div className='section__subtitle'>
-          This is a list of unapproved notes for your review, you can approve or delete them
-          accordingly.
-        </div>
-      </div>
-    </section>
+    <div id="upload">
+      <Box sx={{ display: "flex", flexDirection: "column" }}>
+        <Title>Administrator Panel</Title>
+        <Text fontSize="xl" mt="3%" mb="10%">
+          This is a list of unapproved notes and where you can choose to approve
+          or delete the submitted notes.
+        </Text>
+      </Box>
+    </div>
   );
 };
 
