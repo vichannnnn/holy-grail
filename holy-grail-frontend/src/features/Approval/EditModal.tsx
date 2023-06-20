@@ -11,7 +11,6 @@ import {
 } from "@mui/material";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { size } from "lodash";
 
 interface EditModalProps {
   isOpen: boolean;
@@ -88,7 +87,7 @@ const EditModal = ({
       <Modal open={isOpen} onClose={onClose}>
         <Box sx={modalStyle}>
           <Typography
-            sx={{ marginBottom: "4%", fontWeight: "bold", fontSize: "130%" }}
+            sx={{ marginBottom: "8%", fontWeight: "bold", fontSize: "130%" }}
           >
             Edit Note Properties
           </Typography>
@@ -100,7 +99,7 @@ const EditModal = ({
             onChange={(e) => {
               setNewDocName(e.target.value);
             }}
-            sx={{ marginBottom: "2%", width: "100%" }}
+            sx={{ marginBottom: "4%", width: "100%" }}
           />
 
           <Combobox
@@ -109,7 +108,7 @@ const EditModal = ({
             options={categories}
             onChange={(newValue) => setNewCategory(newValue)}
             extras={{ disablePortal: true }}
-            style={{ marginBottom: "2%" }}
+            style={{ marginBottom: "4%" }}
           />
           <Combobox
             label="Subject"
@@ -117,7 +116,7 @@ const EditModal = ({
             options={subjects}
             onChange={(newValue) => setNewSubject(newValue)}
             extras={{ disablePortal: true }}
-            style={{ marginBottom: "2%" }}
+            style={{ marginBottom: "4%" }}
           />
           <Combobox
             label="Type"
@@ -125,7 +124,7 @@ const EditModal = ({
             options={types}
             onChange={(newValue) => setNewType(newValue)}
             extras={{ disablePortal: true }}
-            style={{ marginBottom: "2%" }}
+            style={{ marginBottom: "4%" }}
           />
 
           <Button
@@ -146,6 +145,7 @@ const EditModal = ({
                         ? muiTheme.palette.success.light
                         : muiTheme.palette.error.light,
                       fontSize: "0.8rem",
+                      whiteSpace: "nowrap"
                     }}
                   >
                     {text}
