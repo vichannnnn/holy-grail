@@ -17,9 +17,7 @@ export const HomeButton = forwardRef<
         h="40px"
         {...props}
       >
-        <Text fontWeight="bold" color="black">
-          {children}
-        </Text>
+        <div className="button-text">{children}</div>
       </Button>
     </>
   );

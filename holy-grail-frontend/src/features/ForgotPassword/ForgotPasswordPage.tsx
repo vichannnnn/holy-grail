@@ -12,9 +12,8 @@ import {
 import { useNavigate } from "react-router-dom";
 import apiClient from "../../api/apiClient";
 import { AxiosError } from "axios";
-import { Text } from "../../components/Text/Text";
-import { Title } from "../../components/Title/Title";
 import { AccountForm } from "../../components/AccountForm/AccountForm";
+import "../SignIn/login.css";
 
 const ForgotPasswordPage = () => {
   const [email, setEmail] = useState("");
@@ -61,14 +60,14 @@ const ForgotPasswordPage = () => {
   };
 
   return (
-    <>
+    <section className="forgotPw section container">
       <AccountForm>
-        <Title mb="5%">Forgot Password</Title>
-        <Text mb="15%">
+        <div className="login__title">Forgot Password</div>
+        <div className="section__subtitle">
           Please enter the email you registered with to reset your password.
-        </Text>
+        </div>
 
-        <form onSubmit={handleResetPassword}>
+        <form className="login__fields" onSubmit={handleResetPassword}>
           <VStack spacing="6">
             <FormControl id="email">
               <FormLabel>Email address</FormLabel>
@@ -84,8 +83,8 @@ const ForgotPasswordPage = () => {
             </Button>
           </VStack>
         </form>
-        <Box textAlign="center">
-          <Text mt="5%" fontSize={["sm", "md"]}>
+        <Box>
+          <div className="login__footer">
             Already a member?{" "}
             <Link
               as="button"
@@ -94,10 +93,10 @@ const ForgotPasswordPage = () => {
             >
               Log in here.
             </Link>
-          </Text>
+          </div>
         </Box>
       </AccountForm>
-    </>
+    </section>
   );
 };
 

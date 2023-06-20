@@ -14,6 +14,7 @@ import AuthContext from "../../providers/AuthProvider";
 import { Title } from "../../components/Title/Title";
 import { Text } from "../../components/Text/Text";
 import { AccountForm } from "../../components/AccountForm/AccountForm";
+import "./login.css";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
@@ -59,12 +60,14 @@ const LoginPage = () => {
   };
 
   return (
-    <>
+    <section className="login section container" id="login">
       <AccountForm>
-        <Title mb="5%">Log in</Title>
-        <Text mb="10%">Enter your credentials to access your account.</Text>
+        <div className="login__title">Log in</div>
+        <div className="section__subtitle">
+          Enter your credentials to access your account.
+        </div>
 
-        <form onSubmit={handleLogin}>
+        <form className="login__fields" onSubmit={handleLogin}>
           <VStack spacing="6">
             <FormControl id="username">
               <FormLabel>Username</FormLabel>
@@ -89,24 +92,8 @@ const LoginPage = () => {
             </Button>
           </VStack>
         </form>
-        {/*<Text>*/}
-        {/*  Forgot your password?{" "}*/}
-        {/*  <Link as="button" textDecoration="underline">*/}
-        {/*    Click here.*/}
-        {/*  </Link>*/}
-        {/*</Text>*/}
-        <Box textAlign="center">
-          <Text mt="5%" fontSize={["sm", "md"]}>
-            Not a member?{" "}
-            <Link
-              as="button"
-              onClick={handleRegister}
-              textDecoration="underline"
-            >
-              Register now.
-            </Link>
-          </Text>
-          <Text mt="5%" fontSize={["sm", "md"]}>
+        <Box>
+          <div className="login__footer">
             Forgot your password?{" "}
             <Link
               as="button"
@@ -115,10 +102,20 @@ const LoginPage = () => {
             >
               Click here.
             </Link>
-          </Text>
+          </div>
+          <div className="login__footer">
+            Not a member?{" "}
+            <Link
+              as="button"
+              onClick={handleRegister}
+              textDecoration="underline"
+            >
+              Register now.
+            </Link>
+          </div>
         </Box>
       </AccountForm>
-    </>
+    </section>
   );
 };
 
