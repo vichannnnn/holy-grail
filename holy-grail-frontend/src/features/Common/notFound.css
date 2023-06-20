@@ -1,0 +1,20 @@
+.notFound {
+    padding-top: calc(var(--header-height) + 3rem);
+    min-height: calc(80vh - var(--header-height));
+}
+
+.notFound__content {
+    margin-top: 3rem;
+    color: var(--text-color);
+    font-size: calc(var(--h2-font-size) / 1.6);
+}
+
+.notFound__list {
+    padding-left: 3%;
+    list-style-type: disc;
+    width: 95%;
+}
+
+li.notFound__listItems:not(:last-child) {
+    margin-bottom: 1rem;
+}
