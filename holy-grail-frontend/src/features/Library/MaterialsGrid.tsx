@@ -1,7 +1,4 @@
-import { Flex } from "@chakra-ui/react";
-import { UploadButton } from "./UploadButton";
-import { Text } from "../../components/Text/Text";
-import { Title } from "../../components/Title/Title";
+import { Box } from "@mui/material";
 import { useCallback, useContext, useEffect, useState } from "react";
 import {
   CategoryType,
@@ -10,13 +7,17 @@ import {
   fetchData,
   PaginatedNotes,
   SubjectType,
+  Note,
 } from "../../utils/library/Search";
 import AuthContext from "../../providers/AuthProvider";
 import deleteNote from "../../utils/actions/DeleteNote";
+import updateNote from "../../utils/actions/UpdateNote";
 import NotesTable from "../../components/NotesTable/NotesTable";
 import AdminDeleteIcon from "../../components/AdminDeleteIcon/AdminDeleteIcon";
 import DeleteAlert from "../Approval/DeleteAlert";
 import "./library.css";
+import EditModal from "../Approval/EditModal";
+import AdminEditIcon from "../../components/AdminEditIcon/AdminEditIcon";
 
 const MaterialsGrid = () => {
   const [notes, setNotes] = useState<PaginatedNotes>({
@@ -28,8 +29,11 @@ const MaterialsGrid = () => {
   });
   const { user } = useContext(AuthContext);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
-  const [noteId, setNoteId] = useState<number | null>(null);
+  const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
+  const [noteId, setNoteId] = useState<number>(0);
 
+  const [noteInitialProperties, setNoteInitialProperties] =
+    useState<Note | null>(null);
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [subjects, setSubjects] = useState<SubjectType[]>([]);
   const [types, setTypes] = useState<DocumentType[]>([]);
@@ -162,11 +166,20 @@ const MaterialsGrid = () => {
         isAdmin={Boolean(user?.role && user.role >= 2)}
         renderAdminActions={(note) =>
           user && user.role >= 2 ? (
-            <AdminDeleteIcon
-              setIsAlertOpen={setIsAlertOpen}
-              setNoteId={setNoteId}
-              noteId={note.id}
-            />
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
+              <AdminDeleteIcon
+                setIsAlertOpen={setIsAlertOpen}
+                setNoteId={setNoteId}
+                noteId={note.id}
+              />
+              <AdminEditIcon
+                noteId={note.id}
+                setIsEditOpen={setIsEditOpen}
+                setNoteId={setNoteId}
+                noteProperties={note}
+                setNoteProperties={setNoteInitialProperties}
+              />
+            </Box>
           ) : null
         }
       />
@@ -180,6 +193,36 @@ const MaterialsGrid = () => {
               .catch((err) => console.error(err));
           }
         }}
+      />
+      <EditModal
+        isOpen={isEditOpen}
+        onClose={() => setIsEditOpen(false)}
+        onConfirm={(
+          newCategory: number | "",
+          newSubject: number | "",
+          newType: number | "",
+          newDocName: string | ""
+        ) => {
+          updateNote(
+            noteId,
+            noteInitialProperties?.uploaded_by,
+            newCategory,
+            newSubject,
+            newType,
+            newDocName
+          )
+            .then(() => filterNotes())
+            .catch((err) => console.error(err));
+        }}
+        categories={categories.map((c) => ({ value: c.id, label: c.name }))}
+        subjects={subjects.map((s) => ({ value: s.id, label: s.name }))}
+        types={types.map((t) => ({ value: t.id, label: t.name }))}
+        category={noteInitialProperties ? noteInitialProperties.category : ""}
+        subject={noteInitialProperties ? noteInitialProperties.subject : ""}
+        type={noteInitialProperties ? noteInitialProperties.type : ""}
+        documentName={
+          noteInitialProperties ? noteInitialProperties.document_name : ""
+        }
       />
     </section>
   );
