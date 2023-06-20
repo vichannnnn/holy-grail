@@ -1,49 +1,60 @@
-import React, { useRef } from "react";
-import {
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogContent,
-  AlertDialogOverlay,
-  Button,
-} from "@chakra-ui/react";
+import { useRef } from "react";
+import { Modal, Box, Button, Typography } from "@mui/material";
 
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 interface DeleteAlertProps {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
 }
+const modalStyle = {
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "1px solid #000",
+  borderRadius: "2%",
+  boxShadow: 24,
+  p: 4,
+};
 
 const DeleteAlert = ({ isOpen, onClose, onConfirm }: DeleteAlertProps) => {
   const cancelRef = useRef<HTMLButtonElement | null>(null);
-
+  const muiTheme = createTheme();
   return (
-    <AlertDialog
-      isOpen={isOpen}
-      leastDestructiveRef={cancelRef}
-      onClose={onClose}
-    >
-      <AlertDialogOverlay>
-        <AlertDialogContent>
-          <AlertDialogHeader fontSize="lg" fontWeight="bold">
+    <ThemeProvider theme={muiTheme}>
+      <Modal open={isOpen} onClose={onClose}>
+        <Box sx={modalStyle}>
+          <Typography
+            sx={{ marginBottom: "4%", fontWeight: "bold", fontSize: "130%" }}
+          >
             Delete Note
-          </AlertDialogHeader>
-          <AlertDialogBody>
+          </Typography>
+          <Typography sx={{ marginBottom: "2%" }}>
             Are you sure you want to delete this note? This action cannot be
             undone.
-          </AlertDialogBody>
-          <AlertDialogFooter>
-            <Button ref={cancelRef} onClick={onClose}>
-              Cancel
-            </Button>
-            <Button colorScheme="red" onClick={onConfirm} ml={3}>
-              Delete
-            </Button>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialogOverlay>
-    </AlertDialog>
+          </Typography>
+          <Button
+            ref={cancelRef}
+            onClick={onClose}
+            variant="contained"
+            sx={{ margin: "1%" }}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={onConfirm}
+            variant="contained"
+            color="error"
+            sx={{ margin: "1%" }}
+          >
+            Confirm
+          </Button>
+        </Box>
+      </Modal>
+    </ThemeProvider>
   );
 };
 

@@ -18,7 +18,7 @@ import AuthContext from "../../providers/AuthProvider";
 import AdminApproveIcon from "../../components/AdminApproveIcon/AdminApproveIcon";
 import AdminDeleteIcon from "../../components/AdminDeleteIcon/AdminDeleteIcon";
 import AdminEditIcon from "../../components/AdminEditIcon/AdminEditIcon";
-import { Box } from "@chakra-ui/react";
+import { Box } from "@mui/material";
 
 const ApprovalTable = () => {
   const [notes, setNotes] = useState<PaginatedNotes>({
