@@ -43,7 +43,7 @@ const DeveloperScreen = () => {
   const [editUserId, setEditUserId] = useState<number | null>(null);
   const [editUserRole, setEditUserRole] = useState<RoleEnum | null>(null);
   const [isEditUserModalOpen, setIsEditUserModalOpen] =
-    useState<boolean>(false);
+      useState<boolean>(false);
 
   const handleAdd = async (newName: string) => {
     if (addType !== null) {
@@ -124,79 +124,79 @@ const DeveloperScreen = () => {
   }, []);
 
   return (
-    <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-      {isAddModalOpen && (
-        <AddModal
-          isOpen={true}
-          onClose={() => setIsAddModalOpen(false)}
-          onSubmit={handleAdd}
-        />
-      )}
-      <Tabs
-        value={value}
-        onChange={handleChange}
-        aria-label="basic tabs example"
-      >
-        <Tab label="Categories" />
-        <Tab label="Subjects" />
-        <Tab label="Types" />
-        <Tab label="Users" />
-      </Tabs>
-      {value === 0 && (
-        <TabContent
-          title="Categories"
-          data={data.categories}
-          handleEdit={openEditModal}
-          handleAdd={() => openAddModal("categories")}
-          type="categories"
-        />
-      )}
-      {value === 1 && (
-        <TabContent
-          title="Subjects"
-          data={data.subjects}
-          handleEdit={openEditModal}
-          handleAdd={() => openAddModal("subjects")}
-          type="subjects"
-        />
-      )}
-      {value === 2 && (
-        <TabContent
-          title="Types"
-          data={data.types}
-          handleEdit={openEditModal}
-          handleAdd={() => openAddModal("types")}
-          type="types"
-        />
-      )}
-      {value === 3 && (
-        <TabContentUsers data={users} handleEdit={openEditUserModal} />
-      )}
-      {editId !== null && editType !== null && (
-        <EditModal
-          isOpen={true}
-          onClose={closeEditModal}
-          onSubmit={handleUpdate}
-          initialName={
-            data[editType as DataTypeKey].find(
-              (item: CommonType) => item.id === editId
-            )?.name || ""
-          }
-        />
-      )}
-      {editUserId !== null && editUserRole !== null && (
-        <EditUserModal
-          isOpen={isEditUserModalOpen}
-          onClose={closeEditUserModal}
-          onSubmit={handleUpdateUser}
-          initialRole={editUserRole}
-          userName={
-            users.find((user) => user.user_id === editUserId)?.username || ""
-          }
-          userId={editUserId}
-        />
-      )}
-    </Box>
+      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+        {isAddModalOpen && (
+            <AddModal
+                isOpen={true}
+                onClose={() => setIsAddModalOpen(false)}
+                onSubmit={handleAdd}
+            />
+        )}
+        <Tabs
+            value={value}
+            onChange={handleChange}
+            aria-label="basic tabs example"
+        >
+          <Tab label="Categories" />
+          <Tab label="Subjects" />
+          <Tab label="Types" />
+          <Tab label="Users" />
+        </Tabs>
+        {value === 0 && (
+            <TabContent
+                title="Categories"
+                data={data.categories}
+                handleEdit={openEditModal}
+                handleAdd={() => openAddModal("categories")}
+                type="categories"
+            />
+        )}
+        {value === 1 && (
+            <TabContent
+                title="Subjects"
+                data={data.subjects}
+                handleEdit={openEditModal}
+                handleAdd={() => openAddModal("subjects")}
+                type="subjects"
+            />
+        )}
+        {value === 2 && (
+            <TabContent
+                title="Types"
+                data={data.types}
+                handleEdit={openEditModal}
+                handleAdd={() => openAddModal("types")}
+                type="types"
+            />
+        )}
+        {value === 3 && (
+            <TabContentUsers data={users} handleEdit={openEditUserModal} />
+        )}
+        {editId !== null && editType !== null && (
+            <EditModal
+                isOpen={true}
+                onClose={closeEditModal}
+                onSubmit={handleUpdate}
+                initialName={
+                    data[editType as DataTypeKey].find(
+                        (item: CommonType) => item.id === editId
+                    )?.name || ""
+                }
+            />
+        )}
+        {editUserId !== null && editUserRole !== null && (
+            <EditUserModal
+                isOpen={isEditUserModalOpen}
+                onClose={closeEditUserModal}
+                onSubmit={handleUpdateUser}
+                initialRole={editUserRole}
+                userName={
+                    users.find((user) => user.user_id === editUserId)?.username || ""
+                }
+                userId={editUserId}
+            />
+        )}
+      </Box>
   );
 };
 
