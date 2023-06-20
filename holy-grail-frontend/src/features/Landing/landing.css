@@ -1,0 +1,32 @@
+.home {
+    padding-top: calc(var(--header-height) + 3rem);
+}
+
+.library,
+.faq {
+    padding-top: calc(var(--header-height) + 2rem);
+}
+
+.faq__container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem 5rem;
+    justify-content: center;
+}
+
+.faq__qn {
+    font-size: var(--normal-font-size);
+    font-weight: var(--font-semi-bold);
+}
+
+.faq__ans {
+    font-size: var(--normal-font-size);
+    color: #575f73;
+    margin-top: 0.5rem;
+}
+
+@media screen and (max-width: 1080px) {
+    .faq__container {
+        padding-top: 2rem;
+        grid-template-columns: repeat(1, 1fr);
+    }
+}

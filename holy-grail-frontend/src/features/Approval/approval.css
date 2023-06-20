@@ -1,0 +1,9 @@
+.admin {
+    padding-top: calc(var(--header-height) + 2rem);
+    min-height: calc(80vh - var(--header-height));
+}
+
+.approval__title {
+    font-size: var(--h1-font-size);
+    font-weight: var(--font-semi-bold);
+}

@@ -13,10 +13,10 @@ export const NavBarRightButton = forwardRef<
         borderColor="black"
         bg="white"
         px="30"
-        h="40px"
+        h="30px"
         {...props}
       >
-        <Text fontWeight="bold" color="black">
+        <Text fontWeight="semibold" color="black">
           {children}
         </Text>
       </Button>
