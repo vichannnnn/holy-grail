@@ -1,8 +1,11 @@
 import Logo from "../../assets/placeholder.svg";
 import { Link as RouterLink } from "react-router-dom";
+import { useContext } from "react";
+import AuthContext from "../../providers/AuthProvider";
 import "./footer.css";
 
 const Footer = () => {
+  const { user } = useContext(AuthContext);
   return (
     <footer className="footer">
       <div className="footer__container container">
@@ -22,8 +25,23 @@ const Footer = () => {
           </div>
           <div className="footer__section">
             <div className="footer__title">Account</div>
-            <div className="footer__content">
+            <div
+              className="footer__content"
+              style={user ? { display: "none" } : undefined}
+            >
               <RouterLink to="/login">Log In</RouterLink>
+            </div>
+            <div
+              className="footer__content"
+              style={user ? { display: "none" } : undefined}
+            >
+              <RouterLink to="/register">Register</RouterLink>
+            </div>
+            <div
+              className="footer__content"
+              style={user ? undefined : { display: "none" }}
+            >
+              <RouterLink to="/update-password">Change Password</RouterLink>
             </div>
           </div>
         </div>
