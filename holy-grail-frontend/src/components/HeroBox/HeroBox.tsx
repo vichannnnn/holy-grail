@@ -1,8 +1,8 @@
-import { Box, BoxProps } from "@chakra-ui/react";
+import { Box, BoxProps } from "@mui/material";
 
 export const HeroBox = ({ children, ...props }: BoxProps) => {
   return (
-    <Box w="30%" {...props}>
+    <Box sx={{ width: "30%" }} {...props}>
       {children}
     </Box>
   );

@@ -1,14 +1,14 @@
-import { Text as ChakraText, TextProps } from "@chakra-ui/react";
+import { Typography, TypographyProps } from "@mui/material";
 
-export const Text = ({ children, ...props }: TextProps) => {
+export const Text = ({ children, ...props }: TypographyProps) => {
   return (
-    <ChakraText
+    <Typography
       fontFamily="Trebuchet MS, sans-serif"
       color="black"
       fontSize={["sm", "md", "lg", "xl"]}
       {...props}
     >
       {children}
-    </ChakraText>
+    </Typography>
   );
 };
