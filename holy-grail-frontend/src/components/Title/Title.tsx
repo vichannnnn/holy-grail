@@ -1,8 +1,8 @@
-import { Text as ChakraText, TextProps } from "@chakra-ui/react";
+import { Typography, TypographyProps } from "@mui/material";
 
-export const Title = ({ children, ...props }: TextProps) => {
+export const Title = ({ children, ...props }: TypographyProps) => {
   return (
-    <ChakraText
+    <Typography
       fontWeight="bold"
       fontSize={["xl", "3xl", "5xl", "7xl"]}
       color="black"
@@ -10,6 +10,6 @@ export const Title = ({ children, ...props }: TextProps) => {
       {...props}
     >
       {children}
-    </ChakraText>
+    </Typography>
   );
 };
