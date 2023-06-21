@@ -1,25 +1,28 @@
-import { Button } from "@chakra-ui/react";
+import { Button } from "@mui/material";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { ButtonHTMLAttributes, forwardRef } from "react";
-import { Text } from "../Text/Text";
 
 export const HomeButton = forwardRef<
   HTMLButtonElement,
   ButtonHTMLAttributes<HTMLButtonElement>
->(({ children, ...props }, ref) => {
+>(({ children }, ref) => {
+  const muiTheme = createTheme();
   return (
-    <>
+    <ThemeProvider theme={muiTheme}>
       <Button
         ref={ref}
-        variant="outline"
-        borderColor="black"
-        bg="white"
-        px="30"
-        h="40px"
-        {...props}
+        variant="outlined"
+        sx={{
+          borderColor: "black",
+          backgroundColor: "white",
+          paddingX: "30px",
+          height: "40px",
+          textTransform: "capitalize",
+        }}
       >
         <div className="button-text">{children}</div>
       </Button>
-    </>
+    </ThemeProvider>
   );
 });
 
