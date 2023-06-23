@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { verifyAccount } from "../../utils/auth/VerifyAccount";
-import { Link, useToast } from "@chakra-ui/react";
+import { Link } from "@chakra-ui/react";
 import { resendVerificationEmail } from "../../utils/auth/ResendVerificationEmail";
 import "../SignIn/login.css";
+import AlertToast, { AlertProps } from "../../components/AlertToast/AlertToast";
 
 const VerifyAccountPage = () => {
   const [token, setToken] = useState<string | null>(null);
   const [resetStatus, setResetStatus] = useState<string | null>(null);
   const [isFailed, setFailed] = useState<boolean>(false);
+  const [alert, setAlert] = useState<AlertProps>({} as AlertProps);
+  const [openAlert, setOpenAlert] = useState<boolean>(false);
   const location = useLocation();
-  const toast = useToast();
 
   const parseQuery = (query: string): URLSearchParams => {
     return new URLSearchParams(query);
@@ -39,23 +41,21 @@ const VerifyAccountPage = () => {
   const handleResendVerificationEmail = async () => {
     try {
       await resendVerificationEmail();
-      toast({
+      setAlert({
         title: "Verification email resent successfully.",
         description:
           "Please check your email for the verification mail sent to you.",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
+        severity: "success",
       });
+      setOpenAlert(true);
     } catch (error) {
       console.error(error);
-      toast({
+      setAlert({
         title: "Failed to resend verification email.",
         description: "An error occurred while sending.",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
+        severity: "error",
       });
+      setOpenAlert(true);
     }
   };
 
@@ -80,6 +80,11 @@ const VerifyAccountPage = () => {
             to send another verification email.
           </div>
         ) : null}
+        <AlertToast
+          openAlert={openAlert}
+          onClose={() => setOpenAlert(false)}
+          alert={alert}
+        />
       </div>
     </section>
   );
