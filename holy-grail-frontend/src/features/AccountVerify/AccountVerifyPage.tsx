@@ -9,8 +9,9 @@ const VerifyAccountPage = () => {
   const [token, setToken] = useState<string | null>(null);
   const [resetStatus, setResetStatus] = useState<string | null>(null);
   const [isFailed, setFailed] = useState<boolean>(false);
+  const [alert, setAlert] = useState<AlertProps>({} as AlertProps);
+  const [openAlert, setOpenAlert] = useState<boolean>(false);
   const location = useLocation();
-  const toast = useToast();
 
   const parseQuery = (query: string): URLSearchParams => {
     return new URLSearchParams(query);
@@ -46,6 +47,7 @@ const VerifyAccountPage = () => {
         duration: 3000,
         isClosable: true,
       });
+      setOpenAlert(true);
     } catch (error) {
       console.error(error);
       toast({
@@ -55,6 +57,7 @@ const VerifyAccountPage = () => {
         duration: 3000,
         isClosable: true,
       });
+      setOpenAlert(true);
     }
   };
 
@@ -74,6 +77,11 @@ const VerifyAccountPage = () => {
             to send another verification email.
           </div>
         ) : null}
+        <AlertToast
+          openAlert={openAlert}
+          onClose={() => setOpenAlert(false)}
+          alert={alert}
+        />
       </div>
     </section>
   );
