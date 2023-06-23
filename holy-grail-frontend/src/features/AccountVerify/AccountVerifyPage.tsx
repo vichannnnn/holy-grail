@@ -82,7 +82,7 @@ const VerifyAccountPage = () => {
         ) : null}
         <AlertToast
           openAlert={openAlert}
-          onClose={() => setOpenAlert(false)}
+          handleClose={() => setOpenAlert(false)}
           alert={alert}
         />
       </div>

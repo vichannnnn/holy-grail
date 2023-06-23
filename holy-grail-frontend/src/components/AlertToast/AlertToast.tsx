@@ -14,18 +14,18 @@ interface AlertProps {
 
 interface AlertToastProps {
   openAlert: boolean;
-  onClose: () => void;
+  handleClose: () => void;
   alert: AlertProps;
 }
 
-const AlertToast = ({ openAlert, onClose, alert }: AlertToastProps) => {
+const AlertToast = ({ openAlert, handleClose, alert }: AlertToastProps) => {
   const muiTheme = createTheme();
   return (
     <ThemeProvider theme={muiTheme}>
       <Snackbar
         open={openAlert}
         autoHideDuration={3000}
-        onClose={onClose}
+        onClose={handleClose}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
         <Alert severity={alert.severity} sx={{ width: "100%" }}>
