@@ -1,25 +1,13 @@
-import React, { useState, useEffect, useRef } from "react";
-import {
-  Button,
-  VStack,
-  Heading,
-  Text,
-  useToast,
-  Input,
-} from "@chakra-ui/react";
-import Combobox from "../Library/Combobox";
-import {
-  fetchData,
-  CategoryType,
-  SubjectType,
-  DocumentType,
-} from "../../utils/library/Search";
-import { createNote } from "../../utils/actions/CreateNote";
-import { useContext } from "react";
-import AuthContext from "../../providers/AuthProvider";
-import { useNavigate } from "react-router-dom";
-import { useMediaQuery } from "react-responsive";
-import "./upload.css";
+import React, { useState, useEffect, useRef } from 'react';
+import { Button, VStack, Heading, Text, useToast, Input } from '@chakra-ui/react';
+import Combobox from '../Library/Combobox';
+import { fetchData, CategoryType, SubjectType, DocumentType } from '../../api/utils/library/Search';
+import { createNote } from '../../api/utils/actions/CreateNote';
+import { useContext } from 'react';
+import AuthContext from '../../providers/AuthProvider';
+import { useNavigate } from 'react-router-dom';
+import { useMediaQuery } from 'react-responsive';
+import './upload.css';
 
 const UploadPage = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -28,9 +16,9 @@ const UploadPage = () => {
   const [types, setTypes] = useState<DocumentType[]>([]);
   const [documentName, setDocumentName] = useState<string | null>(null);
 
-  const [category, setCategory] = useState<number | "">(0);
-  const [subject, setSubject] = useState<number | "">(0);
-  const [type, setType] = useState<number | "">(0);
+  const [category, setCategory] = useState<number | ''>(0);
+  const [subject, setSubject] = useState<number | ''>(0);
+  const [type, setType] = useState<number | ''>(0);
 
   const [fileName, setFileName] = useState<string | null>(null);
   const inputFileRef = useRef<HTMLInputElement | null>(null);
@@ -38,7 +26,7 @@ const UploadPage = () => {
   const toast = useToast();
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
-  const isMobile = useMediaQuery({ query: "(max-width: 600px)" });
+  const isMobile = useMediaQuery({ query: '(max-width: 600px)' });
 
   useEffect(() => {
     fetchData().then(({ categories, subjects, types }) => {
@@ -49,7 +37,7 @@ const UploadPage = () => {
   }, []);
 
   if (!user) {
-    navigate("/login");
+    navigate('/login');
   }
 
   const handleButtonClick = () => {
@@ -72,12 +60,11 @@ const UploadPage = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!selectedFile || category === "" || subject === "" || type === "") {
+    if (!selectedFile || category === '' || subject === '' || type === '') {
       toast({
-        title: "Error",
-        description:
-          "You need to select everything and upload at least one file.",
-        status: "error",
+        title: 'Error',
+        description: 'You need to select everything and upload at least one file.',
+        status: 'error',
         duration: 5000,
         isClosable: true,
       });
@@ -90,39 +77,37 @@ const UploadPage = () => {
         category,
         subject,
         type,
-        documentName || ""
+        documentName || '',
       );
       if (responseStatus == 200) {
         toast({
-          title: "Success",
-          description:
-            "Successfully sent for review and will be shown in library once uploaded.",
-          status: "success",
+          title: 'Success',
+          description: 'Successfully sent for review and will be shown in library once uploaded.',
+          status: 'success',
           duration: 5000,
           isClosable: true,
         });
       } else if (responseStatus === 429) {
         toast({
           title: "You're submitting too fast!",
-          description: "You can only upload 1 document per minute.",
-          status: "error",
+          description: 'You can only upload 1 document per minute.',
+          status: 'error',
           duration: 5000,
           isClosable: true,
         });
       } else if (responseStatus === 401) {
         toast({
-          title: "Your account has not been verified yet.",
-          description:
-            "Please verify your account with the verification mail sent to your email.",
-          status: "error",
+          title: 'Your account has not been verified yet.',
+          description: 'Please verify your account with the verification mail sent to your email.',
+          status: 'error',
           duration: 5000,
           isClosable: true,
         });
       } else {
         toast({
-          title: "Error",
-          description: "Something went wrong.",
-          status: "error",
+          title: 'Error',
+          description: 'Something went wrong.',
+          status: 'error',
           duration: 5000,
           isClosable: true,
         });
@@ -131,24 +116,24 @@ const UploadPage = () => {
   };
 
   return (
-    <section className="upload section container">
+    <section className='upload section container'>
       <form onSubmit={handleSubmit}>
-        <div className="section__title">Upload Materials</div>
-        <div className="section__subtitle">
-          Upload your materials here! All submitted materials will be reviewed
-          before being published to the Holy Grail.
+        <div className='section__title'>Upload Materials</div>
+        <div className='section__subtitle'>
+          Upload your materials here! All submitted materials will be reviewed before being
+          published to the Holy Grail.
         </div>
-        <div className="upload__file">
-          <Button onClick={handleButtonClick} colorScheme="blue">
+        <div className='upload__file'>
+          <Button onClick={handleButtonClick} colorScheme='blue'>
             Upload File
           </Button>
-          <Text>{fileName || "No file chosen"}</Text>
+          <Text>{fileName || 'No file chosen'}</Text>
         </div>
-        <div className="upload__filter grid">
+        <div className='upload__filter grid'>
           <Combobox
-            label="Category"
-            value={category !== "" ? Number(category) : ""}
-            style={{ width: "90%" }}
+            label='Category'
+            value={category !== '' ? Number(category) : ''}
+            style={{ width: '90%' }}
             onChange={(newValue) => setCategory(Number(newValue))}
             options={categories.map((category) => ({
               value: category.id,
@@ -157,9 +142,9 @@ const UploadPage = () => {
           />
 
           <Combobox
-            label="Subject"
-            value={subject !== "" ? Number(subject) : ""}
-            style={{ width: "90%" }}
+            label='Subject'
+            value={subject !== '' ? Number(subject) : ''}
+            style={{ width: '90%' }}
             onChange={(newValue) => setSubject(Number(newValue))}
             options={subjects.map((subject) => ({
               value: subject.id,
@@ -168,9 +153,9 @@ const UploadPage = () => {
           />
 
           <Combobox
-            label="Type"
-            value={type !== "" ? Number(type) : ""}
-            style={{ width: "90%" }}
+            label='Type'
+            value={type !== '' ? Number(type) : ''}
+            style={{ width: '90%' }}
             onChange={(newValue) => setType(Number(newValue))}
             options={types.map((type) => ({
               value: type.id,
@@ -178,11 +163,11 @@ const UploadPage = () => {
             }))}
           />
         </div>
-        <div className="upload__docName">
+        <div className='upload__docName'>
           <Input
-            value={documentName || ""}
+            value={documentName || ''}
             onChange={handleNameChange}
-            placeholder="Enter document name"
+            placeholder='Enter document name'
             required={true}
             minLength={4}
             maxLength={100}
@@ -190,15 +175,15 @@ const UploadPage = () => {
 
           <input
             ref={inputFileRef}
-            width={isMobile ? "90%" : "30%"}
-            type="file"
-            accept="application/pdf"
+            width={isMobile ? '90%' : '30%'}
+            type='file'
+            accept='application/pdf'
             // , text/plain, application/vnd.openxmlformats-officedocument.wordprocessingml.document
             onChange={handleFileChange}
-            style={{ display: "none" }}
+            style={{ display: 'none' }}
           />
         </div>
-        <Button colorScheme="blue" type="submit">
+        <Button colorScheme='blue' type='submit'>
           Submit
         </Button>
       </form>

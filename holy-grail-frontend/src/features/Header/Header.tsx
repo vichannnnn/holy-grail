@@ -1,8 +1,8 @@
-import "./header.css";
-import { useContext, useState } from "react";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
-import Logo from "../../assets/placeholder.svg";
-import AuthContext from "../../providers/AuthProvider";
+import './header.css';
+import { useContext, useState } from 'react';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import Logo from '../../assets/placeholder.svg';
+import AuthContext from '../../providers/AuthProvider';
 import {
   IconButton,
   Menu,
@@ -11,38 +11,34 @@ import {
   MenuList,
   useBreakpointValue,
   useToast,
-} from "@chakra-ui/react";
-import { resendVerificationEmail } from "../../utils/auth/ResendVerificationEmail";
-import { HamburgerIcon } from "@chakra-ui/icons";
-import { NavBarRightButton } from "../NavBar/NavBarRightButton";
+} from '@chakra-ui/react';
+import { resendVerificationEmail } from '../../api/utils/auth/ResendVerificationEmail';
+import { HamburgerIcon } from '@chakra-ui/icons';
+import { HeaderRightButton } from './HeaderRightButton';
 
 const Header = () => {
   const { user, logout } = useContext(AuthContext);
   const toast = useToast();
   const navigate = useNavigate();
   const isDesktop = useBreakpointValue({ base: false, lg: true });
-  const [activeNav, setActiveNav] = useState("#home");
+  const [activeNav, setActiveNav] = useState('#home');
 
-  const handleAdminButtonClick = () => {
-    navigate("/admin");
+  const navigateTo = (path: string) => {
+    return () => navigate(path);
   };
 
-  const handleDevButtonClick = () => {
-    navigate("/developer");
-  };
-
-  const handlePasswordChange = () => {
-    navigate("/update-password");
-  };
+  const handleAdminButtonClick = navigateTo('/admin');
+  const handleDevButtonClick = navigateTo('/developer');
+  const handlePasswordChange = navigateTo('/update-password');
 
   const handleLogout = async () => {
     try {
       logout();
     } catch (error) {
       toast({
-        title: "Logout failed.",
-        description: "An error occurred while logging out.",
-        status: "error",
+        title: 'Logout failed.',
+        description: 'An error occurred while logging out.',
+        status: 'error',
         duration: 3000,
         isClosable: true,
       });
@@ -53,19 +49,17 @@ const Header = () => {
     try {
       await resendVerificationEmail();
       toast({
-        title: "Verification email resent successfully.",
-        description:
-          "Please check your email for the verification mail sent to you.",
-        status: "success",
+        title: 'Verification email resent successfully.',
+        description: 'Please check your email for the verification mail sent to you.',
+        status: 'success',
         duration: 3000,
         isClosable: true,
       });
     } catch (error) {
-      console.error(error);
       toast({
-        title: "Failed to resend verification email.",
-        description: "An error occurred while sending.",
-        status: "error",
+        title: 'Failed to resend verification email.',
+        description: 'An error occurred while sending.',
+        status: 'error',
         duration: 3000,
         isClosable: true,
       });
@@ -73,54 +67,33 @@ const Header = () => {
   };
 
   return (
-    <header className="header">
-      <nav className="nav container grid">
-        <RouterLink className="nav__logo" to="/">
-          <img className="nav__logoImg" src={Logo} alt="" />
+    <header className='header'>
+      <nav className='nav container grid'>
+        <RouterLink className='nav__logo' to='/'>
+          <img className='nav__logoImg' src={Logo} alt='' />
           {/*<span className="nav__divider"></span>*/}
           {/*<span className="nav__logoText">HG</span>*/}
         </RouterLink>
         {isDesktop ? (
-          <div className="nav__menu">
-            <ul className="nav__list grid">
-              <li className="nav__item">
-                <RouterLink to="/" onClick={() => setActiveNav("#home")}>
-                  <a
-                    className={
-                      activeNav === "#home"
-                        ? "nav__link active-link"
-                        : "nav__link"
-                    }
-                  >
+          <div className='nav__menu'>
+            <ul className='nav__list grid'>
+              <li className='nav__item'>
+                <RouterLink to='/' onClick={() => setActiveNav('#home')}>
+                  <a className={activeNav === '#home' ? 'nav__link active-link' : 'nav__link'}>
                     Home
                   </a>
                 </RouterLink>
               </li>
-              <li className="nav__item">
-                <RouterLink
-                  to="/#library"
-                  onClick={() => setActiveNav("#library")}
-                >
-                  <a
-                    className={
-                      activeNav === "#library"
-                        ? "nav__link active-link"
-                        : "nav__link"
-                    }
-                  >
+              <li className='nav__item'>
+                <RouterLink to='/#library' onClick={() => setActiveNav('#library')}>
+                  <a className={activeNav === '#library' ? 'nav__link active-link' : 'nav__link'}>
                     Library
                   </a>
                 </RouterLink>
               </li>
-              <li className="nav__item">
-                <RouterLink to="/#faq" onClick={() => setActiveNav("#FAQ")}>
-                  <a
-                    className={
-                      activeNav === "#FAQ"
-                        ? "nav__link active-link"
-                        : "nav__link"
-                    }
-                  >
+              <li className='nav__item'>
+                <RouterLink to='/#faq' onClick={() => setActiveNav('#FAQ')}>
+                  <a className={activeNav === '#FAQ' ? 'nav__link active-link' : 'nav__link'}>
                     FAQ
                   </a>
                 </RouterLink>
@@ -131,37 +104,29 @@ const Header = () => {
           <Menu>
             <MenuButton
               as={IconButton}
-              aria-label="Menu"
+              aria-label='Menu'
               icon={<HamburgerIcon />}
-              variant="outline"
+              variant='outline'
             />
             <MenuList>
-              <RouterLink to="/">
+              <RouterLink to='/'>
                 <MenuItem>Home</MenuItem>
               </RouterLink>
-              <RouterLink to="/#library">
+              <RouterLink to='/#library'>
                 <MenuItem>Library</MenuItem>
               </RouterLink>
-              <RouterLink to="/#faq">
+              <RouterLink to='/#faq'>
                 <MenuItem>FAQ</MenuItem>
               </RouterLink>
               {user ? (
                 <>
                   {user.role > 1 && (
-                    <MenuItem onClick={handleAdminButtonClick}>
-                      Admin Panel
-                    </MenuItem>
+                    <MenuItem onClick={handleAdminButtonClick}>Admin Panel</MenuItem>
                   )}
                   {user.role > 2 && (
-                    <MenuItem onClick={handleDevButtonClick}>
-                      Developer Panel
-                    </MenuItem>
+                    <MenuItem onClick={handleDevButtonClick}>Developer Panel</MenuItem>
                   )}
-                  {
-                    <MenuItem onClick={handlePasswordChange}>
-                      Change Password
-                    </MenuItem>
-                  }
+                  {<MenuItem onClick={handlePasswordChange}>Change Password</MenuItem>}
                   {!user.verified && (
                     <MenuItem onClick={handleResendVerificationEmail}>
                       Resent Verification Email
@@ -170,8 +135,8 @@ const Header = () => {
                   <MenuItem onClick={handleLogout}> Log Out</MenuItem>
                 </>
               ) : (
-                <RouterLink to="/login">
-                  <MenuItem className="nav__login">Log In</MenuItem>
+                <RouterLink to='/login'>
+                  <MenuItem className='nav__login'>Log In</MenuItem>
                 </RouterLink>
               )}
             </MenuList>
@@ -181,23 +146,15 @@ const Header = () => {
           <>
             {user ? (
               <Menu>
-                <MenuButton as={NavBarRightButton}>{user.username}</MenuButton>
+                <MenuButton as={HeaderRightButton}>{user.username}</MenuButton>
                 <MenuList>
                   {user.role > 1 && (
-                    <MenuItem onClick={handleAdminButtonClick}>
-                      Admin Panel
-                    </MenuItem>
+                    <MenuItem onClick={handleAdminButtonClick}>Admin Panel</MenuItem>
                   )}
                   {user.role > 2 && (
-                    <MenuItem onClick={handleDevButtonClick}>
-                      Developer Panel
-                    </MenuItem>
+                    <MenuItem onClick={handleDevButtonClick}>Developer Panel</MenuItem>
                   )}
-                  {
-                    <MenuItem onClick={handlePasswordChange}>
-                      Change Password
-                    </MenuItem>
-                  }
+                  {<MenuItem onClick={handlePasswordChange}>Change Password</MenuItem>}
                   {!user.verified && (
                     <MenuItem onClick={handleResendVerificationEmail}>
                       Resend Verification Email
@@ -207,8 +164,8 @@ const Header = () => {
                 </MenuList>
               </Menu>
             ) : (
-              <RouterLink to="/login">
-                <NavBarRightButton children="Log In" />
+              <RouterLink to='/login'>
+                <HeaderRightButton children='Log In' />
               </RouterLink>
             )}
           </>

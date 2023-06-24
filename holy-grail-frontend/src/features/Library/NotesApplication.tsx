@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, useCallback } from "react";
+import { useState, useEffect, useContext, useCallback } from 'react';
 import {
   fetchData,
   fetchApprovedNotes,
@@ -7,16 +7,16 @@ import {
   DocumentType,
   PaginatedNotes,
   Note,
-} from "../../utils/library/Search";
-import DeleteAlert from "../Approval/DeleteAlert";
-import EditModal from "../Approval/EditModal";
-import AuthContext from "../../providers/AuthProvider";
-import NotesTable from "../../components/NotesTable/NotesTable";
-import deleteNote from "../../utils/actions/DeleteNote";
-import updateNote from "../../utils/actions/UpdateNote";
-import AdminDeleteIcon from "../../components/AdminDeleteIcon/AdminDeleteIcon";
-import AdminEditIcon from "../../components/AdminEditIcon/AdminEditIcon";
-import { Box } from "@mui/material";
+} from '../../api/utils/library/Search';
+import DeleteAlert from '../Approval/DeleteAlert';
+import EditModal from '../Approval/EditModal';
+import AuthContext from '../../providers/AuthProvider';
+import NotesTable from '../../components/NotesTable/NotesTable';
+import deleteNote from '../../api/utils/actions/DeleteNote';
+import updateNote from '../../api/utils/actions/UpdateNote';
+import AdminDeleteIcon from '../../components/AdminDeleteIcon/AdminDeleteIcon';
+import AdminEditIcon from '../../components/AdminEditIcon/AdminEditIcon';
+import { Box } from '@mui/material';
 
 const NotesApplication = () => {
   const [notes, setNotes] = useState<PaginatedNotes>({
@@ -29,8 +29,7 @@ const NotesApplication = () => {
   const { user } = useContext(AuthContext);
   const [isAlertOpen, setIsAlertOpen] = useState<boolean>(false);
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
-  const [noteInitialProperties, setNoteInitialProperties] =
-    useState<Note | null>(null);
+  const [noteInitialProperties, setNoteInitialProperties] = useState<Note | null>(null);
   const [noteId, setNoteId] = useState<number>(0);
 
   const [categories, setCategories] = useState<CategoryType[]>([]);
@@ -43,9 +42,9 @@ const NotesApplication = () => {
     total: 0,
   });
 
-  const [category, setCategory] = useState<number | "">(0);
-  const [subject, setSubject] = useState<number | "">(0);
-  const [type, setType] = useState<number | "">(0);
+  const [category, setCategory] = useState<number | ''>(0);
+  const [subject, setSubject] = useState<number | ''>(0);
+  const [type, setType] = useState<number | ''>(0);
 
   useEffect(() => {
     fetchData().then(({ categories, subjects, types }) => {
@@ -61,14 +60,8 @@ const NotesApplication = () => {
 
   const filterNotes = useCallback(() => {
     fetchApprovedNotes({
-      category:
-        category !== 0
-          ? categories.find((c) => c.id === category)?.name
-          : undefined,
-      subject:
-        subject !== 0
-          ? subjects.find((s) => s.id === subject)?.name
-          : undefined,
+      category: category !== 0 ? categories.find((c) => c.id === category)?.name : undefined,
+      subject: subject !== 0 ? subjects.find((s) => s.id === subject)?.name : undefined,
       doc_type: type !== 0 ? types.find((t) => t.id === type)?.name : undefined,
       page: pageInfo.page,
       size: pageInfo.size,
@@ -81,16 +74,7 @@ const NotesApplication = () => {
         total: response.total,
       });
     });
-  }, [
-    category,
-    subject,
-    type,
-    pageInfo.page,
-    pageInfo.size,
-    categories,
-    subjects,
-    types,
-  ]);
+  }, [category, subject, type, pageInfo.page, pageInfo.size, categories, subjects, types]);
 
   useEffect(() => {
     filterNotes();
@@ -112,17 +96,17 @@ const NotesApplication = () => {
     }
   };
 
-  const handleCategoryChange = (newValue: number | "") => {
+  const handleCategoryChange = (newValue: number | '') => {
     setCategory(Number(newValue));
     setPageInfo({ ...pageInfo, page: 1 });
   };
 
-  const handleSubjectChange = (newValue: number | "") => {
+  const handleSubjectChange = (newValue: number | '') => {
     setSubject(Number(newValue));
     setPageInfo({ ...pageInfo, page: 1 });
   };
 
-  const handleTypeChange = (newValue: number | "") => {
+  const handleTypeChange = (newValue: number | '') => {
     setType(Number(newValue));
     setPageInfo({ ...pageInfo, page: 1 });
   };
@@ -154,9 +138,9 @@ const NotesApplication = () => {
         categories={categories.map((c) => ({ value: c.id, label: c.name }))}
         subjects={subjects.map((s) => ({ value: s.id, label: s.name }))}
         types={types.map((t) => ({ value: t.id, label: t.name }))}
-        category={category !== "" ? Number(category) : ""}
-        subject={subject !== "" ? Number(subject) : ""}
-        type={type !== "" ? Number(type) : ""}
+        category={category !== '' ? Number(category) : ''}
+        subject={subject !== '' ? Number(subject) : ''}
+        type={type !== '' ? Number(type) : ''}
         onCategoryChange={handleCategoryChange}
         onSubjectChange={handleSubjectChange}
         onTypeChange={handleTypeChange}
@@ -165,7 +149,7 @@ const NotesApplication = () => {
         isAdmin={Boolean(user?.role && user.role >= 2)}
         renderAdminActions={(note) =>
           user && user.role >= 2 ? (
-            <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
               <AdminDeleteIcon
                 setIsAlertOpen={setIsAlertOpen}
                 setNoteId={setNoteId}
@@ -189,7 +173,7 @@ const NotesApplication = () => {
           if (noteId !== null) {
             handleDelete(noteId)
               .then(() => null)
-              .catch((err) => console.error(err));
+              .catch((err) => {});
           }
         }}
       />
@@ -197,10 +181,10 @@ const NotesApplication = () => {
         isOpen={isEditOpen}
         onClose={() => setIsEditOpen(false)}
         onConfirm={(
-          newCategory: number | "",
-          newSubject: number | "",
-          newType: number | "",
-          newDocName: string | ""
+          newCategory: number | '',
+          newSubject: number | '',
+          newType: number | '',
+          newDocName: string | '',
         ) => {
           updateNote(
             noteId,
@@ -208,20 +192,18 @@ const NotesApplication = () => {
             newCategory,
             newSubject,
             newType,
-            newDocName
+            newDocName,
           )
             .then(() => filterNotes())
-            .catch((err) => console.error(err));
+            .catch((err) => {});
         }}
         categories={categories.map((c) => ({ value: c.id, label: c.name }))}
         subjects={subjects.map((s) => ({ value: s.id, label: s.name }))}
         types={types.map((t) => ({ value: t.id, label: t.name }))}
-        category={noteInitialProperties ? noteInitialProperties.category : ""}
-        subject={noteInitialProperties ? noteInitialProperties.subject : ""}
-        type={noteInitialProperties ? noteInitialProperties.type : ""}
-        documentName={
-          noteInitialProperties ? noteInitialProperties.document_name : ""
-        }
+        category={noteInitialProperties ? noteInitialProperties.category : ''}
+        subject={noteInitialProperties ? noteInitialProperties.subject : ''}
+        type={noteInitialProperties ? noteInitialProperties.type : ''}
+        documentName={noteInitialProperties ? noteInitialProperties.document_name : ''}
       />
     </>
   );
