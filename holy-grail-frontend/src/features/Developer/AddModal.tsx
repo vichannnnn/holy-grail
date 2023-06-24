@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from 'react';
 import {
   Button,
   TextField,
@@ -7,7 +7,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-} from "@mui/material";
+} from '@mui/material';
 
 interface AddModalProps {
   isOpen: boolean;
@@ -16,24 +16,24 @@ interface AddModalProps {
 }
 
 const AddModal = ({ isOpen, onClose, onSubmit }: AddModalProps) => {
-  const [name, setName] = useState("");
+  const [name, setName] = useState('');
 
   const handleSubmit = () => {
     onSubmit(name);
-    setName("");
+    setName('');
   };
 
   return (
-    <Dialog open={isOpen} onClose={onClose} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Add</DialogTitle>
+    <Dialog open={isOpen} onClose={onClose} aria-labelledby='form-dialog-title'>
+      <DialogTitle id='form-dialog-title'>Add</DialogTitle>
       <DialogContent>
         <DialogContentText>Please enter the new identifier.</DialogContentText>
         <TextField
           autoFocus
-          margin="dense"
-          id="name"
-          label="Identifier"
-          type="text"
+          margin='dense'
+          id='name'
+          label='Identifier'
+          type='text'
           fullWidth
           value={name}
           onChange={(event) => setName(event.target.value)}

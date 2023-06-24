@@ -1,4 +1,4 @@
-import apiClient from "../../api/apiClient";
+import apiClient from '../../apiClient';
 
 export type PaginatedNotes = {
   items: Note[];
@@ -48,9 +48,9 @@ export type DocumentType = CommonType;
 
 export const fetchData = async () => {
   const [categories, subjects, types] = await Promise.all([
-    apiClient.get("/all_category_level"),
-    apiClient.get("/all_subjects"),
-    apiClient.get("/all_document_type"),
+    apiClient.get('/all_category_level'),
+    apiClient.get('/all_subjects'),
+    apiClient.get('/all_document_type'),
   ]);
 
   return {
@@ -76,7 +76,7 @@ export const fetchApprovedNotes = async (searchParams: {
   page?: number;
   size?: number;
 }) => {
-  const response = await apiClient.get<PaginatedNotes>("/notes/approved", {
+  const response = await apiClient.get<PaginatedNotes>('/notes/approved', {
     params: searchParams,
   });
   return response.data;
@@ -89,7 +89,7 @@ export const fetchPendingApprovalNotes = async (searchParams: {
   page?: number;
   size?: number;
 }) => {
-  const response = await apiClient.get<PaginatedNotes>("/notes/pending", {
+  const response = await apiClient.get<PaginatedNotes>('/notes/pending', {
     params: searchParams,
   });
   return response.data;

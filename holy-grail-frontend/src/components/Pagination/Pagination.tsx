@@ -1,7 +1,7 @@
-import { AspectRatio } from "@chakra-ui/react";
-import { Stack, Button, Typography } from "@mui/material";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-import debounce from "lodash/debounce";
+import { AspectRatio } from '@chakra-ui/react';
+import { Stack, Button, Typography } from '@mui/material';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import debounce from 'lodash/debounce';
 
 interface PaginationProps {
   pageInfo: { page: number; size: number; total: number; pages: number };
@@ -9,49 +9,45 @@ interface PaginationProps {
   styles?: { mt: string };
 }
 
-export const Pagination = ({
-  pageInfo,
-  handlePageChange,
-  styles,
-}: PaginationProps) => {
+export const Pagination = ({ pageInfo, handlePageChange, styles }: PaginationProps) => {
   const debouncedHandlePageChange = debounce(handlePageChange, 100);
   const muiTheme = createTheme();
   const buttonStyles = {
-    borderColor: "transparent",
-    backgroundColor: "rgb(237, 242, 247)",
-    textTransform: "capitalize",
-    color: "black",
-    fontWeight: "bold",
+    borderColor: 'transparent',
+    backgroundColor: 'rgb(237, 242, 247)',
+    textTransform: 'capitalize',
+    color: 'black',
+    fontWeight: 'bold',
     aspectRatio: 1.618,
-    borderRadius: "10%",
+    borderRadius: '10%',
   };
 
   return (
     <ThemeProvider theme={muiTheme}>
       <Stack
         spacing={2}
-        direction="row"
+        direction='row'
         sx={{
-          display: "flex",
-          justifyContent: "center",
-          marginTop: styles?.mt ? styles.mt : "10%",
+          display: 'flex',
+          justifyContent: 'center',
+          marginTop: styles?.mt ? styles.mt : '10%',
         }}
       >
         <Button
           onClick={() => debouncedHandlePageChange(pageInfo.page - 1)}
           disabled={pageInfo.page === 1}
-          variant="outlined"
+          variant='outlined'
           sx={buttonStyles}
         >
           Prev
         </Button>
-        <Typography display="flex" alignItems="center">
+        <Typography display='flex' alignItems='center'>
           Page {pageInfo.page} of {pageInfo.pages > 0 ? pageInfo.pages : 1}
         </Typography>
         <Button
           onClick={() => debouncedHandlePageChange(pageInfo.page + 1)}
           disabled={pageInfo.page === pageInfo.pages || pageInfo.pages === 0}
-          variant="outlined"
+          variant='outlined'
           sx={buttonStyles}
         >
           Next

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -6,7 +6,7 @@ import {
   TextField,
   DialogActions,
   Button,
-} from "@mui/material";
+} from '@mui/material';
 
 interface EditModalProps {
   isOpen: boolean;
@@ -15,12 +15,7 @@ interface EditModalProps {
   initialName: string;
 }
 
-const EditModal = ({
-  isOpen,
-  onClose,
-  onSubmit,
-  initialName,
-}: EditModalProps) => {
+const EditModal = ({ isOpen, onClose, onSubmit, initialName }: EditModalProps) => {
   const [name, setName] = useState(initialName);
 
   const handleSubmit = async () => {
@@ -34,9 +29,9 @@ const EditModal = ({
       <DialogContent>
         <TextField
           autoFocus
-          margin="dense"
-          label="Name"
-          type="text"
+          margin='dense'
+          label='Name'
+          type='text'
           fullWidth
           value={name}
           onChange={(e) => setName(e.target.value)}

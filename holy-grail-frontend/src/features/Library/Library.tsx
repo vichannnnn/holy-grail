@@ -1,7 +1,7 @@
-import MaterialsGrid from "./MaterialsGrid";
-import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
-import AuthContext from "../../providers/AuthProvider";
+import MaterialsGrid from './MaterialsGrid';
+import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import AuthContext from '../../providers/AuthProvider';
 
 const Library = () => {
   const navigate = useNavigate();
@@ -9,21 +9,21 @@ const Library = () => {
 
   const handleUploadButtonClick = () => {
     if (user) {
-      navigate("/upload");
+      navigate('/upload');
     } else {
-      navigate("/login");
+      navigate('/login');
     }
   };
 
   return (
-    <section className="library section container" id="library">
+    <section className='library section container' id='library'>
       <div>
-        <div className="sub-section__title">Library</div>
-        <div className="section__subtitle">
-          View materials or contribute{" "}
-          <a onClick={handleUploadButtonClick} className="text__link">
+        <div className='sub-section__title'>Library</div>
+        <div className='section__subtitle'>
+          View materials or contribute{' '}
+          <a onClick={handleUploadButtonClick} className='text__link'>
             here
-          </a>{" "}
+          </a>{' '}
           after you have logged in (subjected to approval of administrators).
         </div>
       </div>

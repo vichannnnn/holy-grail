@@ -1,4 +1,4 @@
-import apiClient from "../../api/apiClient";
+import apiClient from '../../apiClient';
 
 const approveNote = async (noteId: number) => {
   const response = await apiClient.put(`/admin/approve/${noteId}`);

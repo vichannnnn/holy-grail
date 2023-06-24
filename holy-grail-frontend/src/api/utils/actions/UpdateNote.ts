@@ -1,12 +1,12 @@
-import apiClient from "../../api/apiClient";
+import apiClient from '../../apiClient';
 
 const updateNote = async (
   noteId: number,
   uploaded_by: number | undefined,
-  newCategory: number | "",
-  newSubject: number | "",
-  newType: number | "",
-  newDocName: string | ""
+  newCategory: number | '',
+  newSubject: number | '',
+  newType: number | '',
+  newDocName: string | '',
 ) => {
   try {
     const response = await apiClient.put(`/note/${noteId}`, {
