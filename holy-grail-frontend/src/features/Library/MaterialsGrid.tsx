@@ -39,7 +39,7 @@ const MaterialsGrid = () => {
   const [pageInfo, setPageInfo] = useState({
     page: 1,
     pages: 1,
-    size: 20,
+    size: 10,
     total: 0,
   });
 
@@ -150,7 +150,7 @@ const MaterialsGrid = () => {
         isAdmin={Boolean(user?.role && user.role >= 2)}
         renderAdminActions={(note) =>
           user && user.role >= 2 ? (
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Box sx={{ display: 'flex' }}>
               <AdminDeleteIcon
                 setIsAlertOpen={setIsAlertOpen}
                 setNoteId={setNoteId}
