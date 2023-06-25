@@ -1,4 +1,7 @@
 import { Box, Card, CardContent, Grid, Typography, Link } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
+import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
 import { Note } from '../../api/utils/library/Search';
 import Combobox from '../../features/Library/Combobox';
 import { ComboboxProps } from '../../features/Library/Combobox';
@@ -99,61 +102,136 @@ const NotesTable = ({
               style={{ width: isMobile ? '100%' : '15%' }}
             />
           </Box>
-          <Grid container mt='3%' spacing={2} sx={{ width: '90%' }}>
-            {' '}
-            {notes.map((note: Note) => (
-              <Grid item xs={12} sm={6} md={4} lg={3} key={note.id}>
-                <Card
-                  sx={{
-                    height: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    position: 'relative',
-                  }}
-                >
-                  <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography
-                      mb='5%'
-                      component='div'
-                      fontWeight='bold'
-                      style={{
-                        height: '3em',
-                        overflow: 'hidden',
-                      }}
+          {!isMobile ? (
+            <TableContainer>
+              <Table className='table__notes'>
+                <TableHead>
+                  <TableRow>
+                    <TableCell className='table__header'>Document Name</TableCell>
+                    <TableCell className='table__header'>Category</TableCell>
+                    <TableCell className='table__header'>Subject</TableCell>
+                    <TableCell className='table__header'>Type</TableCell>
+                    <TableCell className='table__header'>Uploaded By</TableCell>
+                    <TableCell className='table__header'>Uploaded On</TableCell>
+                    <TableCell className='table__header' align='center'>
+                      Download
+                    </TableCell>
+                    {isAdmin && renderAdminActions && (
+                      <TableCell className='table__header'>Actions</TableCell>
+                    )}
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {notes.map((note: Note) => (
+                    <TableRow
+                      key={note.id}
+                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
-                      {note.document_name}
-                    </Typography>
-                    <Typography variant='body2'>Category: {note.doc_category?.name}</Typography>
-                    <Typography variant='body2'>Subject: {note.doc_subject?.name}</Typography>
-                    <Typography variant='body2'>Type: {note.doc_type?.name}</Typography>
-                    <Typography variant='body2'>Uploaded by: {note.account?.username}</Typography>
-                    <Typography variant='body2'>
-                      Uploaded on: {formatDate(note.uploaded_on)}
-                    </Typography>
-                  </CardContent>
-                  <Box sx={{ p: 2 }}>
-                    <Link
-                      href={`${VITE_APP_AWS_S3_BUCKET_URL}/${note.file_name}`}
-                      target='_blank'
-                      rel='noopener noreferrer'
-                      underline='always'
-                    >
-                      View PDF
-                    </Link>
-                  </Box>
-                  {isAdmin && renderAdminActions && (
-                    <Box
-                      sx={{
-                        margin: '3%',
-                      }}
-                    >
-                      {renderAdminActions(note)}
+                      <TableCell className='table__content' component='th' scope='row'>
+                        <Link
+                          href={`${VITE_APP_AWS_S3_BUCKET_URL}/${note.file_name}`}
+                          target='_blank'
+                          rel='noopener noreferrer'
+                          underline='hover'
+                          sx={{
+                            paddingLeft: '1px',
+                            display: 'flex',
+                            color: 'var(--text-color)',
+                            gap: '5%',
+                          }}
+                        >
+                          <Card>
+                            <CardContent className='table__notes-card'>
+                              <DescriptionOutlinedIcon sx={{ width: '80%' }} />
+                            </CardContent>
+                          </Card>
+                          <div className='table__content1'>{note.document_name}</div>
+                        </Link>
+                      </TableCell>
+                      <TableCell className='table__content'>{note.doc_category?.name}</TableCell>
+                      <TableCell className='table__content'>{note.doc_subject?.name}</TableCell>
+                      <TableCell className='table__content'>{note.doc_type?.name}</TableCell>
+                      <TableCell className='table__content'>{note.account?.username}</TableCell>
+                      <TableCell className='table__content'>
+                        {formatDate(note.uploaded_on)}
+                      </TableCell>
+                      <TableCell className='table__content' align='center'>
+                        <Link
+                          href={`${VITE_APP_AWS_S3_BUCKET_URL}/${note.file_name}`}
+                          target='_blank'
+                          download={note.document_name}
+                          rel='noopener noreferrer'
+                        >
+                          <CloudDownloadOutlinedIcon />
+                        </Link>
+                      </TableCell>
+                      {isAdmin && renderAdminActions && (
+                        <TableCell className='table__content'>{renderAdminActions(note)}</TableCell>
+                      )}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          ) : (
+            <Grid container mt='3%' spacing={2} sx={{ width: '90%' }}>
+              {' '}
+              {notes.map((note: Note) => (
+                <Grid item xs={12} sm={6} md={4} lg={3} key={note.id}>
+                  <Card
+                    sx={{
+                      height: '100%',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      position: 'relative',
+                    }}
+                  >
+                    <CardContent sx={{ flexGrow: 1 }}>
+                      <Typography
+                        mb='5%'
+                        component='div'
+                        fontWeight='bold'
+                        style={{
+                          height: '3em',
+                          overflow: 'hidden',
+                        }}
+                      >
+                        {note.document_name}
+                      </Typography>
+                      <Typography variant='body2'>Category: {note.doc_category?.name}</Typography>
+                      <Typography variant='body2'>Subject: {note.doc_subject?.name}</Typography>
+                      <Typography variant='body2'>Type: {note.doc_type?.name}</Typography>
+                      <Typography variant='body2'>Uploaded by: {note.account?.username}</Typography>
+                      <Typography variant='body2'>
+                        Uploaded on: {formatDate(note.uploaded_on)}
+                      </Typography>
+                    </CardContent>
+                    <Box sx={{ p: 2 }}>
+                      <Link
+                        href={`${VITE_APP_AWS_S3_BUCKET_URL}/${note.file_name}`}
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        underline='always'
+                      >
+                        View PDF
+                      </Link>
                     </Box>
-                  )}
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
+                    {isAdmin && renderAdminActions && (
+                      <Box
+                        sx={{
+                          margin: '3%',
+                          display: 'flex',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        {renderAdminActions(note)}
+                      </Box>
+                    )}
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
+          )}
         </Box>
       </ThemeProvider>
       <Pagination pageInfo={pageInfo} handlePageChange={handlePageChange} />
