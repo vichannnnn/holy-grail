@@ -2,6 +2,7 @@ import { AspectRatio } from '@chakra-ui/react';
 import { Stack, Button, Typography } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import debounce from 'lodash/debounce';
+import { useMediaQuery } from 'react-responsive';
 
 interface PaginationProps {
   pageInfo: { page: number; size: number; total: number; pages: number };
@@ -22,6 +23,9 @@ export const Pagination = ({ pageInfo, handlePageChange, styles }: PaginationPro
     borderRadius: '10%',
   };
 
+  const isMobile = useMediaQuery({ query: '(max-width: 600px)' });
+  const responsiveMt = isMobile ? '20%' : '4%';
+
   return (
     <ThemeProvider theme={muiTheme}>
       <Stack
@@ -30,7 +34,7 @@ export const Pagination = ({ pageInfo, handlePageChange, styles }: PaginationPro
         sx={{
           display: 'flex',
           justifyContent: 'center',
-          marginTop: styles?.mt ? styles.mt : '10%',
+          marginTop: styles?.mt ? styles.mt : responsiveMt,
         }}
       >
         <Button
