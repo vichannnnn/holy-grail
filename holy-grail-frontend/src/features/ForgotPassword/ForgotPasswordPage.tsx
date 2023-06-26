@@ -6,30 +6,30 @@ import {
   Input,
   VStack,
   Link,
-  useToast,
   Box,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { AccountForm } from '../../components/AccountForm/AccountForm';
 import '../SignIn/login.css';
 import sendResetPasswordEmail from '../../api/utils/auth/ResetPasswordMail';
+import AlertToast, { AlertProps } from '../../components/AlertToast/AlertToast';
 
 const ForgotPasswordPage = () => {
   const [email, setEmail] = useState('');
-  const toast = useToast();
+  const [alert, setAlert] = useState<AlertProps>({} as AlertProps);
+  const [openAlert, setOpenAlert] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const handleResetPassword = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const result = await sendResetPasswordEmail(email);
 
-    toast({
+    setAlert({
       title: result.success ? 'Password reset email successfully sent.' : 'Reset Password failed.',
       description: result.message,
-      status: result.success ? 'success' : 'error',
-      duration: 5000,
-      isClosable: true,
+      severity: result.success ? 'success' : 'error',
     });
+    setOpenAlert(true);
   };
 
   return (
@@ -65,6 +65,7 @@ const ForgotPasswordPage = () => {
           </div>
         </Box>
       </AccountForm>
+      <AlertToast openAlert={openAlert} onClose={() => setOpenAlert(false)} alert={alert} />
     </section>
   );
 };
