@@ -61,6 +61,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./holy-grail-frontend
+          dockerfile: ./holy-grail-frontend/Dockerfile.dev
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/holy-grail-frontend:latest
 
