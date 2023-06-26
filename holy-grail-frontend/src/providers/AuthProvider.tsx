@@ -1,6 +1,6 @@
-import React, { createContext, useState, useEffect } from "react";
-import apiClient from "../api/apiClient";
-import { isTokenExpired } from "../utils/auth/CheckToken";
+import React, { createContext, useState, useEffect } from 'react';
+import apiClient from '../api/apiClient';
+import { isTokenExpired } from '../api/utils/auth/CheckToken';
 
 export interface User {
   user_id: number;
@@ -30,7 +30,7 @@ export const AuthProvider: React.FC<{
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
+    const storedUser = localStorage.getItem('user');
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
@@ -49,25 +49,25 @@ export const AuthProvider: React.FC<{
   }, [user]);
 
   const login = async (username: string, password: string) => {
-    const response = await apiClient.post("/auth/login", {
+    const response = await apiClient.post('/auth/login', {
       username,
       password,
     });
     const { data, access_token } = response.data;
     setUser(data);
-    localStorage.setItem("user", JSON.stringify(data));
-    localStorage.setItem("access_token", access_token);
+    localStorage.setItem('user', JSON.stringify(data));
+    localStorage.setItem('access_token', access_token);
   };
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem("user");
-    localStorage.removeItem("access_token");
+    localStorage.removeItem('user');
+    localStorage.removeItem('access_token');
   };
 
   const updateUser = (updatedUser: User) => {
     setUser(updatedUser);
-    localStorage.setItem("user", JSON.stringify(updatedUser));
+    localStorage.setItem('user', JSON.stringify(updatedUser));
   };
 
   return (

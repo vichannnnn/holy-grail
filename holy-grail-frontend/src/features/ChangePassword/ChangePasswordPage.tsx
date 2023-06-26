@@ -1,25 +1,15 @@
-import React, { useState, useEffect } from "react";
-import {
-  Button,
-  FormControl,
-  FormLabel,
-  Input,
-  VStack,
-  Link,
-  useToast,
-} from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
-import apiClient from "../../api/apiClient";
-import { AxiosError } from "axios";
-import PasswordValidationBox from "../SignUp/PasswordValidationBox";
-import { Text } from "../../components/Text/Text";
-import { Title } from "../../components/Title/Title";
-import { AccountForm } from "../../components/AccountForm/AccountForm";
+import React, { useState, useEffect } from 'react';
+import { Button, FormControl, FormLabel, Input, VStack, useToast } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
+import PasswordValidationBox from '../SignUp/PasswordValidationBox';
+import { AccountForm } from '../../components/AccountForm/AccountForm';
+import '../SignIn/login.css';
+import { updatePassword } from '../../api/utils/auth/UpdatePassword';
 
 const ChangePasswordPage = () => {
-  const [beforePassword, setBeforePassword] = useState("");
-  const [password, setPassword] = useState("");
-  const [repeatPassword, setRepeatPassword] = useState("");
+  const [beforePassword, setBeforePassword] = useState('');
+  const [password, setPassword] = useState('');
+  const [repeatPassword, setRepeatPassword] = useState('');
   const toast = useToast();
   const navigate = useNavigate();
 
@@ -28,58 +18,37 @@ const ChangePasswordPage = () => {
   const [capitalLetterValid, setCapitalLetterValid] = useState(false);
   const [repeatPasswordValid, setRepeatPasswordValid] = useState(false);
   const allCriteriaMet =
-    lengthValid &&
-    specialCharValid &&
-    capitalLetterValid &&
-    repeatPasswordValid;
+    lengthValid && specialCharValid && capitalLetterValid && repeatPasswordValid;
 
   useEffect(() => {
     setLengthValid(password.length <= 30 && password.length >= 8);
     setSpecialCharValid(/[!@#$%^&*]/.test(password));
     setCapitalLetterValid(/[A-Z]/.test(password));
-    setRepeatPasswordValid(password === repeatPassword && password !== "");
+    setRepeatPasswordValid(password === repeatPassword && password !== '');
   }, [password, repeatPassword]);
 
   const handleUpdatePassword = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      await apiClient.post("/auth/update_password", {
-        before_password: beforePassword,
-        password: password,
-        repeat_password: repeatPassword,
-      });
+    const { success, errorDescription } = await updatePassword(
+      beforePassword,
+      password,
+      repeatPassword,
+    );
 
+    if (success) {
       toast({
-        title: "Password successfully updated.",
+        title: 'Password successfully updated.',
         description: `You can now log in with your new password.`,
-        status: "success",
+        status: 'success',
         duration: 5000,
         isClosable: true,
       });
-      navigate("/");
-    } catch (error) {
-      let errorDescription =
-        "Unable to update password. Please check your input and try again.";
-
-      type ErrorResponseData = {
-        detail: string;
-      };
-
-      const axiosError = error as AxiosError<ErrorResponseData>;
-
-      if (axiosError.response && axiosError.response.status === 401) {
-        errorDescription = "The password you've entered is invalid.";
-      } else if (axiosError.response && axiosError.response.status === 400) {
-        errorDescription =
-          "Your password does not match. Please check your password and try again.";
-      } else if (axiosError.response && axiosError.response.status === 422) {
-        errorDescription = "Please ensure your new password format is valid";
-      }
-
+      navigate('/');
+    } else {
       toast({
-        title: "Password Update failed.",
+        title: 'Password Update failed.',
         description: errorDescription,
-        status: "error",
+        status: 'error',
         duration: 3000,
         isClosable: true,
       });
@@ -87,35 +56,35 @@ const ChangePasswordPage = () => {
   };
 
   return (
-    <>
+    <section className='updatePw section container'>
       <AccountForm>
-        <Title mb="5%">Update Password</Title>
-        <Text mb="15%">You can change your password here.</Text>
+        <div className='login__title'>Update Password</div>
+        <div className='section__subtitle'>You can change your password here.</div>
 
         <form onSubmit={handleUpdatePassword}>
-          <VStack spacing="6">
-            <FormControl id="before-password">
+          <VStack spacing='4'>
+            <FormControl id='before-password'>
               <FormLabel>Current Password</FormLabel>
               <Input
-                type="password"
+                type='password'
                 value={beforePassword}
                 onChange={(e) => setBeforePassword(e.target.value)}
                 required
               />
             </FormControl>
-            <FormControl id="password">
+            <FormControl id='password'>
               <FormLabel>Password</FormLabel>
               <Input
-                type="password"
+                type='password'
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
             </FormControl>
-            <FormControl id="repeat-password">
+            <FormControl id='repeat-password'>
               <FormLabel>Repeat Password</FormLabel>
               <Input
-                type="password"
+                type='password'
                 value={repeatPassword}
                 onChange={(e) => setRepeatPassword(e.target.value)}
                 required
@@ -130,13 +99,13 @@ const ChangePasswordPage = () => {
               allCriteriaMet={allCriteriaMet}
             />
 
-            <Button type="submit" colorScheme="blue" w="100%">
+            <Button type='submit' colorScheme='blue' w='100%'>
               Update Password
             </Button>
           </VStack>
         </form>
       </AccountForm>
-    </>
+    </section>
   );
 };
 

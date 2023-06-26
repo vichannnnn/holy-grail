@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { Box, Button, Modal, Select, MenuItem } from "@mui/material";
-import { RoleEnum } from "./TabContentUsers";
-import { SelectChangeEvent } from "@mui/material/Select";
-import { VStack } from "@chakra-ui/react";
+import { useState } from 'react';
+import { Box, Button, Modal, Select, MenuItem } from '@mui/material';
+import { RoleEnum } from './TabContentUsers';
+import { SelectChangeEvent } from '@mui/material/Select';
+import { VStack } from '@chakra-ui/react';
 
 interface EditUserModalProps {
   isOpen: boolean;
@@ -37,15 +37,15 @@ const EditUserModal = ({
     <Modal open={isOpen} onClose={onClose}>
       <Box
         sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          bgcolor: "background.paper",
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          bgcolor: 'background.paper',
           boxShadow: 24,
           p: 4,
         }}
@@ -53,13 +53,13 @@ const EditUserModal = ({
         <h2>User ID: {userId}</h2>
         <h3>Username: {userName}</h3>
         <form onSubmit={handleFormSubmit}>
-          <VStack mt="20%">
+          <VStack mt='20%'>
             <Select value={newRole} onChange={handleRoleChange}>
               <MenuItem value={RoleEnum.USER}>User</MenuItem>
               <MenuItem value={RoleEnum.ADMIN}>Admin</MenuItem>
               <MenuItem value={RoleEnum.DEVELOPER}>Developer</MenuItem>
             </Select>
-            <Button type="submit">Submit</Button>
+            <Button type='submit'>Submit</Button>
           </VStack>
         </form>
       </Box>

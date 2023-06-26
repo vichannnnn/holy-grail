@@ -1,8 +1,4 @@
-import {
-  CategoryType,
-  DocumentType,
-  SubjectType,
-} from "../../utils/library/Search";
+import { CategoryType, DocumentType, SubjectType } from '../../api/utils/library/Search';
 import {
   Button,
   Paper,
@@ -12,11 +8,14 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-} from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import React from "react";
+  OutlinedInput,
+} from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import { useState, ChangeEvent } from 'react';
+import { ChakraProvider } from '@chakra-ui/react';
+import { Pagination } from '../../components/Pagination/Pagination';
 
-type DataTypeKey = "categories" | "subjects" | "types";
+type DataTypeKey = 'categories' | 'subjects' | 'types';
 
 interface TabContentProps {
   title: string;
@@ -26,15 +25,29 @@ interface TabContentProps {
   type: DataTypeKey;
 }
 
-export const TabContent = ({
-  title,
-  data,
-  handleEdit,
-  handleAdd,
-  type,
-}: TabContentProps) => {
+export const TabContent = ({ title, data, handleEdit, handleAdd, type }: TabContentProps) => {
+  const [query, setQuery] = useState<string>('');
+  const [page, setPage] = useState<number>(0);
+  const [chunkSize, setChunkSize] = useState<number>(10);
+
   const handleEditClick = (id: number) => {
     handleEdit(id, type);
+  };
+
+  const handleFilterContent = () => {
+    let validData: Array<CategoryType | SubjectType | DocumentType> = data.filter((option) => {
+      return option.name.toLowerCase().includes(query.toLowerCase());
+    });
+    return validData;
+  };
+
+  const handlePaging = () => {
+    let pagedData: Array<Array<CategoryType | SubjectType | DocumentType>> = [];
+    let validData: Array<CategoryType | SubjectType | DocumentType> = handleFilterContent();
+    for (let i = 0; i < validData.length; i += chunkSize) {
+      pagedData.push(validData.slice(i, i + chunkSize));
+    }
+    return pagedData;
   };
 
   return (
@@ -42,19 +55,31 @@ export const TabContent = ({
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>{title}</TableCell>
-            <TableCell align="right">
-              <Button onClick={handleAdd}>+</Button>
+            <TableCell>
+              <OutlinedInput
+                sx={{ width: '120%' }}
+                placeholder={`Search for ${title}`}
+                onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                  setQuery(event.target.value);
+                  //go back to first page to prevent overflow
+                  setPage(0);
+                  handleFilterContent();
+                }}
+              />
+            </TableCell>
+
+            <TableCell align='right'>
+              <Button onClick={handleAdd}>+ {title}</Button>
             </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((item) => (
+          {(handlePaging()[page] || []).map((item) => (
             <TableRow key={item.id}>
-              <TableCell component="th" scope="row">
+              <TableCell component='th' scope='row'>
                 {item.name}
               </TableCell>
-              <TableCell align="right">
+              <TableCell align='right'>
                 <Button onClick={() => handleEditClick(item.id)}>
                   <EditIcon />
                 </Button>
@@ -64,6 +89,24 @@ export const TabContent = ({
               </TableCell>
             </TableRow>
           ))}
+          <TableRow>
+            <TableCell colSpan={2}>
+              <ChakraProvider>
+                <Pagination
+                  pageInfo={{
+                    page: page + 1,
+                    size: chunkSize,
+                    total: handleFilterContent().length,
+                    pages: handlePaging().length,
+                  }}
+                  handlePageChange={(newPage: number) => {
+                    setPage(newPage - 1);
+                  }}
+                  styles={{ mt: '0%' }}
+                />
+              </ChakraProvider>
+            </TableCell>
+          </TableRow>
         </TableBody>
       </Table>
     </TableContainer>

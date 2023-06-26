@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, FormEvent } from 'react';
 import {
   Button,
   FormControl,
@@ -8,21 +8,19 @@ import {
   Link,
   useToast,
   Box,
-} from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
-import apiClient from "../../api/apiClient";
-import { AxiosError } from "axios";
-import PasswordValidationBox from "./PasswordValidationBox";
-import { Text } from "../../components/Text/Text";
-import { Title } from "../../components/Title/Title";
-import { AccountForm } from "../../components/AccountForm/AccountForm";
+} from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
+import PasswordValidationBox from './PasswordValidationBox';
+import { AccountForm } from '../../components/AccountForm/AccountForm';
+import '../SignIn/login.css';
+import registerAccount from '../../api/utils/auth/RegisterAccount';
 
 const SignUpPage = () => {
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState('');
   const [usernameValid, setUsernameValid] = useState(true);
-  const [password, setPassword] = useState("");
-  const [repeatPassword, setRepeatPassword] = useState("");
-  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState('');
+  const [repeatPassword, setRepeatPassword] = useState('');
+  const [email, setEmail] = useState('');
   const toast = useToast();
   const navigate = useNavigate();
 
@@ -31,10 +29,7 @@ const SignUpPage = () => {
   const [capitalLetterValid, setCapitalLetterValid] = useState(false);
   const [repeatPasswordValid, setRepeatPasswordValid] = useState(false);
   const allCriteriaMet =
-    lengthValid &&
-    specialCharValid &&
-    capitalLetterValid &&
-    repeatPasswordValid;
+    lengthValid && specialCharValid && capitalLetterValid && repeatPasswordValid;
 
   useEffect(() => {
     const usernameRegex = /^[a-zA-Z0-9]{4,20}$/;
@@ -45,117 +40,86 @@ const SignUpPage = () => {
     setLengthValid(password.length <= 30 && password.length >= 8);
     setSpecialCharValid(/[!@#$%^&*]/.test(password));
     setCapitalLetterValid(/[A-Z]/.test(password));
-    setRepeatPasswordValid(password === repeatPassword && password !== "");
+    setRepeatPasswordValid(password === repeatPassword && password !== '');
   }, [password, repeatPassword]);
 
-  const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleRegister = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!usernameValid) {
       toast({
-        title: "Invalid username.",
+        title: 'Invalid username.',
         description:
-          "Please ensure your username is valid. It should contain 4 to 20 alphanumeric characters.",
-        status: "error",
+          'Please ensure your username is valid. It should contain 4 to 20 alphanumeric characters.',
+        status: 'error',
         duration: 3000,
         isClosable: true,
       });
       return;
     }
 
-    try {
-      await apiClient.post("/auth/create", {
-        username: username,
-        password: password,
-        repeat_password: repeatPassword,
-        email: email,
-      });
+    const result = await registerAccount({
+      username: username,
+      password: password,
+      repeatPassword: repeatPassword,
+      email: email,
+    });
 
-      toast({
-        title: "Account successfully created.",
-        description: `A verification email has been sent to your email (${email}). You won't be able to upload resources until you have verified your email.`,
-        status: "success",
-        duration: 5000,
-        isClosable: true,
-      });
-      navigate("/");
-    } catch (error) {
-      let errorDescription =
-        "Unable to create account. Please check your input and try again.";
+    toast({
+      title: result.success ? 'Account successfully created.' : 'Registration failed.',
+      description: result.message,
+      status: result.success ? 'success' : 'error',
+      duration: 5000,
+      isClosable: true,
+    });
 
-      type ErrorResponseData = {
-        detail: string;
-      };
-
-      const axiosError = error as AxiosError<ErrorResponseData>;
-
-      if (axiosError.response && axiosError.response.status === 409) {
-        if (axiosError.response.data.detail === "Username already exists") {
-          errorDescription = "An account with this username already exists.";
-        }
-      } else if (axiosError.response && axiosError.response.status === 400) {
-        errorDescription =
-          "Your password does not match. Please check your password and try again.";
-      } else if (axiosError.response && axiosError.response.status === 422) {
-        errorDescription =
-          "Please ensure your username is valid. It should contain 4 to 20 alphanumeric characters.";
-      }
-
-      toast({
-        title: "Registration failed.",
-        description: errorDescription,
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-    }
+    if (result.success) navigate('/');
   };
 
   return (
-    <>
+    <section className='signup section container' id='signup'>
       <AccountForm>
-        <Title mb="5%">Sign up</Title>
-        <Text mb="10%">Create an account to access all features.</Text>
+        <div className='login__title'>Sign up</div>
+        <div className='section__subtitle'>Create an account to access all features.</div>
 
-        <form onSubmit={handleRegister}>
-          <VStack spacing="6">
-            <FormControl id="username">
+        <form className='login__fields' onSubmit={handleRegister}>
+          <VStack spacing='4'>
+            <FormControl id='username'>
               <FormLabel>Username</FormLabel>
               <Input
-                type="text"
+                type='text'
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
               />
             </FormControl>
-            <FormControl id="email">
+            <FormControl id='email'>
               <FormLabel>Email address</FormLabel>
               <Input
-                type="email"
+                type='email'
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </FormControl>
-            <FormControl id="password">
+            <FormControl id='password'>
               <FormLabel>Password</FormLabel>
               <Input
-                type="password"
+                type='password'
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
             </FormControl>
-            <FormControl id="repeat-password">
+            <FormControl id='repeat-password'>
               <FormLabel>Repeat Password</FormLabel>
               <Input
-                type="password"
+                type='password'
                 value={repeatPassword}
                 onChange={(e) => setRepeatPassword(e.target.value)}
                 required
               />
             </FormControl>
-
             <PasswordValidationBox
               lengthValid={lengthValid}
               specialCharValid={specialCharValid}
@@ -164,25 +128,21 @@ const SignUpPage = () => {
               allCriteriaMet={allCriteriaMet}
             />
 
-            <Button type="submit" colorScheme="blue" w="100%">
+            <Button type='submit' colorScheme='blue' w='100%'>
               Sign Up
             </Button>
           </VStack>
         </form>
-        <Box textAlign="center">
-          <Text mt="5%" fontSize={["sm", "md"]}>
-            Already a member?{" "}
-            <Link
-              as="button"
-              onClick={() => navigate("/login")}
-              textDecoration="underline"
-            >
+        <Box>
+          <div className='login__footer'>
+            Already a member?{' '}
+            <Link as='button' onClick={() => navigate('/login')} textDecoration='underline'>
               Log in here.
             </Link>
-          </Text>
+          </div>
         </Box>
       </AccountForm>
-    </>
+    </section>
   );
 };
 

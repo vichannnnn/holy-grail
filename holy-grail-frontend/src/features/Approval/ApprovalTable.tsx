@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, useCallback } from "react";
+import { useState, useEffect, useContext, useCallback } from 'react';
 import {
   fetchData,
   fetchPendingApprovalNotes,
@@ -6,15 +6,19 @@ import {
   SubjectType,
   DocumentType,
   PaginatedNotes,
-} from "../../utils/library/Search";
-import approveNote from "../../utils/actions/ApproveNote";
-import deleteNote from "../../utils/actions/DeleteNote";
-import DeleteAlert from "./DeleteAlert";
-import NotesTable from "../../components/NotesTable/NotesTable";
-import AuthContext from "../../providers/AuthProvider";
-import AdminApproveIcon from "../../components/AdminApproveIcon/AdminApproveIcon";
-import AdminDeleteIcon from "../../components/AdminDeleteIcon/AdminDeleteIcon";
-import { Box } from "@chakra-ui/react";
+  Note,
+} from '../../api/utils/library/Search';
+import approveNote from '../../api/utils/actions/ApproveNote';
+import deleteNote from '../../api/utils/actions/DeleteNote';
+import updateNote from '../../api/utils/actions/UpdateNote';
+import DeleteAlert from './DeleteAlert';
+import EditModal from './EditModal';
+import NotesTable from '../../components/NotesTable/NotesTable';
+import AuthContext from '../../providers/AuthProvider';
+import AdminApproveIcon from '../../components/AdminApproveIcon/AdminApproveIcon';
+import AdminDeleteIcon from '../../components/AdminDeleteIcon/AdminDeleteIcon';
+import AdminEditIcon from '../../components/AdminEditIcon/AdminEditIcon';
+import { Box } from '@mui/material';
 
 const ApprovalTable = () => {
   const [notes, setNotes] = useState<PaginatedNotes>({
@@ -25,8 +29,11 @@ const ApprovalTable = () => {
     total: 0,
   });
   const { user } = useContext(AuthContext);
-  const [isAlertOpen, setIsAlertOpen] = useState(false);
-  const [noteId, setNoteId] = useState<number | null>(null);
+  const [isAlertOpen, setIsAlertOpen] = useState<boolean>(false);
+  const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
+
+  const [noteId, setNoteId] = useState<number>(0);
+  const [noteInitialProperties, setNoteInitialProperties] = useState<Note | null>(null);
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [subjects, setSubjects] = useState<SubjectType[]>([]);
   const [types, setTypes] = useState<DocumentType[]>([]);
@@ -37,9 +44,9 @@ const ApprovalTable = () => {
     total: 0,
   });
 
-  const [category, setCategory] = useState<number | "">(0);
-  const [subject, setSubject] = useState<number | "">(0);
-  const [type, setType] = useState<number | "">(0);
+  const [category, setCategory] = useState<number | ''>(0);
+  const [subject, setSubject] = useState<number | ''>(0);
+  const [type, setType] = useState<number | ''>(0);
 
   useEffect(() => {
     fetchData().then(({ categories, subjects, types }) => {
@@ -55,14 +62,8 @@ const ApprovalTable = () => {
 
   const filterNotes = useCallback(() => {
     fetchPendingApprovalNotes({
-      category:
-        category !== 0
-          ? categories.find((c) => c.id === category)?.name
-          : undefined,
-      subject:
-        subject !== 0
-          ? subjects.find((s) => s.id === subject)?.name
-          : undefined,
+      category: category !== 0 ? categories.find((c) => c.id === category)?.name : undefined,
+      subject: subject !== 0 ? subjects.find((s) => s.id === subject)?.name : undefined,
       doc_type: type !== 0 ? types.find((t) => t.id === type)?.name : undefined,
       page: pageInfo.page,
       size: pageInfo.size,
@@ -75,16 +76,7 @@ const ApprovalTable = () => {
         total: response.total,
       });
     });
-  }, [
-    category,
-    subject,
-    type,
-    pageInfo.page,
-    pageInfo.size,
-    categories,
-    subjects,
-    types,
-  ]);
+  }, [category, subject, type, pageInfo.page, pageInfo.size, categories, subjects, types]);
 
   useEffect(() => {
     filterNotes();
@@ -115,42 +107,6 @@ const ApprovalTable = () => {
     }
   };
 
-  // const renderNotes = () => {
-  //   return notes.items.map((note: Note) => (
-  //     <Tr key={note.id}>
-  //       <Td>{note.doc_category?.name}</Td>
-  //       <Td>{note.doc_subject?.name}</Td>
-  //       <Td>{note.doc_type?.name}</Td>
-  //       <Td>{note.account?.username}</Td>
-  //       <Td>
-  //         <a
-  //           href={`https://holy-grail-bucket.s3.ap-southeast-1.amazonaws.com/${note.file_name}`}
-  //           target="_blank"
-  //           rel="noopener noreferrer"
-  //         >
-  //           View PDF
-  //         </a>
-  //       </Td>
-  //       <Td>
-  //         <HStack spacing="20px">
-  //           <Button colorScheme="green" onClick={() => handleApprove(note.id)}>
-  //             Approve
-  //           </Button>
-  //           <Button
-  //             colorScheme="red"
-  //             onClick={() => {
-  //               setIsAlertOpen(true);
-  //               setNoteId(note.id);
-  //             }}
-  //           >
-  //             Delete
-  //           </Button>
-  //         </HStack>
-  //       </Td>
-  //     </Tr>
-  //   ));
-  // };
-
   return (
     <>
       <NotesTable
@@ -158,9 +114,9 @@ const ApprovalTable = () => {
         categories={categories.map((c) => ({ value: c.id, label: c.name }))}
         subjects={subjects.map((s) => ({ value: s.id, label: s.name }))}
         types={types.map((t) => ({ value: t.id, label: t.name }))}
-        category={category !== "" ? Number(category) : ""}
-        subject={subject !== "" ? Number(subject) : ""}
-        type={type !== "" ? Number(type) : ""}
+        category={category !== '' ? Number(category) : ''}
+        subject={subject !== '' ? Number(subject) : ''}
+        type={type !== '' ? Number(type) : ''}
         onCategoryChange={(newValue) => setCategory(Number(newValue))}
         onSubjectChange={(newValue) => setSubject(Number(newValue))}
         onTypeChange={(newValue) => setType(Number(newValue))}
@@ -169,15 +125,19 @@ const ApprovalTable = () => {
         isAdmin={Boolean(user?.role && user.role >= 2)}
         renderAdminActions={(note) =>
           user && user.role >= 2 ? (
-            <Box sx={{ display: "flex", justifyContent: "center" }}>
-              <AdminApproveIcon
-                handleApprove={handleApprove}
-                noteId={note.id}
-              />
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+              <AdminApproveIcon handleApprove={handleApprove} noteId={note.id} />
               <AdminDeleteIcon
                 setIsAlertOpen={setIsAlertOpen}
                 setNoteId={setNoteId}
                 noteId={note.id}
+              />
+              <AdminEditIcon
+                setIsEditOpen={setIsEditOpen}
+                setNoteId={setNoteId}
+                noteId={note.id}
+                noteProperties={note}
+                setNoteProperties={setNoteInitialProperties}
               />
             </Box>
           ) : null
@@ -190,9 +150,38 @@ const ApprovalTable = () => {
           if (noteId !== null) {
             handleDelete(noteId)
               .then(() => null)
-              .catch((err) => console.error(err));
+              .catch((err) => {});
           }
         }}
+      />
+
+      <EditModal
+        isOpen={isEditOpen}
+        onClose={() => setIsEditOpen(false)}
+        onConfirm={(
+          newCategory: number | '',
+          newSubject: number | '',
+          newType: number | '',
+          newDocName: string | '',
+        ) => {
+          updateNote(
+            noteId,
+            noteInitialProperties?.uploaded_by,
+            newCategory,
+            newSubject,
+            newType,
+            newDocName,
+          )
+            .then(() => filterNotes())
+            .catch((err) => {});
+        }}
+        categories={categories.map((c) => ({ value: c.id, label: c.name }))}
+        subjects={subjects.map((s) => ({ value: s.id, label: s.name }))}
+        types={types.map((t) => ({ value: t.id, label: t.name }))}
+        category={noteInitialProperties ? noteInitialProperties.category : ''}
+        subject={noteInitialProperties ? noteInitialProperties.subject : ''}
+        type={noteInitialProperties ? noteInitialProperties.type : ''}
+        documentName={noteInitialProperties ? noteInitialProperties.document_name : ''}
       />
     </>
   );

@@ -7,8 +7,8 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-} from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
+} from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
 
 export interface User {
   user_id: number;
@@ -42,16 +42,16 @@ export const TabContentUsers = ({
         <TableBody>
           {data.map((item) => (
             <TableRow key={item.user_id}>
-              <TableCell component="th" scope="row">
+              <TableCell component='th' scope='row'>
                 {item.user_id}
               </TableCell>
-              <TableCell component="th" scope="row">
+              <TableCell component='th' scope='row'>
                 {item.username}
               </TableCell>
-              <TableCell component="th" scope="row">
+              <TableCell component='th' scope='row'>
                 {RoleEnum[item.role]}
               </TableCell>
-              <TableCell align="right">
+              <TableCell align='right'>
                 <Button onClick={() => handleEdit(item.user_id)}>
                   <EditIcon />
                 </Button>

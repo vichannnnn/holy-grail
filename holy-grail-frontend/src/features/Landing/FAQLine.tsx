@@ -4,36 +4,37 @@ import {
   AccordionPanel,
   Box,
   useBreakpointValue,
-} from "@chakra-ui/react";
-import { AddIcon, MinusIcon } from "@chakra-ui/icons";
-import { Text } from "../../components/Text/Text";
+} from '@chakra-ui/react';
+import { AddIcon, MinusIcon } from '@chakra-ui/icons';
+import { Text } from '../../components/Text/Text';
+import { ReactNode } from 'react';
 
 type FAQLineProps = {
   question: string;
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
 const FAQLine = ({ question, children }: FAQLineProps) => {
   const isDesktop = useBreakpointValue({ base: false, lg: true });
 
   return (
-    <AccordionItem borderColor="transparent">
+    <AccordionItem borderColor='transparent'>
       {({ isExpanded }) => (
         <>
           <AccordionButton
-            fontSize="3xl"
-            border="none"
-            borderRadius="none"
-            _focus={{ outline: "none" }}
+            fontSize='3xl'
+            border='none'
+            borderRadius='none'
+            _focus={{ outline: 'none' }}
           >
             <Box
-              as="span"
-              flex="1"
-              textAlign="left"
-              borderColor="transparent"
-              border="none"
-              background="transparent"
-              borderRadius="none"
+              as='span'
+              flex='1'
+              textAlign='left'
+              borderColor='transparent'
+              border='none'
+              background='transparent'
+              borderRadius='none'
             >
               <Text>{question}</Text>
             </Box>
@@ -46,10 +47,10 @@ const FAQLine = ({ question, children }: FAQLineProps) => {
 
           <AccordionPanel
             pb={4}
-            borderColor="transparent"
-            border="none"
-            background="transparent"
-            borderRadius="none"
+            borderColor='transparent'
+            border='none'
+            background='transparent'
+            borderRadius='none'
           >
             {children}
           </AccordionPanel>

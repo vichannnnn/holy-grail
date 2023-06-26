@@ -1,0 +1,40 @@
+.signup,
+.login,
+.forgotPw,
+.resetPw,
+.updatePw {
+    padding-top: calc(var(--header-height) + 1rem);
+}
+
+
+.login__title {
+    font-size: calc(var(--h2-font-size) * 1.5);
+    font-weight: var(--font-semi-bold);
+}
+
+.login__fields {
+    margin-top: 5%;
+}
+
+.login__footer {
+    margin-top: 5%;
+    font-size: var(--small-font-size);
+}
+
+.password__validation {
+    font-size: var(--small-font-size);
+    font-weight: var(--font-semi-bold);
+    padding-bottom: 0.5rem;
+}
+
+.signup__validation {
+    font-weight: var(--font-semi-bold);
+    font-size: var(--normal-font-size);
+    padding: 0.2rem 0;
+}
+
+.resetPw {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
