@@ -43,8 +43,7 @@ const VerifyAccountPage = () => {
       await resendVerificationEmail();
       setAlert({
         title: 'Verification email resent successfully.',
-        description:
-          'Please check your email for the verification mail sent to you.',
+        description: 'Please check your email for the verification mail sent to you.',
         severity: 'success',
       });
       setOpenAlert(true);
@@ -75,11 +74,7 @@ const VerifyAccountPage = () => {
             to send another verification email.
           </div>
         ) : null}
-        <AlertToast
-          openAlert={openAlert}
-          onClose={() => setOpenAlert(false)}
-          alert={alert}
-        />
+        <AlertToast openAlert={openAlert} onClose={() => setOpenAlert(false)} alert={alert} />
       </div>
     </section>
   );
