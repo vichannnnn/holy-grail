@@ -38,7 +38,6 @@ const ChangePasswordPage = () => {
       password,
       repeatPassword,
     );
-    console.log(success, errorDescription);
     if (success) {
       setAlert({
         title: 'Password successfully updated.',
