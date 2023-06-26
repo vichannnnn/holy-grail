@@ -29,6 +29,7 @@ services:
       - default
     depends_on:
       - db
+      - scheduler
     environment:
       FRONTEND_URL: ${FRONTEND_URL}
       BACKEND_URL: ${BACKEND_URL}
