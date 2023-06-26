@@ -1,4 +1,3 @@
-import { AspectRatio } from '@chakra-ui/react';
 import { Stack, Button, Typography } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import debounce from 'lodash/debounce';
