@@ -39,6 +39,17 @@ jobs:
           fail_ci_if_error: true
           verbose: true
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
         with:
@@ -50,16 +61,14 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./holy-grail-frontend
-          dockerfile: Dockerfile.dev
+          file: ./holy-grail-frontend/Dockerfile.dev
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/holy-grail-frontend:latest
-
 
       - name: Build and push Backend Docker image
         uses: docker/build-push-action@v2
         with:
           context: ./holy-grail-backend
-          dockerfile: .
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/holy-grail-backend:latest
 
@@ -67,13 +76,5 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./holy-grail-backend
-          dockerfile: .
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/holy-grail-scheduler:latest
-
-      - name: Build and push Caddy Docker image
-        uses: docker/build-push-action@v2
-        with:
-          context: ./Caddyfile.dev
-          push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/holy-grail-caddy:latest
