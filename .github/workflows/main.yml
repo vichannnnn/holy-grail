@@ -57,14 +57,6 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.CICD_TOKEN }}
 
-      - name: Build and push Frontend Docker image
-        uses: docker/build-push-action@v2
-        with:
-          context: ./holy-grail-frontend
-          dockerfile: Dockerfile.dev
-          push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/holy-grail-frontend:latest
-
       - name: Build and push Backend Docker image
         uses: docker/build-push-action@v2
         with:
@@ -72,6 +64,14 @@ jobs:
           dockerfile: .
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/holy-grail-backend:latest
+
+      - name: Build and push Frontend Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: ./holy-grail-frontend
+          dockerfile: Dockerfile.dev
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/holy-grail-frontend:latest
 
       - name: Build and push Scheduler Docker image
         uses: docker/build-push-action@v2
