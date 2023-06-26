@@ -4,12 +4,12 @@ import {
   ThemeProvider,
   createTheme,
   Typography,
-} from "@mui/material";
+} from '@mui/material';
 
 interface AlertProps {
   title: string;
   description: string;
-  severity: "success" | "error" | "warning" | "info";
+  severity: 'success' | 'error' | 'warning' | 'info';
 }
 
 interface AlertToastProps {
@@ -26,10 +26,10 @@ const AlertToast = ({ openAlert, onClose, alert }: AlertToastProps) => {
         open={openAlert}
         autoHideDuration={3000}
         onClose={onClose}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
-        <Alert severity={alert.severity} sx={{ width: "100%" }}>
-          <Typography fontWeight="bold">{alert.title}</Typography>
+        <Alert severity={alert.severity} sx={{ width: '100%' }}>
+          <Typography fontWeight='bold'>{alert.title}</Typography>
           <Typography>{alert.description}</Typography>
         </Alert>
       </Snackbar>
