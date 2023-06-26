@@ -1,6 +1,5 @@
 import { Box, Card, CardContent, Grid, Typography, Link } from '@mui/material';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
 import { Note } from '../../api/utils/library/Search';
 import Combobox from '../../features/Library/Combobox';
@@ -9,6 +8,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Pagination } from '../Pagination/Pagination';
 import { useMediaQuery } from 'react-responsive';
 import '../../features/Library/library.css';
+import NotesIcon from './notesHelper';
 
 interface NotesTableProps {
   notes: Note[];
@@ -113,9 +113,9 @@ const NotesTable = ({
                     <TableCell className='table__header'>Type</TableCell>
                     <TableCell className='table__header'>Uploaded By</TableCell>
                     <TableCell className='table__header'>Uploaded On</TableCell>
-                    <TableCell className='table__header' align='center'>
-                      Download
-                    </TableCell>
+                    {/*<TableCell className='table__header' align='center'>*/}
+                    {/*  Download*/}
+                    {/*</TableCell>*/}
                     {isAdmin && renderAdminActions && (
                       <TableCell className='table__header'>Actions</TableCell>
                     )}
@@ -137,12 +137,12 @@ const NotesTable = ({
                             paddingLeft: '1px',
                             display: 'flex',
                             color: 'var(--text-color)',
-                            gap: '5%',
+                            gap: '3%',
                           }}
                         >
                           <Card>
                             <CardContent className='table__notes-card'>
-                              <DescriptionOutlinedIcon sx={{ width: '80%' }} />
+                              <NotesIcon docSubject={note.doc_subject} />
                             </CardContent>
                           </Card>
                           <div className='table__content1'>{note.document_name}</div>
@@ -155,16 +155,16 @@ const NotesTable = ({
                       <TableCell className='table__content'>
                         {formatDate(note.uploaded_on)}
                       </TableCell>
-                      <TableCell className='table__content' align='center'>
-                        <Link
-                          href={`${VITE_APP_AWS_S3_BUCKET_URL}/${note.file_name}`}
-                          target='_blank'
-                          download={note.document_name}
-                          rel='noopener noreferrer'
-                        >
-                          <CloudDownloadOutlinedIcon />
-                        </Link>
-                      </TableCell>
+                      {/*<TableCell className='table__content' align='center'>*/}
+                      {/*  <Link*/}
+                      {/*    href={`${VITE_APP_AWS_S3_BUCKET_URL}/${note.file_name}`}*/}
+                      {/*    target='_blank'*/}
+                      {/*    download={note.document_name}*/}
+                      {/*    rel='noopener noreferrer'*/}
+                      {/*  >*/}
+                      {/*    <CloudDownloadOutlinedIcon />*/}
+                      {/*  </Link>*/}
+                      {/*</TableCell>*/}
                       {isAdmin && renderAdminActions && (
                         <TableCell className='table__content'>{renderAdminActions(note)}</TableCell>
                       )}
