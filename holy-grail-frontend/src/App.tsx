@@ -1,6 +1,6 @@
 import './App.css';
 import { useState, useEffect } from 'react';
-import { AlertDialogContent, ChakraProvider } from '@chakra-ui/react';
+import { ChakraProvider } from '@chakra-ui/react';
 import LoginPage from './features/SignIn/LoginPage';
 import LandingPage from './features/Landing/LandingPage';
 import { useLocation, Router, Route, Routes } from 'react-router-dom';
