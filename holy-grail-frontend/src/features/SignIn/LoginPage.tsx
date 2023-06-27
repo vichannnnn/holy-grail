@@ -1,24 +1,17 @@
 import { useState, useContext, FormEvent } from 'react';
-import {
-  Button,
-  FormControl,
-  FormLabel,
-  Input,
-  VStack,
-  Link,
-  useToast,
-  Box,
-} from '@chakra-ui/react';
+import { Button, FormControl, FormLabel, Input, VStack, Link, Box } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import AuthContext from '../../providers/AuthProvider';
 import { AccountForm } from '../../components/AccountForm/AccountForm';
 import './login.css';
+import AlertToast, { AlertProps } from '../../components/AlertToast/AlertToast';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [openAlert, setOpenAlert] = useState<boolean>(false);
+  const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
   const { user, login } = useContext(AuthContext);
-  const toast = useToast();
   const navigate = useNavigate();
 
   if (user) {
@@ -30,22 +23,20 @@ const LoginPage = () => {
 
     try {
       await login(username, password);
-      toast({
+      const alertContentRedirect: AlertProps = {
         title: 'Logged in successfully.',
         description: 'Welcome back!',
-        status: 'success',
-        duration: 3000,
-        isClosable: true,
-      });
-      navigate('/');
+        severity: 'success',
+      };
+
+      navigate('/', { state: { alertContent: alertContentRedirect } });
     } catch (error) {
-      toast({
+      setAlertContent({
         title: 'Login failed.',
         description: 'Invalid username or password.',
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
+        severity: 'error',
       });
+      setOpenAlert(true);
     }
   };
 
@@ -103,6 +94,11 @@ const LoginPage = () => {
           </div>
         </Box>
       </AccountForm>
+      <AlertToast
+        openAlert={openAlert}
+        onClose={() => setOpenAlert(false)}
+        alertContent={alertContent}
+      />
     </section>
   );
 };

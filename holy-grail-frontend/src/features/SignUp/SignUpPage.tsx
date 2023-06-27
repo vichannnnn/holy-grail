@@ -1,19 +1,11 @@
 import { useState, useEffect, FormEvent } from 'react';
-import {
-  Button,
-  FormControl,
-  FormLabel,
-  Input,
-  VStack,
-  Link,
-  useToast,
-  Box,
-} from '@chakra-ui/react';
+import { Button, FormControl, FormLabel, Input, VStack, Link, Box } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import PasswordValidationBox from './PasswordValidationBox';
 import { AccountForm } from '../../components/AccountForm/AccountForm';
 import '../SignIn/login.css';
 import registerAccount from '../../api/utils/auth/RegisterAccount';
+import AlertToast, { AlertProps } from '../../components/AlertToast/AlertToast';
 
 const SignUpPage = () => {
   const [username, setUsername] = useState('');
@@ -21,7 +13,8 @@ const SignUpPage = () => {
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
   const [email, setEmail] = useState('');
-  const toast = useToast();
+  const [openAlert, setOpenAlert] = useState<boolean>(true);
+  const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
   const navigate = useNavigate();
 
   const [lengthValid, setLengthValid] = useState(false);
@@ -47,14 +40,13 @@ const SignUpPage = () => {
     e.preventDefault();
 
     if (!usernameValid) {
-      toast({
+      setAlertContent({
         title: 'Invalid username.',
         description:
           'Please ensure your username is valid. It should contain 4 to 20 alphanumeric characters.',
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
+        severity: 'error',
       });
+      setOpenAlert(true);
       return;
     }
 
@@ -64,16 +56,21 @@ const SignUpPage = () => {
       repeatPassword: repeatPassword,
       email: email,
     });
-
-    toast({
-      title: result.success ? 'Account successfully created.' : 'Registration failed.',
+    if (!result.success) {
+      setAlertContent({
+        title: 'Registration failed.',
+        description: result.message,
+        severity: 'error',
+      });
+      setOpenAlert(true);
+    }
+    const alertContentRedirect: AlertProps = {
+      title: 'Account successfully created.',
       description: result.message,
-      status: result.success ? 'success' : 'error',
-      duration: 5000,
-      isClosable: true,
-    });
+      severity: 'success',
+    };
 
-    if (result.success) navigate('/');
+    navigate('/', { state: { alertContent: alertContentRedirect } });
   };
 
   return (
@@ -142,6 +139,11 @@ const SignUpPage = () => {
           </div>
         </Box>
       </AccountForm>
+      <AlertToast
+        openAlert={openAlert}
+        onClose={() => setOpenAlert(false)}
+        alertContent={alertContent}
+      />
     </section>
   );
 };

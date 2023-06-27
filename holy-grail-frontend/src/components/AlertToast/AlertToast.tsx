@@ -9,11 +9,14 @@ interface AlertProps {
 interface AlertToastProps {
   openAlert: boolean;
   onClose: () => void;
-  alert: AlertProps;
+  alertContent?: AlertProps;
 }
 
-const AlertToast = ({ openAlert, onClose, alert }: AlertToastProps) => {
+const AlertToast = ({ openAlert, onClose, alertContent }: AlertToastProps) => {
   const muiTheme = createTheme();
+  if (!alertContent) {
+    return null;
+  }
   return (
     <ThemeProvider theme={muiTheme}>
       <Snackbar
@@ -22,9 +25,9 @@ const AlertToast = ({ openAlert, onClose, alert }: AlertToastProps) => {
         onClose={onClose}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
-        <Alert severity={alert.severity} sx={{ width: '100%' }}>
-          <Typography fontWeight='bold'>{alert.title}</Typography>
-          <Typography>{alert.description}</Typography>
+        <Alert severity={alertContent.severity} sx={{ width: '100%' }}>
+          <Typography fontWeight='bold'>{alertContent.title}</Typography>
+          <Typography>{alertContent.description}</Typography>
         </Alert>
       </Snackbar>
     </ThemeProvider>
