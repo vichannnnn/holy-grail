@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { verifyAccount } from '../../api/utils/auth/VerifyAccount';
 import { Link } from '@chakra-ui/react';
