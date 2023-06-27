@@ -37,16 +37,15 @@ const UploadPage = () => {
       setSubjects(subjects);
       setTypes(types);
     });
+    if (!user) {
+      const alertContentRedirect: AlertProps = {
+        title: 'Please login.',
+        description: 'You need to be logged in to upload documents.',
+        severity: 'error',
+      };
+      navigate('/login', { state: { alertContent: alertContentRedirect } });
+    }
   }, []);
-
-  if (!user) {
-    const alertContentRedirect: AlertProps = {
-      title: 'Please login.',
-      description: 'You need to be logged in to upload documents.',
-      severity: 'error',
-    };
-    navigate('/login', { state: { alertContent: alertContentRedirect } });
-  }
 
   const handleButtonClick = () => {
     if (inputFileRef.current) {
