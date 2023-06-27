@@ -10,59 +10,50 @@ import {
   MenuItem,
   MenuList,
   useBreakpointValue,
-  useToast,
 } from '@chakra-ui/react';
 import { resendVerificationEmail } from '../../api/utils/auth/ResendVerificationEmail';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import { HeaderRightButton } from './HeaderRightButton';
+import AlertToast, { AlertProps } from '../../components/AlertToast/AlertToast';
 
 const Header = () => {
   const { user, logout } = useContext(AuthContext);
-  const toast = useToast();
   const navigate = useNavigate();
   const isDesktop = useBreakpointValue({ base: false, lg: true });
   const [activeNav, setActiveNav] = useState('#home');
 
-  const navigateTo = (path: string) => {
-    return () => navigate(path);
-  };
-
-  const handleAdminButtonClick = navigateTo('/admin');
-  const handleDevButtonClick = navigateTo('/developer');
-  const handlePasswordChange = navigateTo('/update-password');
+  const [openAlert, setOpenAlert] = useState<boolean>(false);
+  const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
 
   const handleLogout = async () => {
     try {
       logout();
     } catch (error) {
-      toast({
+      setAlertContent({
         title: 'Logout failed.',
         description: 'An error occurred while logging out.',
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
+        severity: 'error',
       });
+      setOpenAlert(true);
     }
   };
 
   const handleResendVerificationEmail = async () => {
     try {
       await resendVerificationEmail();
-      toast({
+      setAlertContent({
         title: 'Verification email resent successfully.',
         description: 'Please check your email for the verification mail sent to you.',
-        status: 'success',
-        duration: 3000,
-        isClosable: true,
+        severity: 'success',
       });
     } catch (error) {
-      toast({
+      setAlertContent({
         title: 'Failed to resend verification email.',
         description: 'An error occurred while sending.',
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
+        severity: 'error',
       });
+    } finally {
+      setOpenAlert(true);
     }
   };
 
@@ -121,12 +112,16 @@ const Header = () => {
               {user ? (
                 <>
                   {user.role > 1 && (
-                    <MenuItem onClick={handleAdminButtonClick}>Admin Panel</MenuItem>
+                    <MenuItem onClick={() => navigate('/admin')}>Admin Panel</MenuItem>
                   )}
                   {user.role > 2 && (
-                    <MenuItem onClick={handleDevButtonClick}>Developer Panel</MenuItem>
+                    <MenuItem onClick={() => navigate('/developer')}>Developer Panel</MenuItem>
                   )}
-                  {<MenuItem onClick={handlePasswordChange}>Change Password</MenuItem>}
+                  {
+                    <MenuItem onClick={() => navigate('/update-password')}>
+                      Change Password
+                    </MenuItem>
+                  }
                   {!user.verified && (
                     <MenuItem onClick={handleResendVerificationEmail}>
                       Resent Verification Email
@@ -149,12 +144,16 @@ const Header = () => {
                 <MenuButton as={HeaderRightButton}>{user.username}</MenuButton>
                 <MenuList>
                   {user.role > 1 && (
-                    <MenuItem onClick={handleAdminButtonClick}>Admin Panel</MenuItem>
+                    <MenuItem onClick={() => navigate('/admin')}>Admin Panel</MenuItem>
                   )}
                   {user.role > 2 && (
-                    <MenuItem onClick={handleDevButtonClick}>Developer Panel</MenuItem>
+                    <MenuItem onClick={() => navigate('/developer')}>Developer Panel</MenuItem>
                   )}
-                  {<MenuItem onClick={handlePasswordChange}>Change Password</MenuItem>}
+                  {
+                    <MenuItem onClick={() => navigate('/update-password')}>
+                      Change Password
+                    </MenuItem>
+                  }
                   {!user.verified && (
                     <MenuItem onClick={handleResendVerificationEmail}>
                       Resend Verification Email
@@ -171,6 +170,11 @@ const Header = () => {
           </>
         )}
       </nav>
+      <AlertToast
+        openAlert={openAlert}
+        onClose={() => setOpenAlert(false)}
+        alertContent={alertContent}
+      />
     </header>
   );
 };
