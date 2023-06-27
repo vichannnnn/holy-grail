@@ -6,14 +6,13 @@ import { AccountForm } from '../../components/AccountForm/AccountForm';
 import '../SignIn/login.css';
 import { updatePassword } from '../../api/utils/auth/UpdatePassword';
 import AlertToast, { AlertProps } from '../../components/AlertToast/AlertToast';
-import { set } from 'lodash';
 
 const ChangePasswordPage = () => {
   const [beforePassword, setBeforePassword] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
   const [openAlert, setOpenAlert] = useState<boolean>(false);
-  const [alert, setAlert] = useState<AlertProps>({} as AlertProps);
+  const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
 
   const navigate = useNavigate();
 
@@ -39,15 +38,15 @@ const ChangePasswordPage = () => {
       repeatPassword,
     );
     if (success) {
-      setAlert({
+      const alertContentRedirect: AlertProps = {
         title: 'Password successfully updated.',
         description: `You can now log in with your new password.`,
         severity: 'success',
-      });
-      setOpenAlert(true);
-      setTimeout(() => navigate('/'), 2000);
+      };
+
+      navigate('/', { state: { alertContent: alertContentRedirect } });
     } else {
-      setAlert({
+      setAlertContent({
         title: 'Password update failed.',
         description: errorDescription
           ? errorDescription
@@ -108,7 +107,11 @@ const ChangePasswordPage = () => {
           </VStack>
         </form>
       </AccountForm>
-      <AlertToast openAlert={openAlert} onClose={() => setOpenAlert(false)} alert={alert} />
+      <AlertToast
+        openAlert={openAlert}
+        onClose={() => setOpenAlert(false)}
+        alertContent={alertContent}
+      />
     </section>
   );
 };

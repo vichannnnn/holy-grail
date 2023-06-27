@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { verifyAccount } from '../../api/utils/auth/VerifyAccount';
-import { Link, useToast } from '@chakra-ui/react';
+import { Link } from '@chakra-ui/react';
 import { resendVerificationEmail } from '../../api/utils/auth/ResendVerificationEmail';
 import '../SignIn/login.css';
-import AlertToast, {AlertProps} from '../../components/AlertToast/AlertToast';
+import AlertToast, { AlertProps } from '../../components/AlertToast/AlertToast';
 
 const VerifyAccountPage = () => {
   const [token, setToken] = useState<string | null>(null);
   const [resetStatus, setResetStatus] = useState<string | null>(null);
   const [isFailed, setFailed] = useState<boolean>(false);
-  const [alert, setAlert] = useState<AlertProps>({} as AlertProps);
+  const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const location = useLocation();
 
@@ -41,7 +41,7 @@ const VerifyAccountPage = () => {
   const handleResendVerificationEmail = async () => {
     try {
       await resendVerificationEmail();
-      setAlert({
+      setAlertContent({
         title: 'Verification email resent successfully.',
         description: 'Please check your email for the verification mail sent to you.',
         severity: 'success',
@@ -49,7 +49,7 @@ const VerifyAccountPage = () => {
       setOpenAlert(true);
     } catch (error) {
       console.error(error);
-      setAlert({
+      setAlertContent({
         title: 'Failed to resend verification email.',
         description: 'An error occurred while sending.',
         severity: 'error',
@@ -74,7 +74,11 @@ const VerifyAccountPage = () => {
             to send another verification email.
           </div>
         ) : null}
-        <AlertToast openAlert={openAlert} onClose={() => setOpenAlert(false)} alert={alert} />
+        <AlertToast
+          openAlert={openAlert}
+          onClose={() => setOpenAlert(false)}
+          alertContent={alertContent}
+        />
       </div>
     </section>
   );
