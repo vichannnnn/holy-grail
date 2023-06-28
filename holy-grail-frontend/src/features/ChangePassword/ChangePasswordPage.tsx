@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Button, FormControl, FormLabel, Input, VStack, useToast } from '@chakra-ui/react';
+import { Button, FormControl, FormLabel, Input, VStack } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import PasswordValidationBox from '../SignUp/PasswordValidationBox';
 import { AccountForm } from '../../components/AccountForm/AccountForm';
 import '../SignIn/login.css';
 import { updatePassword } from '../../api/utils/auth/UpdatePassword';
+import AlertToast, { AlertProps } from '../../components/AlertToast/AlertToast';
 
 const ChangePasswordPage = () => {
   const [beforePassword, setBeforePassword] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
-  const toast = useToast();
+  const [openAlert, setOpenAlert] = useState<boolean>(false);
+  const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
+
   const navigate = useNavigate();
 
   const [lengthValid, setLengthValid] = useState(false);
@@ -34,24 +37,23 @@ const ChangePasswordPage = () => {
       password,
       repeatPassword,
     );
-
     if (success) {
-      toast({
+      const alertContentRedirect: AlertProps = {
         title: 'Password successfully updated.',
         description: `You can now log in with your new password.`,
-        status: 'success',
-        duration: 5000,
-        isClosable: true,
-      });
-      navigate('/');
+        severity: 'success',
+      };
+
+      navigate('/', { state: { alertContent: alertContentRedirect } });
     } else {
-      toast({
-        title: 'Password Update failed.',
-        description: errorDescription,
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
+      setAlertContent({
+        title: 'Password update failed.',
+        description: errorDescription
+          ? errorDescription
+          : 'An error occurred while updating your password.',
+        severity: 'error',
       });
+      setOpenAlert(true);
     }
   };
 
@@ -105,6 +107,11 @@ const ChangePasswordPage = () => {
           </VStack>
         </form>
       </AccountForm>
+      <AlertToast
+        openAlert={openAlert}
+        onClose={() => setOpenAlert(false)}
+        alertContent={alertContent}
+      />
     </section>
   );
 };
