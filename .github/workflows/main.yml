@@ -15,7 +15,7 @@ env:
   IMAGE_NAME: vichannnnn/holy-grail
 
 jobs:
-  build-and-test:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -38,6 +38,13 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: true
           verbose: true
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
@@ -62,7 +69,7 @@ jobs:
         with:
           context: ./holy-grail-backend/backend
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/holy-grail-backend:latest
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/holy-grail-backend$(if [[ "${{ github.ref }}" == 'refs/heads/dev' ]]; then echo '-dev'; fi):latest
 
       - name: Build and push Frontend Docker image
         uses: docker/build-push-action@v2
@@ -70,11 +77,11 @@ jobs:
           context: ./holy-grail-frontend
           file: ./holy-grail-frontend/Dockerfile.dev
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/holy-grail-frontend:latest
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/holy-grail-frontend$(if [[ "${{ github.ref }}" == 'refs/heads/dev' ]]; then echo '-dev'; fi):latest
 
       - name: Build and push Scheduler Docker image
         uses: docker/build-push-action@v2
         with:
           context: ./holy-grail-backend/backend
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/holy-grail-scheduler:latest
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/holy-grail-scheduler$(if [[ "${{ github.ref }}" == 'refs/heads/dev' ]]; then echo '-dev'; fi):latest

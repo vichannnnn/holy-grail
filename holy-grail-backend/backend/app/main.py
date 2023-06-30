@@ -10,7 +10,7 @@ from app.api.api import api_router
 from app.limiter import limiter
 
 app = FastAPI(
-    root_path="/api/v1",
+    root_path="/api/v1" if os.getenv("PRODUCTION") == "true" else None,
     docs_url=None if os.getenv("PRODUCTION") == "true" else "/docs",
     redoc_url=None if os.getenv("PRODUCTION") == "true" else "/redoc",
 )
