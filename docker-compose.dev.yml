@@ -2,10 +2,10 @@
 version: '3.8'
 
 services:
-  frontend:
+  holy-grail-frontend:
     container_name: holy-grail-frontend
     ports:
-      - "5173:5173"
+      - "5175:5175"
     networks:
       - holy-grail-network
       - default
@@ -16,25 +16,25 @@ services:
       VITE_APP_API_URL: ${VITE_APP_API_URL}
       VITE_APP_AWS_S3_BUCKET_URL: ${VITE_APP_AWS_S3_BUCKET_URL}
     depends_on:
-      - backend
+      - holy-grail-backend
     volumes:
       - ./holy-grail-frontend/src:/app/src
     restart:
       unless-stopped
 
-  backend:
+  holy-grail-backend:
     container_name: holy-grail-backend
     build: ./holy-grail-backend/backend
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8005 --reload
     ports:
-      - "8000:8000"
-      - "9000:9000"
+      - "8005:8005"
+      - "9005:9005"
     networks:
       - holy-grail-network
       - default
     depends_on:
-      - db
-      - scheduler
+      - holy-grail-db
+      - holy-grail-scheduler
     environment:
       FRONTEND_URL: ${FRONTEND_URL}
       BACKEND_URL: ${BACKEND_URL}
@@ -58,7 +58,8 @@ services:
     volumes:
       - ./holy-grail-backend/backend:/app
 
-  db:
+  holy-grail-db:
+    container_name: holy-grail-db
     networks:
       - holy-grail-network
       - default
@@ -73,22 +74,22 @@ services:
       test: [ "CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB" ]
     image: postgres:14.1-alpine
     ports:
-      - '5432:5432'
+      - '5434:5432'
     restart: unless-stopped
     volumes:
       - ./postgres:/var/lib/postgresql/data
       - ./holy-grail-backend/db:/docker-entrypoint-initdb.d/
 
-  redis:
+  holy-grail-redis:
     image: redis:7.0.7-alpine
     ports:
       - "6379"
     depends_on:
-      - db
+      - holy-grail-db
     command: redis-server --loglevel verbose
     restart: unless-stopped
 
-  scheduler:
+  holy-grail-scheduler:
     environment:
       FRONTEND_URL: ${FRONTEND_URL}
       BACKEND_URL: ${BACKEND_URL}
@@ -109,7 +110,7 @@ services:
       MAILTRAP_BEARER_TOKEN: ${MAILTRAP_BEARER_TOKEN}
       MAILTRAP_API_KEY: ${MAILTRAP_API_KEY}
     depends_on:
-      - redis
+      - holy-grail-redis
     build:
       context: ./holy-grail-backend/backend
     command: celery -A app.worker worker -B --loglevel=info
@@ -119,15 +120,15 @@ services:
     volumes:
       - ./holy-grail-backend/backend:/app
 
-  scheduler-gui:
+  holy-grail-scheduler-gui:
     environment:
       CELERY_BROKER_URL: ${REDIS_URL}
     links:
-      - scheduler
+      - holy-grail-scheduler
     ports:
       - "5555:5555"
     depends_on:
-      scheduler:
+      holy-grail-scheduler:
         condition: service_healthy
     image: mher/flower:1.2.0
     restart: unless-stopped

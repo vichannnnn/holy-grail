@@ -2,7 +2,7 @@
 version: '3.8'
 
 services:
-  frontend:
+  holy-grail-frontend:
     container_name: holy-grail-frontend
     networks:
       - holy-grail-network
@@ -24,7 +24,7 @@ services:
       BACKEND_CONTAINER_URL: ${BACKEND_CONTAINER_URL}
       PRODUCTION: ${PRODUCTION}
     depends_on:
-      - backend
+      - holy-grail-backend
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
       - ./holy-grail-frontend/src:/app/src
@@ -33,7 +33,7 @@ services:
     restart:
       always
 
-  backend:
+  holy-grail-backend:
     container_name: holy-grail-backend
     build: ./holy-grail-backend/backend
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
@@ -41,7 +41,7 @@ services:
       - holy-grail-network
       - default
     depends_on:
-      - db
+      - holy-grail-db
     environment:
       FRONTEND_URL: ${FRONTEND_URL}
       BACKEND_URL: ${BACKEND_URL}
@@ -66,7 +66,8 @@ services:
     volumes:
       - ./holy-grail-backend/backend:/app
 
-  db:
+  holy-grail-db:
+    container_name: holy-grail-db
     networks:
       - holy-grail-network
       - default
@@ -87,7 +88,7 @@ services:
       - ./postgres:/var/lib/postgresql/data
       - ./holy-grail-backend/db:/docker-entrypoint-initdb.d/
 
-  redis:
+  holy-grail-redis:
     image: redis:7.0.7-alpine
     ports:
       - "6379"
@@ -96,7 +97,7 @@ services:
     command: redis-server --loglevel verbose
     restart: unless-stopped
 
-  scheduler:
+  holy-grail-scheduler:
     environment:
       FRONTEND_URL: ${FRONTEND_URL}
       BACKEND_URL: ${BACKEND_URL}
@@ -127,15 +128,15 @@ services:
     volumes:
       - ./holy-grail-backend/backend:/app
 
-  scheduler-gui:
+  holy-grail-scheduler-gui:
     environment:
       CELERY_BROKER_URL: ${REDIS_URL}
     links:
-      - scheduler
+      - holy-grail-scheduler
     ports:
       - "5555:5555"
     depends_on:
-      scheduler:
+      holy-grail-scheduler:
         condition: service_healthy
     image: mher/flower:1.2.0
     restart: unless-stopped
