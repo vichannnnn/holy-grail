@@ -4,6 +4,8 @@ version: '3.8'
 services:
   frontend:
     container_name: holy-grail-frontend
+    ports:
+      - "5173:5173"
     networks:
       - holy-grail-network
       - default
@@ -24,6 +26,9 @@ services:
     container_name: holy-grail-backend
     build: ./holy-grail-backend/backend
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    ports:
+      - "8000:8000"
+      - "9000:9000"
     networks:
       - holy-grail-network
       - default
@@ -127,34 +132,6 @@ services:
     image: mher/flower:1.2.0
     restart: unless-stopped
 
-  caddy:
-    container_name: holy-grail-proxy
-    image: caddy:2.6.2-alpine
-    networks:
-      - holy-grail-network
-      - default
-    ports:
-      - '80:80'
-      - '443:443'
-      - '5173:5173'
-      - '8000:8000'
-      - '9000:9000'
-    environment:
-      FRONTEND_URL: ${FRONTEND_URL}
-      FRONTEND_CONTAINER_URL: ${FRONTEND_CONTAINER_URL}
-      BACKEND_URL: ${BACKEND_URL}
-      BACKEND_CONTAINER_URL: ${BACKEND_CONTAINER_URL}
-      DEBUG_URL: ${DEBUG_URL}
-      DEBUG_CONTAINER_URL: ${DEBUG_CONTAINER_URL}
-    restart: unless-stopped
-    volumes:
-      - ./Caddyfile.dev:/etc/caddy/Caddyfile
-      - caddy_data:/data
-      - caddy_config:/config
-
-volumes:
-  caddy_config: null
-  caddy_data: null
 
 networks:
   holy-grail-network:
