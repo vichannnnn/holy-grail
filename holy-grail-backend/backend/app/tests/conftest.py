@@ -64,8 +64,12 @@ def not_authenticated_client():
 
 @pytest.fixture(name="test_valid_user", scope="function")
 def test_valid_user():
-    yield schemas.auth.AccountSchema(username="username", password="Password123!", repeat_password="Password123!",
-                                     email="test@gmail.com")
+    yield schemas.auth.AccountSchema(
+        username="username",
+        password="Password123!",
+        repeat_password="Password123!",
+        email="test@gmail.com",
+    )
 
 
 @pytest.fixture(name="test_book_insert", scope="function")

@@ -26,7 +26,7 @@ jobs:
 
       - name: Run tests with coverage
         run: make coverage version="dev"
-        if: github.ref == 'refs/heads/dev'
+        if: github.ref == 'refs/heads/dev' || (github.event_name == 'pull_request' && github.base_ref == 'dev')
 
       - name: Run tests with coverage
         run: make coverage version="prod"
@@ -41,6 +41,7 @@ jobs:
 
   build:
     needs: test
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/master')
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -91,6 +92,7 @@ jobs:
 
   deploy:
     needs: build
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/master')
     runs-on: ubuntu-latest
     steps:
       - name: executing remote ssh commands using private key

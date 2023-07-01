@@ -10,6 +10,7 @@ def test_example(client: TestClient):
     assert response.status_code == status.HTTP_200_OK
     assert response.json() == {"Hello": "World!"}
 
+
 # def test_add_book(client: TestClient, test_book_insert: schemas.core.BookCreateSchema):
 #     payload = jsonable_encoder(test_book_insert)
 #     response = client.post(BOOK_URL, json=payload)

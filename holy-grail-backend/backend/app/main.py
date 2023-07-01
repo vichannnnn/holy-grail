@@ -5,7 +5,7 @@ from fastapi.middleware import cors
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from starlette_validation_uploadfile import ValidateUploadFileMiddleware
-from prometheus_fastapi_instrumentator import Instrumentator
+from prometheus_fastapi_instrumentator import Instrumentator, metrics
 
 from app.api.api import api_router
 from app.limiter import limiter
@@ -28,7 +28,18 @@ app.add_middleware(
 )
 
 app.include_router(api_router)
-Instrumentator().instrument(app).expose(app)
+
+
+def exclude_metrics(metric):
+    return metric.name != "http_requests_total"
+
+
+Instrumentator(
+    should_group=False,
+    should_exclude=exclude_metrics,
+).instrument(
+    app
+).expose(app)
 
 
 @app.on_event("startup")
