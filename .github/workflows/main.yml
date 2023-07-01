@@ -100,7 +100,7 @@ jobs:
           username: ${{ github.ref == 'refs/heads/dev' && secrets.DEV_REMOTE_USER || secrets.MASTER_REMOTE_USER }}
           key: ${{ github.ref == 'refs/heads/dev' && secrets.DEV_SSH_PRIVATE_KEY || secrets.MASTER_SSH_PRIVATE_KEY }}
           script: |
-            cd /holy-grail
+            cd ./holy-grail
             docker compose pull
             docker compose up -d
   
