@@ -88,4 +88,21 @@ jobs:
           context: ./holy-grail-backend/backend
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/holy-grail-scheduler${{ env.TAG_SUFFIX }}:latest
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: executing remote ssh commands using private key
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ github.ref == 'refs/heads/dev' && secrets.DEV_REMOTE_HOST || secrets.MASTER_REMOTE_HOST }}
+          username: ${{ github.ref == 'refs/heads/dev' && secrets.DEV_REMOTE_USER || secrets.MASTER_REMOTE_USER }}
+          key: ${{ github.ref == 'refs/heads/dev' && secrets.DEV_SSH_PRIVATE_KEY || secrets.MASTER_SSH_PRIVATE_KEY }}
+          script: |
+            cd /holy-grail
+            docker-compose pull
+            docker-compose up -d
+  
+
      
