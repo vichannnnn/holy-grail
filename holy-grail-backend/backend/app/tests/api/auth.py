@@ -10,15 +10,20 @@ LOGIN_URL = "/auth/login"
 
 
 def test_create_valid_user(
-        client: TestClient, test_valid_user: schemas.auth.AccountSchema
+    client: TestClient, test_valid_user: schemas.auth.AccountSchema
 ):
     payload = jsonable_encoder(test_valid_user)
     response = client.post(CREATE_URL, json=payload)
     resp_data = response.json()
     assert response.status_code == status.HTTP_200_OK
     assert resp_data["username"] == test_valid_user.username
-    assert resp_data == {"username": test_valid_user.username, "role": 1, "verified": False, "user_id": 1,
-                         "email": test_valid_user.email}
+    assert resp_data == {
+        "username": test_valid_user.username,
+        "role": 1,
+        "verified": False,
+        "user_id": 1,
+        "email": test_valid_user.email,
+    }
 
 
 def test_login(client: TestClient, test_valid_user: schemas.auth.AccountSchema):
