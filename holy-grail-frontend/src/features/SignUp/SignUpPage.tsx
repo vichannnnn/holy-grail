@@ -63,6 +63,7 @@ const SignUpPage = () => {
         severity: 'error',
       });
       setOpenAlert(true);
+      return;
     }
     const alertContentRedirect: AlertProps = {
       title: 'Account successfully created.',
