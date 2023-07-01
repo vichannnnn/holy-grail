@@ -30,16 +30,7 @@ app.add_middleware(
 app.include_router(api_router)
 
 
-def exclude_metrics(metric):
-    return metric.name != "http_requests_total"
-
-
-Instrumentator(
-    should_group=False,
-    should_exclude=exclude_metrics,
-).instrument(
-    app
-).expose(app)
+Instrumentator().instrument(app).expose(app)
 
 
 @app.on_event("startup")
