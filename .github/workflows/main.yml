@@ -65,8 +65,15 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.CICD_TOKEN }}
 
-      - name: Define tag suffix
-        run: echo "TAG_SUFFIX=$(if [[ "${{ github.ref }}" == 'refs/heads/dev' ]]; then echo '-dev'; else echo ''; fi)" >> $GITHUB_ENV
+      - name: Define tag suffix and Dockerfile
+        run: |
+            if [[ "${{ github.ref }}" == 'refs/heads/master' ]]; then 
+              echo "TAG_SUFFIX=" >> $GITHUB_ENV
+              echo "DOCKERFILE=Dockerfile.prod" >> $GITHUB_ENV
+            else 
+              echo "TAG_SUFFIX=-dev" >> $GITHUB_ENV
+              echo "DOCKERFILE=Dockerfile.dev" >> $GITHUB_ENV
+            fi
 
       - name: Build and push Backend Docker image
         uses: docker/build-push-action@v2
