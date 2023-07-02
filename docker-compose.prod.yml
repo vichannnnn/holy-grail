@@ -25,7 +25,6 @@ services:
       - holy-grail-backend
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
-      - ./holy-grail-frontend/src:/app/src
       - caddy_data:/data
       - caddy_config:/config
     restart:
