@@ -1,7 +1,8 @@
 import { Stack, Button, Typography } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import debounce from 'lodash/debounce';
-import { useMediaQuery } from 'react-responsive';
+import { useContext } from 'react';
+import MediaQueryContext from '../../providers/MediaQueryProvider';
 
 interface PaginationProps {
   pageInfo: { page: number; size: number; total: number; pages: number };
@@ -22,8 +23,8 @@ export const Pagination = ({ pageInfo, handlePageChange, styles }: PaginationPro
     borderRadius: '10%',
   };
 
-  const isMobile = useMediaQuery({ query: '(max-width: 600px)' });
-  const responsiveMt = isMobile ? '20%' : '4%';
+  const { isDesktop } = useContext(MediaQueryContext);
+  const responsiveMt = isDesktop ? '4%' : '20%';
 
   return (
     <ThemeProvider theme={muiTheme}>

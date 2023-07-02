@@ -18,6 +18,7 @@ import AccountVerifyPage from './features/AccountVerify/AccountVerifyPage';
 import AlertToast, { AlertProps } from './components/AlertToast/AlertToast';
 
 import Header from './features/Header/Header';
+import { MediaQueryProvider } from './providers/MediaQueryProvider';
 
 function App() {
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
@@ -32,31 +33,33 @@ function App() {
   }, [location.state]);
 
   return (
-    <AuthProvider>
-      <ChakraProvider>
-        <Header />
-        <Routes>
-          <Route path='/' element={<LandingPage />} />
-          <Route path='/login' element={<LoginPage />} />
-          <Route path='/register' element={<SignUpPage />} />
-          <Route path='/upload' element={<UploadPage />} />
-          <Route path='/admin' element={<ApprovalPage />} />
-          <Route path='/developer' element={<DeveloperPage />} />
-          <Route path='/forgot-password' element={<ForgotPasswordPage />} />
-          <Route path='/update-password' element={<ChangePasswordPage />} />
-          <Route path='/reset-password' element={<ResetPasswordPage />} />
-          <Route path='/verify-account' element={<AccountVerifyPage />} />
-          <Route path='*' element={<NotFound />} />
-        </Routes>
-        <Footer />
+    <MediaQueryProvider>
+      <AuthProvider>
+        <ChakraProvider>
+          <Header />
+          <Routes>
+            <Route path='/' element={<LandingPage />} />
+            <Route path='/login' element={<LoginPage />} />
+            <Route path='/register' element={<SignUpPage />} />
+            <Route path='/upload' element={<UploadPage />} />
+            <Route path='/admin' element={<ApprovalPage />} />
+            <Route path='/developer' element={<DeveloperPage />} />
+            <Route path='/forgot-password' element={<ForgotPasswordPage />} />
+            <Route path='/update-password' element={<ChangePasswordPage />} />
+            <Route path='/reset-password' element={<ResetPasswordPage />} />
+            <Route path='/verify-account' element={<AccountVerifyPage />} />
+            <Route path='*' element={<NotFound />} />
+          </Routes>
+          <Footer />
 
-        <AlertToast
-          openAlert={openAlert}
-          onClose={() => setOpenAlert(false)}
-          alertContent={alertContent}
-        />
-      </ChakraProvider>
-    </AuthProvider>
+          <AlertToast
+            openAlert={openAlert}
+            onClose={() => setOpenAlert(false)}
+            alertContent={alertContent}
+          />
+        </ChakraProvider>
+      </AuthProvider>
+    </MediaQueryProvider>
   );
 }
 

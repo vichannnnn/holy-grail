@@ -3,23 +3,17 @@ import { useContext, useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import Logo from '../../assets/placeholder.svg';
 import AuthContext from '../../providers/AuthProvider';
-import {
-  IconButton,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  useBreakpointValue,
-} from '@chakra-ui/react';
+import { IconButton, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
 import { resendVerificationEmail } from '../../api/utils/auth/ResendVerificationEmail';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import { HeaderRightButton } from './HeaderRightButton';
 import AlertToast, { AlertProps } from '../../components/AlertToast/AlertToast';
+import MediaQueryContext from '../../providers/MediaQueryProvider';
 
 const Header = () => {
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
-  const isDesktop = useBreakpointValue({ base: false, lg: true });
+  const { isDesktop } = useContext(MediaQueryContext);
   const [activeNav, setActiveNav] = useState('#home');
 
   const [openAlert, setOpenAlert] = useState<boolean>(false);

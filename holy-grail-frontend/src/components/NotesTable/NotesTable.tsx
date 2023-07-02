@@ -6,7 +6,8 @@ import Combobox from '../../features/Library/Combobox';
 import { ComboboxProps } from '../../features/Library/Combobox';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Pagination } from '../Pagination/Pagination';
-import { useMediaQuery } from 'react-responsive';
+import { useContext } from 'react';
+import MediaQueryContext from '../../providers/MediaQueryProvider';
 import '../../features/Library/library.css';
 import NotesIcon from './notesHelper';
 
@@ -56,7 +57,7 @@ const NotesTable = ({
   isAdmin,
 }: NotesTableProps) => {
   const muiTheme = createTheme();
-  const isMobile = useMediaQuery({ query: '(max-width: 600px)' });
+  const { isDesktop } = useContext(MediaQueryContext);
 
   return (
     <Box>
@@ -64,7 +65,7 @@ const NotesTable = ({
         <Box display='flex' flexDirection='column' alignItems='center'>
           <Box
             display='flex'
-            flexDirection={isMobile ? 'column' : 'row'}
+            flexDirection={isDesktop ? 'row' : 'column'}
             gap={2}
             marginBottom={2}
             sx={{ width: '100%' }}
@@ -79,7 +80,7 @@ const NotesTable = ({
                 handlePageChange(1);
               }}
               options={categories}
-              style={{ width: isMobile ? '100%' : '15%' }}
+              style={{ width: isDesktop ? '15%' : '100%' }}
             />
             <Combobox
               label='Subject'
@@ -89,7 +90,7 @@ const NotesTable = ({
                 handlePageChange(1);
               }}
               options={subjects}
-              style={{ width: isMobile ? '100%' : '15%' }}
+              style={{ width: isDesktop ? '15%' : '100%' }}
             />
             <Combobox
               label='Type'
@@ -99,10 +100,10 @@ const NotesTable = ({
                 handlePageChange(1);
               }}
               options={types}
-              style={{ width: isMobile ? '100%' : '15%' }}
+              style={{ width: isDesktop ? '15%' : '100%' }}
             />
           </Box>
-          {!isMobile ? (
+          {isDesktop ? (
             <TableContainer>
               <Table className='table__notes'>
                 <TableHead>
