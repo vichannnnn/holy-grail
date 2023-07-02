@@ -1,12 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { Button, Text, Input } from '@chakra-ui/react';
 import Combobox from '../Library/Combobox';
 import { fetchData, CategoryType, SubjectType, DocumentType } from '../../api/utils/library/Search';
 import { createNote } from '../../api/utils/actions/CreateNote';
-import { useContext } from 'react';
 import AuthContext from '../../providers/AuthProvider';
 import { useNavigate } from 'react-router-dom';
-import { useMediaQuery } from 'react-responsive';
+import MediaQueryContext from '../../providers/MediaQueryProvider';
 import AlertToast, { AlertProps } from '../../components/AlertToast/AlertToast';
 import './upload.css';
 
@@ -29,7 +28,7 @@ const UploadPage = () => {
 
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
-  const isMobile = useMediaQuery({ query: '(max-width: 600px)' });
+  const { isDesktop } = useContext(MediaQueryContext);
 
   useEffect(() => {
     fetchData().then(({ categories, subjects, types }) => {
@@ -177,7 +176,7 @@ const UploadPage = () => {
 
           <input
             ref={inputFileRef}
-            width={isMobile ? '90%' : '30%'}
+            width={isDesktop ? '30%' : '90%'}
             type='file'
             accept='application/pdf'
             // , text/plain, application/vnd.openxmlformats-officedocument.wordprocessingml.document
