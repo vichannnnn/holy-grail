@@ -33,7 +33,7 @@ services:
 
   holy-grail-backend:
     container_name: holy-grail-backend
-    image: ghcr.io/vichannnnn/holy-grail/holy-grail-backend:latest
+    image: ghcr.io/vichannnnn/holy-grail-backend:latest    
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000
     networks:
       - holy-grail-network
@@ -97,7 +97,7 @@ services:
       always
 
   holy-grail-scheduler:
-    image: ghcr.io/vichannnnn/holy-grail/holy-grail-scheduler:latest
+    image: ghcr.io/vichannnnn/holy-grail-scheduler:latest
     environment:
       FRONTEND_URL: ${FRONTEND_URL}
       BACKEND_URL: ${BACKEND_URL}
