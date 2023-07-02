@@ -91,7 +91,7 @@ services:
     ports:
       - "6379"
     depends_on:
-      - db
+      - holy-grail-db
     command: redis-server --loglevel verbose
     restart:
       always
