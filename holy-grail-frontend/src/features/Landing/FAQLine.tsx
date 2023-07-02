@@ -1,13 +1,8 @@
-import {
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  Box,
-  useBreakpointValue,
-} from '@chakra-ui/react';
+import { AccordionItem, AccordionButton, AccordionPanel, Box } from '@chakra-ui/react';
 import { AddIcon, MinusIcon } from '@chakra-ui/icons';
 import { Text } from '../../components/Text/Text';
-import { ReactNode } from 'react';
+import { ReactNode, useContext } from 'react';
+import MediaQueryContext from '../../providers/MediaQueryProvider';
 
 type FAQLineProps = {
   question: string;
@@ -15,7 +10,7 @@ type FAQLineProps = {
 };
 
 const FAQLine = ({ question, children }: FAQLineProps) => {
-  const isDesktop = useBreakpointValue({ base: false, lg: true });
+  const { isDesktop } = useContext(MediaQueryContext);
 
   return (
     <AccordionItem borderColor='transparent'>
