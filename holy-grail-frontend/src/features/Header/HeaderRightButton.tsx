@@ -18,8 +18,13 @@ const DesktopButtonFace = ({
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }) => {
   return (
-    <Button onClick={onClick} disableRipple={true} variant='outlined' sx={{ borderColor: 'black' }}>
-      <Typography sx={{ textTransform: 'capitalize', color: 'black' }}>{label}</Typography>
+    <Button
+      onClick={onClick}
+      disableRipple={true}
+      variant='outlined'
+      sx={{ borderColor: 'black', height: '30px', width: '107.25px' }}
+    >
+      <Typography sx={{ textTransform: 'none', color: 'black' }}>{label}</Typography>
     </Button>
   );
 };
@@ -41,7 +46,22 @@ const MobileButtonFace = ({
 };
 
 export const HeaderRightButton = ({ children }: HeaderRightButtonProps) => {
-  const muiTheme = createTheme();
+  const muiTheme = createTheme({
+    typography: {
+      fontFamily: [
+        '-apple-system',
+        'BlinkMacSystemFont',
+        '"Segoe UI SemiBold"',
+        'Roboto',
+        '"Helvetica Neue"',
+        'Arial',
+        'sans-serif',
+        '"Apple Color Emoji"',
+        '"Segoe UI Emoji"',
+        '"Segoe UI Symbol"',
+      ].join(','),
+    },
+  });
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { isDesktop } = useContext(MediaQueryContext);
   const { user } = useContext(AuthContext);
@@ -80,7 +100,25 @@ export const HeaderRightButton = ({ children }: HeaderRightButtonProps) => {
         }}
       >
         {children.map((child) => (
-          <MenuItem onClick={child.callback}>{child.label}</MenuItem>
+          <MenuItem
+            disableRipple={true}
+            key={child.label}
+            sx={{
+              margin: '3px',
+              backgroundColor: 'transparent',
+              borderRadius: '8px',
+              boxSizing: 'border-box',
+              border: '1px solid transparent',
+              '&:hover': {
+                color: 'rgb(100,108,255)',
+                borderBlockColor: 'rgb(100,108,255)',
+                backgroundColor: 'white',
+              },
+            }}
+            onClick={child.callback}
+          >
+            {child.label}
+          </MenuItem>
         ))}
       </Menu>
     </ThemeProvider>
