@@ -1,9 +1,9 @@
 .ONESHELL:
 SHELL = bash
 
-backend_container := backend
+backend_container := holy-grail-backend
 backend_container_name := holy-grail-backend
-frontend_container := frontend
+frontend_container := holy-grail-frontend
 
 -include ./Makefile.properties
 

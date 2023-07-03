@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Button, VStack, Heading, Text, useToast, Input } from '@chakra-ui/react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
+import { Button, Text, Input } from '@chakra-ui/react';
 import Combobox from '../Library/Combobox';
 import { fetchData, CategoryType, SubjectType, DocumentType } from '../../api/utils/library/Search';
 import { createNote } from '../../api/utils/actions/CreateNote';
-import { useContext } from 'react';
 import AuthContext from '../../providers/AuthProvider';
 import { useNavigate } from 'react-router-dom';
-import { useMediaQuery } from 'react-responsive';
+import MediaQueryContext from '../../providers/MediaQueryProvider';
+import AlertToast, { AlertProps } from '../../components/AlertToast/AlertToast';
 import './upload.css';
 
 const UploadPage = () => {
@@ -23,10 +23,12 @@ const UploadPage = () => {
   const [fileName, setFileName] = useState<string | null>(null);
   const inputFileRef = useRef<HTMLInputElement | null>(null);
 
-  const toast = useToast();
+  const [openAlert, setOpenAlert] = useState<boolean>(false);
+  const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
+
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
-  const isMobile = useMediaQuery({ query: '(max-width: 600px)' });
+  const { isDesktop } = useContext(MediaQueryContext);
 
   useEffect(() => {
     fetchData().then(({ categories, subjects, types }) => {
@@ -34,11 +36,15 @@ const UploadPage = () => {
       setSubjects(subjects);
       setTypes(types);
     });
+    if (!user) {
+      const alertContentRedirect: AlertProps = {
+        title: 'Please login.',
+        description: 'You need to be logged in to upload documents.',
+        severity: 'error',
+      };
+      navigate('/login', { state: { alertContent: alertContentRedirect } });
+    }
   }, []);
-
-  if (!user) {
-    navigate('/login');
-  }
 
   const handleButtonClick = () => {
     if (inputFileRef.current) {
@@ -61,13 +67,12 @@ const UploadPage = () => {
     event.preventDefault();
 
     if (!selectedFile || category === '' || subject === '' || type === '') {
-      toast({
+      setAlertContent({
         title: 'Error',
         description: 'You need to select everything and upload at least one file.',
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
+        severity: 'error',
       });
+      setOpenAlert(true);
       return;
     }
 
@@ -80,37 +85,33 @@ const UploadPage = () => {
         documentName || '',
       );
       if (responseStatus == 200) {
-        toast({
+        setAlertContent({
           title: 'Success',
           description: 'Successfully sent for review and will be shown in library once uploaded.',
-          status: 'success',
-          duration: 5000,
-          isClosable: true,
+          severity: 'success',
         });
+        setOpenAlert(true);
       } else if (responseStatus === 429) {
-        toast({
+        setAlertContent({
           title: "You're submitting too fast!",
           description: 'You can only upload 1 document per minute.',
-          status: 'error',
-          duration: 5000,
-          isClosable: true,
+          severity: 'error',
         });
+        setOpenAlert(true);
       } else if (responseStatus === 401) {
-        toast({
+        setAlertContent({
           title: 'Your account has not been verified yet.',
           description: 'Please verify your account with the verification mail sent to your email.',
-          status: 'error',
-          duration: 5000,
-          isClosable: true,
+          severity: 'error',
         });
+        setOpenAlert(true);
       } else {
-        toast({
+        setAlertContent({
           title: 'Error',
           description: 'Something went wrong.',
-          status: 'error',
-          duration: 5000,
-          isClosable: true,
+          severity: 'error',
         });
+        setOpenAlert(true);
       }
     }
   };
@@ -175,7 +176,7 @@ const UploadPage = () => {
 
           <input
             ref={inputFileRef}
-            width={isMobile ? '90%' : '30%'}
+            width={isDesktop ? '30%' : '90%'}
             type='file'
             accept='application/pdf'
             // , text/plain, application/vnd.openxmlformats-officedocument.wordprocessingml.document
@@ -187,6 +188,11 @@ const UploadPage = () => {
           Submit
         </Button>
       </form>
+      <AlertToast
+        openAlert={openAlert}
+        onClose={() => setOpenAlert(false)}
+        alertContent={alertContent}
+      />
     </section>
   );
 };

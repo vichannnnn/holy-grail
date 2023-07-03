@@ -1,8 +1,9 @@
 import './App.css';
+import { useState, useEffect } from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
 import LoginPage from './features/SignIn/LoginPage';
 import LandingPage from './features/Landing/LandingPage';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { useLocation, Router, Route, Routes } from 'react-router-dom';
 import Footer from './features/Footer/Footer';
 import SignUpPage from './features/SignUp/SignUpPage';
 import UploadPage from './features/Upload/UploadPage';
@@ -14,14 +15,27 @@ import ChangePasswordPage from './features/ChangePassword/ChangePasswordPage';
 import ForgotPasswordPage from './features/ForgotPassword/ForgotPasswordPage';
 import ResetPasswordPage from './features/ResetPassword/ResetPasswordPage';
 import AccountVerifyPage from './features/AccountVerify/AccountVerifyPage';
+import AlertToast, { AlertProps } from './components/AlertToast/AlertToast';
 
 import Header from './features/Header/Header';
+import { MediaQueryProvider } from './providers/MediaQueryProvider';
 
 function App() {
+  const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
+  const [openAlert, setOpenAlert] = useState<boolean>(false);
+
+  const location = useLocation();
+  useEffect(() => {
+    if (location.state && location.state.alertContent) {
+      setAlertContent(location.state.alertContent);
+      setOpenAlert(true);
+    }
+  }, [location.state]);
+
   return (
-    <AuthProvider>
-      <ChakraProvider>
-        <Router>
+    <MediaQueryProvider>
+      <AuthProvider>
+        <ChakraProvider>
           <Header />
           <Routes>
             <Route path='/' element={<LandingPage />} />
@@ -37,9 +51,15 @@ function App() {
             <Route path='*' element={<NotFound />} />
           </Routes>
           <Footer />
-        </Router>
-      </ChakraProvider>
-    </AuthProvider>
+
+          <AlertToast
+            openAlert={openAlert}
+            onClose={() => setOpenAlert(false)}
+            alertContent={alertContent}
+          />
+        </ChakraProvider>
+      </AuthProvider>
+    </MediaQueryProvider>
   );
 }
 

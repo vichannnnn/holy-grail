@@ -18,6 +18,7 @@ starlette_validation_uploadfile
 slowapi
 boto3==1.26.139
 mailtrap
+prometheus-fastapi-instrumentator==6.0.0
 
 
 # LINTING

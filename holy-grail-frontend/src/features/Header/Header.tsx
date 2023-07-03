@@ -1,68 +1,88 @@
 import './header.css';
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import Logo from '../../assets/placeholder.svg';
 import AuthContext from '../../providers/AuthProvider';
-import {
-  IconButton,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  useBreakpointValue,
-  useToast,
-} from '@chakra-ui/react';
 import { resendVerificationEmail } from '../../api/utils/auth/ResendVerificationEmail';
-import { HamburgerIcon } from '@chakra-ui/icons';
 import { HeaderRightButton } from './HeaderRightButton';
+import AlertToast, { AlertProps } from '../../components/AlertToast/AlertToast';
+import MediaQueryContext from '../../providers/MediaQueryProvider';
 
 const Header = () => {
   const { user, logout } = useContext(AuthContext);
-  const toast = useToast();
   const navigate = useNavigate();
-  const isDesktop = useBreakpointValue({ base: false, lg: true });
+  const { isDesktop } = useContext(MediaQueryContext);
   const [activeNav, setActiveNav] = useState('#home');
 
-  const navigateTo = (path: string) => {
-    return () => navigate(path);
-  };
+  const [openAlert, setOpenAlert] = useState<boolean>(false);
+  const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
 
-  const handleAdminButtonClick = navigateTo('/admin');
-  const handleDevButtonClick = navigateTo('/developer');
-  const handlePasswordChange = navigateTo('/update-password');
+  const [headerRightButtonChildren, setHeaderRightButtonChildren] = useState<
+    { label: string; callback: () => void }[]
+  >([]);
+
+  useEffect(() => {
+    const children = [];
+
+    if (!isDesktop) {
+      children.push(
+        { label: 'Home', callback: () => navigate('/') },
+        { label: 'Library', callback: () => navigate('/#library') },
+        { label: 'FAQ', callback: () => navigate('/#faq') },
+      );
+    }
+
+    if (user) {
+      children.push({ label: 'Change Password', callback: () => navigate('/update-password') });
+      if (!user.verified) {
+        children.push({
+          label: 'Resend Verification Email',
+          callback: handleResendVerificationEmail,
+        });
+      }
+      if (user.role > 1) {
+        children.push({ label: 'Admin Panel', callback: () => navigate('/admin') });
+      }
+      if (user.role > 2) {
+        children.push({ label: 'Developer Panel', callback: () => navigate('/developer') });
+      }
+      children.push({ label: 'Log Out', callback: handleLogout });
+    } else {
+      children.push({ label: 'Log In', callback: () => navigate('/login') });
+    }
+
+    setHeaderRightButtonChildren(children);
+  }, [isDesktop, user]);
 
   const handleLogout = async () => {
     try {
       logout();
     } catch (error) {
-      toast({
+      setAlertContent({
         title: 'Logout failed.',
         description: 'An error occurred while logging out.',
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
+        severity: 'error',
       });
+      setOpenAlert(true);
     }
   };
 
   const handleResendVerificationEmail = async () => {
     try {
       await resendVerificationEmail();
-      toast({
+      setAlertContent({
         title: 'Verification email resent successfully.',
         description: 'Please check your email for the verification mail sent to you.',
-        status: 'success',
-        duration: 3000,
-        isClosable: true,
+        severity: 'success',
       });
     } catch (error) {
-      toast({
+      setAlertContent({
         title: 'Failed to resend verification email.',
         description: 'An error occurred while sending.',
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
+        severity: 'error',
       });
+    } finally {
+      setOpenAlert(true);
     }
   };
 
@@ -100,77 +120,14 @@ const Header = () => {
               </li>
             </ul>
           </div>
-        ) : (
-          <Menu>
-            <MenuButton
-              as={IconButton}
-              aria-label='Menu'
-              icon={<HamburgerIcon />}
-              variant='outline'
-            />
-            <MenuList>
-              <RouterLink to='/'>
-                <MenuItem>Home</MenuItem>
-              </RouterLink>
-              <RouterLink to='/#library'>
-                <MenuItem>Library</MenuItem>
-              </RouterLink>
-              <RouterLink to='/#faq'>
-                <MenuItem>FAQ</MenuItem>
-              </RouterLink>
-              {user ? (
-                <>
-                  {user.role > 1 && (
-                    <MenuItem onClick={handleAdminButtonClick}>Admin Panel</MenuItem>
-                  )}
-                  {user.role > 2 && (
-                    <MenuItem onClick={handleDevButtonClick}>Developer Panel</MenuItem>
-                  )}
-                  {<MenuItem onClick={handlePasswordChange}>Change Password</MenuItem>}
-                  {!user.verified && (
-                    <MenuItem onClick={handleResendVerificationEmail}>
-                      Resent Verification Email
-                    </MenuItem>
-                  )}
-                  <MenuItem onClick={handleLogout}> Log Out</MenuItem>
-                </>
-              ) : (
-                <RouterLink to='/login'>
-                  <MenuItem className='nav__login'>Log In</MenuItem>
-                </RouterLink>
-              )}
-            </MenuList>
-          </Menu>
-        )}
-        {isDesktop && (
-          <>
-            {user ? (
-              <Menu>
-                <MenuButton as={HeaderRightButton}>{user.username}</MenuButton>
-                <MenuList>
-                  {user.role > 1 && (
-                    <MenuItem onClick={handleAdminButtonClick}>Admin Panel</MenuItem>
-                  )}
-                  {user.role > 2 && (
-                    <MenuItem onClick={handleDevButtonClick}>Developer Panel</MenuItem>
-                  )}
-                  {<MenuItem onClick={handlePasswordChange}>Change Password</MenuItem>}
-                  {!user.verified && (
-                    <MenuItem onClick={handleResendVerificationEmail}>
-                      Resend Verification Email
-                    </MenuItem>
-                  )}
-                  <MenuItem onClick={handleLogout}>Log Out</MenuItem>
-                </MenuList>
-              </Menu>
-            ) : (
-              <RouterLink to='/login'>
-                <HeaderRightButton children='Log In' />
-              </RouterLink>
-            )}
-          </>
-        )}
+        ) : null}
+        <HeaderRightButton children={headerRightButtonChildren} />
       </nav>
+      <AlertToast
+        openAlert={openAlert}
+        onClose={() => setOpenAlert(false)}
+        alertContent={alertContent}
+      />
     </header>
   );
 };
