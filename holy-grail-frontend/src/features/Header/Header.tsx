@@ -3,16 +3,15 @@ import { useContext, useState, useEffect } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import Logo from '../../assets/placeholder.svg';
 import AuthContext from '../../providers/AuthProvider';
-import { useBreakpointValue } from '@chakra-ui/react';
 import { resendVerificationEmail } from '../../api/utils/auth/ResendVerificationEmail';
 import { HeaderRightButton } from './HeaderRightButton';
 import AlertToast, { AlertProps } from '../../components/AlertToast/AlertToast';
-import { set } from 'lodash';
+import MediaQueryContext from '../../providers/MediaQueryProvider';
 
 const Header = () => {
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
-  const isDesktop = useBreakpointValue({ base: false, lg: true });
+  const { isDesktop } = useContext(MediaQueryContext);
   const [activeNav, setActiveNav] = useState('#home');
 
   const [openAlert, setOpenAlert] = useState<boolean>(false);
@@ -47,9 +46,9 @@ const Header = () => {
       if (user.role > 2) {
         children.push({ label: 'Developer Panel', callback: () => navigate('/developer') });
       }
-      children.push({ label: 'Logout', callback: handleLogout });
+      children.push({ label: 'Log Out', callback: handleLogout });
     } else {
-      children.push({ label: 'Login', callback: () => navigate('/login') });
+      children.push({ label: 'Log In', callback: () => navigate('/login') });
     }
 
     setHeaderRightButtonChildren(children);
