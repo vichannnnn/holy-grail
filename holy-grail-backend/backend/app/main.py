@@ -28,12 +28,7 @@ app.add_middleware(
 )
 
 app.include_router(api_router)
-
-
-instrumentator = Instrumentator()
-instrumentator.instrument(app)
-app.state.instrumentator = instrumentator
-
+Instrumentator().instrument(app)
 
 @app.on_event("startup")
 async def on_startup() -> None:
