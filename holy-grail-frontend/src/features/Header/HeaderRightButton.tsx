@@ -108,10 +108,10 @@ export const HeaderRightButton = ({ children }: HeaderRightButtonProps) => {
               backgroundColor: 'transparent',
               borderRadius: '8px',
               boxSizing: 'border-box',
-              border: '1px solid transparent',
+              outline: '1px solid transparent',
               '&:hover': {
                 color: 'rgb(100,108,255)',
-                borderBlockColor: 'rgb(100,108,255)',
+                outlineColor: 'rgb(100,108,255)',
                 backgroundColor: 'white',
               },
             }}
