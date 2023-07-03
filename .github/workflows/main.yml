@@ -110,8 +110,13 @@ jobs:
           key: ${{ github.ref == 'refs/heads/dev' && secrets.DEV_SSH_PRIVATE_KEY || secrets.MASTER_SSH_PRIVATE_KEY }}
           script: |
             cd ./holy-grail
-            docker compose pull
-            docker compose up -d
+            if [[ "${{ github.ref }}" == 'refs/heads/master' ]]; then
+              docker compose -f docker-compose.prod.yml pull
+              docker compose -f docker-compose.prod.yml up -d
+            else
+              docker compose pull
+              docker compose up -d
+            fi
   
 
      
