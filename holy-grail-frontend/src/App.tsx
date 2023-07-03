@@ -17,12 +17,15 @@ import AccountVerifyPage from './features/AccountVerify/AccountVerifyPage';
 
 import Header from './features/Header/Header';
 
+import Header from "./features/Header/Header";
+
 function App() {
   return (
     <AuthProvider>
       <ChakraProvider>
         <Router>
           <Header />
+<<<<<<< HEAD
           <Routes>
             <Route path='/' element={<LandingPage />} />
             <Route path='/login' element={<LoginPage />} />
@@ -35,6 +38,22 @@ function App() {
             <Route path='/reset-password' element={<ResetPasswordPage />} />
             <Route path='/verify-account' element={<AccountVerifyPage />} />
             <Route path='*' element={<NotFound />} />
+=======
+          {/*<NavBar />*/}
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            {/*<Route path="/library" element={<Library />} />*/}
+            <Route path="/register" element={<SignUpPage />} />
+            <Route path="/upload" element={<UploadPage />} />
+            <Route path="/admin" element={<ApprovalPage />} />
+            <Route path="/developer" element={<DeveloperPage />} />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/update-password" element={<ChangePasswordPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
+            <Route path="/verify-account" element={<AccountVerifyPage />} />
+            <Route path="*" element={<NotFound />} />
+>>>>>>> bbe493b (new FE (desktop))
           </Routes>
           <Footer />
         </Router>

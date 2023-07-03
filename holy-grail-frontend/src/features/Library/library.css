@@ -5,6 +5,7 @@
     font-size: var(--small-font-size) !important;
     text-align: center !important;
     top: -8% !important;
+<<<<<<< HEAD
 }
 .MuiGrid-root {
     width: 100% !important;
@@ -38,4 +39,6 @@
     .MuiGrid-root {
         padding-right: 0 !important;
     }
+=======
+>>>>>>> bbe493b (new FE (desktop))
 }

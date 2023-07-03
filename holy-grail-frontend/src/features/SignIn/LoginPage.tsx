@@ -8,11 +8,21 @@ import {
   Link,
   useToast,
   Box,
+<<<<<<< HEAD
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import AuthContext from '../../providers/AuthProvider';
 import { AccountForm } from '../../components/AccountForm/AccountForm';
 import './login.css';
+=======
+} from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
+import AuthContext from "../../providers/AuthProvider";
+import { Title } from "../../components/Title/Title";
+import { Text } from "../../components/Text/Text";
+import { AccountForm } from "../../components/AccountForm/AccountForm";
+import "./login.css"
+>>>>>>> bbe493b (new FE (desktop))
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -58,6 +68,7 @@ const LoginPage = () => {
   };
 
   return (
+<<<<<<< HEAD
     <section className='login section container' id='login'>
       <AccountForm>
         <div className='login__title'>Log in</div>
@@ -66,6 +77,16 @@ const LoginPage = () => {
         <form className='login__fields' onSubmit={handleLogin}>
           <VStack spacing='6'>
             <FormControl id='username'>
+=======
+    <section className="login section container" id="login">
+      <AccountForm>
+        <div className="login__title">Log in</div>
+        <div className="section__subtitle">Enter your credentials to access your account.</div>
+
+        <form className="login__fields" onSubmit={handleLogin}>
+          <VStack spacing="6">
+            <FormControl id="username">
+>>>>>>> bbe493b (new FE (desktop))
               <FormLabel>Username</FormLabel>
               <Input
                 type='username'
@@ -89,6 +110,7 @@ const LoginPage = () => {
           </VStack>
         </form>
         <Box>
+<<<<<<< HEAD
           <div className='login__footer'>
             Forgot your password?{' '}
             <Link as='button' onClick={handleForgotPassword} textDecoration='underline'>
@@ -98,6 +120,25 @@ const LoginPage = () => {
           <div className='login__footer'>
             Not a member?{' '}
             <Link as='button' onClick={handleRegister} textDecoration='underline'>
+=======
+          <div className="login__footer">
+            Forgot your password?{" "}
+            <Link
+                as="button"
+                onClick={handleForgotPassword}
+                textDecoration="underline"
+            >
+              Click here.
+            </Link>
+          </div>
+          <div className="login__footer">
+            Not a member?{" "}
+            <Link
+              as="button"
+              onClick={handleRegister}
+              textDecoration="underline"
+            >
+>>>>>>> bbe493b (new FE (desktop))
               Register now.
             </Link>
           </div>

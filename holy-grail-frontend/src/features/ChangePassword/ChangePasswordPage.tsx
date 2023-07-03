@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState, useEffect } from 'react';
 import { Button, FormControl, FormLabel, Input, VStack, useToast } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
@@ -5,6 +6,26 @@ import PasswordValidationBox from '../SignUp/PasswordValidationBox';
 import { AccountForm } from '../../components/AccountForm/AccountForm';
 import '../SignIn/login.css';
 import { updatePassword } from '../../api/utils/auth/UpdatePassword';
+=======
+import React, { useState, useEffect } from "react";
+import {
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  VStack,
+  Link,
+  useToast,
+} from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
+import apiClient from "../../api/apiClient";
+import { AxiosError } from "axios";
+import PasswordValidationBox from "../SignUp/PasswordValidationBox";
+import { Text } from "../../components/Text/Text";
+import { Title } from "../../components/Title/Title";
+import { AccountForm } from "../../components/AccountForm/AccountForm";
+import "../SignIn/login.css"
+>>>>>>> bbe493b (new FE (desktop))
 
 const ChangePasswordPage = () => {
   const [beforePassword, setBeforePassword] = useState('');
@@ -56,6 +77,7 @@ const ChangePasswordPage = () => {
   };
 
   return (
+<<<<<<< HEAD
     <section className='updatePw section container'>
       <AccountForm>
         <div className='login__title'>Update Password</div>
@@ -64,6 +86,16 @@ const ChangePasswordPage = () => {
         <form onSubmit={handleUpdatePassword}>
           <VStack spacing='4'>
             <FormControl id='before-password'>
+=======
+    <section className="updatePw section container">
+      <AccountForm>
+        <div className="login__title">Update Password</div>
+        <div className="section__subtitle">You can change your password here.</div>
+
+        <form onSubmit={handleUpdatePassword}>
+          <VStack spacing="4">
+            <FormControl id="before-password">
+>>>>>>> bbe493b (new FE (desktop))
               <FormLabel>Current Password</FormLabel>
               <Input
                 type='password'

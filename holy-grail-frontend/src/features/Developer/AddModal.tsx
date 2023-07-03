@@ -30,10 +30,17 @@ const AddModal = ({ isOpen, onClose, onSubmit }: AddModalProps) => {
         <DialogContentText>Please enter the new identifier.</DialogContentText>
         <TextField
           autoFocus
+<<<<<<< HEAD
           margin='dense'
           id='name'
           label='Identifier'
           type='text'
+=======
+          margin="dense"
+          id="name"
+          label="Identifier"
+          type="text"
+>>>>>>> bbe493b (new FE (desktop))
           fullWidth
           value={name}
           onChange={(event) => setName(event.target.value)}

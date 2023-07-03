@@ -8,12 +8,24 @@ import {
   Link,
   useToast,
   Box,
+<<<<<<< HEAD
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import PasswordValidationBox from './PasswordValidationBox';
 import { AccountForm } from '../../components/AccountForm/AccountForm';
 import '../SignIn/login.css';
 import registerAccount from '../../api/utils/auth/RegisterAccount';
+=======
+} from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
+import apiClient from "../../api/apiClient";
+import { AxiosError } from "axios";
+import PasswordValidationBox from "./PasswordValidationBox";
+import { Text } from "../../components/Text/Text";
+import { Title } from "../../components/Title/Title";
+import { AccountForm } from "../../components/AccountForm/AccountForm";
+import "../SignIn/login.css"
+>>>>>>> bbe493b (new FE (desktop))
 
 const SignUpPage = () => {
   const [username, setUsername] = useState('');
@@ -77,6 +89,7 @@ const SignUpPage = () => {
   };
 
   return (
+<<<<<<< HEAD
     <section className='signup section container' id='signup'>
       <AccountForm>
         <div className='login__title'>Sign up</div>
@@ -85,6 +98,16 @@ const SignUpPage = () => {
         <form className='login__fields' onSubmit={handleRegister}>
           <VStack spacing='4'>
             <FormControl id='username'>
+=======
+    <section className="signup section container" id="signup">
+      <AccountForm>
+        <div className="login__title">Sign up</div>
+        <div className="section__subtitle">Create an account to access all features.</div>
+
+        <form className="login__fields" onSubmit={handleRegister}>
+          <VStack spacing="4">
+            <FormControl id="username">
+>>>>>>> bbe493b (new FE (desktop))
               <FormLabel>Username</FormLabel>
               <Input
                 type='text'
@@ -134,9 +157,19 @@ const SignUpPage = () => {
           </VStack>
         </form>
         <Box>
+<<<<<<< HEAD
           <div className='login__footer'>
             Already a member?{' '}
             <Link as='button' onClick={() => navigate('/login')} textDecoration='underline'>
+=======
+          <div className="login__footer">
+            Already a member?{" "}
+            <Link
+              as="button"
+              onClick={() => navigate("/login")}
+              textDecoration="underline"
+            >
+>>>>>>> bbe493b (new FE (desktop))
               Log in here.
             </Link>
           </div>
