@@ -25,7 +25,7 @@ SQLALCHEMY_DATABASE_URL = PostgresDsn.build(
 )
 
 test_engine = create_async_engine(
-    SQLALCHEMY_DATABASE_URL, echo=True, future=True, poolclass=NullPool
+    SQLALCHEMY_DATABASE_URL, future=True, poolclass=NullPool
 )
 TestingSessionLocal = sessionmaker(
     test_engine, autoflush=False, expire_on_commit=False, class_=AsyncSession
