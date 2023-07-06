@@ -30,6 +30,7 @@ app.add_middleware(
 app.include_router(api_router)
 Instrumentator().instrument(app)
 
+
 @app.on_event("startup")
 async def on_startup() -> None:
     pass
