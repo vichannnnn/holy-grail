@@ -1,13 +1,20 @@
-import { useContext, useEffect, useRef, useState, ChangeEvent, FormEvent } from 'react';
-import { Button, Input, Text } from '@chakra-ui/react';
-import { CategoryType, DocumentType, fetchData, SubjectType } from '@api/library';
-import { createNote } from '@api/actions';
-import { AlertToast, AlertProps, Combobox } from '@components';
-import { AuthContext, MediaQueryContext } from '@providers';
+import React, { useState, useEffect, useRef, useContext } from 'react';
+import { fetchData, CategoryType, SubjectType, DocumentType } from '../../api/utils/library/Search';
+import { createNote } from '../../api/utils/actions/CreateNote';
+import AuthContext from '../../providers/AuthProvider';
 import { useNavigate } from 'react-router-dom';
+import MediaQueryContext from '../../providers/MediaQueryProvider';
+import AlertToast, { AlertProps } from '../../components/AlertToast/AlertToast';
+import UploadNote from './UploadNote';
 import './upload.css';
 
-export const UploadPage = () => {
+interface OptionsProps {
+  categories: CategoryType[];
+  subjects: SubjectType[];
+  types: DocumentType[];
+}
+
+const UploadPage = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [subjects, setSubjects] = useState<SubjectType[]>([]);
@@ -28,40 +35,24 @@ export const UploadPage = () => {
   const navigate = useNavigate();
   const { isDesktop } = useContext(MediaQueryContext);
 
+  const [options, setOptions] = useState<OptionsProps | null>(null);
+  if (!user) {
+    const alertContentRedirect: AlertProps = {
+      title: 'Please login.',
+      description: 'You need to be logged in to upload documents.',
+      severity: 'error',
+    };
+    navigate('/login', { state: { alertContent: alertContentRedirect } });
+  }
+
   useEffect(() => {
-    fetchData().then(({ categories, subjects, types }) => {
-      setCategories(categories);
-      setSubjects(subjects);
-      setTypes(types);
+    fetchData().then((options) => {
+      setOptions(options as OptionsProps);
     });
-    if (!user) {
-      const alertContentRedirect: AlertProps = {
-        title: 'Please login.',
-        description: 'You need to be logged in to upload documents.',
-        severity: 'error',
-      };
-      navigate('/login', { state: { alertContent: alertContentRedirect } });
-    }
-  }, [navigate, user]);
+  }, []);
 
-  const handleButtonClick = () => {
-    if (inputFileRef.current) {
-      inputFileRef.current.click();
-    }
-  };
-
-  const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setDocumentName(event.target.value);
-  };
-
-  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      setSelectedFile(event.target.files[0]);
-      setFileName(event.target.files[0].name);
-    }
-  };
-
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  /*
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (!selectedFile || category === '' || subject === '' || type === '') {
@@ -124,79 +115,17 @@ export const UploadPage = () => {
       setOpenAlert(true);
     }
   };
+  */
 
   return (
     <section className='upload section container'>
-      <form onSubmit={handleSubmit}>
-        <div className='section__title'>Upload Materials</div>
-        <div className='section__subtitle'>
-          Upload your materials here! All submitted materials will be reviewed before being
-          published to the Holy Grail.
-        </div>
-        <div className='upload__file'>
-          <Button onClick={handleButtonClick} colorScheme='blue'>
-            Upload File
-          </Button>
-          <Text>{fileName || 'No file chosen'}</Text>
-        </div>
-        <div className='upload__filter grid'>
-          <Combobox
-            label='Category'
-            value={category !== '' ? Number(category) : ''}
-            style={{ width: '90%' }}
-            onChange={(newValue) => setCategory(Number(newValue))}
-            options={categories.map((category) => ({
-              id: category.id,
-              name: category.name,
-            }))}
-          />
+      <div className='section__title'>Upload Materials</div>
+      <div className='section__subtitle'>
+        Upload your materials here! All submitted materials will be reviewed before being published
+        to the Holy Grail.
+      </div>
 
-          <Combobox
-            label='Subject'
-            value={subject !== '' ? Number(subject) : ''}
-            style={{ width: '90%' }}
-            onChange={(newValue) => setSubject(Number(newValue))}
-            options={subjects.map((subject) => ({
-              id: subject.id,
-              name: subject.name,
-            }))}
-          />
-
-          <Combobox
-            label='Type'
-            value={type !== '' ? Number(type) : ''}
-            style={{ width: '90%' }}
-            onChange={(newValue) => setType(Number(newValue))}
-            options={types.map((type) => ({
-              id: type.id,
-              name: type.name,
-            }))}
-          />
-        </div>
-        <div className='upload__docName'>
-          <Input
-            value={documentName || ''}
-            onChange={handleNameChange}
-            placeholder='Enter document name'
-            required={true}
-            minLength={4}
-            maxLength={100}
-          />
-
-          <input
-            ref={inputFileRef}
-            width={isDesktop ? '30%' : '90%'}
-            type='file'
-            accept='application/pdf'
-            // , text/plain, application/vnd.openxmlformats-officedocument.wordprocessingml.document
-            onChange={handleFileChange}
-            style={{ display: 'none' }}
-          />
-        </div>
-        <Button colorScheme='blue' type='submit'>
-          Submit
-        </Button>
-      </form>
+      <UploadNote options={options} saveNote={() => null} />
       <AlertToast
         openAlert={openAlert}
         onClose={() => setOpenAlert(false)}
@@ -205,3 +134,6 @@ export const UploadPage = () => {
     </section>
   );
 };
+
+export default UploadPage;
+export type { OptionsProps };
