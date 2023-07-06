@@ -2,6 +2,7 @@ import asyncio
 from typing import AsyncGenerator
 
 import pytest
+from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from pydantic import PostgresDsn
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
@@ -12,12 +13,14 @@ from app import schemas
 from app.api.deps import get_session
 from app.db.base_class import Base
 from app.main import app
+from app.models.auth import Authenticator
+
 
 SQLALCHEMY_DATABASE_URL = PostgresDsn.build(
     scheme="postgresql+asyncpg",
     user="postgres",
     password="postgres",
-    host="db",
+    host="holy-grail-db",
     port="5432",
     path="/test",
 )
@@ -51,14 +54,56 @@ async def override_session() -> AsyncGenerator[AsyncSession, None]:
 app.dependency_overrides[get_session] = override_session
 
 
-@pytest.fixture(name="test_authentication_client", scope="function")
+async def override_get_current_user():
+    return schemas.auth.CurrentUserSchema(
+        user_id=1,
+        username="testuser",
+        role=1,
+        email="testuser@gmail.com",
+        verified=True,
+    )
+
+
+async def override_get_admin():
+    return schemas.auth.CurrentUserSchema(
+        user_id=1,
+        username="testadmin",
+        role=2,
+        email="testadmin@gmail.com",
+        verified=True,
+    )
+
+
+async def override_get_developer():
+    return schemas.auth.CurrentUserSchema(
+        user_id=1,
+        username="testdeveloper",
+        role=3,
+        email="testdeveloper@gmail.com",
+        verified=True,
+    )
+
+
+@pytest.fixture(name="test_client", scope="function")
 def test_authentication_client():
     yield TestClient(app)
 
 
-@pytest.fixture(name="client", scope="function")
-def not_authenticated_client():
-    app.dependency_overrides = {get_session: override_session}
+@pytest.fixture(name="client_user", scope="function")
+def test_client_user():
+    app.dependency_overrides[Authenticator.get_current_user] = override_get_current_user
+    yield TestClient(app)
+
+
+@pytest.fixture(name="client_admin", scope="function")
+def test_client_admin():
+    app.dependency_overrides[Authenticator.get_current_user] = override_get_admin
+    yield TestClient(app)
+
+
+@pytest.fixture(name="client_developer", scope="function")
+def test_client_developer():
+    app.dependency_overrides[Authenticator.get_current_user] = override_get_developer
     yield TestClient(app)
 
 
@@ -72,15 +117,30 @@ def test_valid_user():
     )
 
 
-@pytest.fixture(name="test_book_insert", scope="function")
-def test_book_insert():
-    yield schemas.core.BookCreateSchema(
-        title="Testing Book 1", content="This is the content.", pages=2
+@pytest.fixture(name="test_subject_insert_mathematics", scope="function")
+def test_subject_insert_math():
+    yield schemas.categories.SubjectCreateSchema(name="Mathematics")
+
+
+@pytest.fixture(name="test_subject_insert_chemistry", scope="function")
+def test_subject_insert_chem():
+    yield schemas.categories.SubjectCreateSchema(name="Chemistry")
+
+
+@pytest.fixture(name="test_subject_insert_biology", scope="function")
+def test_subject_insert_bio():
+    yield schemas.categories.SubjectCreateSchema(name="Biology")
+
+
+@pytest.fixture(name="test_note_insert", scope="function")
+def test_note_insert():
+    yield schemas.library.NoteCreateSchema(
+        category=1, subject=1, type=1, document_name="Document"
     )
 
 
-@pytest.fixture(name="test_book_update", scope="function")
-def test_book_update():
-    yield schemas.core.BookUpdateSchema(
-        title="Updated Testing Book 1", content="This is the updated content.", pages=2
+@pytest.fixture(name="test_note_update", scope="function")
+def test_note_update():
+    yield schemas.library.NoteUpdateSchema(
+        category=1, subject=1, type=1, document_name="Document"
     )
