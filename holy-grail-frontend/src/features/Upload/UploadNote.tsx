@@ -108,7 +108,9 @@ export const UploadNote = ({ options, saveNote }: UploadNoteProps) => {
                           <Typography key={key} fontSize={'100%'}>
                             {key}
                           </Typography>
-                        ))}
+                        ))
+                      }
+                      <Typography key="Save your changes" fontSize={'100%'}>Save your changes</Typography>
                     </Box>
                   }
                 >
@@ -255,7 +257,7 @@ export const UploadNote = ({ options, saveNote }: UploadNoteProps) => {
                   }}
                 >
                   <Button type='submit' variant='contained' color='success'>
-                    Save
+                    Save Changes
                   </Button>
                 </Grid>
               </Collapse>
