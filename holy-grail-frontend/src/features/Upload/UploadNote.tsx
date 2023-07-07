@@ -20,6 +20,7 @@ import ErrorIcon from '@mui/icons-material/Error';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { grid } from '@chakra-ui/react';
 
 interface NoteInfoProps {
   file: File | null;
@@ -88,14 +89,22 @@ export const UploadNote = ({ options, saveNote }: UploadNoteProps) => {
     setExpanded(false);
   };
 
+  const gridStyles = {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingRight: '0 !important',
+  };
+
   return (
     <ThemeProvider theme={muiTheme}>
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <div style={{ width: '50vw' }}>
         <form onSubmit={handleSave}>
           <Badge
             badgeContent={
               validInput ? (
-                <CheckCircleIcon />
+                <CheckCircleIcon color='success' />
               ) : (
                 <Tooltip
                   title={
@@ -115,32 +124,30 @@ export const UploadNote = ({ options, saveNote }: UploadNoteProps) => {
                     </Box>
                   }
                 >
-                  <ErrorIcon />
+                  <ErrorIcon color='error' />
                 </Tooltip>
               )
             }
-            sx={{ width: '90vw' }}
+            sx={{ width: '50vw' }}
           >
             <Grid
               container
               sx={{
                 border: validInput ? '1px solid green' : '1px solid red',
                 borderRadius: '10px',
+                paddingRight: '0 !important',
               }}
             >
               <Grid
                 container
                 item
                 sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-
+                  ...gridStyles,
                   gap: '2%',
                 }}
               >
                 <TextField
-                  sx={{ flexGrow: 1, margin: '2%' }}
+                  sx={{ flexGrow: 1, margin: '2% 0 2% 2%' }}
                   required
                   label='Document Name'
                   placeholder={`Enter document name (eg. ${user?.username || 'anonymous'}'s Notes)`}
@@ -150,7 +157,7 @@ export const UploadNote = ({ options, saveNote }: UploadNoteProps) => {
                 />
 
                 <IconButton
-                  sx={{ display: isDesktop ? null : 'none' }}
+                  sx={{ display: isDesktop ? null : 'none', margin: '2%' }}
                   onClick={() => setExpanded(!expanded)}
                 >
                   <ExpandMoreIcon />
@@ -160,107 +167,96 @@ export const UploadNote = ({ options, saveNote }: UploadNoteProps) => {
                 in={isDesktop ? expanded : true}
                 timeout='auto'
                 unmountOnExit
-                sx={{ width: '90vw', padding: '2%', marginTop: '-2%' }}
+                sx={{ width: '50vw', padding: '0 2% 2% 2%' }}
               >
-                <Grid
-                  container
-                  item
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    margin: '2%',
-                    gap: '2%',
-                  }}
-                >
-                  <Button
-                    onClick={() => {
-                      if (fileRef.current) {
-                        fileRef.current.click();
-                      }
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1vh' }}>
+                  <Grid
+                    container
+                    item
+                    sx={{
+                      ...gridStyles,
+                      margin: '1%',
+                      gap: '2%',
                     }}
-                    variant='contained'
-                    color='info'
                   >
-                    Upload File
-                  </Button>
-                  <input
-                    ref={fileRef}
-                    type='file'
-                    accept='application/pdf'
-                    // , text/plain, application/vnd.openxmlformats-officedocument.wordprocessingml.document
-                    onChange={(event) => {
-                      if (event.target.files && event.target.files[0]) {
-                        setSelectedFile(event.target.files[0]);
-                        setSelectedFileName(event.target.files[0].name);
+                    <Combobox
+                      style={{ flexGrow: 1 }}
+                      label='Category'
+                      value={category || 0}
+                      onChange={(newValue) => setCategory(newValue || 0)}
+                      options={
+                        options?.categories.map((category) => ({
+                          value: category.id,
+                          label: category.name,
+                        })) || []
                       }
+                    />
+
+                    <Combobox
+                      style={{ flexGrow: 1 }}
+                      label='Subject'
+                      value={subject || 0}
+                      onChange={(newValue) => setSubject(newValue || 0)}
+                      options={
+                        options?.subjects.map((subject) => ({
+                          value: subject.id,
+                          label: subject.name,
+                        })) || []
+                      }
+                    />
+
+                    <Combobox
+                      style={{ flexGrow: 1 }}
+                      label='Type'
+                      value={type || 0}
+                      onChange={(newValue) => setType(newValue || 0)}
+                      options={
+                        options?.types.map((type) => ({ value: type.id, label: type.name })) || []
+                      }
+                    />
+                  </Grid>
+                  <Grid container item sx={gridStyles}>
+                    <Typography>{selectedFileName || 'No file selected'}</Typography>
+                  </Grid>
+                  <Grid container item sx={gridStyles}>
+                    <Button
+                      onClick={() => {
+                        if (fileRef.current) {
+                          fileRef.current.click();
+                        }
+                      }}
+                      variant='contained'
+                      color='info'
+                    >
+                      Upload File
+                    </Button>
+                    <input
+                      ref={fileRef}
+                      type='file'
+                      accept='application/pdf'
+                      // , text/plain, application/vnd.openxmlformats-officedocument.wordprocessingml.document
+                      onChange={(event) => {
+                        if (event.target.files && event.target.files[0]) {
+                          setSelectedFile(event.target.files[0]);
+                          setSelectedFileName(event.target.files[0].name);
+                        }
+                      }}
+                      style={{ display: 'none' }}
+                    />
+                  </Grid>
+                  <Grid
+                    container
+                    item
+                    sx={{
+                      ...gridStyles,
+                      margin: '2%',
                     }}
-                    style={{ display: 'none' }}
-                  />
-
-                  <Typography>{selectedFileName || 'No file selected'}</Typography>
-                </Grid>
-                <Grid
-                  container
-                  item
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    margin: '2%',
-                    gap: '2%',
-                  }}
-                >
-                  <Combobox
-                    style={{ flexGrow: 1 }}
-                    label='Category'
-                    value={category || 0}
-                    onChange={(newValue) => setCategory(newValue || 0)}
-                    options={
-                      options?.categories.map((category) => ({
-                        value: category.id,
-                        label: category.name,
-                      })) || []
-                    }
-                  />
-
-                  <Combobox
-                    style={{ flexGrow: 1 }}
-                    label='Subject'
-                    value={subject || 0}
-                    onChange={(newValue) => setSubject(newValue || 0)}
-                    options={
-                      options?.subjects.map((subject) => ({
-                        value: subject.id,
-                        label: subject.name,
-                      })) || []
-                    }
-                  />
-
-                  <Combobox
-                    style={{ flexGrow: 1 }}
-                    label='Type'
-                    value={type || 0}
-                    onChange={(newValue) => setType(newValue || 0)}
-                    options={
-                      options?.types.map((type) => ({ value: type.id, label: type.name })) || []
-                    }
-                  />
-                </Grid>
-                <Grid
-                  container
-                  item
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    margin: '2%',
-                  }}
-                >
-                  <Button type='submit' variant='contained' color='success'>
-                    Save Changes
-                  </Button>
-                </Grid>
+                  >
+                    <Button type='submit' variant='contained' color='success'>
+                      Save Changes
+                    </Button>
+                  </Grid>
+                </Box>
               </Collapse>
             </Grid>
           </Badge>
