@@ -110,8 +110,8 @@ def test_client_verified_user():
 def test_client_admin():
     app.dependency_overrides[get_session] = override_session
     app.dependency_overrides[Authenticator.get_current_user] = override_get_admin
-    app.dependency_overrides[Authenticator.get_admin] = override_get_admin
     app.dependency_overrides[Authenticator.get_verified_user] = override_get_admin
+    app.dependency_overrides[Authenticator.get_admin] = override_get_admin
     yield TestClient(app)
     app.dependency_overrides = {}
 
@@ -120,9 +120,9 @@ def test_client_admin():
 def test_client_developer():
     app.dependency_overrides[get_session] = override_session
     app.dependency_overrides[Authenticator.get_current_user] = override_get_developer
+    app.dependency_overrides[Authenticator.get_verified_user] = override_get_developer
     app.dependency_overrides[Authenticator.get_admin] = override_get_developer
     app.dependency_overrides[Authenticator.get_developer] = override_get_developer
-    app.dependency_overrides[Authenticator.get_verified_user] = override_get_developer
     yield TestClient(app)
     app.dependency_overrides = {}
 
@@ -150,6 +150,51 @@ def test_subject_insert_chem():
 @pytest.fixture(name="test_subject_insert_biology", scope="function")
 def test_subject_insert_bio():
     yield schemas.categories.SubjectCreateSchema(name="Biology")
+
+
+@pytest.fixture(name="test_subject_insert_physics", scope="function")
+def test_subject_insert_physics():
+    yield schemas.categories.SubjectCreateSchema(name="Physics")
+
+
+@pytest.fixture(name="test_doc_type_insert_practice_paper", scope="function")
+def test_doc_type_insert_practice_paper():
+    yield schemas.categories.DocumentTypeCreateSchema(name="Practice Paper")
+
+
+@pytest.fixture(name="test_doc_type_insert_practice_answer", scope="function")
+def test_doc_type_insert_practice_answer():
+    yield schemas.categories.DocumentTypeCreateSchema(name="Practice Answer")
+
+
+@pytest.fixture(name="test_doc_type_insert_insert_notes", scope="function")
+def test_doc_type_insert_notes():
+    yield schemas.categories.DocumentTypeCreateSchema(name="Notes")
+
+
+@pytest.fixture(name="test_doc_type_insert_extra_notes", scope="function")
+def test_doc_type_insert_extra_notes():
+    yield schemas.categories.DocumentTypeCreateSchema(name="Extra Notes")
+
+
+@pytest.fixture(name="test_category_insert_gce_a_level", scope="function")
+def test_category_insert_gce_a_level():
+    yield schemas.categories.CategoryCreateSchema(name="GCE 'A' Levels")
+
+
+@pytest.fixture(name="test_category_insert_gce_o_level", scope="function")
+def test_category_insert_gce_a_level():
+    yield schemas.categories.CategoryCreateSchema(name="GCE 'O' Levels")
+
+
+@pytest.fixture(name="test_category_insert_gce_n_level", scope="function")
+def test_category_insert_gce_n_level():
+    yield schemas.categories.CategoryCreateSchema(name="GCE 'N' Levels")
+
+
+@pytest.fixture(name="test_category_insert_university", scope="function")
+def test_category_insert_university():
+    yield schemas.categories.CategoryCreateSchema(name="University")
 
 
 @pytest.fixture(name="test_note_insert", scope="function")
