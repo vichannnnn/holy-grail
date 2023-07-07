@@ -2,7 +2,7 @@ import asyncio
 from typing import AsyncGenerator
 
 import pytest
-from fastapi import FastAPI
+
 from fastapi.testclient import TestClient
 from pydantic import PostgresDsn
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
@@ -80,43 +80,67 @@ async def override_get_developer():
     )
 
 
-@pytest.fixture(name="test_client")
+@pytest.fixture
+def test_client(request):
+    return request.getfixturevalue(request.param)
+
+
+@pytest.fixture
+def test_subject(request):
+    return request.getfixturevalue(request.param)
+
+
+@pytest.fixture
+def test_category_level(request):
+    return request.getfixturevalue(request.param)
+
+
+@pytest.fixture
+def test_doc_types(request):
+    return request.getfixturevalue(request.param)
+
+
+@pytest.fixture(name="test_not_logged_in_client", scope="function")
 def test_authentication_client():
     app.dependency_overrides[get_session] = override_session
-    yield TestClient(app)
+    with TestClient(app) as test_client:
+        yield test_client
     app.dependency_overrides = {}
 
 
-@pytest.fixture(name="client_user")
+@pytest.fixture(name="test_client_user", scope="function")
 def test_client_user():
     app.dependency_overrides[get_session] = override_session
     app.dependency_overrides[Authenticator.get_current_user] = override_get_current_user
-    yield TestClient(app)
+    with TestClient(app) as test_client:
+        yield test_client
     app.dependency_overrides = {}
 
 
-@pytest.fixture(name="client_verified_user")
+@pytest.fixture(name="test_client_verified_user", scope="function")
 def test_client_verified_user():
     app.dependency_overrides[get_session] = override_session
     app.dependency_overrides[Authenticator.get_current_user] = override_get_current_user
     app.dependency_overrides[
         Authenticator.get_verified_user
     ] = override_get_current_user
-    yield TestClient(app)
+    with TestClient(app) as test_client:
+        yield test_client
     app.dependency_overrides = {}
 
 
-@pytest.fixture(name="client_admin")
+@pytest.fixture(name="test_client_admin", scope="function")
 def test_client_admin():
     app.dependency_overrides[get_session] = override_session
     app.dependency_overrides[Authenticator.get_current_user] = override_get_admin
     app.dependency_overrides[Authenticator.get_verified_user] = override_get_admin
     app.dependency_overrides[Authenticator.get_admin] = override_get_admin
-    yield TestClient(app)
+    with TestClient(app) as test_client:
+        yield test_client
     app.dependency_overrides = {}
 
 
-@pytest.fixture(name="client_developer")
+@pytest.fixture(name="test_client_developer", scope="function")
 def test_client_developer():
     app.dependency_overrides[get_session] = override_session
     app.dependency_overrides[Authenticator.get_current_user] = override_get_developer
@@ -183,7 +207,7 @@ def test_category_insert_gce_a_level():
 
 
 @pytest.fixture(name="test_category_insert_gce_o_level", scope="function")
-def test_category_insert_gce_a_level():
+def test_category_insert_gce_o_level():
     yield schemas.categories.CategoryCreateSchema(name="GCE 'O' Levels")
 
 

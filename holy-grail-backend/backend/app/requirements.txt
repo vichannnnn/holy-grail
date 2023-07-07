@@ -19,7 +19,7 @@ slowapi
 boto3==1.26.139
 mailtrap
 prometheus-fastapi-instrumentator==6.0.0
-
+trio==0.22.1
 
 # LINTING
 black==23.3.0
