@@ -32,13 +32,17 @@ TestingSessionLocal = sessionmaker(
 )
 
 
-async def init_models():
+@pytest.fixture(scope="session")
+def loop():
+    return asyncio.get_event_loop()
+
+
+@pytest.fixture(scope="function", autouse=True)
+async def init_models(loop):
     async with test_engine.begin() as conn:
         await conn.run_sync(Base.metadata.drop_all)
         await conn.run_sync(Base.metadata.create_all)
-
-
-asyncio.run(init_models())
+    app.dependency_overrides[get_session] = override_session
 
 
 async def override_session() -> AsyncGenerator[AsyncSession, None]:
@@ -102,15 +106,12 @@ def test_doc_types(request):
 
 @pytest.fixture(name="test_not_logged_in_client", scope="function")
 def test_authentication_client():
-    app.dependency_overrides[get_session] = override_session
     with TestClient(app) as test_client:
         yield test_client
-    app.dependency_overrides = {}
 
 
 @pytest.fixture(name="test_client_user", scope="function")
 def test_client_user():
-    app.dependency_overrides[get_session] = override_session
     app.dependency_overrides[Authenticator.get_current_user] = override_get_current_user
     with TestClient(app) as test_client:
         yield test_client
@@ -119,7 +120,6 @@ def test_client_user():
 
 @pytest.fixture(name="test_client_verified_user", scope="function")
 def test_client_verified_user():
-    app.dependency_overrides[get_session] = override_session
     app.dependency_overrides[Authenticator.get_current_user] = override_get_current_user
     app.dependency_overrides[
         Authenticator.get_verified_user
@@ -131,7 +131,6 @@ def test_client_verified_user():
 
 @pytest.fixture(name="test_client_admin", scope="function")
 def test_client_admin():
-    app.dependency_overrides[get_session] = override_session
     app.dependency_overrides[Authenticator.get_current_user] = override_get_admin
     app.dependency_overrides[Authenticator.get_verified_user] = override_get_admin
     app.dependency_overrides[Authenticator.get_admin] = override_get_admin
@@ -142,7 +141,6 @@ def test_client_admin():
 
 @pytest.fixture(name="test_client_developer", scope="function")
 def test_client_developer():
-    app.dependency_overrides[get_session] = override_session
     app.dependency_overrides[Authenticator.get_current_user] = override_get_developer
     app.dependency_overrides[Authenticator.get_verified_user] = override_get_developer
     app.dependency_overrides[Authenticator.get_admin] = override_get_developer
