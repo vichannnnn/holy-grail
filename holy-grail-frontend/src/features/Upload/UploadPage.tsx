@@ -5,8 +5,9 @@ import AuthContext from '../../providers/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 import MediaQueryContext from '../../providers/MediaQueryProvider';
 import AlertToast, { AlertProps } from '../../components/AlertToast/AlertToast';
-import UploadNote from './UploadNote';
+import UploadNote, { NoteInfoProps } from './UploadNote';
 import './upload.css';
+import { Button, ThemeProvider, createTheme } from '@mui/material';
 
 interface OptionsProps {
   categories: CategoryType[];
@@ -15,27 +16,23 @@ interface OptionsProps {
 }
 
 const UploadPage = () => {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [categories, setCategories] = useState<CategoryType[]>([]);
-  const [subjects, setSubjects] = useState<SubjectType[]>([]);
-  const [types, setTypes] = useState<DocumentType[]>([]);
-  const [documentName, setDocumentName] = useState<string | null>(null);
-
-  const [category, setCategory] = useState<number | ''>(0);
-  const [subject, setSubject] = useState<number | ''>(0);
-  const [type, setType] = useState<number | ''>(0);
-
-  const [fileName, setFileName] = useState<string | null>(null);
-  const inputFileRef = useRef<HTMLInputElement | null>(null);
-
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
 
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
-  const { isDesktop } = useContext(MediaQueryContext);
+
+  const [uploadNoteCount, setUploadNoteCount] = useState<number>(1);
+  const muiTheme = createTheme();
 
   const [options, setOptions] = useState<OptionsProps | null>(null);
+
+  const [savedData, setSavedData] = useState<NoteInfoProps[]>([]);
+  const handleSaveNote = ({ file, category, subject, type, name }: NoteInfoProps) => {
+    const newSavedData = [...savedData, { file, category, subject, type, name }];
+    setSavedData(newSavedData);
+  };
+
   if (!user) {
     const alertContentRedirect: AlertProps = {
       title: 'Please login.',
@@ -51,6 +48,14 @@ const UploadPage = () => {
     });
   }, []);
 
+  function renderNotes() {
+    const notes = [];
+    for (let i = 0; i < uploadNoteCount; i++) {
+      notes.push(<UploadNote key={i} options={options} saveNote={handleSaveNote} />);
+    }
+
+    return notes;
+  }
   /*
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -130,13 +135,23 @@ const UploadPage = () => {
         Upload your materials here! All submitted materials will be reviewed before being published
         to the Holy Grail.
       </div>
+      <ThemeProvider theme={muiTheme}>
+        <div className='upload__multiContainer'>{renderNotes()}</div>
 
-      <UploadNote options={options} saveNote={() => null} />
-      <AlertToast
-        openAlert={openAlert}
-        onClose={() => setOpenAlert(false)}
-        alertContent={alertContent}
-      />
+        <Button
+          variant='contained'
+          sx={{ margin: '2%' }}
+          onClick={() => setUploadNoteCount(uploadNoteCount + 1)}
+        >
+          Upload another document
+        </Button>
+
+        <AlertToast
+          openAlert={openAlert}
+          onClose={() => setOpenAlert(false)}
+          alertContent={alertContent}
+        />
+      </ThemeProvider>
     </section>
   );
 };
