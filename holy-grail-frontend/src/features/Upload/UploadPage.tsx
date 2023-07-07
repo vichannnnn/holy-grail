@@ -8,6 +8,7 @@ import AlertToast, { AlertProps } from '../../components/AlertToast/AlertToast';
 import UploadNote, { NoteInfoProps } from './UploadNote';
 import './upload.css';
 import { Button, ThemeProvider, createTheme } from '@mui/material';
+import { border } from '@chakra-ui/react';
 
 interface OptionsProps {
   categories: CategoryType[];
@@ -52,6 +53,7 @@ const UploadPage = () => {
     const notes = [];
     for (let i = 0; i < uploadNoteCount; i++) {
       notes.push(<UploadNote key={i} options={options} saveNote={handleSaveNote} />);
+      notes.push(<hr style={{ width: '100vw' }} />);
     }
 
     return notes;
@@ -130,15 +132,16 @@ const UploadPage = () => {
         to the Holy Grail.
       </div>
       <ThemeProvider theme={muiTheme}>
-        <div className='upload__multiContainer'>{renderNotes()}</div>
-
-        <Button
-          variant='contained'
-          sx={{ margin: '2%' }}
-          onClick={() => setUploadNoteCount(uploadNoteCount + 1)}
-        >
-          Upload another document
-        </Button>
+        <div className='upload__multiContainer'>
+          {renderNotes()}
+          <Button
+            variant='contained'
+            sx={{ width: '20vw' }}
+            onClick={() => setUploadNoteCount(uploadNoteCount + 1)}
+          >
+            Upload another document
+          </Button>
+        </div>
 
         <AlertToast
           openAlert={openAlert}
