@@ -14,8 +14,11 @@ DOCUMENT_TYPE_URL = "/document_type"
 CATEGORY_LEVEL_URL = "/category"
 
 
+# ----------------- INSERT TESTS -----------------
+
+
 @pytest.mark.parametrize(
-    "test_client, user_type, test_subject",
+    "test_client, user_type, test_add_subject",
     [
         (
             "test_client_user",
@@ -34,26 +37,26 @@ CATEGORY_LEVEL_URL = "/category"
             "test_subject_insert_mathematics",
         ),
     ],
-    indirect=["test_client", "test_subject"],
+    indirect=["test_client", "test_add_subject"],
 )
 def test_add_subjects(
     test_client: TestClient,
     user_type: schemas.auth.CurrentUserSchema,
-    test_subject: schemas.categories.SubjectCreateSchema,
+    test_add_subject: schemas.categories.SubjectCreateSchema,
 ):
-    payload = jsonable_encoder(test_subject)
+    payload = jsonable_encoder(test_add_subject)
     response = test_client.post(SUBJECT_URL, json=payload)
 
     if user_type == override_get_developer:
         assert response.status_code == status.HTTP_200_OK
         res = response.json()
-        assert res == {"name": test_subject.name, "id": res["id"]}
+        assert res == {"name": test_add_subject.name, "id": res["id"]}
     else:
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
 
 @pytest.mark.parametrize(
-    "test_client, user_type, test_doc_types",
+    "test_client, user_type, test_add_doc_types",
     [
         (
             "test_client_user",
@@ -76,26 +79,26 @@ def test_add_subjects(
             "test_doc_type_insert_practice_paper",
         ),
     ],
-    indirect=["test_client", "test_doc_types"],
+    indirect=["test_client", "test_add_doc_types"],
 )
 def test_add_doc_types(
     test_client: TestClient,
     user_type: schemas.auth.CurrentUserSchema,
-    test_doc_types: schemas.categories.DocumentTypeCreateSchema,
+    test_add_doc_types: schemas.categories.DocumentTypeCreateSchema,
 ):
-    payload = jsonable_encoder(test_doc_types)
+    payload = jsonable_encoder(test_add_doc_types)
     response = test_client.post(DOCUMENT_TYPE_URL, json=payload)
 
     if user_type == override_get_developer:
         assert response.status_code == status.HTTP_200_OK
         res = response.json()
-        assert res == {"name": test_doc_types.name, "id": res["id"]}
+        assert res == {"name": test_add_doc_types.name, "id": res["id"]}
     else:
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
 
 @pytest.mark.parametrize(
-    "test_client, user_type, test_category_level",
+    "test_client, user_type, test_add_category_level",
     [
         (
             "test_client_user",
@@ -114,20 +117,20 @@ def test_add_doc_types(
             "test_category_insert_gce_a_level",
         ),
     ],
-    indirect=["test_client", "test_category_level"],
+    indirect=["test_client", "test_add_category_level"],
 )
 def test_add_category_level(
     test_client: TestClient,
     user_type: schemas.auth.CurrentUserSchema,
-    test_category_level: schemas.categories.CategoryCreateSchema,
+    test_add_category_level: schemas.categories.CategoryCreateSchema,
 ):
-    payload = jsonable_encoder(test_category_level)
+    payload = jsonable_encoder(test_add_category_level)
     response = test_client.post(SUBJECT_URL, json=payload)
 
     if user_type == override_get_developer:
         assert response.status_code == status.HTTP_200_OK
         res = response.json()
-        assert res == {"name": test_category_level.name, "id": res["id"]}
+        assert res == {"name": test_add_category_level.name, "id": res["id"]}
     else:
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
@@ -189,42 +192,163 @@ def test_add_subject_math(
     assert res == {"name": test_subject_insert_mathematics.name, "id": res["id"]}
 
 
-# -----------------
+# ----------------- UPDATE TESTS -----------------
 
 
-# @mark.parametrize(
-#     "test_client, user_type, test_subject",
-#     [
-#         (
-#             "test_client_user",
-#             override_get_current_user,
-#             "test_subject_insert_mathematics",
-#         ),
-#         (
-#             "test_client_verified_user",
-#             override_get_current_user,
-#             "test_subject_insert_mathematics",
-#         ),
-#         ("test_client_admin", override_get_admin, "test_subject_insert_mathematics"),
-#         (
-#             "test_client_developer",
-#             override_get_developer,
-#             "test_subject_insert_mathematics",
-#         ),
-#     ],
-#     indirect=["test_client", "test_subject"],
-# )
-# def test_update_subjects(
-#     test_client: TestClient,
-#     user_type: schemas.auth.CurrentUserSchema,
-#     test_subject: schemas.categories.SubjectUpdateSchema,
-# ):
-#     payload = jsonable_encoder(test_subject)
-#     response = test_client.post(SUBJECT_URL, json=payload)
-#
-#     if user_type == override_get_developer:
-#         assert response.status_code == status.HTTP_200_OK
-#         res = response.json()
-#         assert res == {"name": test_subject.name, "id": res["id"]}
-#     else:
-#         assert response.status_code == status.HTTP_401_UNAUTHORIZED
+@pytest.mark.parametrize(
+    "test_client, user_type, test_add_subject, test_update_subject",
+    [
+        (
+            "test_client_user",
+            override_get_current_user,
+            "test_subject_insert_mathematics",
+            "test_subject_update_chemistry",
+        ),
+        (
+            "test_client_verified_user",
+            override_get_current_user,
+            "test_subject_insert_mathematics",
+            "test_subject_update_chemistry",
+        ),
+        (
+            "test_client_admin",
+            override_get_admin,
+            "test_subject_insert_mathematics",
+            "test_subject_update_chemistry",
+        ),
+        (
+            "test_client_developer",
+            override_get_developer,
+            "test_subject_insert_mathematics",
+            "test_subject_update_chemistry",
+        ),
+    ],
+    indirect=["test_client", "test_add_subject", "test_update_subject"],
+)
+def test_add_and_update_subjects(
+    test_client: TestClient,
+    user_type: schemas.auth.CurrentUserSchema,
+    test_add_subject: schemas.categories.SubjectCreateSchema,
+    test_update_subject: schemas.categories.SubjectUpdateSchema,
+):
+    payload = jsonable_encoder(test_add_subject)
+    response = test_client.post(SUBJECT_URL, json=payload)
+
+    if user_type == override_get_developer:
+        assert response.status_code == status.HTTP_200_OK
+        res = response.json()
+        assert res == {"name": test_add_subject.name, "id": res["id"]}
+
+        payload = jsonable_encoder(test_update_subject)
+        response = test_client.put(SUBJECT_URL, json=payload, params={"id": res["id"]})
+        assert response.status_code == status.HTTP_200_OK
+        res = response.json()
+        assert res == {"name": test_update_subject.name, "id": res["id"]}
+    else:
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+
+@pytest.mark.parametrize(
+    "test_client, user_type, test_add_doc_types, test_update_doc_types",
+    [
+        (
+            "test_client_user",
+            override_get_current_user,
+            "test_doc_type_insert_practice_paper",
+            "test_doc_type_update_practice_answer",
+        ),
+        (
+            "test_client_verified_user",
+            override_get_current_user,
+            "test_doc_type_insert_practice_paper",
+            "test_doc_type_update_practice_answer",
+        ),
+        (
+            "test_client_admin",
+            override_get_admin,
+            "test_doc_type_insert_practice_paper",
+            "test_doc_type_update_practice_answer",
+        ),
+        (
+            "test_client_developer",
+            override_get_developer,
+            "test_doc_type_insert_practice_paper",
+            "test_doc_type_update_practice_answer",
+        ),
+    ],
+    indirect=["test_client", "test_add_doc_types", "test_update_doc_types"],
+)
+def test_add_and_update_doc_types(
+    test_client: TestClient,
+    user_type: schemas.auth.CurrentUserSchema,
+    test_add_doc_types: schemas.categories.DocumentTypeCreateSchema,
+    test_update_doc_types: schemas.categories.DocumentTypeUpdateSchema,
+):
+    payload = jsonable_encoder(test_add_doc_types)
+    response = test_client.post(SUBJECT_URL, json=payload)
+
+    if user_type == override_get_developer:
+        assert response.status_code == status.HTTP_200_OK
+        res = response.json()
+        assert res == {"name": test_add_doc_types.name, "id": res["id"]}
+
+        payload = jsonable_encoder(test_update_doc_types)
+        response = test_client.put(SUBJECT_URL, json=payload, params={"id": res["id"]})
+        assert response.status_code == status.HTTP_200_OK
+        res = response.json()
+        assert res == {"name": test_update_doc_types.name, "id": res["id"]}
+    else:
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+
+@pytest.mark.parametrize(
+    "test_client, user_type, test_add_category_level, test_update_category_level",
+    [
+        (
+            "test_client_user",
+            override_get_current_user,
+            "test_category_insert_gce_a_level",
+            "test_category_update_gce_o_level",
+        ),
+        (
+            "test_client_verified_user",
+            override_get_current_user,
+            "test_category_insert_gce_a_level",
+            "test_category_update_gce_o_level",
+        ),
+        (
+            "test_client_admin",
+            override_get_admin,
+            "test_category_insert_gce_a_level",
+            "test_category_update_gce_o_level",
+        ),
+        (
+            "test_client_developer",
+            override_get_developer,
+            "test_category_insert_gce_a_level",
+            "test_category_update_gce_o_level",
+        ),
+    ],
+    indirect=["test_client", "test_add_category_level", "test_update_category_level"],
+)
+def test_add_and_update_category_level(
+    test_client: TestClient,
+    user_type: schemas.auth.CurrentUserSchema,
+    test_add_category_level: schemas.categories.DocumentTypeCreateSchema,
+    test_update_category_level: schemas.categories.DocumentTypeUpdateSchema,
+):
+    payload = jsonable_encoder(test_add_category_level)
+    response = test_client.post(SUBJECT_URL, json=payload)
+
+    if user_type == override_get_developer:
+        assert response.status_code == status.HTTP_200_OK
+        res = response.json()
+        assert res == {"name": test_add_category_level.name, "id": res["id"]}
+
+        payload = jsonable_encoder(test_update_category_level)
+        response = test_client.put(SUBJECT_URL, json=payload, params={"id": res["id"]})
+        assert response.status_code == status.HTTP_200_OK
+        res = response.json()
+        assert res == {"name": test_update_category_level.name, "id": res["id"]}
+    else:
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED

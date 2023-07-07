@@ -90,27 +90,42 @@ def test_client(request):
 
 
 @pytest.fixture
-def test_subject(request):
+def test_add_subject(request):
     return request.getfixturevalue(request.param)
 
 
 @pytest.fixture
-def test_category_level(request):
+def test_update_subject(request):
     return request.getfixturevalue(request.param)
 
 
 @pytest.fixture
-def test_doc_types(request):
+def test_add_category_level(request):
     return request.getfixturevalue(request.param)
 
 
-@pytest.fixture(name="test_not_logged_in_client", scope="function")
+@pytest.fixture
+def test_update_category_level(request):
+    return request.getfixturevalue(request.param)
+
+
+@pytest.fixture
+def test_add_doc_types(request):
+    return request.getfixturevalue(request.param)
+
+
+@pytest.fixture
+def test_update_doc_types(request):
+    return request.getfixturevalue(request.param)
+
+
+@pytest.fixture(name="test_not_logged_in_client")
 def test_authentication_client():
     with TestClient(app) as test_client:
         yield test_client
 
 
-@pytest.fixture(name="test_client_user", scope="function")
+@pytest.fixture(name="test_client_user")
 def test_client_user():
     app.dependency_overrides[Authenticator.get_current_user] = override_get_current_user
     with TestClient(app) as test_client:
@@ -118,7 +133,7 @@ def test_client_user():
     app.dependency_overrides = {}
 
 
-@pytest.fixture(name="test_client_verified_user", scope="function")
+@pytest.fixture(name="test_client_verified_user")
 def test_client_verified_user():
     app.dependency_overrides[Authenticator.get_current_user] = override_get_current_user
     app.dependency_overrides[
@@ -129,7 +144,7 @@ def test_client_verified_user():
     app.dependency_overrides = {}
 
 
-@pytest.fixture(name="test_client_admin", scope="function")
+@pytest.fixture(name="test_client_admin")
 def test_client_admin():
     app.dependency_overrides[Authenticator.get_current_user] = override_get_admin
     app.dependency_overrides[Authenticator.get_verified_user] = override_get_admin
@@ -139,7 +154,7 @@ def test_client_admin():
     app.dependency_overrides = {}
 
 
-@pytest.fixture(name="test_client_developer", scope="function")
+@pytest.fixture(name="test_client_developer")
 def test_client_developer():
     app.dependency_overrides[Authenticator.get_current_user] = override_get_developer
     app.dependency_overrides[Authenticator.get_verified_user] = override_get_developer
@@ -149,7 +164,7 @@ def test_client_developer():
     app.dependency_overrides = {}
 
 
-@pytest.fixture(name="test_valid_user", scope="function")
+@pytest.fixture(name="test_valid_user")
 def test_valid_user():
     yield schemas.auth.AccountSchema(
         username="username",
@@ -159,74 +174,89 @@ def test_valid_user():
     )
 
 
-@pytest.fixture(name="test_subject_insert_mathematics", scope="function")
+@pytest.fixture(name="test_subject_insert_mathematics")
 def test_subject_insert_math():
     yield schemas.categories.SubjectCreateSchema(name="Mathematics")
 
 
-@pytest.fixture(name="test_subject_insert_chemistry", scope="function")
+@pytest.fixture(name="test_subject_insert_chemistry")
 def test_subject_insert_chem():
     yield schemas.categories.SubjectCreateSchema(name="Chemistry")
 
 
-@pytest.fixture(name="test_subject_insert_biology", scope="function")
+@pytest.fixture(name="test_subject_update_chemistry")
+def test_subject_update_chem():
+    yield schemas.categories.SubjectUpdateSchema(name="Chemistry")
+
+
+@pytest.fixture(name="test_subject_insert_biology")
 def test_subject_insert_bio():
     yield schemas.categories.SubjectCreateSchema(name="Biology")
 
 
-@pytest.fixture(name="test_subject_insert_physics", scope="function")
+@pytest.fixture(name="test_subject_insert_physics")
 def test_subject_insert_physics():
     yield schemas.categories.SubjectCreateSchema(name="Physics")
 
 
-@pytest.fixture(name="test_doc_type_insert_practice_paper", scope="function")
+@pytest.fixture(name="test_doc_type_insert_practice_paper")
 def test_doc_type_insert_practice_paper():
     yield schemas.categories.DocumentTypeCreateSchema(name="Practice Paper")
 
 
-@pytest.fixture(name="test_doc_type_insert_practice_answer", scope="function")
+@pytest.fixture(name="test_doc_type_update_practice_answer")
+def test_doc_type_update_practice_answer():
+    yield schemas.categories.DocumentTypeUpdateSchema(name="Practice Answer")
+
+
+@pytest.fixture(name="test_doc_type_insert_practice_answer")
 def test_doc_type_insert_practice_answer():
     yield schemas.categories.DocumentTypeCreateSchema(name="Practice Answer")
 
 
-@pytest.fixture(name="test_doc_type_insert_insert_notes", scope="function")
+@pytest.fixture(name="test_doc_type_insert_insert_notes")
 def test_doc_type_insert_notes():
     yield schemas.categories.DocumentTypeCreateSchema(name="Notes")
 
 
-@pytest.fixture(name="test_doc_type_insert_extra_notes", scope="function")
+@pytest.fixture(name="test_doc_type_insert_extra_notes")
 def test_doc_type_insert_extra_notes():
     yield schemas.categories.DocumentTypeCreateSchema(name="Extra Notes")
 
 
-@pytest.fixture(name="test_category_insert_gce_a_level", scope="function")
+@pytest.fixture(name="test_category_insert_gce_a_level")
 def test_category_insert_gce_a_level():
     yield schemas.categories.CategoryCreateSchema(name="GCE 'A' Levels")
 
 
-@pytest.fixture(name="test_category_insert_gce_o_level", scope="function")
+@pytest.fixture(name="test_category_insert_gce_o_level")
 def test_category_insert_gce_o_level():
     yield schemas.categories.CategoryCreateSchema(name="GCE 'O' Levels")
 
 
-@pytest.fixture(name="test_category_insert_gce_n_level", scope="function")
+@pytest.fixture(name="test_category_update_gce_o_level")
+def test_category_update_gce_o_level():
+    yield schemas.categories.CategoryUpdateSchema(name="GCE 'O' Levels")
+
+
+@pytest.fixture(name="test_category_insert_gce_n_level")
 def test_category_insert_gce_n_level():
     yield schemas.categories.CategoryCreateSchema(name="GCE 'N' Levels")
 
 
-@pytest.fixture(name="test_category_insert_university", scope="function")
+@pytest.fixture(name="test_category_insert_university")
 def test_category_insert_university():
     yield schemas.categories.CategoryCreateSchema(name="University")
 
 
-@pytest.fixture(name="test_note_insert", scope="function")
+@pytest.fixture(name="test_note_insert")
 def test_note_insert():
     yield schemas.library.NoteCreateSchema(
         category=1, subject=1, type=1, document_name="Document"
     )
 
 
-@pytest.fixture(name="test_note_update", scope="function")
+@pytest.fixture(name="test_note_update")
 def test_note_update():
     yield schemas.library.NoteUpdateSchema(
         category=1, subject=1, type=1, document_name="Document"
