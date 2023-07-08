@@ -3,7 +3,8 @@ name: Build
 on:
   workflow_run:
     workflows: [Test]
-    types: [completed]
+    types:
+      - completed
 
 env:
   REGISTRY: ghcr.io
