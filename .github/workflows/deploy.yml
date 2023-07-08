@@ -26,3 +26,13 @@ jobs:
               docker compose pull
               docker compose up -d
             fi
+
+  check:
+    if: always()
+    needs: [ Test, Build, Deploy ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: All jobs result
+        uses: re-actors/alls-green@release/v1.2.2
+        with:
+          jobs: ${{ toJSON(needs) }}

@@ -33,3 +33,13 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: true
           verbose: true
+
+  check:
+    if: always()
+    needs: [ Test, Build, Deploy ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: All jobs result
+        uses: re-actors/alls-green@release/v1.2.2
+        with:
+          jobs: ${{ toJSON(needs) }}
