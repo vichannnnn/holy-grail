@@ -21,8 +21,8 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v2
 
-      - name: Copy .env_example to .env
-        run: cp .env_example .env
+      - name: Copy .env.example to .env
+        run: cp .env.example .env
 
       - name: Run tests with coverage
         run: make coverage version="dev"
