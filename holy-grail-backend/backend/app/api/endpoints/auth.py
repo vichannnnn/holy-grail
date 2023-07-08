@@ -15,22 +15,40 @@ from app.schemas.auth import (
     SendNewPasswordSchema,
     VerifyEmailSchema,
 )
+import os
 
 router = APIRouter()
 
 
-@router.post("/create", response_model=CurrentUserSchema)
-@limiter.limit("2/5minute")
-async def create_account(
-    request: Request,
-    data: AccountRegisterSchema,
-    session: AsyncSession = Depends(get_session),
-):
-    if data.password != data.repeat_password:
-        raise AppError.PASSWORD_MISMATCH_ERROR
+if os.getenv("PRODUCTION") != "local":
 
-    created_user = await Account().register(session, data)
-    return created_user
+    @router.post("/create", response_model=CurrentUserSchema)
+    @limiter.limit("2/5minute")
+    async def create_account(
+        request: Request,
+        data: AccountRegisterSchema,
+        session: AsyncSession = Depends(get_session),
+    ):
+        if data.password != data.repeat_password:
+            raise AppError.PASSWORD_MISMATCH_ERROR
+
+        created_user = await Account().register(session, data)
+        return created_user
+
+else:
+
+    @router.post("/create", response_model=CurrentUserSchema)
+    async def create_account_development(
+        request: Request,
+        data: AccountRegisterSchema,
+        session: AsyncSession = Depends(get_session),
+    ):
+        print(os.getenv("PRODUCTION"))
+        if data.password != data.repeat_password:
+            raise AppError.PASSWORD_MISMATCH_ERROR
+
+        created_user = await Account().register_development(session, data)
+        return created_user
 
 
 @router.post("/update_password")

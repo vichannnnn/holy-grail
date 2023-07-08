@@ -1,8 +1,6 @@
 import asyncio
 from typing import AsyncGenerator
 
-import pytest
-
 from fastapi.testclient import TestClient
 from pydantic import PostgresDsn
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
@@ -14,6 +12,9 @@ from app.api.deps import get_session
 from app.db.base_class import Base
 from app.main import app
 from app.models.auth import Authenticator
+
+import pytest
+
 
 SQLALCHEMY_DATABASE_URL = PostgresDsn.build(
     scheme="postgresql+asyncpg",
@@ -214,7 +215,7 @@ def test_doc_type_insert_practice_answer():
     yield schemas.categories.DocumentTypeCreateSchema(name="Practice Answer")
 
 
-@pytest.fixture(name="test_doc_type_insert_insert_notes")
+@pytest.fixture(name="test_doc_type_insert_notes")
 def test_doc_type_insert_notes():
     yield schemas.categories.DocumentTypeCreateSchema(name="Notes")
 

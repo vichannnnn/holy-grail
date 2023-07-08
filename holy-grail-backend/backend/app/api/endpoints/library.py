@@ -4,11 +4,12 @@ from fastapi import APIRouter, Depends, UploadFile, File, Query, Request
 from fastapi_pagination import Page
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.api.deps import get_session
+from app.api.deps import get_session, get_s3_client
 from app.limiter import limiter
 from app.models.auth import Account, Authenticator
 from app.models.library import Library
 from app.schemas.library import NoteCreateSchema, NoteUpdateSchema, NoteSchema
+import boto3
 
 router = APIRouter()
 notes_router = APIRouter()
@@ -22,9 +23,14 @@ async def create_note(
     file: UploadFile = File(None),
     authenticated: Account = Depends(Authenticator.get_verified_user),
     session: AsyncSession = Depends(get_session),
+    s3_bucket: boto3.client = Depends(get_s3_client),
 ):
     note = await Library.create(
-        session, uploaded_file=file, uploaded_by=authenticated.user_id, data=data
+        session,
+        uploaded_file=file,
+        uploaded_by=authenticated.user_id,
+        data=data,
+        s3_bucket=s3_bucket,
     )
     new_note = await Library.get(session, note.id)
     return new_note

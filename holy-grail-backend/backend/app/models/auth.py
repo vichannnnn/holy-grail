@@ -188,6 +188,34 @@ class Account(Base, CRUD["Account"]):
     email_verification_token: Mapped[str] = mapped_column(nullable=True)
     reset_password_token: Mapped[str] = mapped_column(nullable=True)
 
+    async def register_development(
+        self, session: AsyncSession, data: AccountRegisterSchema
+    ) -> CurrentUserSchema:
+        self.username = data.username
+        self.password = Authenticator.pwd_context.hash(data.password)
+        self.email = data.email
+        self.verified = True
+
+        try:
+            session.add(self)
+            await session.commit()
+            await session.refresh(self)
+
+            user_data = {
+                "user_id": self.user_id,
+                "username": self.username,
+                "email": self.email,
+                "role": self.role,
+                "verified": True,
+            }
+
+            current_user = CurrentUserSchema(**user_data)
+            return current_user
+
+        except SQLAlchemyExceptions.IntegrityError as exc:
+            await session.rollback()
+            raise AppError.USERNAME_ALREADY_EXISTS_ERROR from exc
+
     async def register(
         self, session: AsyncSession, data: AccountRegisterSchema
     ) -> CurrentUserSchema:

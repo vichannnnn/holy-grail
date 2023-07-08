@@ -51,4 +51,4 @@ check: pylint \
 	tests \
 
 tests:
-	docker compose -f docker-compose.$(version).yml run --rm $(backend_container) pytest ./app/tests -x -vv
+	docker compose -f docker-compose.$(version).yml run -e TESTING=true --rm $(backend_container) pytest ./app/tests -x -vv
