@@ -27,6 +27,9 @@ jobs:
       - name: Run tests with coverage
         run: make coverage version="dev"
 
+      - name: Generate xml
+        run: make generate_xml version="dev"
+
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         with:
