@@ -39,6 +39,18 @@ yarn --frozen-lockfile
 yarn dev
 ```
 
+- To set up your virtualenv for pre-commit hooks
+
+```
+make venv
+source holy-grail-backend/backend/app/.venv/bin/activate
+```
+
+You should be able to see (holy-grail-py1.0) in your terminal beside your name, this means you're accessing all the
+packages required for development of the app now. If your pre-commit hook is failing, please check the error and
+make sure you re-add and commit the changed files.
+
+
 NOTE: You can also run the `make build` instructions and `yarn dev` instructions, but your frontend will be
 in http://localhost:5174, it will still connect to the backend API correctly.
 
