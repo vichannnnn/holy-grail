@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import get_session
 from app.exceptions import AppError
-from app.limiter import limiter
+from app.limiter import conditional_rate_limit
 from app.models.auth import Account, Authenticator, ALGORITHM, SECRET_KEY
 from app.schemas.auth import (
     AuthSchema,
@@ -15,22 +15,40 @@ from app.schemas.auth import (
     SendNewPasswordSchema,
     VerifyEmailSchema,
 )
+import os
 
 router = APIRouter()
 
 
-@router.post("/create", response_model=CurrentUserSchema)
-@limiter.limit("2/5minute")
-async def create_account(
-    request: Request,
-    data: AccountRegisterSchema,
-    session: AsyncSession = Depends(get_session),
-):
-    if data.password != data.repeat_password:
-        raise AppError.PASSWORD_MISMATCH_ERROR
+if os.getenv("PRODUCTION") != "local" or os.getenv("TESTING"):
 
-    created_user = await Account().register(session, data)
-    return created_user
+    @router.post("/create", response_model=CurrentUserSchema)
+    @conditional_rate_limit("2/5minute")
+    async def create_account(
+        request: Request,
+        data: AccountRegisterSchema,
+        session: AsyncSession = Depends(get_session),
+    ):
+        if data.password != data.repeat_password:
+            raise AppError.PASSWORD_MISMATCH_ERROR
+
+        created_user = await Account().register(session, data)
+        return created_user
+
+else:
+
+    @router.post("/create", response_model=CurrentUserSchema)
+    async def create_account_development(
+        request: Request,
+        data: AccountRegisterSchema,
+        session: AsyncSession = Depends(get_session),
+    ):
+        print(os.getenv("PRODUCTION"))
+        if data.password != data.repeat_password:
+            raise AppError.PASSWORD_MISMATCH_ERROR
+
+        created_user = await Account().register_development(session, data)
+        return created_user
 
 
 @router.post("/update_password")
@@ -81,7 +99,7 @@ async def verify_email(
 
 
 @router.post("/resend_email_verification_token")
-@limiter.limit("2/5minute")
+@conditional_rate_limit("2/5minute")
 async def resend_verify_email_token(
     request: Request,
     session: AsyncSession = Depends(get_session),
@@ -94,7 +112,7 @@ async def resend_verify_email_token(
 
 
 @router.post("/send_reset_password_mail")
-@limiter.limit("2/5minute")
+@conditional_rate_limit("2/5minute")
 async def reset_password(
     data: SendPasswordResetEmailSchema,
     request: Request,

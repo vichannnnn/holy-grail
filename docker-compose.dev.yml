@@ -54,6 +54,7 @@ services:
       AWS_S3_SECRET_ACCESS_KEY: ${AWS_S3_SECRET_ACCESS_KEY}
       MAILTRAP_BEARER_TOKEN: ${MAILTRAP_BEARER_TOKEN}
       MAILTRAP_API_KEY: ${MAILTRAP_API_KEY}
+      PRODUCTION: ${PRODUCTION}
     restart: unless-stopped
     volumes:
       - ./holy-grail-backend/backend:/app
@@ -138,4 +139,3 @@ networks:
   holy-grail-network:
     name: holy-grail-network
     driver: bridge
-

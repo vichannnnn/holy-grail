@@ -8,6 +8,7 @@ from app.models.auth import Account, Authenticator
 from app.models.library import Library
 from app.schemas.admin import UpdateRoleSchema
 from app.schemas.auth import CurrentUserSchema, UpdateUserRoleSchema
+from app.schemas.library import NoteSchema
 
 router = APIRouter()
 
@@ -22,7 +23,7 @@ async def admin_update_role(
     return credentials
 
 
-@router.put("/approve/{id}")
+@router.put("/approve/{id}", response_model=NoteSchema)
 async def approve_note(
     id: int,
     authenticated: Account = Depends(Authenticator.get_admin),

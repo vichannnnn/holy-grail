@@ -1,5 +1,6 @@
 .ONESHELL:
-SHELL = bash
+
+SHELL := bash
 
 backend_container := holy-grail-backend
 backend_container_name := holy-grail-backend
@@ -51,4 +52,12 @@ check: pylint \
 	tests \
 
 tests:
-	docker compose -f docker-compose.$(version).yml run --rm $(backend_container) pytest ./app/tests -x -vv
+	docker compose -f docker-compose.$(version).yml run -e TESTING=true --rm $(backend_container) pytest ./app/tests -x -vv
+
+venv:
+	( \
+	  pip install virtualenv; \
+	  virtualenv holy-grail-backend/backend/app/.venv --prompt="holy-grail-py1.0"; \
+      source holy-grail-backend/backend/app/.venv/bin/activate; \
+      pip install -r holy-grail-backend/backend/app/requirements.txt; \
+      )
