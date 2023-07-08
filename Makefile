@@ -12,7 +12,7 @@ hello:
 	echo "Hello, world!"
 
 coverage:
-	docker compose -f docker-compose.$(version).yml run -e TESTING=true --rm $(backend_container) coverage run --source=app -m pytest
+	docker compose -f docker-compose.$(version).yml run -e TESTING=true --rm $(backend_container) coverage run --source=app -m pytest -x
 	docker compose -f docker-compose.$(version).yml run -e TESTING=true --rm $(backend_container) coverage xml
 
 build:
