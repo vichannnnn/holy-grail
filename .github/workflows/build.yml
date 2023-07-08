@@ -1,43 +1,19 @@
-name: CI/CD Pipeline
+name: Build
 
 on:
-  push:
-    branches:
-      - dev
-      - master
-  pull_request:
-    branches:
-      - dev
-      - master
+  workflow_run:
+    workflows: [Test]
+    types: [completed]
 
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: vichannnnn/holy-grail
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v2
-
-      - name: Copy .env_example to .env
-        run: cp .env_example .env
-
-      - name: Run tests with coverage
-        run: make coverage version="dev"
-
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          fail_ci_if_error: true
-          verbose: true
-
   build:
-    needs: test
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/master')
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
+
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
@@ -62,10 +38,10 @@ jobs:
 
       - name: Define tag suffix and Dockerfile
         run: |
-            if [[ "${{ github.ref }}" == 'refs/heads/master' ]]; then 
+            if [[ "${{ github.ref }}" == 'refs/heads/master' ]]; then
               echo "TAG_SUFFIX=" >> $GITHUB_ENV
               echo "DOCKERFILE=Dockerfile.prod" >> $GITHUB_ENV
-            else 
+            else
               echo "TAG_SUFFIX=-dev" >> $GITHUB_ENV
               echo "DOCKERFILE=Dockerfile.dev" >> $GITHUB_ENV
             fi
@@ -91,27 +67,3 @@ jobs:
           context: ./holy-grail-backend/backend
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/holy-grail-scheduler${{ env.TAG_SUFFIX }}:latest
-
-  deploy:
-    needs: build
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/master')
-    runs-on: ubuntu-latest
-    steps:
-      - name: executing remote ssh commands using private key
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ github.ref == 'refs/heads/dev' && secrets.DEV_REMOTE_HOST || secrets.MASTER_REMOTE_HOST }}
-          username: ${{ github.ref == 'refs/heads/dev' && secrets.DEV_REMOTE_USER || secrets.MASTER_REMOTE_USER }}
-          key: ${{ github.ref == 'refs/heads/dev' && secrets.DEV_SSH_PRIVATE_KEY || secrets.MASTER_SSH_PRIVATE_KEY }}
-          script: |
-            cd ./holy-grail
-            if [[ "${{ github.ref }}" == 'refs/heads/master' ]]; then
-              docker compose -f docker-compose.prod.yml pull
-              docker compose -f docker-compose.prod.yml up -d
-            else
-              docker compose pull
-              docker compose up -d
-            fi
-  
-
-     

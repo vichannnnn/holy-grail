@@ -7,7 +7,8 @@ python-dotenv==0.21.0
 python-jose==3.3.0
 uvicorn==0.22.0
 sqlalchemy==2.0.12
-pytest==7.2.2
+pytest==7.4.0
+pytest-asyncio==0.21.0
 httpx==0.23.0
 requests==2.30.0
 pydantic[email]==1.10.8
@@ -19,7 +20,7 @@ slowapi
 boto3==1.26.139
 mailtrap
 prometheus-fastapi-instrumentator==6.0.0
-
+trio==0.22.1
 
 # LINTING
 black==23.3.0

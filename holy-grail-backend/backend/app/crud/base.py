@@ -4,8 +4,10 @@ from sqlalchemy import update, delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import declared_attr
 from sqlalchemy.orm.decl_api import DeclarativeMeta
+from sqlalchemy import exc as SQLAlchemyExceptions
 
 from app.db.base_class import Base
+from app.exceptions import AppError
 
 ModelType = TypeVar("ModelType")
 
@@ -19,9 +21,15 @@ class CRUD(Generic[ModelType]):
     async def create(
         cls: DeclarativeMeta, session: AsyncSession, data: dict
     ) -> ModelType:
-        obj = cls(**data)
-        session.add(obj)
-        await session.commit()
+        try:
+            obj = cls(**data)
+            session.add(obj)
+            await session.commit()
+
+        except SQLAlchemyExceptions.IntegrityError as exc:
+            await session.rollback()
+            raise AppError.CATEGORY_ALREADY_EXISTS_ERROR from exc
+
         return obj
 
     @classmethod
