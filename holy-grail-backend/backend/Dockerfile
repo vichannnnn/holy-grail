@@ -9,7 +9,7 @@ COPY . .
 
 EXPOSE 8000
 
-RUN apk add --no-cache build-base
+RUN apk add --no-cache build-base libffi-dev
 RUN pip install types-Pygments types-colorama types-setuptools types-ujson
 RUN pip install --no-cache-dir --upgrade pip
 RUN pip install --no-cache-dir --default-timeout=100 -r ./app/requirements.txt

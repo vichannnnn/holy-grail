@@ -4,33 +4,39 @@ from fastapi import APIRouter, Depends, UploadFile, File, Query, Request
 from fastapi_pagination import Page
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.api.deps import get_session
-from app.limiter import limiter
+from app.api.deps import get_session, get_s3_client
+from app.limiter import conditional_rate_limit
 from app.models.auth import Account, Authenticator
 from app.models.library import Library
 from app.schemas.library import NoteCreateSchema, NoteUpdateSchema, NoteSchema
+import boto3
 
 router = APIRouter()
 notes_router = APIRouter()
 
 
-@router.post("/")
-@limiter.limit("5/minute")
+@router.post("/", response_model=NoteSchema)
+@conditional_rate_limit("5/minute")
 async def create_note(
     request: Request,
     data: NoteCreateSchema = Depends(),
     file: UploadFile = File(None),
     authenticated: Account = Depends(Authenticator.get_verified_user),
     session: AsyncSession = Depends(get_session),
+    s3_bucket: boto3.client = Depends(get_s3_client),
 ):
     note = await Library.create(
-        session, uploaded_file=file, uploaded_by=authenticated.user_id, data=data
+        session,
+        uploaded_file=file,
+        uploaded_by=authenticated.user_id,
+        data=data,
+        s3_bucket=s3_bucket,
     )
     new_note = await Library.get(session, note.id)
     return new_note
 
 
-@router.get("/{id}")
+@router.get("/{id}", response_model=NoteSchema)
 async def read_note_by_id(
     id: int,
     session: AsyncSession = Depends(get_session),
@@ -82,7 +88,7 @@ async def get_all_pending_approval_notes(
     return notes
 
 
-@router.put("/{id}")
+@router.put("/{id}", response_model=NoteSchema)
 async def update_note_by_id(
     id: int,
     book: NoteUpdateSchema,
@@ -95,7 +101,7 @@ async def update_note_by_id(
     return updated_note
 
 
-@router.delete("/{id}")
+@router.delete("/{id}", response_model=NoteSchema)
 async def delete_book_by_id(
     id: int,
     authenticated: Account = Depends(Authenticator.get_admin),

@@ -56,6 +56,12 @@ class AppError:
         headers={"WWW-Authenticate": "Bearer"},
     )
 
+    CATEGORY_DOES_NOT_EXISTS_ERROR = HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail="Category does not exists",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+
     USERNAME_ALREADY_EXISTS_ERROR = HTTPException(
         status_code=status.HTTP_409_CONFLICT,
         detail="Username already exists",

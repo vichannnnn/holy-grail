@@ -11,18 +11,12 @@ from starlette.datastructures import UploadFile as StarletteUploadFile
 
 from app.db.base_class import Base
 from app.exceptions import AppError
-from app.file_handler import save_file
+from app.file_handler import save_file, accepted_doc_type_extensions
 from app.models.auth import Account
 from app.schemas.library import NoteCreateSchema
 
 if TYPE_CHECKING:
     from app.models.categories import CategoryLevel, Subjects, DocumentTypes
-
-accepted_types = {
-    # "application/vnd.openxmlformats-officedocument.wordprocessingml.document": ".docx",
-    "application/pdf": ".pdf",
-    # "text/plain": ".txt",
-}
 
 
 class Library(Base):
@@ -70,15 +64,16 @@ class Library(Base):
         uploaded_file: UploadFile,
         uploaded_by: int,
         data: NoteCreateSchema,
+        s3_bucket,
     ):
-        if uploaded_file.content_type not in accepted_types.keys():
+        if uploaded_file.content_type not in accepted_doc_type_extensions.keys():
             raise AppError.INVALID_FILE_TYPE_ERROR
 
-        extension = accepted_types[uploaded_file.content_type]
+        extension = accepted_doc_type_extensions[uploaded_file.content_type]
         data_json = data.dict()
         data_json["uploaded_by"] = uploaded_by
         if isinstance(uploaded_file, StarletteUploadFile):
-            file_name = await save_file(uploaded_file, extension)
+            file_name = await save_file(uploaded_file, extension, s3_bucket)
             data_json["file_name"] = file_name
 
         try:
@@ -87,6 +82,10 @@ class Library(Base):
             await session.commit()
 
         except SQLAlchemyExceptions.IntegrityError as exc:
+            if str(exc).find("ForeignKeyViolationError") != -1:
+                raise AppError.CATEGORY_DOES_NOT_EXISTS_ERROR
+            elif str(exc).find("UniqueViolationError") != -1:
+                raise AppError.DOCUMENT_NAME_ALREADY_EXISTS_ERROR from exc
             raise AppError.DOCUMENT_NAME_ALREADY_EXISTS_ERROR from exc
         return obj
 

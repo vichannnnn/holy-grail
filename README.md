@@ -39,6 +39,18 @@ yarn --frozen-lockfile
 yarn dev
 ```
 
+- To set up your virtualenv for pre-commit hooks
+
+```
+make venv
+source holy-grail-backend/backend/app/.venv/bin/activate
+```
+
+You should be able to see (holy-grail-py1.0) in your terminal beside your name, this means you're accessing all the
+packages required for development of the app now. If your pre-commit hook is failing, please check the error and
+make sure you re-add and commit the changed files.
+
+
 NOTE: You can also run the `make build` instructions and `yarn dev` instructions, but your frontend will be
 in http://localhost:5174, it will still connect to the backend API correctly.
 
@@ -48,8 +60,8 @@ Go to `http://localhost:8005/docs` to access the endpoints from the Swagger UI. 
 
 Go to `http://localhost:5173/` or `http://localhost:5175/` to access the web application.
 
-You can also run `make runserver` to access the same application connected to the same database in port 9000, this is
-purely for debugging purpose with `pdb`. In this way, you have to access `http://localhost:9000/docs`.
+You can also run `make runserver` to access the same application connected to the same database in port 9005, this is
+purely for debugging purpose with `pdb`. In this way, you have to access `http://localhost:9005/docs`.
 
 You can run `make check` to run your code through mypy, pylint and pytest as a pre-hook commit for your own projects.
 
