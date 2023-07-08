@@ -52,3 +52,9 @@ check: pylint \
 
 tests:
 	docker compose -f docker-compose.$(version).yml run -e TESTING=true --rm $(backend_container) pytest ./app/tests -x -vv
+
+venv:
+	pip install virtualenv
+	virtualenv holy-grail-backend/backend/app/.venv --prompt=holy-grail-py1.0
+	source holy-grail-backend/backend/app/.venv/bin/activate
+	pip install -r holy-grail-backend/backend/app/requirements.txt
