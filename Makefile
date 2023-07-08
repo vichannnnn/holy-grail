@@ -12,8 +12,8 @@ hello:
 	echo "Hello, world!"
 
 coverage:
-	docker compose -f docker-compose.$(version).yml run --rm $(backend_container) coverage run --source=app -m pytest
-	docker compose -f docker-compose.$(version).yml run --rm $(backend_container) coverage xml
+	docker compose -f docker-compose.$(version).yml run -e TESTING=true --rm $(backend_container) coverage run --source=app -m pytest
+	docker compose -f docker-compose.$(version).yml run -e TESTING=true --rm $(backend_container) coverage xml
 
 build:
 	docker compose -f docker-compose.$(version).yml stop && docker compose -f docker-compose.$(version).yml build --no-cache && docker compose -f docker-compose.$(version).yml up -d
