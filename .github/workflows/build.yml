@@ -2,8 +2,9 @@ name: Build
 
 on:
   workflow_run:
-    workflows: [Test]
-    types: [completed]
+    workflows: ["Test"]
+    types:
+      - completed
 
 env:
   REGISTRY: ghcr.io
@@ -11,9 +12,8 @@ env:
 
 jobs:
   build:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
-
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
