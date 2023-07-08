@@ -15,7 +15,7 @@ def test_create_valid_user_and_login(
     payload = jsonable_encoder(test_valid_user)
     response = test_not_logged_in_client.post(CREATE_URL, json=payload)
     resp_data = response.json()
-    assert response.status_code == status.HTTP_201_CREATED
+    assert response.status_code == status.HTTP_204_NO_CONTENT
     assert resp_data["username"] == test_valid_user.username
     assert resp_data == {
         "username": test_valid_user.username,
