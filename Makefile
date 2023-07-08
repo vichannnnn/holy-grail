@@ -13,6 +13,8 @@ hello:
 
 coverage:
 	docker compose -f docker-compose.$(version).yml run -e TESTING=true --rm $(backend_container) coverage run --source=app -m pytest -x
+
+generate_xml:
 	docker compose -f docker-compose.$(version).yml run -e TESTING=true --rm $(backend_container) coverage xml
 
 build:
