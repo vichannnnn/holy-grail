@@ -11,10 +11,9 @@ from app import schemas
 from app.api.deps import get_session
 from app.db.base_class import Base
 from app.main import app
-from app.models.auth import Authenticator
-
+from app.models.auth import Authenticator, Account
+from app.models.categories import DocumentTypes, Subjects, CategoryLevel
 import pytest
-
 
 SQLALCHEMY_DATABASE_URL = PostgresDsn.build(
     scheme="postgresql+asyncpg",
@@ -257,8 +256,51 @@ def test_note_insert():
     )
 
 
+@pytest.fixture(name="test_note_insert_2")
+def test_note_insert_2():
+    yield schemas.library.NoteCreateSchema(
+        category=1, subject=1, type=1, document_name="Document2"
+    )
+
+
+@pytest.fixture(name="test_category_does_not_exist_note_insert")
+def test_category_does_not_exist_note_insert():
+    yield schemas.library.NoteCreateSchema(
+        category=2, subject=2, type=2, document_name="DoesNotExist"
+    )
+
+
 @pytest.fixture(name="test_note_update")
 def test_note_update():
     yield schemas.library.NoteUpdateSchema(
-        category=1, subject=1, type=1, document_name="Document"
+        category=1, subject=1, type=1, document_name="Updated_Document", uploaded_by=1
     )
+
+
+@pytest.fixture(name="test_note_update_2")
+def test_note_update_2():
+    yield schemas.library.NoteUpdateSchema(
+        category=1, subject=1, type=1, document_name="Updated_Document2", uploaded_by=1
+    )
+
+
+@pytest.fixture
+async def create_category_subject_education_level(loop):
+    new_doc_type = DocumentTypes(name="Notes")
+    new_subject = Subjects(name="Mathematics")
+    new_category = CategoryLevel(name="GCE 'A' Levels")
+    new_valid_user = Account(
+        username="testuser",
+        password="123456",
+        role=1,
+        email="testuser@gmail.com",
+        verified=True,
+    )
+    session = TestingSessionLocal()
+    session.add(new_valid_user)
+    session.add(new_doc_type)
+    session.add(new_subject)
+    session.add(new_category)
+    await session.commit()
+
+    yield new_valid_user, new_doc_type, new_subject, new_category

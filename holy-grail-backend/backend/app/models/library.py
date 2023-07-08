@@ -82,10 +82,10 @@ class Library(Base):
             await session.commit()
 
         except SQLAlchemyExceptions.IntegrityError as exc:
-            # import pdb
-            # pdb.set_trace()
-            if str(exc).find("ForeignKeyViolationError") != "-1":
+            if str(exc).find("ForeignKeyViolationError") != -1:
                 raise AppError.CATEGORY_DOES_NOT_EXISTS_ERROR
+            elif str(exc).find("UniqueViolationError") != -1:
+                raise AppError.DOCUMENT_NAME_ALREADY_EXISTS_ERROR from exc
             raise AppError.DOCUMENT_NAME_ALREADY_EXISTS_ERROR from exc
         return obj
 

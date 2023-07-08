@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import get_session
 from app.exceptions import AppError
-from app.limiter import limiter
+from app.limiter import conditional_rate_limit
 from app.models.auth import Account, Authenticator, ALGORITHM, SECRET_KEY
 from app.schemas.auth import (
     AuthSchema,
@@ -20,10 +20,10 @@ import os
 router = APIRouter()
 
 
-if os.getenv("PRODUCTION") != "local":
+if os.getenv("PRODUCTION") != "local" or os.getenv("TESTING"):
 
     @router.post("/create", response_model=CurrentUserSchema)
-    @limiter.limit("2/5minute")
+    @conditional_rate_limit("2/5minute")
     async def create_account(
         request: Request,
         data: AccountRegisterSchema,
@@ -99,7 +99,7 @@ async def verify_email(
 
 
 @router.post("/resend_email_verification_token")
-@limiter.limit("2/5minute")
+@conditional_rate_limit("2/5minute")
 async def resend_verify_email_token(
     request: Request,
     session: AsyncSession = Depends(get_session),
@@ -112,7 +112,7 @@ async def resend_verify_email_token(
 
 
 @router.post("/send_reset_password_mail")
-@limiter.limit("2/5minute")
+@conditional_rate_limit("2/5minute")
 async def reset_password(
     data: SendPasswordResetEmailSchema,
     request: Request,
