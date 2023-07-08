@@ -36,7 +36,7 @@ jobs:
 
   check:
     if: always()
-    needs: [ Test, Build, Deploy ]
+    needs: [ Test ]
     runs-on: ubuntu-latest
     steps:
       - name: All jobs result
