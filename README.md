@@ -25,7 +25,7 @@ secret_key = secrets.token_hex(32)
 - Run the following command (For backend and frontend development)
 
 ```
-cp .env_example .env
+cp .env.example .env
 make build version="dev"
 make migrate version="dev"
 ```
@@ -33,7 +33,7 @@ make migrate version="dev"
 - Run the following command (For frontend development only)
 
 ```
-cp .env_example .env
+cp .env.example .env
 cd holy-grail-frontend
 yarn --frozen-lockfile
 yarn dev
