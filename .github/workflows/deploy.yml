@@ -12,6 +12,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Print github.ref
+        run: echo "github.ref=${{ github.ref }}"
+
       - name: executing remote ssh commands using private key
         uses: appleboy/ssh-action@master
         with:
