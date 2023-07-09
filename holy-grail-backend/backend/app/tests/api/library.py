@@ -19,7 +19,7 @@ ADMIN_APPROVE_NOTES_URL = "/admin/approve"
 
 
 def test_create_note_with_verified_user_and_create_txt_and_create_duplicate_name(
-    create_category_subject_education_level,
+    create_doc_type_subject_education_level,
     test_note_insert: schemas.library.NoteCreateSchema,
     test_note_insert_2: schemas.library.NoteCreateSchema,
     test_client_verified_user: TestClient,
@@ -113,7 +113,7 @@ def test_create_note_with_verified_user_and_create_txt_and_create_duplicate_name
 
 
 def test_create_note_for_category_does_not_exist(
-    create_category_subject_education_level,
+    create_doc_type_subject_education_level,
     test_category_does_not_exist_note_insert: schemas.library.NoteCreateSchema,
     test_client_verified_user: TestClient,
 ):
@@ -136,7 +136,7 @@ def test_create_note_for_category_does_not_exist(
 
 
 def test_create_note_and_get(
-    create_category_subject_education_level,
+    create_doc_type_subject_education_level,
     test_note_insert: schemas.library.NoteCreateSchema,
     test_client_verified_user: TestClient,
 ):
@@ -178,7 +178,7 @@ def test_create_note_and_get(
 
 
 def test_create_two_notes_and_get_all_pending_notes_verified_user(
-    create_category_subject_education_level,
+    create_doc_type_subject_education_level,
     test_note_insert: schemas.library.NoteCreateSchema,
     test_note_insert_2: schemas.library.NoteCreateSchema,
     test_client_verified_user: TestClient,
@@ -226,7 +226,7 @@ def test_create_two_notes_and_get_all_pending_notes_verified_user(
 
 
 def test_create_two_notes_and_get_all_pending_notes_admin(
-    create_category_subject_education_level,
+    create_doc_type_subject_education_level,
     test_note_insert: schemas.library.NoteCreateSchema,
     test_note_insert_2: schemas.library.NoteCreateSchema,
     test_client_admin: TestClient,
@@ -294,7 +294,7 @@ def test_create_two_notes_and_get_all_pending_notes_admin(
 
 
 def test_create_two_notes_and_get_all_pending_notes_and_approve_and_get_approved_notes_developer(
-    create_category_subject_education_level,
+    create_doc_type_subject_education_level,
     test_note_insert: schemas.library.NoteCreateSchema,
     test_note_insert_2: schemas.library.NoteCreateSchema,
     test_client_developer: TestClient,
@@ -372,7 +372,7 @@ def test_create_two_notes_and_get_all_pending_notes_and_approve_and_get_approved
 
 
 def test_create_two_notes_and_update_notes_by_id_developer(
-    create_category_subject_education_level,
+    create_doc_type_subject_education_level,
     test_note_insert: schemas.library.NoteCreateSchema,
     test_note_update: schemas.library.NoteUpdateSchema,
     test_client_developer: TestClient,
@@ -412,7 +412,7 @@ def test_create_two_notes_and_update_notes_by_id_developer(
 
 
 def test_create_note_and_delete_developer(
-    create_category_subject_education_level,
+    create_doc_type_subject_education_level,
     test_note_insert: schemas.library.NoteCreateSchema,
     test_client_developer: TestClient,
 ):

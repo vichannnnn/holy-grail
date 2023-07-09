@@ -5,6 +5,7 @@ from app.schemas.base import CustomBaseModel as BaseModel
 
 class SubjectCreateSchema(BaseModel):
     name: str
+    category_id: int
 
 
 class CategoryCreateSchema(BaseModel):
