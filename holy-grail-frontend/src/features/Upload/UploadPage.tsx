@@ -83,12 +83,18 @@ const UploadPage = () => {
       description: 'Something went wrong.',
       severity: 'error',
     };
-    if (responseStatus === undefined || !(responseStatus in statusAlertContent)) {
+    if (responseStatus === undefined) {
       setAlertContent(generalisedAlertError);
       setOpenAlert(true);
       return;
     }
-    setAlertContent(statusAlertContent[responseStatus]);
+    if (responseStatus.every((status) => status !== 200)) {
+      setAlertContent(generalisedAlertError);
+      setOpenAlert(true);
+      return;
+    }
+
+    setAlertContent(statusAlertContent[200]);
     setOpenAlert(true);
   };
 

@@ -3,9 +3,11 @@ import apiClient from '../../apiClient';
 import { NoteInfoProps } from '../../../features/Upload/UploadNote';
 
 export const createNote = async (notes: NoteInfoProps[]) => {
+  const responses = [];
   for (const note of notes) {
     if (note.file === null) {
-      return 400;
+      responses.push(400);
+      return;
     }
     const formData = new FormData();
     formData.append('file', note.file);
@@ -26,10 +28,11 @@ export const createNote = async (notes: NoteInfoProps[]) => {
           document_name: String(note.name),
         },
       });
-      return response.status;
+      responses.push(response.status);
     } catch (error) {
       const axiosError = error as AxiosError;
-      return axiosError.response ? axiosError.response.status : 500;
+      responses.push(axiosError.response ? axiosError.response.status : 500);
     }
   }
+  return responses;
 };
