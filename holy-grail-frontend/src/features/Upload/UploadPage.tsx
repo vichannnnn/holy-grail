@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
+import React, { useState, useEffect, memo, useContext } from 'react';
 import { fetchData, CategoryType, SubjectType, DocumentType } from '../../api/utils/library/Search';
 import { createNote } from '../../api/utils/actions/CreateNote';
 import AuthContext from '../../providers/AuthProvider';
@@ -8,13 +8,18 @@ import AlertToast, { AlertProps } from '../../components/AlertToast/AlertToast';
 import UploadNote, { NoteInfoProps } from './UploadNote';
 import './upload.css';
 import { Button, ThemeProvider, createTheme } from '@mui/material';
-import { border } from '@chakra-ui/react';
+
 
 interface OptionsProps {
   categories: CategoryType[];
   subjects: SubjectType[];
   types: DocumentType[];
 }
+
+interface NotesProps {
+  [key: number]: NoteInfoProps;
+}
+
 
 const UploadPage = () => {
   const [openAlert, setOpenAlert] = useState<boolean>(false);
@@ -23,41 +28,33 @@ const UploadPage = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const [uploadNoteCount, setUploadNoteCount] = useState<number>(1);
+  
   const muiTheme = createTheme();
 
   const [options, setOptions] = useState<OptionsProps | null>(null);
 
-  const [savedData, setSavedData] = useState<NoteInfoProps[]>([]);
-  const handleSaveNote = ({ file, category, subject, type, name }: NoteInfoProps) => {
-    const newSavedData = [...savedData, { file, category, subject, type, name }];
-    setSavedData(newSavedData);
-  };
+  const [key, setKey] = useState<number>(0);
+  const [notes, setNotes] = useState<NotesProps>({'0': { file: null, category: 0, subject: 0, type: 0, name: '' }});
+
+  
 
   if (!user) {
     const alertContentRedirect: AlertProps = {
       title: 'Please login.',
       description: 'You need to be logged in to upload documents.',
-      severity: 'error',
+      severity: 'error', 
     };
     navigate('/login', { state: { alertContent: alertContentRedirect } });
   }
 
   useEffect(() => {
+    
+    
     fetchData().then((options) => {
       setOptions(options as OptionsProps);
     });
   }, []);
 
-  function renderNotes() {
-    const notes = [];
-    for (let i = 0; i < uploadNoteCount; i++) {
-      notes.push(<UploadNote key={i} options={options} saveNote={handleSaveNote} />);
-      notes.push(<hr style={{ width: '100vw' }} />);
-    }
-
-    return notes;
-  }
   /*
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -139,13 +136,26 @@ const UploadPage = () => {
       </div>
       <ThemeProvider theme={muiTheme}>
         <div className='upload__multiContainer'>
-          {renderNotes()}
+          {
+            Object.entries(notes).map(([key, value]) => (
+              <UploadNote
+                key={key}
+                options={options}
+                saveNoteUpdates={(note) => setNotes({...notes, [key]: note})}
+                deleteNote={() => {
+                  const newNotes = {...notes};
+                  delete newNotes[Number(key)];
+                  setNotes(newNotes);
+                }}
+              />
+            ))
+          }
           <Button
             variant='contained'
             sx={{ width: '20vw' }}
-            onClick={() => setUploadNoteCount(uploadNoteCount + 1)}
+            onClick={()=> {setKey(key+1); setNotes({...notes, [key+1]: { file: null, category: 0, subject: 0, type: 0, name: '' }})}}
           >
-            Upload another document
+            +
           </Button>
         </div>
 

@@ -1,4 +1,4 @@
-import { useState, useRef, useContext, useEffect } from 'react';
+import { useState, useRef, useContext, memo, useEffect } from 'react';
 import { OptionsProps } from './UploadPage';
 import Combobox from '../Library/Combobox';
 import {
@@ -20,24 +20,25 @@ import ErrorIcon from '@mui/icons-material/Error';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { grid } from '@chakra-ui/react';
+import ClearIcon from '@mui/icons-material/Clear';
 
 interface NoteInfoProps {
   file: File | null;
-  category: number | '';
-  subject: number | '';
-  type: number | '';
+  category: number;
+  subject: number;
+  type: number;
   name: string | '';
 }
 
 interface UploadNoteProps {
   options: OptionsProps | null;
-  saveNote: (note: NoteInfoProps) => void;
+  saveNoteUpdates: (note: NoteInfoProps) => void;
+  deleteNote: () => void;
 }
 
-export const UploadNote = ({ options, saveNote }: UploadNoteProps) => {
+export const UploadNote = ({ options, saveNoteUpdates, deleteNote }: UploadNoteProps) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [selectedFileName, setSelectedFileName] = useState<string>('');
+  const [selectedFileName, setSelectedFileName] = useState<string | undefined>(undefined);
   const [documentName, setDocumentName] = useState<string>('');
   const [category, setCategory] = useState<number>(0);
   const [subject, setSubject] = useState<number>(0);
@@ -71,23 +72,18 @@ export const UploadNote = ({ options, saveNote }: UploadNoteProps) => {
       },
     },
   });
-  const handleSave = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+
+  useEffect(() => {
     const valid = Object.values(validInputTip).every((value) => Boolean(value));
     setValidInput(valid);
-
-    if (valid) {
-      saveNote({
-        file: selectedFile,
-        category: category,
-        subject: subject,
-        type: type,
-        name: documentName,
-      });
-    }
-
-    setExpanded(false);
-  };
+    saveNoteUpdates({
+      file: selectedFile,
+      category: category,
+      subject: subject,
+      type: type,
+      name: documentName,
+    });
+  }, [selectedFile, category, subject, type, documentName]);
 
   const gridStyles = {
     display: 'flex',
@@ -99,36 +95,50 @@ export const UploadNote = ({ options, saveNote }: UploadNoteProps) => {
 
   return (
     <ThemeProvider theme={muiTheme}>
-      <div style={{ width: '50vw' }}>
-        <form onSubmit={handleSave}>
-          <Badge
-            badgeContent={
-              validInput ? (
-                <CheckCircleIcon color='success' />
-              ) : (
-                <Tooltip
-                  title={
-                    <Box>
-                      <Typography>Please do the following: </Typography>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          gap: '10%',
+          margin: '1%',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <Grid sx={gridStyles}>
+            {validInput ? (
+              <CheckCircleIcon color='success' />
+            ) : (
+              <Tooltip
+                title={
+                  <Box>
+                    <Typography>Please do the following: </Typography>
 
-                      {Object.entries(validInputTip)
-                        .filter(([_, value]) => Boolean(!value))
-                        .map(([key, _]) => (
-                          <Typography key={key} fontSize={'100%'}>
-                            {key}
-                          </Typography>
-                        ))}
-                      <Typography key='Save your changes' fontSize={'100%'}>
-                        Save your changes
-                      </Typography>
-                    </Box>
-                  }
-                >
-                  <ErrorIcon color='error' />
-                </Tooltip>
-              )
+                    {Object.entries(validInputTip)
+                      .filter(([_, value]) => Boolean(!value))
+                      .map(([key, _]) => (
+                        <Typography key={key} fontSize={'100%'}>
+                          {key}
+                        </Typography>
+                      ))}
+                  </Box>
+                }
+              >
+                <ErrorIcon color='error' />
+              </Tooltip>
+            )}
+          </Grid>
+        </div>
+
+        <div style={{ width: '60vw' }}>
+          <Badge
+            anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+            badgeContent={
+              <IconButton onClick={deleteNote}>
+                <ClearIcon color='error' />
+              </IconButton>
             }
-            sx={{ width: '50vw' }}
+            sx={{ width: '60vw' }}
           >
             <Grid
               container
@@ -153,7 +163,9 @@ export const UploadNote = ({ options, saveNote }: UploadNoteProps) => {
                   placeholder={`Enter document name (eg. ${user?.username || 'anonymous'}'s Notes)`}
                   variant='outlined'
                   value={documentName}
-                  onChange={(event) => setDocumentName(event.target.value)}
+                  onChange={(event) => {
+                    setDocumentName(event.target.value);
+                  }}
                 />
 
                 <IconButton
@@ -183,7 +195,9 @@ export const UploadNote = ({ options, saveNote }: UploadNoteProps) => {
                       style={{ flexGrow: 1 }}
                       label='Category'
                       value={category || 0}
-                      onChange={(newValue) => setCategory(newValue || 0)}
+                      onChange={(newValue) => {
+                        setCategory(newValue || 0);
+                      }}
                       options={
                         options?.categories.map((category) => ({
                           value: category.id,
@@ -196,7 +210,9 @@ export const UploadNote = ({ options, saveNote }: UploadNoteProps) => {
                       style={{ flexGrow: 1 }}
                       label='Subject'
                       value={subject || 0}
-                      onChange={(newValue) => setSubject(newValue || 0)}
+                      onChange={(newValue) => {
+                        setSubject(newValue || 0);
+                      }}
                       options={
                         options?.subjects.map((subject) => ({
                           value: subject.id,
@@ -209,7 +225,9 @@ export const UploadNote = ({ options, saveNote }: UploadNoteProps) => {
                       style={{ flexGrow: 1 }}
                       label='Type'
                       value={type || 0}
-                      onChange={(newValue) => setType(newValue || 0)}
+                      onChange={(newValue) => {
+                        setType(newValue || 0);
+                      }}
                       options={
                         options?.types.map((type) => ({ value: type.id, label: type.name })) || []
                       }
@@ -244,23 +262,11 @@ export const UploadNote = ({ options, saveNote }: UploadNoteProps) => {
                       style={{ display: 'none' }}
                     />
                   </Grid>
-                  <Grid
-                    container
-                    item
-                    sx={{
-                      ...gridStyles,
-                      margin: '2%',
-                    }}
-                  >
-                    <Button type='submit' variant='contained' color='success'>
-                      Save Changes
-                    </Button>
-                  </Grid>
                 </Box>
               </Collapse>
             </Grid>
           </Badge>
-        </form>
+        </div>
       </div>
     </ThemeProvider>
   );
