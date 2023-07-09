@@ -23,9 +23,11 @@ router = APIRouter()
 
 @router.get("/all_subjects", response_model=List[SubjectSchema])
 async def get_subjects_list(
+    category_id: int = None,
     session: AsyncSession = Depends(get_session),
 ):
-    data = await Subjects.get_all(session)
+    filter_ = {"category_id": category_id} if category_id is not None else None
+    data = await Subjects.get_all(session, filter_=filter_)
     return data
 
 

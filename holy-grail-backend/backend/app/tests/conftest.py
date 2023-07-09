@@ -6,7 +6,11 @@ from pydantic import PostgresDsn
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import NullPool
-
+from app.schemas.auth import (
+    AccountRegisterSchema,
+    AccountUpdatePasswordSchema,
+    AuthSchema,
+)
 from app import schemas
 from app.api.deps import get_session
 from app.db.base_class import Base
@@ -174,29 +178,29 @@ def test_valid_user():
     )
 
 
-@pytest.fixture(name="test_subject_insert_mathematics")
-def test_subject_insert_math():
-    yield schemas.categories.SubjectCreateSchema(name="Mathematics")
+@pytest.fixture(name="test_subject_insert_mathematics_category_1")
+def test_subject_insert_math_category_1():
+    yield schemas.categories.SubjectCreateSchema(name="Mathematics", category_id=1)
 
 
-@pytest.fixture(name="test_subject_insert_chemistry")
-def test_subject_insert_chem():
-    yield schemas.categories.SubjectCreateSchema(name="Chemistry")
+@pytest.fixture(name="test_subject_insert_chemistry_category_1")
+def test_subject_insert_chem_category_1():
+    yield schemas.categories.SubjectCreateSchema(name="Chemistry", category_id=1)
 
 
-@pytest.fixture(name="test_subject_update_chemistry")
+@pytest.fixture(name="test_subject_insert_physics_category_1")
+def test_subject_insert_physics_category_1():
+    yield schemas.categories.SubjectCreateSchema(name="Physics", category_id=1)
+
+
+@pytest.fixture(name="test_subject_insert_biology_category_1")
+def test_subject_insert_bio_category_1():
+    yield schemas.categories.SubjectCreateSchema(name="Biology", category_id=1)
+
+
+@pytest.fixture(name="test_subject_update_chemistry_category_2")
 def test_subject_update_chem():
-    yield schemas.categories.SubjectUpdateSchema(name="Chemistry")
-
-
-@pytest.fixture(name="test_subject_insert_biology")
-def test_subject_insert_bio():
-    yield schemas.categories.SubjectCreateSchema(name="Biology")
-
-
-@pytest.fixture(name="test_subject_insert_physics")
-def test_subject_insert_physics():
-    yield schemas.categories.SubjectCreateSchema(name="Physics")
+    yield schemas.categories.SubjectUpdateSchema(name="Chemistry", category_id=2)
 
 
 @pytest.fixture(name="test_doc_type_insert_practice_paper")
@@ -285,9 +289,29 @@ def test_note_update_2():
 
 
 @pytest.fixture
-async def create_category_subject_education_level(loop):
+async def create_education_level(loop):
+    new_category = CategoryLevel(name="GCE 'A' Levels")
+    session = TestingSessionLocal()
+    session.add(new_category)
+    await session.commit()
+    yield new_category
+
+
+@pytest.fixture
+async def create_two_education_level(loop):
+    new_category_1 = CategoryLevel(name="GCE 'A' Levels")
+    new_category_2 = CategoryLevel(name="GCE 'O' Levels")
+    session = TestingSessionLocal()
+    session.add(new_category_1)
+    session.add(new_category_2)
+    await session.commit()
+    yield new_category_1, new_category_2
+
+
+@pytest.fixture
+async def create_doc_type_subject_education_level(loop):
     new_doc_type = DocumentTypes(name="Notes")
-    new_subject = Subjects(name="Mathematics")
+    new_subject = Subjects(name="Mathematics", category_id=1)
     new_category = CategoryLevel(name="GCE 'A' Levels")
     new_valid_user = Account(
         username="testuser",
@@ -304,13 +328,6 @@ async def create_category_subject_education_level(loop):
     await session.commit()
 
     yield new_valid_user, new_doc_type, new_subject, new_category
-
-
-from app.schemas.auth import (
-    AccountRegisterSchema,
-    AccountUpdatePasswordSchema,
-    AuthSchema,
-)
 
 
 @pytest.fixture
