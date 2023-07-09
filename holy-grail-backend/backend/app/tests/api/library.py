@@ -406,3 +406,39 @@ def test_create_two_notes_and_update_notes_by_id_developer(
     assert (
         first_updated_note_response["document_name"] == test_note_update.document_name
     )
+
+
+# -------- DELETE TEST --------
+
+
+def test_create_note_and_delete_developer(
+    create_category_subject_education_level,
+    test_note_insert: schemas.library.NoteCreateSchema,
+    test_client_developer: TestClient,
+):
+    file_content = BytesIO(b"Some file content")
+
+    payload = dict(test_note_insert)
+    response = test_client_developer.post(
+        NOTE_URL,
+        files={
+            "file": (
+                "test.pdf",
+                file_content,
+                "application/pdf",
+            )
+        },
+        params={**payload},
+    )
+
+    assert response.status_code == 200
+    first_note_response = response.json()
+    assert first_note_response["id"] == 1
+    assert first_note_response["document_name"] == test_note_insert.document_name
+
+    response = test_client_developer.delete(NOTE_URL + f"/{first_note_response['id']}")
+    assert response.status_code == 200
+    first_updated_note_response = response.json()
+    assert (
+        first_updated_note_response["document_name"] == test_note_insert.document_name
+    )

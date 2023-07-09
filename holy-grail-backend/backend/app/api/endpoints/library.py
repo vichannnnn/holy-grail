@@ -91,18 +91,18 @@ async def get_all_pending_approval_notes(
 @router.put("/{id}", response_model=NoteSchema)
 async def update_note_by_id(
     id: int,
-    book: NoteUpdateSchema,
+    note: NoteUpdateSchema,
     authenticated: Account = Depends(Authenticator.get_admin),
     session: AsyncSession = Depends(get_session),
 ):
     updated_note = await Library.update(
-        session, id, authenticated, data=book.dict(exclude_unset=True)
+        session, id, authenticated, data=note.dict(exclude_unset=True)
     )
     return updated_note
 
 
 @router.delete("/{id}", response_model=NoteSchema)
-async def delete_book_by_id(
+async def delete_note_by_id(
     id: int,
     authenticated: Account = Depends(Authenticator.get_admin),
     session: AsyncSession = Depends(get_session),

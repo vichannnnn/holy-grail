@@ -185,7 +185,7 @@ class Library(Base):
         updated_note = res.scalar()
 
         if not updated_note:
-            raise HTTPException(status_code=404, detail="Book not found")
+            raise HTTPException(status_code=404, detail="note not found")
         return updated_note
 
     @classmethod
