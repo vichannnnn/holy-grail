@@ -304,3 +304,38 @@ async def create_category_subject_education_level(loop):
     await session.commit()
 
     yield new_valid_user, new_doc_type, new_subject, new_category
+
+
+from app.schemas.auth import (
+    AccountRegisterSchema,
+    AccountUpdatePasswordSchema,
+    AuthSchema,
+)
+
+
+@pytest.fixture
+def test_user_registration_data() -> AccountRegisterSchema:
+    yield AccountRegisterSchema(
+        username="TestUser",
+        email="testuser@example.com",
+        password="@Test1234",
+        repeat_password="@Test1234",
+    )
+
+
+@pytest.fixture
+def test_user_new_password_data() -> AccountUpdatePasswordSchema:
+    yield AccountUpdatePasswordSchema(
+        email="testuser@example.com",
+        before_password="@Test1234",
+        password="@NewTest1234",
+        repeat_password="@NewTest1234",
+    )
+
+
+@pytest.fixture
+def test_user() -> AuthSchema:
+    yield AuthSchema(
+        username="TestUser",
+        password="@Test1234",
+    )
