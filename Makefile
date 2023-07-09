@@ -6,6 +6,9 @@ backend_container := holy-grail-backend
 backend_container_name := holy-grail-backend
 frontend_container := holy-grail-frontend
 
+local_postgres_user := postgres
+local_postgres_db_name := app
+
 -include ./Makefile.properties
 
 hello:
@@ -56,6 +59,12 @@ check: pylint \
 tests:
 	docker compose -f docker-compose.$(version).yml run -e TESTING=true --rm $(backend_container) pytest ./app/tests -x -vv
 
+local-dump:
+	scp $(user)@$(domain):./holy-grail/$(sql_file_name).sql .
+	docker exec -i holy-grail-db psql -U $(local_postgres_user) -d $(local_postgres_db_name) < $(sql_file_name).sql
+
+dump:
+	docker exec -i holy-grail-db psql -U $(local_postgres_user) -d $(local_postgres_db_name) < $(sql_file_name).sql
 venv:
 	( \
 	  pip install virtualenv; \
