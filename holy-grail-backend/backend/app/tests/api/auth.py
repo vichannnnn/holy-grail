@@ -28,3 +28,76 @@ def test_create_valid_user_and_login(
 
     assert response.status_code == status.HTTP_200_OK
     assert response.json()["data"]["username"] == test_valid_user.username
+
+
+def test_create_account(test_not_logged_in_client, test_user_registration_data):
+    response = test_not_logged_in_client.post(
+        "/auth/create", json=jsonable_encoder(test_user_registration_data)
+    )
+    assert response.status_code == 200
+    assert "username" in response.json()
+
+
+def test_create_account_password_mismatch(
+    test_not_logged_in_client, test_user_registration_data
+):
+    test_user_registration_data.repeat_password = "mismatch_password"
+    response = test_not_logged_in_client.post(
+        "/auth/create", json=jsonable_encoder(test_user_registration_data)
+    )
+    assert response.status_code == 422
+
+
+def test_update_password(
+    test_not_logged_in_client,
+    test_user,
+    test_user_new_password_data,
+    test_user_registration_data,
+):
+    response = test_not_logged_in_client.post(
+        "/auth/create", json=jsonable_encoder(test_user_registration_data)
+    )
+    assert response.status_code == 200
+    assert "username" in response.json()
+
+    # first login to get the auth token
+    login_response = test_not_logged_in_client.post(
+        "/auth/login", json=jsonable_encoder(test_user)
+    )
+    token = login_response.json()["access_token"]
+    headers = {"Authorization": f"Bearer {token}"}
+
+    response = test_not_logged_in_client.post(
+        "/auth/update_password",
+        json=jsonable_encoder(test_user_new_password_data),
+        headers=headers,
+    )
+    assert response.status_code == 200
+
+
+def test_get_account_name(
+    test_not_logged_in_client, test_user, test_user_registration_data
+):
+    response = test_not_logged_in_client.post(
+        "/auth/create", json=jsonable_encoder(test_user_registration_data)
+    )
+    assert response.status_code == 200
+    assert "username" in response.json()
+    # first login to get the auth token
+    login_response = test_not_logged_in_client.post(
+        "/auth/login", json=jsonable_encoder(test_user)
+    )
+    token = login_response.json()["access_token"]
+    headers = {"Authorization": f"Bearer {token}"}
+
+    response = test_not_logged_in_client.get("/auth/get", headers=headers)
+    assert response.status_code == 200
+    assert response.json()["username"]
+
+
+def test_login_invalid_credentials(test_not_logged_in_client, test_user):
+    test_user.password = "invalid_password"
+    response = test_not_logged_in_client.post(
+        "/auth/login", json=jsonable_encoder(test_user)
+    )
+    assert response.status_code == 422
