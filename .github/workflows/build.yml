@@ -68,14 +68,3 @@ jobs:
           context: ./holy-grail-backend/backend
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/holy-grail-scheduler${{ env.TAG_SUFFIX }}:latest
-
-
-  check:
-    if: always()
-    needs: [ Build ]
-    runs-on: ubuntu-latest
-    steps:
-      - name: All jobs result
-        uses: re-actors/alls-green@v1.2.2
-        with:
-          jobs: ${{ toJSON(needs) }}
