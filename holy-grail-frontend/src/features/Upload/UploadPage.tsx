@@ -9,7 +9,6 @@ import UploadNote, { NoteInfoProps } from './UploadNote';
 import './upload.css';
 import { Button, ThemeProvider, createTheme } from '@mui/material';
 
-
 interface OptionsProps {
   categories: CategoryType[];
   subjects: SubjectType[];
@@ -20,6 +19,9 @@ interface NotesProps {
   [key: number]: NoteInfoProps;
 }
 
+interface ResponseStatusProps {
+  [key: number]: AlertProps;
+}
 
 const UploadPage = () => {
   const [openAlert, setOpenAlert] = useState<boolean>(false);
@@ -28,32 +30,67 @@ const UploadPage = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  
   const muiTheme = createTheme();
 
   const [options, setOptions] = useState<OptionsProps | null>(null);
 
   const [key, setKey] = useState<number>(0);
-  const [notes, setNotes] = useState<NotesProps>({'0': { file: null, category: 0, subject: 0, type: 0, name: '' }});
-
-  
+  const [notes, setNotes] = useState<NotesProps>({
+    '0': { file: null, category: 0, subject: 0, type: 0, name: '' },
+  });
 
   if (!user) {
     const alertContentRedirect: AlertProps = {
       title: 'Please login.',
       description: 'You need to be logged in to upload documents.',
-      severity: 'error', 
+      severity: 'error',
     };
     navigate('/login', { state: { alertContent: alertContentRedirect } });
   }
 
   useEffect(() => {
-    
-    
     fetchData().then((options) => {
       setOptions(options as OptionsProps);
     });
   }, []);
+
+  const handleSubmit = async () => {
+    const responseStatus = await createNote(Object.values(notes));
+    const statusAlertContent: ResponseStatusProps = {
+      200: {
+        title: 'Success',
+        description: 'Successfully sent for review and will be shown in library once uploaded.',
+        severity: 'success',
+      },
+      429: {
+        title: "You're submitting too fast!",
+        description: 'You can only upload 1 document per minute.',
+        severity: 'error',
+      },
+      401: {
+        title: 'Your account has not been verified yet.',
+        description: 'Please verify your account with the verification mail sent to your email.',
+        severity: 'error',
+      },
+      500: {
+        title: 'Error',
+        description: 'An internal server error has occured. Please try again later.',
+        severity: 'error',
+      },
+    };
+    const generalisedAlertError: AlertProps = {
+      title: 'Error',
+      description: 'Something went wrong.',
+      severity: 'error',
+    };
+    if (responseStatus === undefined || !(responseStatus in statusAlertContent)) {
+      setAlertContent(generalisedAlertError);
+      setOpenAlert(true);
+      return;
+    }
+    setAlertContent(statusAlertContent[responseStatus]);
+    setOpenAlert(true);
+  };
 
   /*
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -130,27 +167,32 @@ const UploadPage = () => {
       </div>
       <ThemeProvider theme={muiTheme}>
         <div className='upload__multiContainer'>
-          {
-            Object.entries(notes).map(([key, value]) => (
-              <UploadNote
-                key={key}
-                options={options}
-                saveNoteUpdates={(note) => setNotes({...notes, [key]: note})}
-                deleteNote={() => {
-                  const newNotes = {...notes};
-                  delete newNotes[Number(key)];
-                  setNotes(newNotes);
-                }}
-              />
-            ))
-          }
+          {Object.entries(notes).map(([key, value]) => (
+            <UploadNote
+              key={key}
+              options={options}
+              saveNoteUpdates={(note) => setNotes({ ...notes, [key]: note })}
+              deleteNote={() => {
+                const newNotes = { ...notes };
+                delete newNotes[Number(key)];
+                setNotes(newNotes);
+              }}
+            />
+          ))}
           <Button
             variant='contained'
             sx={{ width: '20vw' }}
-            onClick={()=> {setKey(key+1); setNotes({...notes, [key+1]: { file: null, category: 0, subject: 0, type: 0, name: '' }})}}
+            onClick={() => {
+              setKey(key + 1);
+              setNotes({
+                ...notes,
+                [key + 1]: { file: null, category: 0, subject: 0, type: 0, name: '' },
+              });
+            }}
           >
             +
           </Button>
+          <Button onClick={handleSubmit}>Submit</Button>
         </div>
 
         <AlertToast

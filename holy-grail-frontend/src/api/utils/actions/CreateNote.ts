@@ -1,35 +1,35 @@
 import { AxiosError } from 'axios';
-import { apiClient } from '@apiClient';
+import apiClient from '../../apiClient';
+import { NoteInfoProps } from '../../../features/Upload/UploadNote';
 
-export const createNote = async (
-  file: File,
-  category: number | '',
-  subject: number | '',
-  type: number | '',
-  name: string | '',
-) => {
-  const formData = new FormData();
-  formData.append('file', file);
-  formData.append('category', String(category));
-  formData.append('subject', String(subject));
-  formData.append('type', String(type));
-  formData.append('document_name', String(name));
+export const createNote = async (notes: NoteInfoProps[]) => {
+  for (const note of notes) {
+    if (note.file === null) {
+      return 400;
+    }
+    const formData = new FormData();
+    formData.append('file', note.file);
+    formData.append('category', String(note.category));
+    formData.append('subject', String(note.subject));
+    formData.append('type', String(note.type));
+    formData.append('document_name', String(note.name));
 
-  try {
-    const response = await apiClient.post('/note/', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-      params: {
-        category: String(category),
-        subject: String(subject),
-        type: String(type),
-        document_name: String(name),
-      },
-    });
-    return response.status;
-  } catch (error) {
-    const axiosError = error as AxiosError;
-    return axiosError.response ? axiosError.response.status : 500;
+    try {
+      const response = await apiClient.post('/note/', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        params: {
+          category: String(note.category),
+          subject: String(note.subject),
+          type: String(note.type),
+          document_name: String(note.name),
+        },
+      });
+      return response.status;
+    } catch (error) {
+      const axiosError = error as AxiosError;
+      return axiosError.response ? axiosError.response.status : 500;
+    }
   }
 };
