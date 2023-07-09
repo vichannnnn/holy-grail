@@ -1,0 +1,9 @@
+coverage:
+  status:
+    project:
+      default:
+        target: auto
+        threshold: 10%
+    patch:
+      default:
+        threshold: 1% # allows for a 1% coverage drop
