@@ -1,10 +1,10 @@
-from typing import TypeVar, Generic
+from typing import TypeVar, Generic, Optional
 
 from sqlalchemy import update, delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import declared_attr
 from sqlalchemy.orm.decl_api import DeclarativeMeta
-from sqlalchemy import exc as SQLAlchemyExceptions
+from sqlalchemy import exc as SQLAlchemyExceptions, and_
 
 from app.db.base_class import Base
 from app.exceptions import AppError
@@ -26,9 +26,9 @@ class CRUD(Generic[ModelType]):
             session.add(obj)
             await session.commit()
 
-        except SQLAlchemyExceptions.IntegrityError as exc:
+        except SQLAlchemyExceptions.IntegrityError:
             await session.rollback()
-            raise AppError.CATEGORY_ALREADY_EXISTS_ERROR from exc
+            raise SQLAlchemyExceptions.IntegrityError
 
         return obj
 
@@ -45,8 +45,8 @@ class CRUD(Generic[ModelType]):
         stmt = update(cls).returning(cls).where(cls.id == id).values(**data)
         res = await session.execute(stmt)
         await session.commit()
-        updated_object = res.fetchone()
-        return updated_object[0]
+        res_fetchone = res.fetchone()
+        return res_fetchone[0]
 
     @classmethod
     async def delete(cls: Base, session: AsyncSession, id: int) -> ModelType:
@@ -55,12 +55,15 @@ class CRUD(Generic[ModelType]):
 
         res = await session.execute(fetch_stmt)
         await session.execute(stmt)
-        deleted_note = res.scalar()
+        res_scalar = res.scalar()
         await session.commit()
-        return deleted_note
+        return res_scalar
 
     @classmethod
-    async def get_all(cls: Base, session: AsyncSession):
+    async def get_all(cls: Base, session: AsyncSession, filter_: Optional[dict] = None):
         stmt = select(cls)
+        if filter_:
+            conditions = [getattr(cls, key) == value for key, value in filter_.items()]
+            stmt = stmt.where(and_(*conditions))
         result = await session.execute(stmt)
         return result.scalars().all()

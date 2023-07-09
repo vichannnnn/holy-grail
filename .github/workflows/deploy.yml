@@ -26,7 +26,9 @@ jobs:
             if [[ "${{ github.ref }}" == 'refs/heads/master' ]]; then
               docker compose -f docker-compose.prod.yml pull
               docker compose -f docker-compose.prod.yml up -d
+              make migrate version=prod
             else
               docker compose pull
               docker compose up -d
+              make migrate version=dev
             fi
