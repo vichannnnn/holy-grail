@@ -12,7 +12,9 @@ import pytest
 SUBJECT_URL = "/subject"
 DOCUMENT_TYPE_URL = "/document_type"
 CATEGORY_LEVEL_URL = "/category"
-
+GET_ALL_SUBJECT_URL = "/all_subjects"
+GET_ALL_CATEGORY_LEVEL_URL = "/all_category_level"
+GET_ALL_DOCUMENT_TYPE_URL = "/all_document_type"
 
 # ----------------- INSERT TESTS -----------------
 
@@ -51,6 +53,12 @@ def test_add_subjects(
         assert response.status_code == status.HTTP_200_OK
         res = response.json()
         assert res == {"name": test_add_subject.name, "id": res["id"]}
+        response = test_client.get(GET_ALL_SUBJECT_URL)
+        resp = response.json()
+        assert response.status_code == status.HTTP_200_OK
+        assert len(resp) == 1
+        assert resp[0]["name"] == test_add_subject.name
+        assert resp[0]["id"] == res["id"]
     else:
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
@@ -93,6 +101,13 @@ def test_add_doc_types(
         assert response.status_code == status.HTTP_200_OK
         res = response.json()
         assert res == {"name": test_add_doc_types.name, "id": res["id"]}
+        response = test_client.get(GET_ALL_DOCUMENT_TYPE_URL)
+        resp = response.json()
+        assert response.status_code == status.HTTP_200_OK
+        assert len(resp) == 1
+        assert resp[0]["name"] == test_add_doc_types.name
+        assert resp[0]["id"] == res["id"]
+
     else:
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
@@ -125,12 +140,18 @@ def test_add_category_level(
     test_add_category_level: schemas.categories.CategoryCreateSchema,
 ):
     payload = jsonable_encoder(test_add_category_level)
-    response = test_client.post(SUBJECT_URL, json=payload)
+    response = test_client.post(CATEGORY_LEVEL_URL, json=payload)
 
     if user_type == override_get_developer:
         assert response.status_code == status.HTTP_200_OK
         res = response.json()
         assert res == {"name": test_add_category_level.name, "id": res["id"]}
+        response = test_client.get(GET_ALL_CATEGORY_LEVEL_URL)
+        resp = response.json()
+        assert response.status_code == status.HTTP_200_OK
+        assert len(resp) == 1
+        assert resp[0]["name"] == test_add_category_level.name
+        assert resp[0]["id"] == res["id"]
     else:
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
