@@ -4,7 +4,6 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import Integer, ForeignKey, select, UniqueConstraint
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.schemas.categories import SubjectCreateSchema
 from app.crud.base import CRUD
 from app.db.base_class import Base
 from app.exceptions import AppError
