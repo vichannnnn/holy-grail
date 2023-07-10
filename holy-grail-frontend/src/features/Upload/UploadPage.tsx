@@ -9,7 +9,6 @@ import UploadNote, { NoteInfoProps } from './UploadNote';
 import './upload.css';
 import { Button, ThemeProvider, createTheme } from '@mui/material';
 import DeleteAlert from '../Approval/DeleteAlert';
-import { set } from 'lodash';
 
 interface OptionsProps {
   categories: CategoryType[];
@@ -87,18 +86,13 @@ const UploadPage = () => {
       description: 'Something went wrong.',
       severity: 'error',
     };
-    if (responseStatus === undefined) {
-      setAlertContent(generalisedAlertError);
-      setOpenAlert(true);
-      return;
-    }
-    if (responseStatus.every((status) => status !== 200)) {
+    if (responseStatus === undefined || responseStatus in Object.keys(statusAlertContent)) {
       setAlertContent(generalisedAlertError);
       setOpenAlert(true);
       return;
     }
 
-    setAlertContent(statusAlertContent[200]);
+    setAlertContent(statusAlertContent[responseStatus]);
     setOpenAlert(true);
   };
 
