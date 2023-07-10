@@ -1,5 +1,6 @@
 from typing import Optional
-from fastapi import APIRouter, Depends, UploadFile, File, Query, Request
+
+from fastapi import APIRouter, Depends, UploadFile, File, Query, Request, Form
 from fastapi_pagination import Page
 from app.api.deps import (
     SessionBucket,
@@ -16,24 +17,39 @@ router = APIRouter()
 notes_router = APIRouter()
 
 
-@router.post("/", response_model=NoteSchema)
-@conditional_rate_limit("5/minute")
+@router.post("/", response_model=list[NoteSchema])
+# @conditional_rate_limit("5/minute")
 async def create_note(
-    request: Request,  # pylint: disable=W0613
-    session: CurrentSession,
-    s3_bucket: SessionBucket,
-    authenticated: SessionVerifiedUser,
-    data: NoteCreateSchema = Depends(),
-    file: UploadFile = File(None),
+    request: Request,
+    authenticated: Account = Depends(Authenticator.get_verified_user),
+    session: AsyncSession = Depends(get_session),
+    s3_bucket: boto3.client = Depends(get_s3_client),
 ):
-    note = await Library.create_note(
-        session,
-        uploaded_file=file,
-        uploaded_by=authenticated.user_id,
-        data=data,
-        s3_bucket=s3_bucket,
-    )
-    return note
+    new_notes = []
+    async with request.form() as form:
+        max_index = int(form['maxIndex'])
+        
+        for i in range(max_index + 1):
+            
+
+            form_data = NoteCreateSchema(
+                category=form[f'category {i}'],
+                subject=form[f'subject {i}'],
+                type=form[f'type {i}'],
+                document_name=form[f'document_name {i}']
+            )
+        
+            note = await Library.create(
+                session,
+                uploaded_file=form[f'file {i}'],
+                uploaded_by=authenticated.user_id,
+                data=form_data,
+                s3_bucket=s3_bucket,
+            )
+            
+            new_notes.append(await Library.get(session, note.id))
+    
+    return new_notes
 
 
 @router.get("/{id}", response_model=NoteSchema)

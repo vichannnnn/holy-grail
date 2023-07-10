@@ -1,38 +1,27 @@
-import { AxiosError } from 'axios';
+import { AxiosError, all } from 'axios';
 import apiClient from '../../apiClient';
 import { NoteInfoProps } from '../../../features/Upload/UploadNote';
 
 export const createNote = async (notes: NoteInfoProps[]) => {
-  const responses = [];
-  for (const note of notes) {
-    if (note.file === null) {
-      responses.push(400);
-      return;
-    }
-    const formData = new FormData();
-    formData.append('file', note.file);
-    formData.append('category', String(note.category));
-    formData.append('subject', String(note.subject));
-    formData.append('type', String(note.type));
-    formData.append('document_name', String(note.name));
+  const allData = new FormData();
+  allData.append('maxIndex', String(notes.length - 1));
+  notes.forEach((note, index) => {
+    allData.append(`file ${index}`, note.file as File);
+    allData.append(`category ${index}`, String(note.category));
+    allData.append(`subject ${index}`, String(note.subject));
+    allData.append(`type ${index}`, String(note.type));
+    allData.append(`document_name ${index}`, String(note.name));
+  });
 
-    try {
-      const response = await apiClient.post('/note/', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-        params: {
-          category: String(note.category),
-          subject: String(note.subject),
-          type: String(note.type),
-          document_name: String(note.name),
-        },
-      });
-      responses.push(response.status);
-    } catch (error) {
-      const axiosError = error as AxiosError;
-      responses.push(axiosError.response ? axiosError.response.status : 500);
-    }
+  try {
+    const response = await apiClient.post('/note/', allData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.status;
+  } catch (error) {
+    const axiosError = error as AxiosError;
+    return axiosError.response ? axiosError.response.status : 500;
   }
-  return responses;
 };
