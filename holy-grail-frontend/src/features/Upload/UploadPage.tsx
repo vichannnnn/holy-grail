@@ -75,6 +75,11 @@ const UploadPage = () => {
         description: 'Please verify your account with the verification mail sent to your email.',
         severity: 'error',
       },
+      409: {
+        title: 'Conflict occured.',
+        description: 'Another document with the same name already exists. Please rename your document.',
+        severity: 'error',
+      },
       500: {
         title: 'Error',
         description: 'An internal server error has occured. Please try again later.',
@@ -86,7 +91,7 @@ const UploadPage = () => {
       description: 'Something went wrong.',
       severity: 'error',
     };
-    if (responseStatus === undefined || responseStatus in Object.keys(statusAlertContent)) {
+    if (responseStatus === undefined || !(responseStatus in Object.keys(statusAlertContent))) {
       setAlertContent(generalisedAlertError);
       setOpenAlert(true);
       return;

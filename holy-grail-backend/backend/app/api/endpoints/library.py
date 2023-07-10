@@ -18,7 +18,7 @@ notes_router = APIRouter()
 
 
 @router.post("/", response_model=list[NoteSchema])
-# @conditional_rate_limit("5/minute")
+@conditional_rate_limit("5/minute")
 async def create_note(
     request: Request,
     authenticated: Account = Depends(Authenticator.get_verified_user),
