@@ -101,6 +101,24 @@ const UploadPage = () => {
     setAlertContent(statusAlertContent[200]);
     setOpenAlert(true);
   };
+
+  const handleAddNotes = () => {
+    if (Object.keys(notes).length >= 20) {
+      setAlertContent({
+        title: 'Error',
+        description: 'You can only upload up to 20 documents at a time.',
+        severity: 'error',
+      });
+      setOpenAlert(true);
+      return;
+    }
+    setKey(key + 1);
+    setNotes({
+      ...notes,
+      [key + 1]: { file: null, category: 0, subject: 0, type: 0, name: '' },
+    });
+  };
+
   const handleDeleteNote = (key: string | null) => {
     if (key === null) {
       setOpenDeleteAlert(false);
@@ -205,17 +223,7 @@ const UploadPage = () => {
               }}
             />
           ))}
-          <Button
-            variant='contained'
-            sx={{ width: '20vw' }}
-            onClick={() => {
-              setKey(key + 1);
-              setNotes({
-                ...notes,
-                [key + 1]: { file: null, category: 0, subject: 0, type: 0, name: '' },
-              });
-            }}
-          >
+          <Button variant='contained' sx={{ width: '20vw' }} onClick={handleAddNotes}>
             +
           </Button>
           <Button onClick={handleSubmit}>Submit</Button>
