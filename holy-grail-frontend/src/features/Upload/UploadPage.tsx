@@ -8,6 +8,8 @@ import AlertToast, { AlertProps } from '../../components/AlertToast/AlertToast';
 import UploadNote, { NoteInfoProps } from './UploadNote';
 import './upload.css';
 import { Button, ThemeProvider, createTheme } from '@mui/material';
+import DeleteAlert from '../Approval/DeleteAlert';
+import { set } from 'lodash';
 
 interface OptionsProps {
   categories: CategoryType[];
@@ -38,6 +40,8 @@ const UploadPage = () => {
   const [notes, setNotes] = useState<NotesProps>({
     '0': { file: null, category: 0, subject: 0, type: 0, name: '' },
   });
+  const [openDeleteAlert, setOpenDeleteAlert] = useState<boolean>(false);
+  const [deleteAlertKey, setDeleteAlertKey] = useState<string | null>(null);
 
   if (!user) {
     const alertContentRedirect: AlertProps = {
@@ -96,6 +100,17 @@ const UploadPage = () => {
 
     setAlertContent(statusAlertContent[200]);
     setOpenAlert(true);
+  };
+  const handleDeleteNote = (key: string | null) => {
+    if (key === null) {
+      setOpenDeleteAlert(false);
+      return;
+    }
+    const newNotes = { ...notes };
+    delete newNotes[Number(key)];
+    setNotes(newNotes);
+    setOpenDeleteAlert(false);
+    setDeleteAlertKey(null);
   };
 
   /*
@@ -179,9 +194,8 @@ const UploadPage = () => {
               options={options}
               saveNoteUpdates={(note) => setNotes({ ...notes, [key]: note })}
               deleteNote={() => {
-                const newNotes = { ...notes };
-                delete newNotes[Number(key)];
-                setNotes(newNotes);
+                setOpenDeleteAlert(true);
+                setDeleteAlertKey(key);
               }}
             />
           ))}
@@ -200,6 +214,16 @@ const UploadPage = () => {
           </Button>
           <Button onClick={handleSubmit}>Submit</Button>
         </div>
+        <DeleteAlert
+          isOpen={openDeleteAlert}
+          onClose={() => {
+            setOpenDeleteAlert(false);
+            setDeleteAlertKey(null);
+          }}
+          onConfirm={() => {
+            handleDeleteNote(deleteAlertKey);
+          }}
+        />
 
         <AlertToast
           openAlert={openAlert}
