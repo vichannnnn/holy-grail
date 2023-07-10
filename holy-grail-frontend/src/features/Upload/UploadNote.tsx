@@ -28,6 +28,7 @@ interface NoteInfoProps {
   subject: number;
   type: number;
   name: string | '';
+  valid: boolean;
 }
 
 interface UploadNoteProps {
@@ -82,6 +83,7 @@ export const UploadNote = ({ options, saveNoteUpdates, deleteNote }: UploadNoteP
       subject: subject,
       type: type,
       name: documentName,
+      valid: valid,
     });
   }, [selectedFile, category, subject, type, documentName]);
 

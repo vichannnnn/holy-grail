@@ -18,7 +18,7 @@ interface OptionsProps {
 }
 
 interface NotesProps {
-  [key: number]: NoteInfoProps;
+  [key: string]: NoteInfoProps;
 }
 
 interface ResponseStatusProps {
@@ -38,7 +38,7 @@ const UploadPage = () => {
 
   const [key, setKey] = useState<number>(0);
   const [notes, setNotes] = useState<NotesProps>({
-    '0': { file: null, category: 0, subject: 0, type: 0, name: '' },
+    '0': { file: null, category: 0, subject: 0, type: 0, name: '', valid: false },
   });
   const [openDeleteAlert, setOpenDeleteAlert] = useState<boolean>(false);
   const [deleteAlertKey, setDeleteAlertKey] = useState<string | null>(null);
@@ -102,6 +102,12 @@ const UploadPage = () => {
     setOpenAlert(true);
   };
 
+  const handleDisableSumbit = () => {
+    return !Object.values(notes)
+      .map((note) => note.valid)
+      .every((valid) => valid === true);
+  };
+
   const handleAddNotes = () => {
     if (Object.keys(notes).length >= 20) {
       setAlertContent({
@@ -115,7 +121,7 @@ const UploadPage = () => {
     setKey(key + 1);
     setNotes({
       ...notes,
-      [key + 1]: { file: null, category: 0, subject: 0, type: 0, name: '' },
+      [key + 1]: { file: null, category: 0, subject: 0, type: 0, name: '', valid: false },
     });
   };
 
@@ -220,7 +226,9 @@ const UploadPage = () => {
           <Button variant='contained' sx={{ width: '20vw' }} onClick={handleAddNotes}>
             +
           </Button>
-          <Button onClick={handleSubmit}>Submit</Button>
+          <Button onClick={handleSubmit} disabled={handleDisableSumbit()}>
+            Submit
+          </Button>
         </div>
         <DeleteAlert
           isOpen={openDeleteAlert}
