@@ -1,13 +1,13 @@
-import React, { useState, useEffect, memo, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { fetchData, CategoryType, SubjectType, DocumentType } from '../../api/utils/library/Search';
 import { createNote } from '../../api/utils/actions/CreateNote';
 import AuthContext from '../../providers/AuthProvider';
 import { useNavigate } from 'react-router-dom';
-import MediaQueryContext from '../../providers/MediaQueryProvider';
+import AddIcon from '@mui/icons-material/Add';
 import AlertToast, { AlertProps } from '../../components/AlertToast/AlertToast';
 import UploadNote, { NoteInfoProps } from './UploadNote';
 import './upload.css';
-import { Button, ThemeProvider, createTheme } from '@mui/material';
+import { Button, IconButton, ThemeProvider, createTheme } from '@mui/material';
 import DeleteAlert from '../Approval/DeleteAlert';
 
 interface OptionsProps {
@@ -30,9 +30,6 @@ const UploadPage = () => {
 
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
-
-  const muiTheme = createTheme();
-
   const [options, setOptions] = useState<OptionsProps | null>(null);
 
   const [key, setKey] = useState<number>(0);
@@ -41,6 +38,8 @@ const UploadPage = () => {
   });
   const [openDeleteAlert, setOpenDeleteAlert] = useState<boolean>(false);
   const [deleteAlertKey, setDeleteAlertKey] = useState<string | null>(null);
+
+  const muiTheme = createTheme();
 
   if (!user) {
     const alertContentRedirect: AlertProps = {
@@ -79,6 +78,11 @@ const UploadPage = () => {
         title: 'Conflict occured.',
         description:
           'Another document with the same name already exists. Please rename your document.',
+        severity: 'error',
+      },
+      '403': {
+        title: 'Forbidden',
+        description: 'Please ensure all files uploaded are pdf files.',
         severity: 'error',
       },
       '500': {
@@ -225,10 +229,22 @@ const UploadPage = () => {
               }}
             />
           ))}
-          <Button variant='contained' sx={{ width: '20vw' }} onClick={handleAddNotes}>
-            +
-          </Button>
-          <Button onClick={handleSubmit} disabled={handleDisableSumbit()}>
+          <IconButton onClick={handleAddNotes}>
+            <AddIcon color='info' />
+          </IconButton>
+          <Button
+            sx={{
+              borderColor: 'transparent',
+              backgroundColor: 'rgb(237, 242, 247)',
+              textTransform: 'capitalize',
+              color: 'black',
+              fontWeight: 'bold',
+              aspectRatio: 1.618,
+              borderRadius: '10%',
+            }}
+            onClick={handleSubmit}
+            disabled={handleDisableSumbit()}
+          >
             Submit
           </Button>
         </div>
