@@ -1,15 +1,16 @@
-FROM python:3.10.0-alpine
+FROM python:3.11-slim-bookworm
 
 WORKDIR ./app
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-COPY . .
+RUN apt-get update && apt-get install -y --no-cache build-essential libffi-dev
 
-EXPOSE 8000
+COPY ./app/requirements.txt ./app/requirements.txt
 
-RUN apk add --no-cache build-base libffi-dev
 RUN pip install types-Pygments types-colorama types-setuptools types-ujson
 RUN pip install --no-cache-dir --upgrade pip
 RUN pip install --no-cache-dir --default-timeout=100 -r ./app/requirements.txt
+
+COPY . .
