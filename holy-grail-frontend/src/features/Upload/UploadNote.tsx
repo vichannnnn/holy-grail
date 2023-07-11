@@ -1,4 +1,4 @@
-import { useState, useRef, useContext, memo, useEffect } from 'react';
+import { useState, useRef, useContext, useEffect } from 'react';
 import { OptionsProps } from './UploadPage';
 import Combobox from '../Library/Combobox';
 import {
@@ -10,7 +10,6 @@ import {
   Grid,
   Collapse,
   IconButton,
-  Badge,
   Tooltip,
   Box,
 } from '@mui/material';
@@ -71,6 +70,11 @@ export const UploadNote = ({ options, saveNoteUpdates, deleteNote }: UploadNoteP
           },
         },
       },
+      MuiButtonBase: {
+        defaultProps: {
+          disableRipple: true,
+        },
+      },
     },
   });
 
@@ -127,7 +131,7 @@ export const UploadNote = ({ options, saveNoteUpdates, deleteNote }: UploadNoteP
                   </Box>
                 }
               >
-                <ErrorIcon color='error' />
+                <ErrorIcon sx={{ transform: 'scale(1.5)' }} color='error' />
               </Tooltip>
             )}
           </Grid>
@@ -139,7 +143,6 @@ export const UploadNote = ({ options, saveNoteUpdates, deleteNote }: UploadNoteP
             sx={{
               border: validInput ? '1px solid green' : '1px solid red',
               borderRadius: '10px',
-              paddingRight: '0 !important',
             }}
           >
             <Grid
@@ -241,8 +244,18 @@ export const UploadNote = ({ options, saveNoteUpdates, deleteNote }: UploadNoteP
                         fileRef.current.click();
                       }
                     }}
-                    variant='contained'
-                    color='info'
+                    sx={{
+                      borderColor: 'transparent',
+                      backgroundColor: 'rgb(49, 130, 206)',
+                      textTransform: 'capitalize',
+                      color: 'white',
+                      fontWeight: 'bold',
+                      aspectRatio: 1.618,
+                      borderRadius: '5px',
+                      '&:hover': {
+                        backgroundColor: 'rgba(49, 130, 206, 0.75)',
+                      },
+                    }}
                   >
                     Upload File
                   </Button>
