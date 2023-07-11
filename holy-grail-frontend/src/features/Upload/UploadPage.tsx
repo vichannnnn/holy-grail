@@ -1,14 +1,15 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useRef } from 'react';
 import { fetchData, CategoryType, SubjectType, DocumentType } from '../../api/utils/library/Search';
 import { createNote } from '../../api/utils/actions/CreateNote';
 import AuthContext from '../../providers/AuthProvider';
 import { useNavigate } from 'react-router-dom';
-import AddIcon from '@mui/icons-material/Add';
 import AlertToast, { AlertProps } from '../../components/AlertToast/AlertToast';
 import UploadNote, { NoteInfoProps } from './UploadNote';
 import './upload.css';
 import { Button, IconButton, ThemeProvider, createTheme } from '@mui/material';
 import DeleteAlert from '../Approval/DeleteAlert';
+import FileSelect from './FileSelect';
+import { set } from 'lodash';
 
 interface OptionsProps {
   categories: CategoryType[];
@@ -24,6 +25,10 @@ interface ResponseStatusProps {
   [key: string]: AlertProps;
 }
 
+interface SelectedFilesProps {
+  [key: string]: [File, string];
+}
+
 const UploadPage = () => {
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
@@ -32,10 +37,10 @@ const UploadPage = () => {
   const navigate = useNavigate();
   const [options, setOptions] = useState<OptionsProps | null>(null);
 
-  const [key, setKey] = useState<number>(0);
-  const [notes, setNotes] = useState<NotesProps>({
-    '0': { file: null, category: 0, subject: 0, type: 0, name: '', valid: false },
-  });
+  const key = useRef<number>(0);
+  const [selectedFiles, setSelectedFiles] = useState<SelectedFilesProps | null>(null);
+  const [notes, setNotes] = useState<NotesProps | null>(null);
+
   const [openDeleteAlert, setOpenDeleteAlert] = useState<boolean>(false);
   const [deleteAlertKey, setDeleteAlertKey] = useState<string | null>(null);
 
@@ -57,7 +62,10 @@ const UploadPage = () => {
   }, []);
 
   const handleSubmit = async () => {
-    const responseStatus: string = (await createNote(Object.values(notes))).toString();
+    if (!notes || !selectedFiles) return;
+    const responseStatus: string = (
+      await createNote(Object.values(selectedFiles), Object.values(notes))
+    ).toString();
     const statusAlertContent: ResponseStatusProps = {
       '200': {
         title: 'Success',
@@ -108,14 +116,26 @@ const UploadPage = () => {
   };
 
   const handleDisableSumbit = () => {
-    if (Object.keys(notes).length === 0) return true;
+    if (!notes) return true;
+
     return !Object.values(notes)
       .map((note) => note.valid)
       .every((valid) => valid === true);
   };
 
-  const handleAddNotes = () => {
-    if (Object.keys(notes).length >= 20) {
+  const handleAddNotes = (eventFiles: FileList) => {
+    const files = Array.from(eventFiles);
+
+    if (files.some((file) => file.type !== 'application/pdf')) {
+      setAlertContent({
+        title: 'Error',
+        description: 'Please ensure all files uploaded are pdf files.',
+        severity: 'error',
+      });
+      setOpenAlert(true);
+      return;
+    }
+    if (files.length + Object.values(selectedFiles ? selectedFiles : {}).length >= 20) {
       setAlertContent({
         title: 'Error',
         description: 'You can only upload up to 20 documents at a time.',
@@ -124,11 +144,22 @@ const UploadPage = () => {
       setOpenAlert(true);
       return;
     }
-    setKey(key + 1);
-    setNotes({
-      ...notes,
-      [key + 1]: { file: null, category: 0, subject: 0, type: 0, name: '', valid: false },
+
+    let newKey = key.current;
+    let newSelectedFiles = { ...selectedFiles };
+    let newNotes = { ...notes };
+
+    files.forEach((file: File) => {
+      newKey += 1;
+
+      newSelectedFiles[newKey] = [file, file.name];
+
+      newNotes[newKey] = { category: 0, subject: 0, type: 0, name: '', valid: false };
     });
+    key.current = newKey;
+    console.log(newSelectedFiles, selectedFiles);
+    setSelectedFiles(newSelectedFiles);
+    setNotes(newNotes);
   };
 
   const handleDeleteNote = (key: string | null) => {
@@ -137,8 +168,12 @@ const UploadPage = () => {
       return;
     }
     const newNotes = { ...notes };
+    const newSelectedFiles = { ...selectedFiles };
     delete newNotes[Number(key)];
+    delete newSelectedFiles[Number(key)];
+
     setNotes(newNotes);
+    setSelectedFiles(newSelectedFiles);
     setOpenDeleteAlert(false);
     setDeleteAlertKey(null);
   };
@@ -224,20 +259,22 @@ const UploadPage = () => {
       </div>
       <ThemeProvider theme={muiTheme}>
         <div className='upload__multiContainer'>
-          {Object.entries(notes).map(([key, value]) => (
-            <UploadNote
-              key={key}
-              options={options}
-              saveNoteUpdates={(note) => setNotes({ ...notes, [key]: note })}
-              deleteNote={() => {
-                setOpenDeleteAlert(true);
-                setDeleteAlertKey(key);
-              }}
-            />
-          ))}
-          <IconButton onClick={handleAddNotes}>
-            <AddIcon color='info' />
-          </IconButton>
+          {notes
+            ? Object.entries(notes).map(([key, value]) => (
+                <UploadNote
+                  fileName={selectedFiles ? selectedFiles[key][1] : ''}
+                  key={key}
+                  options={options}
+                  saveNoteUpdates={(note) => setNotes({ ...notes, [key]: note })}
+                  deleteNote={() => {
+                    setOpenDeleteAlert(true);
+                    setDeleteAlertKey(key);
+                  }}
+                />
+              ))
+            : null}
+          <FileSelect handleAddNotes={handleAddNotes} />
+
           <Button
             sx={{
               borderColor: 'transparent',
@@ -276,4 +313,4 @@ const UploadPage = () => {
 };
 
 export default UploadPage;
-export type { OptionsProps };
+export type { OptionsProps, SelectedFilesProps };

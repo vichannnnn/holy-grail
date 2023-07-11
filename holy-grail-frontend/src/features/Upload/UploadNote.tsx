@@ -22,7 +22,6 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 interface NoteInfoProps {
-  file: File | null;
   category: number;
   subject: number;
   type: number;
@@ -31,14 +30,13 @@ interface NoteInfoProps {
 }
 
 interface UploadNoteProps {
+  fileName: string;
   options: OptionsProps | null;
   saveNoteUpdates: (note: NoteInfoProps) => void;
   deleteNote: () => void;
 }
 
-export const UploadNote = ({ options, saveNoteUpdates, deleteNote }: UploadNoteProps) => {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [selectedFileName, setSelectedFileName] = useState<string | undefined>(undefined);
+export const UploadNote = ({ fileName, options, saveNoteUpdates, deleteNote }: UploadNoteProps) => {
   const [documentName, setDocumentName] = useState<string>('');
   const [category, setCategory] = useState<number>(0);
   const [subject, setSubject] = useState<number>(0);
@@ -47,7 +45,6 @@ export const UploadNote = ({ options, saveNoteUpdates, deleteNote }: UploadNoteP
   const [validInput, setValidInput] = useState<boolean>(false);
 
   const validInputTip: Object = {
-    'Select a file': selectedFile,
     'Choose a category': category,
     'Choose a subject': subject,
     'Choose a type': type,
@@ -82,14 +79,13 @@ export const UploadNote = ({ options, saveNoteUpdates, deleteNote }: UploadNoteP
     const valid = Object.values(validInputTip).every((value) => Boolean(value));
     setValidInput(valid);
     saveNoteUpdates({
-      file: selectedFile,
       category: category,
       subject: subject,
       type: type,
       name: documentName,
       valid: valid,
     });
-  }, [selectedFile, category, subject, type, documentName]);
+  }, [category, subject, type, documentName]);
 
   const gridStyles = {
     display: 'flex',
@@ -114,7 +110,7 @@ export const UploadNote = ({ options, saveNoteUpdates, deleteNote }: UploadNoteP
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <Grid sx={gridStyles}>
             {validInput ? (
-              <CheckCircleIcon color='success' />
+              <CheckCircleIcon sx={{ transform: 'scale(1.5)' }} color='success' />
             ) : (
               <Tooltip
                 title={
@@ -151,22 +147,13 @@ export const UploadNote = ({ options, saveNoteUpdates, deleteNote }: UploadNoteP
               sx={{
                 ...gridStyles,
                 gap: '2%',
+                justifyContent: 'space-between',
               }}
             >
-              <TextField
-                sx={{ flexGrow: 1, margin: '2% 0 2% 2%' }}
-                required
-                label='Document Name'
-                placeholder={`Enter document name (eg. ${user?.username || 'anonymous'}'s Notes)`}
-                variant='outlined'
-                value={documentName}
-                onChange={(event) => {
-                  setDocumentName(event.target.value);
-                }}
-              />
+              <Typography sx={{ marginLeft: '3%' }}>{fileName}</Typography>
 
               <IconButton
-                sx={{ display: isDesktop ? null : 'none', margin: '2%' }}
+                sx={{ marginLeft: 'auto', display: isDesktop ? null : 'none', margin: '2%' }}
                 onClick={() => setExpanded(!expanded)}
               >
                 <ExpandMoreIcon />
@@ -180,6 +167,21 @@ export const UploadNote = ({ options, saveNoteUpdates, deleteNote }: UploadNoteP
               sx={{ padding: '0 2% 2% 2%', flexGrow: 1 }}
             >
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1vh' }}>
+                <Grid container item sx={gridStyles}>
+                  <TextField
+                    sx={{ flexGrow: 1, margin: '2% 0 2% 0' }}
+                    required
+                    label='Document Name'
+                    placeholder={`Enter document name (eg. ${
+                      user?.username || 'anonymous'
+                    }'s Notes)`}
+                    variant='outlined'
+                    value={documentName}
+                    onChange={(event) => {
+                      setDocumentName(event.target.value);
+                    }}
+                  />
+                </Grid>
                 <Grid
                   container
                   item
@@ -233,45 +235,6 @@ export const UploadNote = ({ options, saveNoteUpdates, deleteNote }: UploadNoteP
                   <IconButton onClick={deleteNote} sx={{ flexGrow: 0 }}>
                     <DeleteIcon color='error' />
                   </IconButton>
-                </Grid>
-                <Grid container item sx={gridStyles}>
-                  <Typography>{selectedFileName || 'No file selected'}</Typography>
-                </Grid>
-                <Grid container item sx={gridStyles}>
-                  <Button
-                    onClick={() => {
-                      if (fileRef.current) {
-                        fileRef.current.click();
-                      }
-                    }}
-                    sx={{
-                      borderColor: 'transparent',
-                      backgroundColor: 'rgb(49, 130, 206)',
-                      textTransform: 'capitalize',
-                      color: 'white',
-                      fontWeight: 'bold',
-                      aspectRatio: 1.618,
-                      borderRadius: '5px',
-                      '&:hover': {
-                        backgroundColor: 'rgba(49, 130, 206, 0.75)',
-                      },
-                    }}
-                  >
-                    Upload File
-                  </Button>
-                  <input
-                    ref={fileRef}
-                    type='file'
-                    accept='application/pdf'
-                    // , text/plain, application/vnd.openxmlformats-officedocument.wordprocessingml.document
-                    onChange={(event) => {
-                      if (event.target.files && event.target.files[0]) {
-                        setSelectedFile(event.target.files[0]);
-                        setSelectedFileName(event.target.files[0].name);
-                      }
-                    }}
-                    style={{ display: 'none' }}
-                  />
                 </Grid>
               </Box>
             </Collapse>
