@@ -1,16 +1,19 @@
 import { AxiosError, all } from 'axios';
 import apiClient from '../../apiClient';
 import { NoteInfoProps } from '../../../features/Upload/UploadNote';
+import { SelectedFilesProps } from '../../../features/Upload/UploadPage';
 
-export const createNote = async (notes: NoteInfoProps[]) => {
+export const createNote = async (files: [File, string][], notes: NoteInfoProps[]) => {
   const allData = new FormData();
   allData.append('maxIndex', String(notes.length - 1));
-  notes.forEach((note, index) => {
-    allData.append(`file ${index}`, note.file as File);
-    allData.append(`category ${index}`, String(note.category));
-    allData.append(`subject ${index}`, String(note.subject));
-    allData.append(`type ${index}`, String(note.type));
-    allData.append(`document_name ${index}`, String(note.name));
+  const uploads: [File, NoteInfoProps][] = files.map((file, idx) => [file[0], notes[idx]]);
+
+  uploads.forEach((upload: [File, NoteInfoProps], index) => {
+    allData.append(`file ${index}`, upload[0]);
+    allData.append(`category ${index}`, String(upload[1].category));
+    allData.append(`subject ${index}`, String(upload[1].subject));
+    allData.append(`type ${index}`, String(upload[1].type));
+    allData.append(`document_name ${index}`, String(upload[1].name));
   });
 
   try {
