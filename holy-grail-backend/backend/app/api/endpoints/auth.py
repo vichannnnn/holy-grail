@@ -42,7 +42,6 @@ else:
         data: AccountRegisterSchema,
         session: AsyncSession = Depends(get_session),
     ):
-
         if data.password != data.repeat_password:
             raise AppError.PASSWORD_MISMATCH_ERROR
 
