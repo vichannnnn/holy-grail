@@ -5,7 +5,7 @@ WORKDIR ./app
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-RUN apt-get update && apt-get install -y --no-cache build-essential libffi-dev
+RUN apt-get update && apt-get install -y build-essential libffi-dev
 
 COPY ./app/requirements.txt ./app/requirements.txt
 
