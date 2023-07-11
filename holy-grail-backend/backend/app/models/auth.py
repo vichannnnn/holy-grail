@@ -191,10 +191,10 @@ class Account(Base, CRUD["Account"]):
     async def register_development(
         self, session: AsyncSession, data: AccountRegisterSchema
     ) -> CurrentUserSchema:
-        self.username = data.username
-        self.password = Authenticator.pwd_context.hash(data.password)
-        self.email = data.email
-        self.verified = True
+        self.username: str = data.username
+        self.password: str = Authenticator.pwd_context.hash(data.password)
+        self.email: EmailStr = data.email
+        self.verified: bool = True
 
         try:
             session.add(self)

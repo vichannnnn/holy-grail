@@ -39,11 +39,10 @@ else:
 
     @router.post("/create", response_model=CurrentUserSchema)
     async def create_account_development(
-        request: Request,
         data: AccountRegisterSchema,
         session: AsyncSession = Depends(get_session),
     ):
-        print(os.getenv("PRODUCTION"))
+
         if data.password != data.repeat_password:
             raise AppError.PASSWORD_MISMATCH_ERROR
 
