@@ -2,10 +2,8 @@ import asyncio
 from typing import AsyncGenerator
 
 from fastapi.testclient import TestClient
-from pydantic import PostgresDsn
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.pool import NullPool
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.schemas.auth import (
     AccountRegisterSchema,
     AccountUpdatePasswordSchema,
@@ -14,26 +12,11 @@ from app.schemas.auth import (
 from app import schemas
 from app.api.deps import get_session
 from app.db.base_class import Base
+from app.db.database import engine as test_engine, async_session as TestingSessionLocal
 from app.main import app
 from app.models.auth import Authenticator, Account
 from app.models.categories import DocumentTypes, Subjects, CategoryLevel
 import pytest
-
-SQLALCHEMY_DATABASE_URL = PostgresDsn.build(
-    scheme="postgresql+asyncpg",
-    user="postgres",
-    password="postgres",
-    host="holy-grail-db",
-    port="5432",
-    path="/test",
-)
-
-test_engine = create_async_engine(
-    SQLALCHEMY_DATABASE_URL, future=True, poolclass=NullPool
-)
-TestingSessionLocal = sessionmaker(
-    test_engine, autoflush=False, expire_on_commit=False, class_=AsyncSession
-)
 
 
 @pytest.fixture(scope="session")
