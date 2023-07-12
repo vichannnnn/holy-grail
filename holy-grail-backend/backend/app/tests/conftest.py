@@ -1,11 +1,11 @@
 import asyncio
 from typing import AsyncGenerator
-
-from fastapi.testclient import TestClient
 from pydantic import PostgresDsn
+from os import environ
+from fastapi.testclient import TestClient
+from sqlalchemy import text
+import sqlalchemy.exc as SQLAlchemyExceptions
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.pool import NullPool
 from app.schemas.auth import (
     AccountRegisterSchema,
     AccountUpdatePasswordSchema,
@@ -14,35 +14,44 @@ from app.schemas.auth import (
 from app import schemas
 from app.api.deps import get_session
 from app.db.base_class import Base
+from app.db.database import (
+    engine as test_engine,
+    async_session as TestingSessionLocal,
+    SQLALCHEMY_DATABASE_URL_WITHOUT_DB,
+    TESTING,
+)
 from app.main import app
 from app.models.auth import Authenticator, Account
 from app.models.categories import DocumentTypes, Subjects, CategoryLevel
 import pytest
 
-SQLALCHEMY_DATABASE_URL = PostgresDsn.build(
-    scheme="postgresql+asyncpg",
-    user="postgres",
-    password="postgres",
-    host="holy-grail-db",
-    port="5432",
-    path="/test",
-)
-
-test_engine = create_async_engine(
-    SQLALCHEMY_DATABASE_URL, future=True, poolclass=NullPool
-)
-TestingSessionLocal = sessionmaker(
-    test_engine, autoflush=False, expire_on_commit=False, class_=AsyncSession
-)
-
 
 @pytest.fixture(scope="session")
-def loop():
+def event_loop():
     return asyncio.get_event_loop()
 
 
+@pytest.fixture(scope="session", autouse=True)
+async def create_test_database():
+    postgres_engine = create_async_engine(SQLALCHEMY_DATABASE_URL_WITHOUT_DB)
+
+    async with postgres_engine.connect() as conn:
+        await conn.execute(text("COMMIT"))
+        try:
+            await conn.execute(text("CREATE DATABASE test;"))
+        except SQLAlchemyExceptions.ProgrammingError as exc:
+            pass
+
+    yield
+
+    async with postgres_engine.connect() as conn:
+        await conn.execute(text("COMMIT"))
+        await conn.execute(text("DROP DATABASE test;"))
+        await conn.close()
+
+
 @pytest.fixture(scope="function", autouse=True)
-async def init_models(loop):
+async def init_models(event_loop):
     async with test_engine.begin() as conn:
         await conn.run_sync(Base.metadata.drop_all)
         await conn.run_sync(Base.metadata.create_all)
@@ -289,7 +298,7 @@ def test_note_update_2():
 
 
 @pytest.fixture
-async def create_education_level(loop):
+async def create_education_level(event_loop):
     new_category = CategoryLevel(name="GCE 'A' Levels")
     session = TestingSessionLocal()
     session.add(new_category)
@@ -298,7 +307,7 @@ async def create_education_level(loop):
 
 
 @pytest.fixture
-async def create_two_education_level(loop):
+async def create_two_education_level(event_loop):
     new_category_1 = CategoryLevel(name="GCE 'A' Levels")
     new_category_2 = CategoryLevel(name="GCE 'O' Levels")
     session = TestingSessionLocal()
@@ -309,7 +318,7 @@ async def create_two_education_level(loop):
 
 
 @pytest.fixture
-async def create_doc_type_subject_education_level(loop):
+async def create_doc_type_subject_education_level(event_loop):
     new_doc_type = DocumentTypes(name="Notes")
     new_subject = Subjects(name="Mathematics", category_id=1)
     new_category = CategoryLevel(name="GCE 'A' Levels")

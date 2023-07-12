@@ -1,18 +1,13 @@
----
 version: '3.8'
 
 services:
   holy-grail-frontend:
     container_name: holy-grail-frontend
     image: ghcr.io/vichannnnn/holy-grail/holy-grail-frontend:latest
-    ports:
-      - '80:80'
-      - '443:443'
-      - '5175:5175'
-      - '8000:8000'
+    depends_on:
+      - holy-grail-backend
     networks:
       - holy-grail-network
-      - default
     environment:
       VITE_APP_API_URL: ${VITE_APP_API_URL}
       VITE_APP_AWS_S3_BUCKET_URL: ${VITE_APP_AWS_S3_BUCKET_URL}
@@ -21,24 +16,24 @@ services:
       BACKEND_URL: ${BACKEND_URL}
       BACKEND_CONTAINER_URL: ${BACKEND_CONTAINER_URL}
       PRODUCTION: ${PRODUCTION}
-    depends_on:
-      - holy-grail-backend
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
       - caddy_data:/data
       - caddy_config:/config
-    restart:
-      always
+    ports:
+      - '80:80'
+      - '443:443'
+      - '5175:5175'
+      - '8000:8000'
+    restart: always
 
   holy-grail-backend:
     container_name: holy-grail-backend
-    image: ghcr.io/vichannnnn/holy-grail/holy-grail-backend:latest    
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
-    networks:
-      - holy-grail-network
-      - default
+    image: ghcr.io/vichannnnn/holy-grail/holy-grail-backend:latest
     depends_on:
       - holy-grail-db
+    networks:
+      - holy-grail-network
     environment:
       FRONTEND_URL: ${FRONTEND_URL}
       BACKEND_URL: ${BACKEND_URL}
@@ -59,44 +54,49 @@ services:
       MAILTRAP_BEARER_TOKEN: ${MAILTRAP_BEARER_TOKEN}
       MAILTRAP_API_KEY: ${MAILTRAP_API_KEY}
       PRODUCTION: ${PRODUCTION}
-    restart:
-      always
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+    restart: always
 
   holy-grail-db:
     container_name: holy-grail-db
+    image: postgres:14.1-alpine
     networks:
       - holy-grail-network
-      - default
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_HOST: ${POSTGRES_HOST}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_USER: ${POSTGRES_USER}
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+      - ./holy-grail-backend/db:/docker-entrypoint-initdb.d/
+    ports:
+      - '5432:5432'
     healthcheck:
       interval: 5s
       retries: 10
       test: [ "CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB" ]
-    image: postgres:14.1-alpine
-    ports:
-      - '5432:5432'
-    volumes:
-      - ./postgres:/var/lib/postgresql/data
-      - ./holy-grail-backend/db:/docker-entrypoint-initdb.d/
-    restart:
-      always
+    restart: always
 
   holy-grail-redis:
+    container_name: holy-grail-redis
     image: redis:7.0.7-alpine
-    ports:
-      - "6379"
     depends_on:
       - holy-grail-db
+    networks:
+      - holy-grail-network
     command: redis-server --loglevel verbose
-    restart:
-      always
+    ports:
+      - "6379"
+    restart: always
 
   holy-grail-scheduler:
+    container_name: holy-grail-scheduler
     image: ghcr.io/vichannnnn/holy-grail/holy-grail-scheduler:latest
+    depends_on:
+      - holy-grail-redis
+    networks:
+      - holy-grail-network
     environment:
       FRONTEND_URL: ${FRONTEND_URL}
       BACKEND_URL: ${BACKEND_URL}
@@ -116,34 +116,32 @@ services:
       AWS_S3_SECRET_ACCESS_KEY: ${AWS_S3_SECRET_ACCESS_KEY}
       MAILTRAP_BEARER_TOKEN: ${MAILTRAP_BEARER_TOKEN}
       MAILTRAP_API_KEY: ${MAILTRAP_API_KEY}
-    depends_on:
-      - holy-grail-redis
     command: celery -A app.worker worker -B --loglevel=info
     healthcheck:
       test: [ "CMD-SHELL", "celery inspect ping" ]
-    restart:
-      always
+    restart: always
 
   holy-grail-scheduler-gui:
+    container_name: holy-grail-scheduler-gui
+    image: mher/flower:1.2.0
+    depends_on:
+      holy-grail-scheduler:
+        condition: service_healthy
+    networks:
+      - holy-grail-network
     environment:
       CELERY_BROKER_URL: ${REDIS_URL}
     links:
       - holy-grail-scheduler
     ports:
-      - "5555:5555"
-    depends_on:
-      holy-grail-scheduler:
-        condition: service_healthy
-    image: mher/flower:1.2.0
-    restart:
-      always
-
-volumes:
-  caddy_config: null
-  caddy_data: null
+      - "5555"
+    restart: always
 
 networks:
   holy-grail-network:
     name: holy-grail-network
     driver: bridge
 
+volumes:
+  caddy_config: null
+  caddy_data: null
