@@ -93,8 +93,8 @@ const UploadPage = () => {
         setOpenAlert(true);
       } else if (responseStatus === 429) {
         setAlertContent({
-          title: "You're submitting too fast!",
-          description: 'You can only upload 1 document per minute.',
+          title: "Rate limit exceeded",
+          description: 'You\'re trying too fast! Please try again in 1 minutes.',
           severity: 'error',
         });
         setOpenAlert(true);

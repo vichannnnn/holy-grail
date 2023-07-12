@@ -48,7 +48,6 @@ const VerifyAccountPage = () => {
       });
       setOpenAlert(true);
     } catch (error) {
-      console.error(error);
       setAlertContent({
         title: 'Failed to resend verification email.',
         description: 'An error occurred while sending.',
