@@ -1,6 +1,6 @@
-from typing import Optional
+from typing import Optional, List
 
-from fastapi import APIRouter, Depends, UploadFile, File, Query, Request, Form
+from fastapi import APIRouter, Depends, UploadFile, File, Query, Request
 from fastapi_pagination import Page
 from app.api.deps import (
     SessionBucket,
@@ -17,7 +17,7 @@ router = APIRouter()
 notes_router = APIRouter()
 
 
-@router.post("/", response_model=list[NoteSchema])
+@router.post("/", response_model=List[NoteSchema])
 @conditional_rate_limit("5/minute")
 async def create_note(
     request: Request,
@@ -25,31 +25,29 @@ async def create_note(
     session: AsyncSession = Depends(get_session),
     s3_bucket: boto3.client = Depends(get_s3_client),
 ):
-    new_notes = []
-    async with request.form() as form:
-        max_index = int(form['maxIndex'])
-        
-        for i in range(max_index + 1):
-            
 
-            form_data = NoteCreateSchema(
-                category=form[f'category {i}'],
-                subject=form[f'subject {i}'],
-                type=form[f'type {i}'],
-                document_name=form[f'document_name {i}']
+    async with request.form() as form:
+        max_index = int(form["maxIndex"])
+
+        note_datas = [
+            NoteCreateSchema(
+                category=form[f"category {i}"],
+                subject=form[f"subject {i}"],
+                type=form[f"type {i}"],
+                document_name=form[f"document_name {i}"],
             )
-        
-            note = await Library.create(
-                session,
-                uploaded_file=form[f'file {i}'],
-                uploaded_by=authenticated.user_id,
-                data=form_data,
-                s3_bucket=s3_bucket,
-            )
-            
-            new_notes.append(await Library.get(session, note.id))
-    
-    return new_notes
+            for i in range(max_index + 1)
+        ]
+
+        notes = await Library.create_many(
+            session,
+            uploaded_files=[form[f"file {i}"] for i in range(max_index + 1)],
+            uploaded_by=authenticated.user_id,
+            datas=note_datas,
+            s3_bucket=s3_bucket,
+        )
+
+    return notes
 
 
 @router.get("/{id}", response_model=NoteSchema)

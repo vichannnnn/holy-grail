@@ -1,6 +1,5 @@
 import datetime
-from typing import TYPE_CHECKING, Optional
-import uuid
+from typing import TYPE_CHECKING, Optional, List
 
 from fastapi import UploadFile, HTTPException
 from sqlalchemy import func, ForeignKey, select, update, delete
@@ -87,6 +86,44 @@ class Library(Base, CRUD["Library"]):
         return res
 
     @classmethod
+    async def create_many(
+        cls,
+        session: AsyncSession,
+        uploaded_files: List[UploadFile],
+        uploaded_by: int,
+        datas: List[NoteCreateSchema],
+        s3_bucket,
+    ):
+
+        objs = []
+        for uploaded_file, data in zip(uploaded_files, datas):
+            if uploaded_file.content_type not in accepted_doc_type_extensions.keys():
+                raise AppError.INVALID_FILE_TYPE_ERROR
+
+            extension = accepted_doc_type_extensions[uploaded_file.content_type]
+            data_json = data.dict()
+            data_json["uploaded_by"] = uploaded_by
+            if isinstance(uploaded_file, StarletteUploadFile):
+                file_name = await save_file(uploaded_file, extension, s3_bucket)
+                data_json["file_name"] = file_name
+
+            obj = Library(**data_json)
+            objs.append(obj)
+
+        try:
+            session.add_all(objs)
+            await session.commit()
+
+        except SQLAlchemyExceptions.IntegrityError as exc:
+            if str(exc).find("ForeignKeyViolationError") != -1:
+                raise AppError.CATEGORY_DOES_NOT_EXISTS_ERROR
+            elif str(exc).find("UniqueViolationError") != -1:
+                raise AppError.DOCUMENT_NAME_ALREADY_EXISTS_ERROR from exc
+            raise AppError.DOCUMENT_NAME_ALREADY_EXISTS_ERROR from exc
+
+        return objs
+
+    @classmethod
     async def get_all_notes_paginated(
         cls,
         session: AsyncSession,
@@ -143,7 +180,6 @@ class Library(Base, CRUD["Library"]):
         )
         result = await session.execute(stmt)
         res = result.scalar()
-
         if not res:
             raise HTTPException(status_code=404, detail="Note not found")
         return res
