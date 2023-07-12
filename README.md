@@ -45,6 +45,7 @@ yarn dev
 ```
 make venv
 source holy-grail-backend/backend/app/.venv/bin/activate
+pre-commit install
 ```
 
 You should be able to see (holy-grail-py1.0) in your terminal beside your name, this means you're accessing all the
