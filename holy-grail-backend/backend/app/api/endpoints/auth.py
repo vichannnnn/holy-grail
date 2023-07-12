@@ -29,22 +29,18 @@ if os.getenv("PRODUCTION") != "local" or os.getenv("TESTING"):
         data: AccountRegisterSchema,
         session: AsyncSession = Depends(get_session),
     ):
-        if data.password != data.repeat_password:
-            raise AppError.PASSWORD_MISMATCH_ERROR
-
         created_user = await Account().register(session, data)
         return created_user
 
 else:
 
     @router.post("/create", response_model=CurrentUserSchema)
+    @conditional_rate_limit("10/5minute")
     async def create_account_development(
+        request: Request,
         data: AccountRegisterSchema,
         session: AsyncSession = Depends(get_session),
     ):
-        if data.password != data.repeat_password:
-            raise AppError.PASSWORD_MISMATCH_ERROR
-
         created_user = await Account().register_development(session, data)
         return created_user
 

@@ -196,6 +196,9 @@ class Account(Base, CRUD["Account"]):
         self.email: EmailStr = data.email
         self.verified: bool = True
 
+        if data.password != data.repeat_password:
+            raise AppError.PASSWORD_MISMATCH_ERROR
+
         try:
             session.add(self)
             await session.commit()
@@ -222,6 +225,9 @@ class Account(Base, CRUD["Account"]):
         self.username = data.username
         self.password = Authenticator.pwd_context.hash(data.password)
         self.email = data.email
+
+        if data.password != data.repeat_password:
+            raise AppError.PASSWORD_MISMATCH_ERROR
 
         try:
             session.add(self)
