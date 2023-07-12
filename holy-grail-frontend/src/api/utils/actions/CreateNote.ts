@@ -1,7 +1,6 @@
 import { AxiosError, all } from 'axios';
 import apiClient from '../../apiClient';
 import { NoteInfoProps } from '../../../features/Upload/UploadNote';
-import { SelectedFilesProps } from '../../../features/Upload/UploadPage';
 
 export const createNote = async (files: [File, string][], notes: NoteInfoProps[]) => {
   const allData = new FormData();
