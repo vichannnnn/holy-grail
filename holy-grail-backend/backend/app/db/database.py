@@ -30,7 +30,9 @@ SQLALCHEMY_DATABASE_URL_WITHOUT_DB = PostgresDsn.build(
 engine = create_async_engine(
     SQLALCHEMY_DATABASE_URL, future=True, poolclass=NullPool if TESTING else None
 )
-async_session = async_sessionmaker(engine, expire_on_commit=False, class_=AsyncSession)
+async_session = async_sessionmaker(
+    bind=engine, expire_on_commit=False, autoflush=False, class_=AsyncSession
+)
 
 sync_engine = create_engine(SQLALCHEMY_DATABASE_URL, pool_pre_ping=True)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=sync_engine)
