@@ -23,28 +23,24 @@ router = APIRouter()
 if os.getenv("PRODUCTION") != "local" or os.getenv("TESTING"):
 
     @router.post("/create", response_model=CurrentUserSchema)
-    @conditional_rate_limit("2/5minute")
+    @conditional_rate_limit("10/5minute")
     async def create_account(
         request: Request,
         data: AccountRegisterSchema,
         session: AsyncSession = Depends(get_session),
     ):
-        if data.password != data.repeat_password:
-            raise AppError.PASSWORD_MISMATCH_ERROR
-
         created_user = await Account().register(session, data)
         return created_user
 
 else:
 
     @router.post("/create", response_model=CurrentUserSchema)
+    @conditional_rate_limit("10/5minute")
     async def create_account_development(
+        request: Request,
         data: AccountRegisterSchema,
         session: AsyncSession = Depends(get_session),
     ):
-        if data.password != data.repeat_password:
-            raise AppError.PASSWORD_MISMATCH_ERROR
-
         created_user = await Account().register_development(session, data)
         return created_user
 
@@ -97,7 +93,7 @@ async def verify_email(
 
 
 @router.post("/resend_email_verification_token")
-@conditional_rate_limit("2/5minute")
+@conditional_rate_limit("5/10minute")
 async def resend_verify_email_token(
     request: Request,
     session: AsyncSession = Depends(get_session),
@@ -110,10 +106,10 @@ async def resend_verify_email_token(
 
 
 @router.post("/send_reset_password_mail")
-@conditional_rate_limit("2/5minute")
+@conditional_rate_limit("5/10minute")
 async def reset_password(
-    data: SendPasswordResetEmailSchema,
     request: Request,
+    data: SendPasswordResetEmailSchema,
     session: AsyncSession = Depends(get_session),
 ):
     await Account().send_reset_email(session, data.email)
