@@ -43,7 +43,7 @@ const FileSelect = ({ handleAddNotes }: FileSelectProps) => {
   return (
     <div
       style={{
-        width: '65vw',
+        width: '50vw',
         aspectRatio: 1.618,
         padding: '3%',
         display: 'flex',
@@ -55,7 +55,7 @@ const FileSelect = ({ handleAddNotes }: FileSelectProps) => {
       }}
       ref={dragDropRef}
     >
-      <Typography>Drag n drop idiot</Typography>
+      <Typography>Drag and drop your PDFs here, or</Typography>
       <Button
         onClick={() => {
           if (fileRef.current) {

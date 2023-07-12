@@ -4,7 +4,6 @@ import Combobox from '../Library/Combobox';
 import {
   createTheme,
   ThemeProvider,
-  Button,
   Typography,
   TextField,
   Grid,
@@ -133,7 +132,7 @@ export const UploadNote = ({ fileName, options, saveNoteUpdates, deleteNote }: U
           </Grid>
         </div>
 
-        <div style={{ width: '65vw' }}>
+        <div style={{ width: '50vw' }}>
           <Grid
             container
             sx={{

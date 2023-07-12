@@ -6,10 +6,9 @@ import { useNavigate } from 'react-router-dom';
 import AlertToast, { AlertProps } from '../../components/AlertToast/AlertToast';
 import UploadNote, { NoteInfoProps } from './UploadNote';
 import './upload.css';
-import { Button, IconButton, ThemeProvider, createTheme } from '@mui/material';
+import { Button, ThemeProvider, createTheme } from '@mui/material';
 import DeleteAlert from '../Approval/DeleteAlert';
 import FileSelect from './FileSelect';
-import { set } from 'lodash';
 
 interface OptionsProps {
   categories: CategoryType[];
@@ -157,7 +156,7 @@ const UploadPage = () => {
       newNotes[newKey] = { category: 0, subject: 0, type: 0, name: '', valid: false };
     });
     key.current = newKey;
-    console.log(newSelectedFiles, selectedFiles);
+
     setSelectedFiles(newSelectedFiles);
     setNotes(newNotes);
   };
