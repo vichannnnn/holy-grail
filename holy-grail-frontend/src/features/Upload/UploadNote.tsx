@@ -43,16 +43,14 @@ export const UploadNote = ({ fileName, options, saveNoteUpdates, deleteNote }: U
 
   const [validInput, setValidInput] = useState<boolean>(false);
 
-  const validInputTip: Object = {
-    'Choose a category': category,
-    'Choose a subject': subject,
-    'Choose a type': type,
-    'Enter a document name': documentName,
+  const validChecks = {
+    category: category !== 0,
+    subject: subject !== 0,
+    type: type !== 0,
+    name: documentName !== '',
   };
 
   const [expanded, setExpanded] = useState<boolean>(true);
-
-  const fileRef = useRef<HTMLInputElement | null>(null);
 
   const { user } = useContext(AuthContext);
   const { isDesktop } = useContext(MediaQueryContext);
@@ -75,7 +73,7 @@ export const UploadNote = ({ fileName, options, saveNoteUpdates, deleteNote }: U
   });
 
   useEffect(() => {
-    const valid = Object.values(validInputTip).every((value) => Boolean(value));
+    const valid = Object.values(validChecks).every((value) => Boolean(value));
     setValidInput(valid);
     saveNoteUpdates({
       category: category,
@@ -106,32 +104,6 @@ export const UploadNote = ({ fileName, options, saveNoteUpdates, deleteNote }: U
           margin: '1%',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Grid sx={gridStyles}>
-            {validInput ? (
-              <CheckCircleIcon sx={{ transform: 'scale(1.5)' }} color='success' />
-            ) : (
-              <Tooltip
-                title={
-                  <Box>
-                    <Typography>Please do the following: </Typography>
-
-                    {Object.entries(validInputTip)
-                      .filter(([_, value]) => Boolean(!value))
-                      .map(([key, _]) => (
-                        <Typography key={key} fontSize={'100%'}>
-                          {key}
-                        </Typography>
-                      ))}
-                  </Box>
-                }
-              >
-                <ErrorIcon sx={{ transform: 'scale(1.5)' }} color='error' />
-              </Tooltip>
-            )}
-          </Grid>
-        </div>
-
         <div style={{ width: '50vw' }}>
           <Grid
             container
@@ -147,12 +119,13 @@ export const UploadNote = ({ fileName, options, saveNoteUpdates, deleteNote }: U
                 ...gridStyles,
                 gap: '2%',
                 justifyContent: 'space-between',
+                margin: '1%',
               }}
             >
-              <Typography sx={{ marginLeft: '3%' }}>{fileName}</Typography>
+              <Typography sx={{ marginLeft: '4%' }}>{fileName}</Typography>
 
               <IconButton
-                sx={{ marginLeft: 'auto', display: isDesktop ? null : 'none', margin: '2%' }}
+                sx={{ marginLeft: 'auto', display: isDesktop ? null : 'none' }}
                 onClick={() => setExpanded(!expanded)}
               >
                 <ExpandMoreIcon />
@@ -163,78 +136,87 @@ export const UploadNote = ({ fileName, options, saveNoteUpdates, deleteNote }: U
               in={isDesktop ? expanded : true}
               timeout='auto'
               unmountOnExit
-              sx={{ padding: '0 2% 2% 2%', flexGrow: 1 }}
+              sx={{ padding: '0 1% 1% 1%', flexGrow: 1, display: 'flex', flexDirection: 'row' }}
             >
-              <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1vh' }}>
-                <Grid container item sx={gridStyles}>
-                  <TextField
-                    sx={{ flexGrow: 1, margin: '2% 0 2% 0' }}
-                    required
-                    label='Document Name'
-                    placeholder={`Enter document name (eg. ${
-                      user?.username || 'anonymous'
-                    }'s Notes)`}
-                    variant='outlined'
-                    value={documentName}
-                    onChange={(event) => {
-                      setDocumentName(event.target.value);
-                    }}
-                  />
-                </Grid>
-                <Grid
-                  container
-                  item
-                  sx={{
-                    ...gridStyles,
-                    margin: '1%',
-                    gap: '2%',
-                  }}
-                >
-                  <Combobox
-                    style={{ flexGrow: 1 }}
-                    label='Category'
-                    value={category || 0}
-                    onChange={(newValue) => {
-                      setCategory(newValue || 0);
-                    }}
-                    options={
-                      options?.categories.map((category) => ({
-                        value: category.id,
-                        label: category.name,
-                      })) || []
-                    }
-                  />
+              <Box sx={{ display: 'flex', flexDirection: 'row', margin: '2% 0 2% 2%' }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1vh', flexGrow: 1 }}>
+                  <Grid container item sx={gridStyles}>
+                    <TextField
+                      sx={{ flexGrow: 1 }}
+                      label='Document Name'
+                      placeholder={`Enter document name (eg. ${
+                        user?.username || 'anonymous'
+                      }'s Notes)`}
+                      variant='outlined'
+                      value={documentName}
+                      onChange={(event) => {
+                        setDocumentName(event.target.value);
+                      }}
+                      error={!validChecks.name}
+                    />
+                  </Grid>
+                  <Grid
+                    container
+                    item
+                    sx={{
+                      ...gridStyles,
+                      margin: '1%',
+                      gap: '2%',
 
-                  <Combobox
-                    style={{ flexGrow: 1 }}
-                    label='Subject'
-                    value={subject || 0}
-                    onChange={(newValue) => {
-                      setSubject(newValue || 0);
+                      justifyContent: 'space-evenly',
                     }}
-                    options={
-                      options?.subjects.map((subject) => ({
-                        value: subject.id,
-                        label: subject.name,
-                      })) || []
-                    }
-                  />
+                  >
+                    <Combobox
+                      style={{ flex: '1 1 0' }}
+                      label='Category'
+                      value={category || 0}
+                      onChange={(newValue) => {
+                        setCategory(newValue || 0);
+                      }}
+                      options={
+                        options?.categories.map((category) => ({
+                          value: category.id,
+                          label: category.name,
+                        })) || []
+                      }
+                      error={!validChecks.category}
+                    />
 
-                  <Combobox
-                    style={{ flexGrow: 1 }}
-                    label='Type'
-                    value={type || 0}
-                    onChange={(newValue) => {
-                      setType(newValue || 0);
-                    }}
-                    options={
-                      options?.types.map((type) => ({ value: type.id, label: type.name })) || []
-                    }
-                  />
+                    <Combobox
+                      style={{ flex: '1 1 0' }}
+                      label='Subject'
+                      value={subject || 0}
+                      onChange={(newValue) => {
+                        setSubject(newValue || 0);
+                      }}
+                      options={
+                        options?.subjects.map((subject) => ({
+                          value: subject.id,
+                          label: subject.name,
+                        })) || []
+                      }
+                      error={!validChecks.subject}
+                    />
+
+                    <Combobox
+                      style={{ flex: '1 1 0' }}
+                      label='Type'
+                      value={type || 0}
+                      onChange={(newValue) => {
+                        setType(newValue || 0);
+                      }}
+                      options={
+                        options?.types.map((type) => ({ value: type.id, label: type.name })) || []
+                      }
+                      error={!validChecks.type}
+                    />
+                  </Grid>
+                </Box>
+                <Box sx={{ marginLeft: '2%' }}>
                   <IconButton onClick={deleteNote} sx={{ flexGrow: 0 }}>
                     <DeleteIcon color='error' />
                   </IconButton>
-                </Grid>
+                </Box>
               </Box>
             </Collapse>
           </Grid>
