@@ -55,7 +55,7 @@ const FileSelect = ({ handleAddNotes }: FileSelectProps) => {
       }}
       ref={dragDropRef}
     >
-      <Typography>Drag and drop your PDFs here, or</Typography>
+      <Typography sx={{ margin: '2%' }}>Drag and drop your PDFs here, or</Typography>
       <Button
         onClick={() => {
           if (fileRef.current) {
