@@ -25,28 +25,17 @@ async def create_note(
     session: AsyncSession = Depends(get_session),
     s3_bucket: boto3.client = Depends(get_s3_client),
 ):
-
     async with request.form() as form:
-        max_index = int(form["maxIndex"])
-
-        note_datas = [
-            NoteCreateSchema(
-                category=form[f"category {i}"],
-                subject=form[f"subject {i}"],
-                type=form[f"type {i}"],
-                document_name=form[f"document_name {i}"],
-            )
-            for i in range(max_index + 1)
-        ]
 
         notes = await Library.create_many(
             session,
-            uploaded_files=[form[f"file {i}"] for i in range(max_index + 1)],
+            form_data=form,
             uploaded_by=authenticated.user_id,
-            datas=note_datas,
             s3_bucket=s3_bucket,
         )
-
+        await Library.get(
+            session, notes[0].id
+        )  # this fucking line i swear to god is gna give me a heart attack
     return notes
 
 

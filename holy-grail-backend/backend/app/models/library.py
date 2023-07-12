@@ -6,13 +6,16 @@ from sqlalchemy import func, ForeignKey, select, update, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Mapped, mapped_column, relationship, selectinload
 from sqlalchemy.sql.expression import text
-from starlette.datastructures import UploadFile as StarletteUploadFile
-from app.crud.base import CRUD
+from starlette.datastructures import (
+    UploadFile as StarletteUploadFile,
+    FormData as StarletteFormData,
+)
+
 from app.db.base_class import Base
 from app.utils.exceptions import AppError
 from app.utils.file_handler import save_file, accepted_doc_type_extensions
 from app.models.auth import Account
-from app.schemas.library import NoteCreateSchema, NoteInsertSchema
+from app.schemas.library import NoteCreateSchema, NoteSchema
 
 if TYPE_CHECKING:
     from app.models.categories import CategoryLevel, Subjects, DocumentTypes
@@ -89,11 +92,21 @@ class Library(Base, CRUD["Library"]):
     async def create_many(
         cls,
         session: AsyncSession,
-        uploaded_files: List[UploadFile],
+        form_data: StarletteFormData,
         uploaded_by: int,
-        datas: List[NoteCreateSchema],
         s3_bucket,
     ):
+        max_index = int(form_data["maxIndex"])
+        datas = [
+            NoteCreateSchema(
+                category=form_data[f"category {i}"],
+                subject=form_data[f"subject {i}"],
+                type=form_data[f"type {i}"],
+                document_name=form_data[f"document_name {i}"],
+            )
+            for i in range(max_index + 1)
+        ]
+        uploaded_files = [form_data[f"file {i}"] for i in range(max_index + 1)]
 
         objs = []
         for uploaded_file, data in zip(uploaded_files, datas):
@@ -120,7 +133,6 @@ class Library(Base, CRUD["Library"]):
             elif str(exc).find("UniqueViolationError") != -1:
                 raise AppError.DOCUMENT_NAME_ALREADY_EXISTS_ERROR from exc
             raise AppError.DOCUMENT_NAME_ALREADY_EXISTS_ERROR from exc
-
         return objs
 
     @classmethod
