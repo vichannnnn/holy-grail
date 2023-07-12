@@ -25,6 +25,7 @@ async def create_note(
     session: AsyncSession = Depends(get_session),
     s3_bucket: boto3.client = Depends(get_s3_client),
 ):
+
     note = await Library.create(
         session,
         uploaded_file=file,
@@ -32,8 +33,7 @@ async def create_note(
         data=data,
         s3_bucket=s3_bucket,
     )
-    new_note = await Library.get(session, note.id)
-    return new_note
+    return note
 
 
 @router.get("/{id}", response_model=NoteSchema)

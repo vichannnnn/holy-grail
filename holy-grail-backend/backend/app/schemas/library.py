@@ -17,6 +17,11 @@ class NoteCreateSchema(BaseModel):
     document_name: DocumentNameStr
 
 
+class NoteInsertSchema(NoteCreateSchema):
+    uploaded_by: int
+    file_name: str
+
+
 class NoteUpdateSchema(BaseModel):
     category: Optional[int]
     document_name: Optional[DocumentNameStr]
