@@ -83,7 +83,6 @@ const NotesTable = ({
                 if (value) {
                   setIsCategorySelected(true);
                   const categoryData = await fetchCategory({ category_id: value });
-                  // Pass the category_id to fetchData function
                   await fetchData(categoryData.id);
                 } else {
                   setIsCategorySelected(false);
@@ -100,7 +99,9 @@ const NotesTable = ({
                 handlePageChange(1);
               }}
               options={subjects}
-              style={{ width: isDesktop ? '15%' : '100%' }}
+              style={{ width: isDesktop ? '15%' : '100%',
+                opacity: isCategorySelected ? 1 : 0.5,
+              }}
               disabled={!isCategorySelected}
             />
             <Combobox
