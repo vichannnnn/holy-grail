@@ -33,9 +33,6 @@ async def create_note(
             uploaded_by=authenticated.user_id,
             s3_bucket=s3_bucket,
         )
-        await Library.get(
-            session, notes[0].id
-        )  # this fucking line i swear to god is gna give me a heart attack
     return notes
 
 

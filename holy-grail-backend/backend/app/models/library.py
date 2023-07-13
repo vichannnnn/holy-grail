@@ -15,7 +15,8 @@ from app.db.base_class import Base
 from app.utils.exceptions import AppError
 from app.utils.file_handler import save_file, accepted_doc_type_extensions
 from app.models.auth import Account
-from app.schemas.library import NoteCreateSchema, NoteSchema
+from app.schemas.library import NoteCreateSchema, NoteInsertSchema
+import uuid
 
 if TYPE_CHECKING:
     from app.models.categories import CategoryLevel, Subjects, DocumentTypes
@@ -113,26 +114,35 @@ class Library(Base, CRUD["Library"]):
             if uploaded_file.content_type not in accepted_doc_type_extensions.keys():
                 raise AppError.INVALID_FILE_TYPE_ERROR
 
+            if not isinstance(uploaded_file, StarletteUploadFile):
+                raise AppError.INVALID_FILE_TYPE_ERROR
+
             extension = accepted_doc_type_extensions[uploaded_file.content_type]
-            data_json = data.dict()
-            data_json["uploaded_by"] = uploaded_by
-            if isinstance(uploaded_file, StarletteUploadFile):
-                file_name = await save_file(uploaded_file, extension, s3_bucket)
-                data_json["file_name"] = file_name
-
-            obj = Library(**data_json)
+            file_id = uuid.uuid4().hex
+            file_name = file_id + extension
+            data_insert = NoteInsertSchema(
+                **data.dict(), uploaded_by=uploaded_by, file_name=file_name
+            )
+            obj = Library(**data_insert.dict())
             objs.append(obj)
-
+            session.add(obj)
         try:
-            session.add_all(objs)
+
             await session.commit()
+            await save_file(uploaded_file, file_name, s3_bucket)
+            for obj in objs:
+                await session.refresh(
+                    obj, ["doc_category", "doc_type", "doc_subject", "account"]
+                )
 
         except SQLAlchemyExceptions.IntegrityError as exc:
+            await session.rollback()
             if str(exc).find("ForeignKeyViolationError") != -1:
                 raise AppError.CATEGORY_DOES_NOT_EXISTS_ERROR
             elif str(exc).find("UniqueViolationError") != -1:
                 raise AppError.DOCUMENT_NAME_ALREADY_EXISTS_ERROR from exc
             raise AppError.DOCUMENT_NAME_ALREADY_EXISTS_ERROR from exc
+
         return objs
 
     @classmethod
