@@ -1,5 +1,4 @@
-import Autocomplete from '@mui/material/Autocomplete';
-import TextField from '@mui/material/TextField';
+import { Autocomplete, TextField } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { CSSProperties } from 'react';
 
@@ -13,10 +12,11 @@ export interface ComboboxProps {
   options: { value: number; label: string }[];
   style?: CSSProperties;
   disabled?: boolean;
+  error?: boolean;
   extras?: Extras;
 }
 
-const Combobox = ({ label, value, onChange, options, style, disabled, extras }: ComboboxProps) => {
+const Combobox = ({ label, value, onChange, options, style, disabled, error, extras }: ComboboxProps) => {
   const muiTheme = createTheme();
   return (
     <ThemeProvider theme={muiTheme}>
@@ -25,7 +25,7 @@ const Combobox = ({ label, value, onChange, options, style, disabled, extras }: 
         value={options.find((option) => option.value === value) || null}
         options={options}
         onChange={(_, newValue) => onChange(newValue?.value || '')}
-        renderInput={(params) => <TextField {...params} label={label} />}
+        renderInput={(params) => <TextField {...params} label={label} error={error} />}
         isOptionEqualToValue={(option, value) => option.value === value?.value}
         getOptionLabel={(option) => option.label}
         disabled={disabled}

@@ -1,4 +1,4 @@
-import { useState, useRef, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { OptionsProps } from './UploadPage';
 import Combobox from '../Library/Combobox';
 import {
@@ -9,7 +9,6 @@ import {
   Grid,
   Collapse,
   IconButton,
-  Tooltip,
   Box,
 } from '@mui/material';
 import MediaQueryContext from '../../providers/MediaQueryProvider';
@@ -19,6 +18,7 @@ import { fetchData, fetchCategory, SubjectType} from '../../api/utils/library/Se
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DeleteIcon from '@mui/icons-material/Delete';
 
+export type { NoteInfoProps };
 interface NoteInfoProps {
   category: number;
   subject: number;
@@ -236,4 +236,3 @@ export const UploadNote = ({ fileName, options, saveNoteUpdates, deleteNote }: U
 };
 
 export default UploadNote;
-export type { NoteInfoProps };

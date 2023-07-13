@@ -1,6 +1,6 @@
 import datetime
 from typing import TYPE_CHECKING, Optional, List
-
+from pydantic import ValidationError
 from fastapi import UploadFile, HTTPException
 from sqlalchemy import func, ForeignKey, select, update, delete
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -97,16 +97,21 @@ class Library(Base, CRUD["Library"]):
         uploaded_by: int,
         s3_bucket,
     ):
-        notes = [
-            NoteCreateSchema(
-                file=form_data[f"notes[{i}].file"],
-                category=int(form_data[f"notes[{i}].category"]),
-                subject=int(form_data[f"notes[{i}].subject"]),
-                type=int(form_data[f"notes[{i}].type"]),
-                document_name=form_data[f"notes[{i}].document_name"],
-            )
-            for i in range(len(form_data) // 5)
-        ]
+
+        failed_notes = set()
+        notes = []
+        for i in range(len(form_data) // 5):
+            try:
+                note = NoteCreateSchema(
+                    file=form_data[f"notes[{i}].file"],
+                    category=int(form_data[f"notes[{i}].category"]),
+                    subject=int(form_data[f"notes[{i}].subject"]),
+                    type=int(form_data[f"notes[{i}].type"]),
+                    document_name=form_data[f"notes[{i}].document_name"],
+                )
+                notes.append(note)
+            except ValidationError:
+                failed_notes.add(i)
 
         objs = []
         files = []
