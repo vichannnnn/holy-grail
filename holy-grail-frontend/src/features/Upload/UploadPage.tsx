@@ -134,10 +134,10 @@ const UploadPage = () => {
       setOpenAlert(true);
       return;
     }
-    if (files.length + Object.values(selectedFiles ? selectedFiles : {}).length >= 20) {
+    if (files.length + Object.values(selectedFiles || {}).length >= 10) {
       setAlertContent({
         title: 'Error',
-        description: 'You can only upload up to 20 documents at a time.',
+        description: 'You can only upload up to 10 documents at a time.',
         severity: 'error',
       });
       setOpenAlert(true);
@@ -253,7 +253,7 @@ const UploadPage = () => {
       <ThemeProvider theme={muiTheme}>
         <div className='upload__multiContainer'>
           {notes
-            ? Object.entries(notes).map(([key, value]) => (
+            ? Object.keys(notes).map((key) => (
                 <UploadNote
                   fileName={selectedFiles ? selectedFiles[key][1] : ''}
                   key={key}
