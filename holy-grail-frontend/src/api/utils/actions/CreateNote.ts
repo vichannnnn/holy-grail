@@ -1,18 +1,20 @@
-import { AxiosError, all } from 'axios';
+import { AxiosError } from 'axios';
 import apiClient from '../../apiClient';
 import { NoteInfoProps } from '../../../features/Upload/UploadNote';
 
 export const createNote = async (files: [File, string][], notes: NoteInfoProps[]) => {
   const allData = new FormData();
-  allData.append('maxIndex', String(notes.length - 1));
-  const uploads: [File, NoteInfoProps][] = files.map((file, idx) => [file[0], notes[idx]]);
 
-  uploads.forEach((upload: [File, NoteInfoProps], index) => {
-    allData.append(`file ${index}`, upload[0]);
-    allData.append(`category ${index}`, String(upload[1].category));
-    allData.append(`subject ${index}`, String(upload[1].subject));
-    allData.append(`type ${index}`, String(upload[1].type));
-    allData.append(`document_name ${index}`, String(upload[1].name));
+  // Pair each note with its file
+  const noteFilePairs: {file: File, note: NoteInfoProps}[] = files.map((file, idx) => ({file: file[0], note: notes[idx]}));
+
+  // Append each pair to the FormData
+  noteFilePairs.forEach((pair, index) => {
+    allData.append(`notes[${index}].file`, pair.file);
+    allData.append(`notes[${index}].category`, String(pair.note.category));
+    allData.append(`notes[${index}].subject`, String(pair.note.subject));
+    allData.append(`notes[${index}].type`, String(pair.note.type));
+    allData.append(`notes[${index}].document_name`, pair.note.name);
   });
 
   try {

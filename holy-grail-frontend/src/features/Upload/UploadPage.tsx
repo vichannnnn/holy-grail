@@ -16,6 +16,8 @@ interface OptionsProps {
   types: DocumentType[];
 }
 
+export type { OptionsProps, SelectedFilesProps };
+
 interface NotesProps {
   [key: string]: NoteInfoProps;
 }
@@ -27,6 +29,7 @@ interface ResponseStatusProps {
 interface SelectedFilesProps {
   [key: string]: [File, string];
 }
+
 
 const UploadPage = () => {
   const [openAlert, setOpenAlert] = useState<boolean>(false);
@@ -119,7 +122,7 @@ const UploadPage = () => {
 
     return !Object.values(notes)
       .map((note) => note.valid)
-      .every((valid) => valid === true);
+      .every((valid) => valid);
   };
 
   const handleAddNotes = (eventFiles: FileList) => {
@@ -145,14 +148,12 @@ const UploadPage = () => {
     }
 
     let newKey = key.current;
-    let newSelectedFiles = { ...selectedFiles };
-    let newNotes = { ...notes };
+    const newSelectedFiles = { ...selectedFiles };
+    const newNotes = { ...notes };
 
     files.forEach((file: File) => {
       newKey += 1;
-
       newSelectedFiles[newKey] = [file, file.name];
-
       newNotes[newKey] = { category: 0, subject: 0, type: 0, name: '', valid: false };
     });
     key.current = newKey;
@@ -176,72 +177,6 @@ const UploadPage = () => {
     setOpenDeleteAlert(false);
     setDeleteAlertKey(null);
   };
-
-  /*
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    if (!selectedFile || category === '' || subject === '' || type === '') {
-      setAlertContent({
-        title: 'Error',
-        description: 'You need to select everything and upload at least one file.',
-        severity: 'error',
-      });
-      setOpenAlert(true);
-      return;
-    }
-
-    if (selectedFile) {
-      const responseStatus = await createNote(
-        selectedFile,
-        category,
-        subject,
-        type,
-        documentName || '',
-      );
-
-      let alertContentRedirect: AlertProps; // Initialize the alertContentRedirect object outside the conditions
-
-      if (responseStatus == 200) {
-        alertContentRedirect = {
-          title: 'Success',
-          description: 'Successfully sent for review and will be shown in library once uploaded.',
-          severity: 'success',
-        };
-        setAlertContent(alertContentRedirect);
-        setOpenAlert(true);
-        navigate('/', { state: { alertContent: alertContentRedirect } });
-      } else if (responseStatus === 429) {
-        alertContentRedirect = {
-          title: 'Rate limit exceeded',
-          description: "You're trying too fast! Please try again in 1 minutes.",
-          severity: 'error',
-        };
-      } else if (responseStatus === 401) {
-        alertContentRedirect = {
-          title: 'Account not verified',
-          description: 'Please verify your account with the verification mail sent to your email.',
-          severity: 'error',
-        };
-      } else if (responseStatus === 409) {
-        alertContentRedirect = {
-          title: 'Notes upload unsuccessful',
-          description:
-            "A name of the note that you're trying to upload already exists in the repository.",
-          severity: 'error',
-        };
-      } else {
-        alertContentRedirect = {
-          title: 'Error',
-          description: 'Something went wrong. Please contact an administrator!',
-          severity: 'error',
-        };
-      }
-      setAlertContent(alertContentRedirect);
-      setOpenAlert(true);
-    }
-  };
-  */
 
   return (
     <section className='upload section container'>
@@ -306,4 +241,3 @@ const UploadPage = () => {
 };
 
 export default UploadPage;
-export type { OptionsProps, SelectedFilesProps };
