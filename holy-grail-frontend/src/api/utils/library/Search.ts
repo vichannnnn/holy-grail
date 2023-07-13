@@ -54,7 +54,9 @@ export const fetchData = async (category_id: number | null = null) => {
 
   let subjects;
   if (category_id !== null) {
-    subjects = await apiClient.get(`/all_subjects?category_id=${category_id}`);
+    subjects = await apiClient.get('/all_subjects', {
+      params: { category_id },
+    });
   } else {
     subjects = await apiClient.get('/all_subjects');
   }
@@ -74,6 +76,15 @@ export const fetchData = async (category_id: number | null = null) => {
     })),
   };
 };
+
+export const fetchCategory = async (searchParams: {
+  category_id: number;
+}) => {
+  const response = await apiClient.get<CategoryType>('/category', {
+    params: searchParams,
+  });
+  return response.data;
+}
 
 export const fetchApprovedNotes = async (searchParams: {
   category?: string;
@@ -100,17 +111,3 @@ export const fetchPendingApprovalNotes = async (searchParams: {
   });
   return response.data;
 };
-
-// export function useMatch(term: string, items: string[]) {
-//   return useMemo(() => {
-//     if (term.trim() === "") {
-//       return items;
-//     } else {
-//       const results = matchSorter(items, term, {
-//         keys: [(item) => item],
-//       });
-//
-//       return results.length > 0 ? results : [];
-//     }
-//   }, [term, items]);
-// }

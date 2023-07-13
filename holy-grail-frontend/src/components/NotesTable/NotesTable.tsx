@@ -1,7 +1,7 @@
 import {useState} from "react";
 import { Box, Card, CardContent, Grid, Typography, Link } from '@mui/material';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import { Note, fetchData } from '../../api/utils/library/Search';
+import {Note, fetchData, fetchCategory} from '../../api/utils/library/Search';
 import Combobox from '../../features/Library/Combobox';
 import { ComboboxProps } from '../../features/Library/Combobox';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -77,12 +77,14 @@ const NotesTable = ({
             <Combobox
               label='Category'
               value={category}
-              onChange={(value) => {
+              onChange={async (value) => {
                 onCategoryChange(value);
                 handlePageChange(1);
                 if (value) {
                   setIsCategorySelected(true);
-                  fetchData(value);
+                  const categoryData = await fetchCategory({ category_id: value });
+                  // Pass the category_id to fetchData function
+                  await fetchData(categoryData.id);
                 } else {
                   setIsCategorySelected(false);
                 }
@@ -99,6 +101,7 @@ const NotesTable = ({
               }}
               options={subjects}
               style={{ width: isDesktop ? '15%' : '100%' }}
+              disabled={!isCategorySelected}
             />
             <Combobox
               label='Type'
