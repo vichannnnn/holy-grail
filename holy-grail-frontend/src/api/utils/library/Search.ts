@@ -46,12 +46,18 @@ export type SubjectType = CommonType;
 
 export type DocumentType = CommonType;
 
-export const fetchData = async () => {
-  const [categories, subjects, types] = await Promise.all([
+export const fetchData = async (category_id: number | null = null) => {
+  const [categories, types] = await Promise.all([
     apiClient.get('/all_category_level'),
-    apiClient.get('/all_subjects'),
     apiClient.get('/all_document_type'),
   ]);
+
+  let subjects;
+  if (category_id !== null) {
+    subjects = await apiClient.get(`/all_subjects?category_id=${category_id}`);
+  } else {
+    subjects = await apiClient.get('/all_subjects');
+  }
 
   return {
     categories: categories.data.map((category: CategoryType) => ({

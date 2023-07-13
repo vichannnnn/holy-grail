@@ -111,26 +111,6 @@ const NotesApplication = () => {
     setPageInfo({ ...pageInfo, page: 1 });
   };
 
-  // const renderNotes = () => {
-  //   return notes.items.map((note: Note) => (
-  //     <TableRow key={note.id}>
-  //       <TableCell>{note.doc_category?.name}</TableCell>
-  //       <TableCell>{note.doc_subject?.name}</TableCell>
-  //       <TableCell>{note.doc_type?.name}</TableCell>
-  //       <TableCell>{note.account?.username}</TableCell>
-  //       <TableCell>
-  //         <a
-  //           href={`https://holy-grail-bucket.s3.ap-southeast-1.amazonaws.com/${note.file_name}`}
-  //           target="_blank"
-  //           rel="noopener noreferrer"
-  //         >
-  //           View PDF
-  //         </a>
-  //       </TableCell>
-  //     </TableRow>
-  //   ));
-  // };
-
   return (
     <>
       <NotesTable
