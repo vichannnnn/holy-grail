@@ -42,9 +42,10 @@ export interface CommonType {
 
 export type CategoryType = CommonType;
 
-export type SubjectType = CommonType;
-
 export type DocumentType = CommonType;
+export interface SubjectType extends CommonType {
+  category_id: number;
+}
 
 export const fetchData = async (category_id: number | null = null) => {
   const [categories, types] = await Promise.all([

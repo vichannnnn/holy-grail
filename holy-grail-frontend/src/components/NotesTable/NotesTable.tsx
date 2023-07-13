@@ -1,7 +1,7 @@
 import {useState} from "react";
 import { Box, Card, CardContent, Grid, Typography, Link } from '@mui/material';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import {Note, fetchData, fetchCategory} from '../../api/utils/library/Search';
+import {Note, fetchData, fetchCategory, SubjectType} from '../../api/utils/library/Search';
 import Combobox from '../../features/Library/Combobox';
 import { ComboboxProps } from '../../features/Library/Combobox';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -59,6 +59,7 @@ const NotesTable = ({
   const muiTheme = createTheme();
   const { isDesktop } = useContext(MediaQueryContext);
   const [isCategorySelected, setIsCategorySelected] = useState(false);
+  const [subjectsData, setSubjectsData] = useState([]);
 
 
   return (
@@ -83,9 +84,11 @@ const NotesTable = ({
                 if (value) {
                   setIsCategorySelected(true);
                   const categoryData = await fetchCategory({ category_id: value });
-                  await fetchData(categoryData.id);
+                  const data = await fetchData(categoryData.id);
+                  setSubjectsData(data.subjects.map((subject: SubjectType) => ({ value: subject.id, label: subject.name })));
                 } else {
                   setIsCategorySelected(false);
+                  setSubjectsData([]);
                 }
               }}
               options={categories}
@@ -98,7 +101,7 @@ const NotesTable = ({
                 onSubjectChange(value);
                 handlePageChange(1);
               }}
-              options={subjects}
+              options={isCategorySelected ? subjectsData : subjects}
               style={{ width: isDesktop ? '15%' : '100%',
                 opacity: isCategorySelected ? 1 : 0.5,
               }}
