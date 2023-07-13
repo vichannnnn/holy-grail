@@ -14,8 +14,7 @@ import {
 } from '@mui/material';
 import MediaQueryContext from '../../providers/MediaQueryProvider';
 import AuthContext from '../../providers/AuthProvider';
-import ErrorIcon from '@mui/icons-material/Error';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { fetchData, fetchCategory, SubjectType} from '../../api/utils/library/Search';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -40,6 +39,8 @@ export const UploadNote = ({ fileName, options, saveNoteUpdates, deleteNote }: U
   const [category, setCategory] = useState<number>(0);
   const [subject, setSubject] = useState<number>(0);
   const [type, setType] = useState<number>(0);
+  const [subjectsData, setSubjectsData] = useState([]);
+
 
   const [validInput, setValidInput] = useState<boolean>(false);
 
@@ -170,8 +171,12 @@ export const UploadNote = ({ fileName, options, saveNoteUpdates, deleteNote }: U
                       style={{ flex: '1 1 0' }}
                       label='Category'
                       value={category || 0}
-                      onChange={(newValue) => {
+                      onChange={async (newValue) => {
                         setCategory(newValue || 0);
+                        if (newValue === '') return;
+                        const categoryData = await fetchCategory({ category_id: Number(newValue) });
+                        const data = await fetchData(categoryData.id);
+                        setSubjectsData(data.subjects.map((subject: SubjectType) => ({ value: subject.id, label: subject.name })));
                       }}
                       options={
                         options?.categories.map((category) => ({
@@ -180,6 +185,7 @@ export const UploadNote = ({ fileName, options, saveNoteUpdates, deleteNote }: U
                         })) || []
                       }
                       error={!validChecks.category}
+
                     />
 
                     <Combobox
@@ -190,12 +196,15 @@ export const UploadNote = ({ fileName, options, saveNoteUpdates, deleteNote }: U
                         setSubject(newValue || 0);
                       }}
                       options={
+                        subjectsData
+                        ||
                         options?.subjects.map((subject) => ({
                           value: subject.id,
                           label: subject.name,
                         })) || []
                       }
-                      error={!validChecks.subject}
+                      error={category !==0&&!validChecks.subject}
+                      disabled={category === 0}
                     />
 
                     <Combobox
