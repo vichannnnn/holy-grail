@@ -59,6 +59,9 @@ check: pylint \
 tests:
 	docker compose -f docker-compose.$(version).yml run -e TESTING=true --rm $(backend_container) pytest ./app/tests -x -vv
 
+test:
+	docker compose -f docker-compose.$(version).yml run --rm -e TESTING=true $(backend_container) pytest ./app/tests/api/$(file).py -x -vv
+
 local-dump:
 	scp $(user)@$(domain):./holy-grail/$(sql_file_name).sql .
 	docker exec -i holy-grail-db psql -U $(local_postgres_user) -d $(local_postgres_db_name) < $(sql_file_name).sql

@@ -232,6 +232,66 @@ def test_add_subject_math(
     }
 
 
+# ----------------- READ TESTS ------------------
+
+
+def test_get_subjects_from_category(
+    test_client_developer: TestClient,
+    test_category_insert_gce_a_level,
+    test_category_insert_gce_o_level,
+    test_subject_insert_biology_category_1,
+    test_subject_insert_chemistry_category_1,
+    test_subject_insert_chemistry_category_2,
+):
+
+    payload = jsonable_encoder(test_category_insert_gce_a_level)
+    response = test_client_developer.post(CATEGORY_LEVEL_URL, json=payload)
+    assert response.status_code == status.HTTP_200_OK
+    first_category = response.json()
+    assert first_category["id"] == 1
+    payload = jsonable_encoder(test_category_insert_gce_o_level)
+    response = test_client_developer.post(CATEGORY_LEVEL_URL, json=payload)
+    assert response.status_code == status.HTTP_200_OK
+    second_category = response.json()
+    assert second_category["id"] == 2
+
+    payload = jsonable_encoder(test_subject_insert_biology_category_1)
+    response = test_client_developer.post(SUBJECT_URL, json=payload)
+    assert response.status_code == status.HTTP_200_OK
+    first_sub_cat_1 = response.json()
+    assert first_sub_cat_1["name"] == test_subject_insert_biology_category_1.name
+
+    payload = jsonable_encoder(test_subject_insert_chemistry_category_1)
+    response = test_client_developer.post(SUBJECT_URL, json=payload)
+    assert response.status_code == status.HTTP_200_OK
+    second_sub_cat_1 = response.json()
+    assert second_sub_cat_1["name"] == test_subject_insert_chemistry_category_1.name
+
+    payload = jsonable_encoder(test_subject_insert_chemistry_category_2)
+    response = test_client_developer.post(SUBJECT_URL, json=payload)
+    assert response.status_code == status.HTTP_200_OK
+    first_sub_cat_2 = response.json()
+    assert first_sub_cat_2["name"] == test_subject_insert_chemistry_category_2.name
+
+    response = test_client_developer.get(
+        GET_ALL_SUBJECT_URL, params={"category_id": first_category["id"]}
+    )
+    assert response.status_code == status.HTTP_200_OK
+    resp = response.json()
+    assert len(resp) == 2
+
+    assert resp[0]["name"] == first_sub_cat_1["name"]
+    assert resp[1]["name"] == second_sub_cat_1["name"]
+
+    response = test_client_developer.get(
+        GET_ALL_SUBJECT_URL, params={"category_id": second_category["id"]}
+    )
+    assert response.status_code == status.HTTP_200_OK
+    resp = response.json()
+    assert len(resp) == 1
+    assert resp[0]["name"] == second_sub_cat_1["name"]
+
+
 # ----------------- UPDATE TESTS -----------------
 
 

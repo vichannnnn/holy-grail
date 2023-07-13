@@ -197,6 +197,11 @@ def test_subject_insert_chem_category_1():
     yield schemas.categories.SubjectCreateSchema(name="Chemistry", category_id=1)
 
 
+@pytest.fixture(name="test_subject_insert_chemistry_category_2")
+def test_subject_insert_chem_category_2():
+    yield schemas.categories.SubjectCreateSchema(name="Chemistry", category_id=2)
+
+
 @pytest.fixture(name="test_subject_insert_physics_category_1")
 def test_subject_insert_physics_category_1():
     yield schemas.categories.SubjectCreateSchema(name="Physics", category_id=1)
