@@ -69,8 +69,8 @@ class Library(Base, CRUD["Library"]):
         data: NoteCreateSchema,
         s3_bucket,
     ):
-        if uploaded_file.content_type not in accepted_doc_type_extensions:
-            raise AppError.BAD_REQUEST_ERROR
+        if uploaded_file.content_type not in accepted_doc_type_extensions.keys():
+            raise AppError.INVALID_FILE_TYPE_ERROR
 
         if not isinstance(uploaded_file, StarletteUploadFile):
             raise AppError.BAD_REQUEST_ERROR
@@ -97,39 +97,36 @@ class Library(Base, CRUD["Library"]):
         uploaded_by: int,
         s3_bucket,
     ):
-        max_index = int(form_data["maxIndex"])
-        datas = [
+        notes = [
             NoteCreateSchema(
-                category=form_data[f"category {i}"],
-                subject=form_data[f"subject {i}"],
-                type=form_data[f"type {i}"],
-                document_name=form_data[f"document_name {i}"],
+                file=form_data[f"notes[{i}].file"],
+                category=int(form_data[f"notes[{i}].category"]),
+                subject=int(form_data[f"notes[{i}].subject"]),
+                type=int(form_data[f"notes[{i}].type"]),
+                document_name=form_data[f"notes[{i}].document_name"],
             )
-            for i in range(max_index + 1)
+            for i in range(len(form_data) // 5)
         ]
-        uploaded_files = [form_data[f"file {i}"] for i in range(max_index + 1)]
 
         objs = []
-        for uploaded_file, data in zip(uploaded_files, datas):
-            if uploaded_file.content_type not in accepted_doc_type_extensions.keys():
-                raise AppError.INVALID_FILE_TYPE_ERROR
-
-            if not isinstance(uploaded_file, StarletteUploadFile):
-                raise AppError.INVALID_FILE_TYPE_ERROR
-
-            extension = accepted_doc_type_extensions[uploaded_file.content_type]
+        files = []
+        for note in notes:
+            extension = accepted_doc_type_extensions[note.file.content_type]
             file_id = uuid.uuid4().hex
             file_name = file_id + extension
             data_insert = NoteInsertSchema(
-                **data.dict(), uploaded_by=uploaded_by, file_name=file_name
+                **note.dict(), uploaded_by=uploaded_by, file_name=file_name
             )
             obj = Library(**data_insert.dict())
             objs.append(obj)
-            session.add(obj)
-        try:
 
+        try:
+            session.add_all(objs)
             await session.commit()
-            await save_file(uploaded_file, file_name, s3_bucket)
+
+            for file, file_name in files:
+                await save_file(file, file_name, s3_bucket)
+
             for obj in objs:
                 await session.refresh(
                     obj, ["doc_category", "doc_type", "doc_subject", "account"]

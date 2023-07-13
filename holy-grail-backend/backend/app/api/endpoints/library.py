@@ -25,8 +25,8 @@ async def create_note(
     session: AsyncSession = Depends(get_session),
     s3_bucket: boto3.client = Depends(get_s3_client),
 ):
-    async with request.form() as form:
 
+    async with request.form() as form:
         notes = await Library.create_many(
             session,
             form_data=form,
