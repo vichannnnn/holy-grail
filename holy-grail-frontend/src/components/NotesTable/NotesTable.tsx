@@ -89,6 +89,7 @@ const NotesTable = ({
                 } else {
                   setIsCategorySelected(false);
                   setSubjectsData([]);
+                  onSubjectChange('');
                 }
               }}
               options={categories}
