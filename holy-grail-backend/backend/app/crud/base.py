@@ -36,7 +36,11 @@ class CRUD(Generic[ModelType]):
     async def get(cls: Base, session: AsyncSession, id: int) -> ModelType:
         stmt = select(cls).where(cls.id == id)
         result = await session.execute(stmt)
-        return result.scalar()
+        instance = result.scalar()
+
+        if instance is None:
+            raise AppError.GENERIC_ITEM_NOT_FOUND_ERROR
+        return instance
 
     @classmethod
     async def update(

@@ -39,6 +39,15 @@ async def get_category_level_list(
     return data
 
 
+@router.get("/category", response_model=CategorySchema)
+async def get_category(
+    category_id: int,
+    session: AsyncSession = Depends(get_session),
+):
+    data = await CategoryLevel.get(session, category_id)
+    return data
+
+
 @router.get("/all_document_type", response_model=List[DocumentTypeSchema])
 async def get_notes_type_list(
     session: AsyncSession = Depends(get_session),

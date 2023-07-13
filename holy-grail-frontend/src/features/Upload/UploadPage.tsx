@@ -78,43 +78,60 @@ const UploadPage = () => {
 
     if (selectedFile) {
       const responseStatus = await createNote(
-        selectedFile,
-        category,
-        subject,
-        type,
-        documentName || '',
+          selectedFile,
+          category,
+          subject,
+          type,
+          documentName || '',
       );
+
+      let alertContentRedirect: AlertProps;  // Initialize the alertContentRedirect object outside the conditions
+
       if (responseStatus == 200) {
-        setAlertContent({
+        alertContentRedirect = {
           title: 'Success',
           description: 'Successfully sent for review and will be shown in library once uploaded.',
           severity: 'success',
-        });
+
+        };
+        setAlertContent(alertContentRedirect);
         setOpenAlert(true);
+        navigate('/', { state: { alertContent: alertContentRedirect } });
+
       } else if (responseStatus === 429) {
-        setAlertContent({
+        alertContentRedirect = {
           title: "Rate limit exceeded",
           description: 'You\'re trying too fast! Please try again in 1 minutes.',
           severity: 'error',
-        });
-        setOpenAlert(true);
+
+        };
       } else if (responseStatus === 401) {
-        setAlertContent({
-          title: 'Your account has not been verified yet.',
+        alertContentRedirect = {
+          title: 'Account not verified',
           description: 'Please verify your account with the verification mail sent to your email.',
           severity: 'error',
-        });
-        setOpenAlert(true);
-      } else {
-        setAlertContent({
-          title: 'Error',
-          description: 'Something went wrong.',
+
+        };
+      } else if (responseStatus === 409) {
+        alertContentRedirect = {
+          title: 'Notes upload unsuccessful',
+          description: 'A name of the note that you\'re trying to upload already exists in the repository.',
           severity: 'error',
-        });
-        setOpenAlert(true);
+
+        };
+      } else {
+        alertContentRedirect = {
+          title: 'Error',
+          description: 'Something went wrong. Please contact an administrator!',
+          severity: 'error',
+
+        };
       }
+      setAlertContent(alertContentRedirect);
+      setOpenAlert(true);
     }
   };
+
 
   return (
     <section className='upload section container'>

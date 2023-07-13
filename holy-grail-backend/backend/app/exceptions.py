@@ -62,6 +62,12 @@ class AppError:
         headers={"WWW-Authenticate": "Bearer"},
     )
 
+    GENERIC_ITEM_NOT_FOUND_ERROR: HTTPException = HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail="Data does not exists",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+
     USERNAME_ALREADY_EXISTS_ERROR = HTTPException(
         status_code=status.HTTP_409_CONFLICT,
         detail="Username already exists",

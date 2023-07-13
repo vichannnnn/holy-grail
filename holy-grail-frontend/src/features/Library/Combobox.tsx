@@ -12,10 +12,11 @@ export interface ComboboxProps {
   onChange: (newValue: number | '') => void;
   options: { value: number; label: string }[];
   style?: CSSProperties;
+  disabled?: boolean;
   extras?: Extras;
 }
 
-const Combobox = ({ label, value, onChange, options, style, extras }: ComboboxProps) => {
+const Combobox = ({ label, value, onChange, options, style, disabled, extras }: ComboboxProps) => {
   const muiTheme = createTheme();
   return (
     <ThemeProvider theme={muiTheme}>
@@ -27,6 +28,7 @@ const Combobox = ({ label, value, onChange, options, style, extras }: ComboboxPr
         renderInput={(params) => <TextField {...params} label={label} />}
         isOptionEqualToValue={(option, value) => option.value === value?.value}
         getOptionLabel={(option) => option.label}
+        disabled={disabled}
         {...extras}
       />
     </ThemeProvider>

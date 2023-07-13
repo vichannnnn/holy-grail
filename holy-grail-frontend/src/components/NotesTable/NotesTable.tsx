@@ -1,7 +1,7 @@
+import {useState} from "react";
 import { Box, Card, CardContent, Grid, Typography, Link } from '@mui/material';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
-import { Note } from '../../api/utils/library/Search';
+import {Note, fetchData, fetchCategory, SubjectType} from '../../api/utils/library/Search';
 import Combobox from '../../features/Library/Combobox';
 import { ComboboxProps } from '../../features/Library/Combobox';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -58,6 +58,9 @@ const NotesTable = ({
 }: NotesTableProps) => {
   const muiTheme = createTheme();
   const { isDesktop } = useContext(MediaQueryContext);
+  const [isCategorySelected, setIsCategorySelected] = useState(false);
+  const [subjectsData, setSubjectsData] = useState([]);
+
 
   return (
     <Box>
@@ -75,9 +78,19 @@ const NotesTable = ({
             <Combobox
               label='Category'
               value={category}
-              onChange={(value) => {
+              onChange={async (value) => {
                 onCategoryChange(value);
                 handlePageChange(1);
+                if (value) {
+                  setIsCategorySelected(true);
+                  const categoryData = await fetchCategory({ category_id: value });
+                  const data = await fetchData(categoryData.id);
+                  setSubjectsData(data.subjects.map((subject: SubjectType) => ({ value: subject.id, label: subject.name })));
+                } else {
+                  setIsCategorySelected(false);
+                  setSubjectsData([]);
+                  onSubjectChange('');
+                }
               }}
               options={categories}
               style={{ width: isDesktop ? '15%' : '100%' }}
@@ -89,8 +102,11 @@ const NotesTable = ({
                 onSubjectChange(value);
                 handlePageChange(1);
               }}
-              options={subjects}
-              style={{ width: isDesktop ? '15%' : '100%' }}
+              options={isCategorySelected ? subjectsData : subjects}
+              style={{ width: isDesktop ? '15%' : '100%',
+                opacity: isCategorySelected ? 1 : 0.5,
+              }}
+              disabled={!isCategorySelected}
             />
             <Combobox
               label='Type'
@@ -156,16 +172,6 @@ const NotesTable = ({
                       <TableCell className='table__content'>
                         {formatDate(note.uploaded_on)}
                       </TableCell>
-                      {/*<TableCell className='table__content' align='center'>*/}
-                      {/*  <Link*/}
-                      {/*    href={`${VITE_APP_AWS_S3_BUCKET_URL}/${note.file_name}`}*/}
-                      {/*    target='_blank'*/}
-                      {/*    download={note.document_name}*/}
-                      {/*    rel='noopener noreferrer'*/}
-                      {/*  >*/}
-                      {/*    <CloudDownloadOutlinedIcon />*/}
-                      {/*  </Link>*/}
-                      {/*</TableCell>*/}
                       {isAdmin && renderAdminActions && (
                         <TableCell className='table__content'>{renderAdminActions(note)}</TableCell>
                       )}

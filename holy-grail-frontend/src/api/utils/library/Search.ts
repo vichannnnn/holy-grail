@@ -42,16 +42,25 @@ export interface CommonType {
 
 export type CategoryType = CommonType;
 
-export type SubjectType = CommonType;
-
 export type DocumentType = CommonType;
+export interface SubjectType extends CommonType {
+  category_id: number;
+}
 
-export const fetchData = async () => {
-  const [categories, subjects, types] = await Promise.all([
+export const fetchData = async (category_id: number | null = null) => {
+  const [categories, types] = await Promise.all([
     apiClient.get('/all_category_level'),
-    apiClient.get('/all_subjects'),
     apiClient.get('/all_document_type'),
   ]);
+
+  let subjects;
+  if (category_id !== null) {
+    subjects = await apiClient.get('/all_subjects', {
+      params: { category_id },
+    });
+  } else {
+    subjects = await apiClient.get('/all_subjects');
+  }
 
   return {
     categories: categories.data.map((category: CategoryType) => ({
@@ -68,6 +77,15 @@ export const fetchData = async () => {
     })),
   };
 };
+
+export const fetchCategory = async (searchParams: {
+  category_id: number;
+}) => {
+  const response = await apiClient.get<CategoryType>('/category', {
+    params: searchParams,
+  });
+  return response.data;
+}
 
 export const fetchApprovedNotes = async (searchParams: {
   category?: string;
@@ -94,17 +112,3 @@ export const fetchPendingApprovalNotes = async (searchParams: {
   });
   return response.data;
 };
-
-// export function useMatch(term: string, items: string[]) {
-//   return useMemo(() => {
-//     if (term.trim() === "") {
-//       return items;
-//     } else {
-//       const results = matchSorter(items, term, {
-//         keys: [(item) => item],
-//       });
-//
-//       return results.length > 0 ? results : [];
-//     }
-//   }, [term, items]);
-// }
