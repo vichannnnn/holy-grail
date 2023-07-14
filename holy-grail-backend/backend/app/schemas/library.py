@@ -20,12 +20,6 @@ class NoteCreateSchema(BaseModel):
     type: int
     document_name: DocumentNameStr
 
-    @validator("file")
-    def validate_file_type(cls, v: StarletteUploadFile):
-        if v.content_type not in accepted_doc_type_extensions.keys():
-            raise AppError.INVALID_FILE_TYPE_ERROR
-        return v
-
 
 class NoteInsertSchema(BaseModel):
     category: int
