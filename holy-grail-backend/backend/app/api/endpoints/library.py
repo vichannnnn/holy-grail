@@ -1,6 +1,6 @@
 from typing import Optional, List
 
-from fastapi import APIRouter, Depends, UploadFile, File, Query, Request
+from fastapi import APIRouter, Depends, UploadFile, File, Query, Request, Form
 from fastapi_pagination import Page
 from app.api.deps import (
     SessionBucket,
@@ -10,8 +10,13 @@ from app.api.deps import (
 )
 from app.utils.limiter import conditional_rate_limit
 from app.models.library import Library
-from app.schemas.library import NoteCreateSchema, NoteUpdateSchema, NoteSchema
-
+from app.schemas.library import (
+    NoteCreateSchema,
+    NoteUpdateSchema,
+    NoteSchema,
+    DocumentNameStr,
+)
+import boto3
 
 router = APIRouter()
 notes_router = APIRouter()
@@ -21,10 +26,23 @@ notes_router = APIRouter()
 @conditional_rate_limit("5/minute")
 async def create_note(
     request: Request,
+    file: List[UploadFile] = File(...),
+    category: List[int] = Form(...),
+    subject: List[int] = Form(...),
+    document_type: List[int] = Form(...),
+    document_name: List[DocumentNameStr] = Form(...),
     authenticated: Account = Depends(Authenticator.get_verified_user),
     session: AsyncSession = Depends(get_session),
     s3_bucket: boto3.client = Depends(get_s3_client),
 ):
+
+    form_data = {
+        "file": file,
+        "category": category,
+        "subject": subject,
+        "document_type": document_type,
+        "document_name": document_name,
+    }
 
     async with request.form() as form:
         notes = await Library.create_many(

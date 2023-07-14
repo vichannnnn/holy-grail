@@ -93,7 +93,7 @@ class Library(Base, CRUD["Library"]):
     async def create_many(
         cls,
         session: AsyncSession,
-        form_data: StarletteFormData,
+        form_data: List[NoteCreateSchema],
         uploaded_by: int,
         s3_bucket,
     ):
