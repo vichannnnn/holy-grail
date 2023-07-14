@@ -98,7 +98,11 @@ class Library(Base, CRUD["Library"]):
         s3_bucket,
     ):
 
-        failed_notes = set()
+        failed_notes = {
+            AppError.SCHEMA_VALIDATION_ERROR: [],
+            AppError.INVALID_FILE_TYPE_ERROR: [],
+            AppError.DOCUMENT_NAME_ALREADY_EXISTS_ERROR: [],
+        }
         notes = []
         for i in range(len(form_data) // 5):
             try:
@@ -109,19 +113,40 @@ class Library(Base, CRUD["Library"]):
                     type=int(form_data[f"notes[{i}].type"]),
                     document_name=form_data[f"notes[{i}].document_name"],
                 )
+                accepted_doc_type_extensions[note.file.content_type]
+
+                stmt = select(cls).where(cls.document_name == note.document_name)
+                result = await session.execute(stmt)
+                if result.scalar():
+                    failed_notes[AppError.DOCUMENT_NAME_ALREADY_EXISTS_ERROR].append(i)
+                    continue
                 notes.append(note)
             except ValidationError:
-                failed_notes.add(i)
+                failed_notes[AppError.SCHEMA_VALIDATION_ERROR].append(i)
+            except KeyError:
+                failed_notes[AppError.INVALID_FILE_TYPE_ERROR].append(i)
+
+        if len([e for sub in failed_notes.values() for e in sub]) != 0:
+            res = dict()
+            for detail, values in zip(
+                [err.detail for err in failed_notes.keys()], failed_notes.values()
+            ):
+                res[detail] = values
+
+            raise AppError.MULTIPLE_GENERIC_ERRORS(**res)
 
         objs = []
         files = []
         for note in notes:
+
             extension = accepted_doc_type_extensions[note.file.content_type]
+
             file_id = uuid.uuid4().hex
             file_name = file_id + extension
             data_insert = NoteInsertSchema(
                 **note.dict(), uploaded_by=uploaded_by, file_name=file_name
             )
+
             obj = Library(**data_insert.dict())
             objs.append(obj)
 

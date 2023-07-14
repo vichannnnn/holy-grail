@@ -26,11 +26,11 @@ notes_router = APIRouter()
 @conditional_rate_limit("5/minute")
 async def create_note(
     request: Request,
-    file: Annotated[List[UploadFile], Form()],
-    category: Annotated[List[int], Form()],
-    subject: Annotated[List[int], Form()],
-    document_type: Annotated[List[int], Form()],
-    document_name: Annotated[List[DocumentNameStr], Form()],
+    file: Annotated[List[UploadFile], Form()] = list(),
+    category: Annotated[List[int], Form()] = list(),
+    subject: Annotated[List[int], Form()] = list(),
+    document_type: Annotated[List[int], Form()] = list(),
+    document_name: Annotated[List[DocumentNameStr], Form()] = list(),
     authenticated: Account = Depends(Authenticator.get_verified_user),
     session: AsyncSession = Depends(get_session),
     s3_bucket: boto3.client = Depends(get_s3_client),
