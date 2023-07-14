@@ -1,4 +1,4 @@
-from typing import Optional, List
+from typing import Optional, List, Annotated
 
 from fastapi import APIRouter, Depends, UploadFile, File, Query, Request, Form
 from fastapi_pagination import Page
@@ -26,11 +26,11 @@ notes_router = APIRouter()
 @conditional_rate_limit("5/minute")
 async def create_note(
     request: Request,
-    file: List[UploadFile] = File(...),
-    category: List[int] = Form(...),
-    subject: List[int] = Form(...),
-    document_type: List[int] = Form(...),
-    document_name: List[DocumentNameStr] = Form(...),
+    file: Annotated[List[UploadFile], Form()],
+    category: Annotated[List[int], Form()],
+    subject: Annotated[List[int], Form()],
+    document_type: Annotated[List[int], Form()],
+    document_name: Annotated[List[DocumentNameStr], Form()],
     authenticated: Account = Depends(Authenticator.get_verified_user),
     session: AsyncSession = Depends(get_session),
     s3_bucket: boto3.client = Depends(get_s3_client),
