@@ -16,8 +16,6 @@ from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 from sqlalchemy.sql.expression import text
-
-from app.api.deps import get_session
 from app.crud.base import CRUD
 from app.db.base_class import Base
 from app.exceptions import AppError
@@ -71,97 +69,6 @@ class Authenticator:
         return jwt.encode(
             {**data, "exp": expiry_timestamp}, SECRET_KEY, algorithm=ALGORITHM
         )
-
-    @classmethod
-    async def get_verified_user(
-        cls,
-        token: str = Depends(oauth2_scheme),
-        session: AsyncSession = Depends(get_session),
-    ) -> CurrentUserSchema:
-        try:
-            payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
-            if username := payload.get("sub"):
-                if user := await Account.select_from_username(session, username):
-                    if user.verified:
-                        return CurrentUserSchema(
-                            user_id=user.user_id,
-                            username=username,
-                            role=user.role,
-                            email=user.email,
-                            verified=user.verified,
-                        )
-
-        except JWTError as exc:
-            raise AppError.INVALID_CREDENTIALS_ERROR from exc
-        raise AppError.INVALID_CREDENTIALS_ERROR
-
-    @classmethod
-    async def get_current_user(
-        cls,
-        token: str = Depends(oauth2_scheme),
-        session: AsyncSession = Depends(get_session),
-    ) -> CurrentUserSchema:
-        try:
-            payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
-            if username := payload.get("sub"):
-                if user := await Account.select_from_username(session, username):
-                    return CurrentUserSchema(
-                        user_id=user.user_id,
-                        username=username,
-                        role=user.role,
-                        email=user.email,
-                        verified=user.verified,
-                    )
-
-        except JWTError as exc:
-            raise AppError.INVALID_CREDENTIALS_ERROR from exc
-        raise AppError.INVALID_CREDENTIALS_ERROR
-
-    @classmethod
-    async def get_admin(
-        cls,
-        token: str = Depends(oauth2_scheme),
-        session: AsyncSession = Depends(get_session),
-    ) -> CurrentUserSchema:
-        try:
-            payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
-            if username := payload.get("sub"):
-                if user := await Account.select_from_username(session, username):
-                    if user.role >= 2:
-                        return CurrentUserSchema(
-                            user_id=user.user_id,
-                            username=username,
-                            role=user.role,
-                            email=user.email,
-                            verified=user.verified,
-                        )
-
-        except JWTError as exc:
-            raise AppError.INVALID_CREDENTIALS_ERROR from exc
-        raise AppError.INVALID_CREDENTIALS_ERROR
-
-    @classmethod
-    async def get_developer(
-        cls,
-        token: str = Depends(oauth2_scheme),
-        session: AsyncSession = Depends(get_session),
-    ) -> CurrentUserSchema:
-        try:
-            payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
-            if username := payload.get("sub"):
-                if user := await Account.select_from_username(session, username):
-                    if user.role >= 3:
-                        return CurrentUserSchema(
-                            user_id=user.user_id,
-                            username=username,
-                            role=user.role,
-                            email=user.email,
-                            verified=user.verified,
-                        )
-
-        except JWTError as exc:
-            raise AppError.INVALID_CREDENTIALS_ERROR from exc
-        raise AppError.INVALID_CREDENTIALS_ERROR
 
     @classmethod
     async def verify(cls, token: str = Depends(oauth2_scheme)):
@@ -289,6 +196,7 @@ class Account(Base, CRUD["Account"]):
         cls, session: AsyncSession, user_id: int, data: AccountUpdatePasswordSchema
     ):
         curr_cred = await Account.get(session, user_id=user_id)
+
         if not Authenticator.pwd_context.verify(
             data.before_password, curr_cred.password
         ):

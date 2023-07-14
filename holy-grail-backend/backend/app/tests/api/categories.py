@@ -243,7 +243,6 @@ def test_get_subjects_from_category(
     test_subject_insert_chemistry_category_1,
     test_subject_insert_chemistry_category_2,
 ):
-
     payload = jsonable_encoder(test_category_insert_gce_a_level)
     response = test_client_developer.post(CATEGORY_LEVEL_URL, json=payload)
     assert response.status_code == status.HTTP_200_OK

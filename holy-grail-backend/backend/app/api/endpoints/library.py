@@ -4,9 +4,9 @@ from fastapi import APIRouter, Depends, UploadFile, File, Query, Request
 from fastapi_pagination import Page
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.api.deps import get_session, get_s3_client
+from app.api.deps import get_session, get_s3_client, get_verified_user, get_admin
 from app.limiter import conditional_rate_limit
-from app.models.auth import Account, Authenticator
+from app.models.auth import Account
 from app.models.library import Library
 from app.schemas.library import NoteCreateSchema, NoteUpdateSchema, NoteSchema
 import boto3
@@ -21,11 +21,10 @@ async def create_note(
     request: Request,
     data: NoteCreateSchema = Depends(),
     file: UploadFile = File(None),
-    authenticated: Account = Depends(Authenticator.get_verified_user),
+    authenticated: Account = Depends(get_verified_user),
     session: AsyncSession = Depends(get_session),
     s3_bucket: boto3.client = Depends(get_s3_client),
 ):
-
     note = await Library.create(
         session,
         uploaded_file=file,
@@ -74,7 +73,7 @@ async def get_all_pending_approval_notes(
     subject: Optional[str] = None,
     doc_type: Optional[str] = None,
     session: AsyncSession = Depends(get_session),
-    authenticated: Account = Depends(Authenticator.get_admin),
+    authenticated: Account = Depends(get_admin),
 ):
     notes = await Library.get_all(
         session,
@@ -92,7 +91,7 @@ async def get_all_pending_approval_notes(
 async def update_note_by_id(
     id: int,
     note: NoteUpdateSchema,
-    authenticated: Account = Depends(Authenticator.get_admin),
+    authenticated: Account = Depends(get_admin),
     session: AsyncSession = Depends(get_session),
 ):
     updated_note = await Library.update(
@@ -104,7 +103,7 @@ async def update_note_by_id(
 @router.delete("/{id}", response_model=NoteSchema)
 async def delete_note_by_id(
     id: int,
-    authenticated: Account = Depends(Authenticator.get_admin),
+    authenticated: Account = Depends(get_admin),
     session: AsyncSession = Depends(get_session),
 ):
     deleted_note = await Library.delete(session, authenticated, id)

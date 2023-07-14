@@ -2,7 +2,7 @@ import jwt
 from fastapi import APIRouter, Depends, Request, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.api.deps import get_session
+from app.api.deps import get_session, get_current_user
 from app.exceptions import AppError
 from app.limiter import conditional_rate_limit
 from app.models.auth import Account, Authenticator, ALGORITHM, SECRET_KEY
@@ -49,7 +49,7 @@ else:
 async def user_update_password(
     data: AccountUpdatePasswordSchema,
     session: AsyncSession = Depends(get_session),
-    authenticated: Account = Depends(Authenticator.get_current_user),
+    authenticated: Account = Depends(get_current_user),
 ):
     credentials = await Account.update_password(session, authenticated.user_id, data)
     return credentials
@@ -57,7 +57,7 @@ async def user_update_password(
 
 @router.get("/get", response_model=CurrentUserSchema)
 async def get_account_name(
-    user: AuthSchema = Depends(Authenticator.get_current_user),
+    user: AuthSchema = Depends(get_current_user),
 ):
     return user
 
@@ -97,7 +97,7 @@ async def verify_email(
 async def resend_verify_email_token(
     request: Request,
     session: AsyncSession = Depends(get_session),
-    authenticated: Account = Depends(Authenticator.get_current_user),
+    authenticated: Account = Depends(get_current_user),
 ):
     await Account().resend_email_verification_token(
         session, authenticated.user_id, authenticated.username
@@ -119,7 +119,6 @@ async def reset_password(
 @router.post("/reset_password")
 async def reset_password(
     data: SendNewPasswordSchema,
-    request: Request,
     session: AsyncSession = Depends(get_session),
 ):
     await Account().reset_password(session, data.token)

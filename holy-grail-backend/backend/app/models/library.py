@@ -67,7 +67,6 @@ class Library(Base):
         data: NoteCreateSchema,
         s3_bucket,
     ):
-
         if uploaded_file.content_type not in accepted_doc_type_extensions.keys():
             raise AppError.INVALID_FILE_TYPE_ERROR
 

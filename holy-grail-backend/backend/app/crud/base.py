@@ -1,4 +1,4 @@
-from typing import TypeVar, Generic, Optional
+from typing import TypeVar, Generic, Optional, Sequence
 
 from sqlalchemy import update, delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -64,7 +64,9 @@ class CRUD(Generic[ModelType]):
         return res_scalar
 
     @classmethod
-    async def get_all(cls: Base, session: AsyncSession, filter_: Optional[dict] = None):
+    async def get_all(
+        cls: Base, session: AsyncSession, filter_: Optional[dict] = None
+    ) -> Sequence[ModelType]:
         stmt = select(cls)
         if filter_:
             conditions = [getattr(cls, key) == value for key, value in filter_.items()]

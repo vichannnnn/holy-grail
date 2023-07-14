@@ -3,8 +3,7 @@ from typing import List
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.api.deps import get_session
-from app.models.auth import Authenticator
+from app.api.deps import get_session, get_developer
 from app.models.categories import Subjects, CategoryLevel, DocumentTypes
 from app.schemas.categories import (
     CategorySchema,
@@ -60,7 +59,7 @@ async def get_notes_type_list(
 async def add_subject(
     data: SubjectCreateSchema,
     session: AsyncSession = Depends(get_session),
-    is_admin: bool = Depends(Authenticator.get_developer),
+    is_admin: bool = Depends(get_developer),
 ):
     data = await Subjects.create(session, dict(data))
     return data
@@ -70,7 +69,7 @@ async def add_subject(
 async def add_category(
     data: CategoryCreateSchema,
     session: AsyncSession = Depends(get_session),
-    is_admin: bool = Depends(Authenticator.get_developer),
+    is_admin: bool = Depends(get_developer),
 ):
     data = await CategoryLevel.create(session, dict(data))
     return data
@@ -80,7 +79,7 @@ async def add_category(
 async def add_notes_type(
     data: DocumentTypeCreateSchema,
     session: AsyncSession = Depends(get_session),
-    is_admin: bool = Depends(Authenticator.get_developer),
+    is_admin: bool = Depends(get_developer),
 ):
     data = await DocumentTypes.create(session, dict(data))
     return data
@@ -91,7 +90,7 @@ async def update_subject(
     id: int,
     data: SubjectUpdateSchema,
     session: AsyncSession = Depends(get_session),
-    is_admin: bool = Depends(Authenticator.get_developer),
+    is_admin: bool = Depends(get_developer),
 ):
     data = await Subjects.update(session, id, dict(data))
     return data
@@ -102,7 +101,7 @@ async def update_category(
     id: int,
     data: CategoryUpdateSchema,
     session: AsyncSession = Depends(get_session),
-    is_admin: bool = Depends(Authenticator.get_developer),
+    is_admin: bool = Depends(get_developer),
 ):
     data = await CategoryLevel.update(session, id, dict(data))
     return data
@@ -113,7 +112,7 @@ async def update_notes_type(
     id: int,
     data: DocumentTypeUpdateSchema,
     session: AsyncSession = Depends(get_session),
-    is_admin: bool = Depends(Authenticator.get_developer),
+    is_admin: bool = Depends(get_developer),
 ):
     data = await DocumentTypes.update(session, id, dict(data))
     return data
@@ -124,7 +123,7 @@ async def update_notes_type(
 # async def delete_subject(
 #     id: int,
 #     session: AsyncSession = Depends(get_session),
-#     is_admin: bool = Depends(Authenticator.get_developer),
+#     is_admin: bool = Depends(get_developer),
 # ):
 #     data = await Subjects.delete(session, id)
 #     return data
@@ -134,7 +133,7 @@ async def update_notes_type(
 # async def delete_category(
 #     id: int,
 #     session: AsyncSession = Depends(get_session),
-#     is_admin: bool = Depends(Authenticator.get_developer),
+#     is_admin: bool = Depends(get_developer),
 # ):
 #     data = await CategoryLevel.delete(session, id)
 #     return data
@@ -144,7 +143,7 @@ async def update_notes_type(
 # async def delete_notes_type(
 #     id: int,
 #     session: AsyncSession = Depends(get_session),
-#     is_admin: bool = Depends(Authenticator.get_developer),
+#     is_admin: bool = Depends(get_developer),
 # ):
 #     data = await DocumentTypes.delete(session, id)
 #     return data
