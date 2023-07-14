@@ -1,4 +1,4 @@
-import { AxiosError } from 'axios';
+import { AxiosError, all } from 'axios';
 import apiClient from '../../apiClient';
 import { NoteInfoProps } from '../../../features/Upload/UploadNote';
 
@@ -23,9 +23,9 @@ export const createNote = async (files: [File, string][], notes: NoteInfoProps[]
         'Content-Type': 'multipart/form-data',
       },
     });
-    return response.status;
+    return response;
   } catch (error) {
     const axiosError = error as AxiosError;
-    return axiosError.response ? axiosError.response.status : 500;
+    return axiosError.response;
   }
 };

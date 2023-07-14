@@ -9,6 +9,7 @@ import './upload.css';
 import { Button, ThemeProvider, createTheme } from '@mui/material';
 import DeleteAlert from '../Approval/DeleteAlert';
 import FileSelect from './FileSelect';
+import { AxiosResponse } from 'axios';
 
 interface OptionsProps {
   categories: CategoryType[];
@@ -22,9 +23,6 @@ interface NotesProps {
   [key: string]: NoteInfoProps;
 }
 
-interface ResponseStatusProps {
-  [key: string]: AlertProps;
-}
 
 interface SelectedFilesProps {
   [key: string]: [File, string];
@@ -65,55 +63,67 @@ const UploadPage = () => {
 
   const handleSubmit = async () => {
     if (!notes || !selectedFiles) return;
-    const responseStatus: string = (
-      await createNote(Object.values(selectedFiles), Object.values(notes))
-    ).toString();
-    const statusAlertContent: ResponseStatusProps = {
-      '200': {
-        title: 'Success',
-        description: 'Successfully sent for review and will be shown in library once uploaded.',
-        severity: 'success',
-      },
-      '429': {
-        title: "You're submitting too fast!",
-        description: 'You can only upload 1 document per minute.',
-        severity: 'error',
-      },
-      '401': {
-        title: 'Your account has not been verified yet.',
-        description: 'Please verify your account with the verification mail sent to your email.',
-        severity: 'error',
-      },
-      '409': {
-        title: 'Conflict occured.',
-        description:
-          'Another document with the same name already exists. Please rename your document.',
-        severity: 'error',
-      },
-      '403': {
-        title: 'Forbidden',
-        description: 'Please ensure all files uploaded are pdf files.',
-        severity: 'error',
-      },
-      '500': {
-        title: 'Error',
-        description: 'An internal server error has occured. Please try again later.',
-        severity: 'error',
-      },
-    };
+    const response: AxiosResponse|undefined = await createNote(Object.values(selectedFiles), Object.values(notes))
 
     const generalisedAlertError: AlertProps = {
       title: 'Error',
       description: 'Something went wrong.',
       severity: 'error',
     };
-    if (responseStatus === undefined || !Object.keys(statusAlertContent).includes(responseStatus)) {
-      setAlertContent(generalisedAlertError);
-      setOpenAlert(true);
-      return;
-    }
 
-    setAlertContent(statusAlertContent[responseStatus]);
+    const statusAlertContent: () => AlertProps = () => {
+      if (response === undefined) return generalisedAlertError;
+
+      const responseStatus = response?.status;
+      const responseBody = response?.data['detail'];
+      if (responseStatus === 400) {
+
+        if (responseBody === undefined) return generalisedAlertError;
+        const friendlyErrorText: Record<string, string> = {
+          "Document name is not unique": "Ensure all document names are unique: ",
+          'Document name already exists': 'Please rename your documents: ',
+          'You have uploaded an invalid file type.': 'Ensure all files uploaded are pdf files: ',
+          'Schema validation error': 'Ensure all fields are filled in correctly: ',
+        }
+        let alertDescription = '';
+        responseBody.forEach((error: string[]) => {
+          if (error[1].length !== 0) {
+            alertDescription += friendlyErrorText[error[0]] + error[1] + '\n';
+          }
+        });
+
+
+
+        return {
+          title: 'Error',
+          description: alertDescription,
+          severity: 'error',
+        } as AlertProps;
+
+      }
+      if (responseStatus === 500) {
+        return {
+          title: 'Internal Server Error',
+          description: 'Please try again later.',
+          severity: 'error',
+        } as AlertProps;
+      };
+      if (responseStatus === 200) {
+        return {
+          title: 'Success',
+          description: 'Successfully sent for review and will be shown in library once uploaded.',
+          severity: 'success',
+        } as AlertProps;
+      };
+      return generalisedAlertError;
+
+    };
+
+
+    if (response?.status === 200) {
+      navigate('/', { state: { alertContent: statusAlertContent() } });
+    }
+    setAlertContent(statusAlertContent());
     setOpenAlert(true);
   };
 

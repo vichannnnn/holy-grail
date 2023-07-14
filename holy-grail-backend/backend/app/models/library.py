@@ -97,15 +97,39 @@ class Library(Base, CRUD["Library"]):
         uploaded_by: int,
         s3_bucket,
     ):
+        # a list of valid NoteCreateSchema objects
+        notes = []
 
         failed_notes = {
+            AppError.DOCUMENT_NAME_IS_NOT_UNIQUE_ERROR: [],
             AppError.SCHEMA_VALIDATION_ERROR: [],
             AppError.INVALID_FILE_TYPE_ERROR: [],
             AppError.DOCUMENT_NAME_ALREADY_EXISTS_ERROR: [],
         }
-        notes = []
+
+        # check for unique document names in call
+        document_names = [
+            form_data[f"notes[{i}].document_name"] for i in range(len(form_data) // 5)
+        ]
+
+        def uniqueIndexes(l):
+            seen = set()
+            res = []
+            for i, n in enumerate(l):
+                if n not in seen:
+                    res.append(i)
+                    seen.add(n)
+            return res
+
+        duplicates = filter(
+            lambda x: x not in uniqueIndexes(document_names),
+            list(range(len(form_data) // 5)),
+        )
+        failed_notes[AppError.DOCUMENT_NAME_IS_NOT_UNIQUE_ERROR] = list(duplicates)
+
         for i in range(len(form_data) // 5):
             try:
+                # raises ValidationError if schema is invalid
                 note = NoteCreateSchema(
                     file=form_data[f"notes[{i}].file"],
                     category=int(form_data[f"notes[{i}].category"]),
@@ -113,8 +137,10 @@ class Library(Base, CRUD["Library"]):
                     type=int(form_data[f"notes[{i}].type"]),
                     document_name=form_data[f"notes[{i}].document_name"],
                 )
+                # raises KeyError if file type is invalid
                 accepted_doc_type_extensions[note.file.content_type]
 
+                # check if document name already exists in db
                 stmt = select(cls).where(cls.document_name == note.document_name)
                 result = await session.execute(stmt)
                 if result.scalar():
