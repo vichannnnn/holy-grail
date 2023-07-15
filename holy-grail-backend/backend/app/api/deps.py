@@ -1,4 +1,4 @@
-from typing import AsyncGenerator, Generator
+from typing import AsyncGenerator, Generator, Annotated
 from fastapi import Depends
 from app.db.database import SessionLocal, async_session
 from app.utils.file_handler import s3_app_client
@@ -29,7 +29,13 @@ async def get_session() -> AsyncGenerator[AsyncSession, None]:
         yield session
 
 
-def get_s3_client():
+CurrentSession = Annotated[AsyncSession, Depends(get_session)]
+OAuth2Session = Annotated[
+    Authenticator.oauth2_scheme, Depends(Authenticator.oauth2_scheme)
+]
+
+
+def get_s3_client() -> boto3.Session:
     if os.environ.get("TESTING"):
         with mock_s3():
             s3_client = boto3.client("s3", region_name="us-east-1")
@@ -41,8 +47,8 @@ def get_s3_client():
 
 
 async def get_verified_user(
-    token: str = Depends(Authenticator.oauth2_scheme),
-    session: AsyncSession = Depends(get_session),
+    session: CurrentSession,
+    token: OAuth2Session,
 ) -> CurrentUserSchema:
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
@@ -63,8 +69,8 @@ async def get_verified_user(
 
 
 async def get_current_user(
-    token: str = Depends(Authenticator.oauth2_scheme),
-    session: AsyncSession = Depends(get_session),
+    session: CurrentSession,
+    token: OAuth2Session,
 ) -> CurrentUserSchema:
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
@@ -84,8 +90,8 @@ async def get_current_user(
 
 
 async def get_admin(
-    token: str = Depends(Authenticator.oauth2_scheme),
-    session: AsyncSession = Depends(get_session),
+    session: CurrentSession,
+    token: OAuth2Session,
 ) -> CurrentUserSchema:
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
@@ -106,8 +112,8 @@ async def get_admin(
 
 
 async def get_developer(
-    token: str = Depends(Authenticator.oauth2_scheme),
-    session: AsyncSession = Depends(get_session),
+    session: CurrentSession,
+    token: OAuth2Session,
 ) -> CurrentUserSchema:
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
@@ -125,3 +131,10 @@ async def get_developer(
     except JWTError as exc:
         raise AppError.INVALID_CREDENTIALS_ERROR from exc
     raise AppError.INVALID_CREDENTIALS_ERROR
+
+
+SessionUser = Annotated[CurrentUserSchema, Depends(get_current_user)]
+SessionVerifiedUser = Annotated[CurrentUserSchema, Depends(get_verified_user)]
+SessionAdmin = Annotated[CurrentUserSchema, Depends(get_admin)]
+SessionDeveloper = Annotated[CurrentUserSchema, Depends(get_admin)]
+SessionBucket = Annotated[boto3.Session, get_s3_client()]

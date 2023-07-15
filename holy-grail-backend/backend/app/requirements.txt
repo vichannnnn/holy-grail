@@ -5,7 +5,7 @@ fastapi-pagination==0.12.5
 passlib==1.7.4
 python-dotenv==1.0.0
 python-jose==3.3.0
-uvicorn==0.22.0
+uvicorn==0.23.0
 sqlalchemy==2.0.18
 sqlalchemy[mypy]==2.0.18
 pytest==7.4.0
@@ -22,7 +22,6 @@ slowapi
 boto3==1.28.1
 mailtrap
 prometheus-fastapi-instrumentator==6.0.0
-trio==0.22.1
 moto[s3]
 requests-toolbelt==1.0.0
 

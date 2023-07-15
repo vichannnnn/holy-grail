@@ -51,6 +51,13 @@ class UpdateUserRoleSchema(BaseModel):
     role: Optional[RoleEnum]
 
 
+class CurrentUserWithJWTSchema(BaseModel):
+    data: CurrentUserSchema
+    access_token: str
+    token_type: str
+    exp: int
+
+
 class AuthSchema(BaseModel):
     username: username_validator  # type: ignore
     password: password_validator  # type: ignore

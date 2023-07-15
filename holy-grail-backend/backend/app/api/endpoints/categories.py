@@ -3,7 +3,7 @@ from typing import List
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.api.deps import get_session, get_developer
+from app.api.deps import CurrentSession, SessionDeveloper
 from app.models.categories import Subjects, CategoryLevel, DocumentTypes
 from app.schemas.categories import (
     CategorySchema,
@@ -22,8 +22,8 @@ router = APIRouter()
 
 @router.get("/all_subjects", response_model=List[SubjectSchema])
 async def get_subjects_list(
+    session: CurrentSession,
     category_id: int = None,
-    session: AsyncSession = Depends(get_session),
 ):
     filter_ = {"category_id": category_id} if category_id is not None else None
     data = await Subjects.get_all(session, filter_=filter_)
@@ -32,7 +32,7 @@ async def get_subjects_list(
 
 @router.get("/all_category_level", response_model=List[CategorySchema])
 async def get_category_level_list(
-    session: AsyncSession = Depends(get_session),
+    session: CurrentSession,
 ):
     data = await CategoryLevel.get_all(session)
     return data
@@ -41,7 +41,7 @@ async def get_category_level_list(
 @router.get("/category", response_model=CategorySchema)
 async def get_category(
     category_id: int,
-    session: AsyncSession = Depends(get_session),
+    session: CurrentSession,
 ):
     data = await CategoryLevel.get(session, category_id)
     return data
@@ -49,7 +49,7 @@ async def get_category(
 
 @router.get("/all_document_type", response_model=List[DocumentTypeSchema])
 async def get_notes_type_list(
-    session: AsyncSession = Depends(get_session),
+    session: CurrentSession,
 ):
     data = await DocumentTypes.get_all(session)
     return data
@@ -58,8 +58,8 @@ async def get_notes_type_list(
 @router.post("/subject", response_model=SubjectSchema)
 async def add_subject(
     data: SubjectCreateSchema,
-    session: AsyncSession = Depends(get_session),
-    is_admin: bool = Depends(get_developer),
+    session: CurrentSession,
+    is_admin: SessionDeveloper,
 ):
     data = await Subjects.create(session, dict(data))
     return data
@@ -68,8 +68,8 @@ async def add_subject(
 @router.post("/category", response_model=CategorySchema)
 async def add_category(
     data: CategoryCreateSchema,
-    session: AsyncSession = Depends(get_session),
-    is_admin: bool = Depends(get_developer),
+    session: CurrentSession,
+    is_admin: SessionDeveloper,
 ):
     data = await CategoryLevel.create(session, dict(data))
     return data
@@ -78,8 +78,8 @@ async def add_category(
 @router.post("/document_type", response_model=DocumentTypeSchema)
 async def add_notes_type(
     data: DocumentTypeCreateSchema,
-    session: AsyncSession = Depends(get_session),
-    is_admin: bool = Depends(get_developer),
+    session: CurrentSession,
+    is_admin: SessionDeveloper,
 ):
     data = await DocumentTypes.create(session, dict(data))
     return data
@@ -89,8 +89,8 @@ async def add_notes_type(
 async def update_subject(
     id: int,
     data: SubjectUpdateSchema,
-    session: AsyncSession = Depends(get_session),
-    is_admin: bool = Depends(get_developer),
+    session: CurrentSession,
+    is_admin: SessionDeveloper,
 ):
     data = await Subjects.update(session, id, dict(data))
     return data
@@ -100,8 +100,8 @@ async def update_subject(
 async def update_category(
     id: int,
     data: CategoryUpdateSchema,
-    session: AsyncSession = Depends(get_session),
-    is_admin: bool = Depends(get_developer),
+    session: CurrentSession,
+    is_admin: SessionDeveloper,
 ):
     data = await CategoryLevel.update(session, id, dict(data))
     return data
@@ -111,8 +111,8 @@ async def update_category(
 async def update_notes_type(
     id: int,
     data: DocumentTypeUpdateSchema,
-    session: AsyncSession = Depends(get_session),
-    is_admin: bool = Depends(get_developer),
+    session: CurrentSession,
+    is_admin: SessionDeveloper,
 ):
     data = await DocumentTypes.update(session, id, dict(data))
     return data
@@ -122,8 +122,8 @@ async def update_notes_type(
 # @router.delete("/subject", response_model=SubjectSchema)
 # async def delete_subject(
 #     id: int,
-#     session: AsyncSession = Depends(get_session),
-#     is_admin: bool = Depends(get_developer),
+#     session: CurrentSession,
+#     is_admin: SessionDeveloper,
 # ):
 #     data = await Subjects.delete(session, id)
 #     return data
@@ -132,8 +132,8 @@ async def update_notes_type(
 # @router.delete("/category", response_model=CategorySchema)
 # async def delete_category(
 #     id: int,
-#     session: AsyncSession = Depends(get_session),
-#     is_admin: bool = Depends(get_developer),
+#     session: CurrentSession,
+#     is_admin: SessionDeveloper,
 # ):
 #     data = await CategoryLevel.delete(session, id)
 #     return data
@@ -142,8 +142,8 @@ async def update_notes_type(
 # @router.delete("/document_type", response_model=DocumentTypeSchema)
 # async def delete_notes_type(
 #     id: int,
-#     session: AsyncSession = Depends(get_session),
-#     is_admin: bool = Depends(get_developer),
+#     session: CurrentSession,
+#     is_admin: SessionDeveloper,
 # ):
 #     data = await DocumentTypes.delete(session, id)
 #     return data

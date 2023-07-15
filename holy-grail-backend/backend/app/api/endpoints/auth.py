@@ -1,11 +1,7 @@
-import jwt
-from fastapi import APIRouter, Depends, Request, status
-from sqlalchemy.ext.asyncio import AsyncSession
-
-from app.api.deps import get_session, get_current_user
-from app.utils.exceptions import AppError
+from fastapi import APIRouter, Request, status
+from app.api.deps import SessionUser, CurrentSession
 from app.utils.limiter import conditional_rate_limit
-from app.models.auth import Account, Authenticator, ALGORITHM, SECRET_KEY
+from app.models.auth import Account
 from app.schemas.auth import (
     AuthSchema,
     CurrentUserSchema,
@@ -14,11 +10,11 @@ from app.schemas.auth import (
     SendPasswordResetEmailSchema,
     SendNewPasswordSchema,
     VerifyEmailSchema,
+    CurrentUserWithJWTSchema,
 )
 import os
 
 router = APIRouter()
-
 
 if os.getenv("PRODUCTION") != "local" or os.getenv("TESTING"):
 
@@ -26,10 +22,10 @@ if os.getenv("PRODUCTION") != "local" or os.getenv("TESTING"):
     @conditional_rate_limit("10/5minute")
     async def create_account(
         request: Request,
+        session: CurrentSession,
         data: AccountRegisterSchema,
-        session: AsyncSession = Depends(get_session),
     ):
-        created_user = await Account().register(session, data)
+        created_user = await Account.register(session, data)
         return created_user
 
 else:
@@ -38,18 +34,18 @@ else:
     @conditional_rate_limit("10/5minute")
     async def create_account_development(
         request: Request,
+        session: CurrentSession,
         data: AccountRegisterSchema,
-        session: AsyncSession = Depends(get_session),
     ):
-        created_user = await Account().register_development(session, data)
+        created_user = await Account.register_development(session, data)
         return created_user
 
 
 @router.post("/update_password")
 async def user_update_password(
+    session: CurrentSession,
+    authenticated: SessionUser,
     data: AccountUpdatePasswordSchema,
-    session: AsyncSession = Depends(get_session),
-    authenticated: Account = Depends(get_current_user),
 ):
     credentials = await Account.update_password(session, authenticated.user_id, data)
     return credentials
@@ -57,35 +53,22 @@ async def user_update_password(
 
 @router.get("/get", response_model=CurrentUserSchema)
 async def get_account_name(
-    user: AuthSchema = Depends(get_current_user),
-):
-    return user
+    session: CurrentSession,  # pylint: disable=unused-argument
+    current_user: SessionUser,
+) -> CurrentUserSchema:
+    return current_user
 
 
-@router.post("/login")
+@router.post("/login", response_model=CurrentUserWithJWTSchema)
 async def user_login(
-    data: AuthSchema,
-    session: AsyncSession = Depends(get_session),
-):
-    credentials = await Account.login(session, data.username, data.password)
-
-    if not credentials:
-        raise AppError.INVALID_CREDENTIALS_ERROR
-
-    access_token = Authenticator.create_access_token(data={"sub": data.username})
-    decoded_token = jwt.decode(access_token, SECRET_KEY, algorithms=[ALGORITHM])
-    return {
-        "data": credentials,
-        "access_token": access_token,
-        "token_type": "bearer",
-        "exp": decoded_token["exp"],
-    }
+    session: CurrentSession, data: AuthSchema
+) -> CurrentUserWithJWTSchema:
+    res = await Account.login(session, data)
+    return res
 
 
 @router.post("/verify")
-async def verify_email(
-    data: VerifyEmailSchema, session: AsyncSession = Depends(get_session)
-):
+async def verify_email(session: CurrentSession, data: VerifyEmailSchema):
     await Account.verify_email(session, data.token)
     return {
         "success": "Email verification successful. Your account can access all the features now."
@@ -96,12 +79,10 @@ async def verify_email(
 @conditional_rate_limit("5/10minute")
 async def resend_verify_email_token(
     request: Request,
-    session: AsyncSession = Depends(get_session),
-    authenticated: Account = Depends(get_current_user),
+    session: CurrentSession,
+    authenticated: SessionUser,
 ):
-    await Account().resend_email_verification_token(
-        session, authenticated.user_id, authenticated.username
-    )
+    await Account.resend_email_verification_token(session, authenticated.user_id)
     return {"message": "Email verification resent to your email."}
 
 
@@ -109,17 +90,17 @@ async def resend_verify_email_token(
 @conditional_rate_limit("5/10minute")
 async def reset_password(
     request: Request,
+    session: CurrentSession,
     data: SendPasswordResetEmailSchema,
-    session: AsyncSession = Depends(get_session),
 ):
-    await Account().send_reset_email(session, data.email)
+    await Account.send_reset_email(session, data.email)
     return {"message": "Password reset mail sent to your email."}
 
 
 @router.post("/reset_password")
 async def reset_password(
+    session: CurrentSession,
     data: SendNewPasswordSchema,
-    session: AsyncSession = Depends(get_session),
 ):
-    await Account().reset_password(session, data.token)
+    await Account.reset_password(session, data.token)
     return status.HTTP_200_OK

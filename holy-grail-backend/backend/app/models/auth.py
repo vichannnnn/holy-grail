@@ -1,9 +1,8 @@
-import traceback
 from os import environ
-from typing import TYPE_CHECKING, Union
+from typing import TYPE_CHECKING
 from uuid import uuid4
-
-from fastapi import status
+import jwt
+from fastapi import Response as FastAPIResponse
 from pydantic import EmailStr
 from sqlalchemy import Index
 from sqlalchemy import exc as SQLAlchemyExceptions
@@ -21,6 +20,8 @@ from app.schemas.auth import (
     AccountCreateSchema,
     AccountUpdatePasswordSchema,
     CurrentUserSchema,
+    AuthSchema,
+    CurrentUserWithJWTSchema,
 )
 from app.tasks.verify_email import send_verification_email_task
 from app.tasks.reset_password_email import send_reset_password_email_task
@@ -107,57 +108,56 @@ class Account(Base, CRUD["Account"]):
 
     @classmethod
     async def login(
-        cls, session: AsyncSession, username: str, password: str
-    ) -> Union[CurrentUserSchema, bool]:
-        if not (credentials := await Account.select_from_username(session, username)):
-            return False
-        if not Authenticator.pwd_context.verify(password, credentials.password):
-            return False
+        cls, session: AsyncSession, data: AuthSchema
+    ) -> CurrentUserWithJWTSchema:
+        if not (credentials := await cls.select_from_username(session, data.username)):
+            raise AppError.INVALID_CREDENTIALS_ERROR
+        if not Authenticator.pwd_context.verify(data.password, credentials.password):
+            raise AppError.INVALID_CREDENTIALS_ERROR
 
-        user_data = {
-            "user_id": credentials.user_id,
-            "username": credentials.username,
-            "email": credentials.email,
-            "role": credentials.role,
-            "verified": credentials.verified,
-        }
-        current_user = CurrentUserSchema(**user_data)
-        return current_user
+        access_token = Authenticator.create_access_token(data={"sub": data.username})
+        decoded_token = jwt.decode(access_token, SECRET_KEY, algorithms=[ALGORITHM])
+
+        current_user = CurrentUserSchema(
+            user_id=credentials.user_id, username=credentials.username
+        )
+        res = CurrentUserWithJWTSchema(
+            data=current_user,
+            access_token=access_token,
+            token_type="bearer",
+            exp=decoded_token["exp"],
+        )
+
+        return res
 
     @classmethod
     async def update_password(
         cls, session: AsyncSession, user_id: int, data: AccountUpdatePasswordSchema
-    ):
-        curr_cred = await Account.get(session, user_id=user_id)
+    ) -> FastAPIResponse:
+        if data.before_password is None or data.password is None:
+            raise AppError.BAD_REQUEST_ERROR
 
-        if not Authenticator.pwd_context.verify(
-            data.before_password, curr_cred.password
+        curr = await Account.get(session, id=user_id)
+        if (
+            not Authenticator.pwd_context.verify(data.before_password, curr.password)
+            or not curr
         ):
-            raise AppError.INVALID_CREDENTIALS_ERROR
-
-        if not curr_cred:
             raise AppError.INVALID_CREDENTIALS_ERROR
 
         if data.password != data.repeat_password:
             raise AppError.BAD_REQUEST_ERROR
 
-        data_dict = data.dict()
-        data_dict.pop("before_password", None)
-        data_dict.pop("repeat_password", None)
-        data_dict["password"] = Authenticator.pwd_context.hash(data.password)
-        to_update = {
-            key: value for key, value in data_dict.items() if value is not None
-        }
+        hashed_updated_password = Authenticator.pwd_context.hash(data.password)
 
         stmt = (
             update(Account)
             .returning(Account)
             .where(Account.user_id == user_id)
-            .values(to_update)
+            .values({"password": hashed_updated_password})
         )
         await session.execute(stmt)
         await session.commit()
-        return status.HTTP_204_NO_CONTENT
+        return FastAPIResponse(status_code=204)
 
     @classmethod
     async def update_role(cls, session: AsyncSession, data: UpdateRoleSchema):
@@ -174,7 +174,7 @@ class Account(Base, CRUD["Account"]):
         )
         await session.execute(stmt)
         await session.commit()
-        return status.HTTP_204_NO_CONTENT
+        return FastAPIResponse(status_code=204)
 
     @classmethod
     async def select_from_username(cls, session: AsyncSession, username: str):
@@ -187,26 +187,6 @@ class Account(Base, CRUD["Account"]):
             return None
 
     @classmethod
-    async def get(cls: Base, session: AsyncSession, user_id: int):
-        stmt = select(cls).where(cls.user_id == user_id)
-        result = await session.execute(stmt)
-        return result.scalar()
-
-    @classmethod
-    async def get_all(cls: Base, session: AsyncSession):
-        stmt = select(cls).order_by(cls.user_id)
-        result = await session.execute(stmt)
-        return result.scalars().all()
-
-    @classmethod
-    async def update(cls: Base, session: AsyncSession, id: int, data: dict):
-        stmt = update(cls).returning(cls).where(cls.user_id == id).values(**data)
-        res = await session.execute(stmt)
-        await session.commit()
-        updated_object = res.fetchone()
-        return updated_object[0]
-
-    @classmethod
     async def verify_email(cls, session: AsyncSession, token: str):
         try:
             stmt = select(Account).where(Account.email_verification_token == token)
@@ -217,43 +197,37 @@ class Account(Base, CRUD["Account"]):
             raise AppError.BAD_REQUEST_ERROR
 
         if account.verified:
-            raise AppError.ACCOUNT_ALREADY_VERIFIED
+            raise AppError.BAD_REQUEST_ERROR
 
         account.verified = True
         account.email_verification_token = None
         await session.commit()
 
+    @classmethod
     async def send_verification_email(
-        self, session: AsyncSession, email: EmailStr, username: str
+        cls, session: AsyncSession, email: EmailStr, username: str
     ):
-        self.email_verification_token = uuid4().hex
-        confirm_url = (
-            f"{FRONTEND_URL}/verify-account?token={self.email_verification_token}"
-        )
-
+        email_verification_token = uuid4().hex
+        confirm_url = f"{FRONTEND_URL}/verify-account?token={email_verification_token}"
         send_verification_email_task.delay(email, username, confirm_url)
 
         stmt = (
             update(Account)
             .returning(Account)
-            .where(Account.user_id == self.user_id)
-            .values({"email_verification_token": self.email_verification_token})
+            .where(Account.user_id == cls.user_id)
+            .values({"email_verification_token": email_verification_token})
         )
         await session.execute(stmt)
         await session.commit()
 
-    async def resend_email_verification_token(
-        self, session: AsyncSession, user_id: int, username: str
-    ):
-        self.user_id = user_id
-        self.username = username
-
-        res = await self.get(session=session, user_id=user_id)
+    @classmethod
+    async def resend_email_verification_token(cls, session: AsyncSession, user_id: int):
+        res = await cls.get(session=session, id=user_id)
 
         if not res.verified:
-            self.email_verification_token = uuid4().hex
+            email_verification_token = uuid4().hex
             confirm_url = (
-                f"{FRONTEND_URL}/verify-account?token={self.email_verification_token}"
+                f"{FRONTEND_URL}/verify-account?token={email_verification_token}"
             )
             send_verification_email_task.delay(res.email, res.username, confirm_url)
 
@@ -271,10 +245,8 @@ class Account(Base, CRUD["Account"]):
 
         try:
             send_reset_password_email_task.delay(email, account.username, confirm_url)
-
         except:
-            traceback.print_exc()
-            return status.HTTP_200_OK
+            return FastAPIResponse(status_code=200)
 
         stmt = (
             update(Account)
@@ -293,7 +265,7 @@ class Account(Base, CRUD["Account"]):
             account = res.scalars().one()
 
         except SQLAlchemyExceptions.NoResultFound:
-            raise AppError.INVALID_PASSWORD_RESET_TOKEN
+            raise AppError.RESOURCES_NOT_FOUND_ERROR
 
         password = generate_password()
 
@@ -306,5 +278,4 @@ class Account(Base, CRUD["Account"]):
         account.password = Authenticator.pwd_context.hash(password)
         account.reset_password_token = None
         await session.commit()
-
-        return status.HTTP_200_OK
+        return FastAPIResponse(status_code=200)

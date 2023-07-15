@@ -1,7 +1,7 @@
 import re
 from typing import List, Dict, Any, Optional
 from fastapi import APIRouter, Depends
-from app.api.deps import get_developer
+from app.api.deps import SessionDeveloper
 from prometheus_client import generate_latest
 
 router = APIRouter()
@@ -30,6 +30,6 @@ def metrics_to_json(metrics_str: str) -> List[Dict[str, Any]]:
 
 
 @router.get("/metrics")
-async def expose_metrics(authenticated=Depends(get_developer)):
+async def expose_metrics(authenticated: SessionDeveloper):
     metrics_str = generate_latest().decode("utf8")
     return metrics_to_json(metrics_str)
