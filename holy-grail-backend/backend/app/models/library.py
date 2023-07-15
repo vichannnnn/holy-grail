@@ -18,6 +18,8 @@ from app.models.auth import Account
 from app.schemas.library import NoteCreateSchema, NoteInsertSchema
 import uuid
 
+from app.utils.upload_errors import UploadError
+
 if TYPE_CHECKING:
     from app.models.categories import CategoryLevel, Subjects, DocumentTypes
 
@@ -101,10 +103,10 @@ class Library(Base, CRUD["Library"]):
         notes = []
 
         failed_notes = {
-            AppError.DOCUMENT_NAME_IS_NOT_UNIQUE_ERROR: [],
-            AppError.SCHEMA_VALIDATION_ERROR: [],
-            AppError.INVALID_FILE_TYPE_ERROR: [],
-            AppError.DOCUMENT_NAME_ALREADY_EXISTS_ERROR: [],
+            UploadError.DOCUMENT_NAME_DUPLICATED.name: [],
+            UploadError.SCHEMA_VALIDATION_ERROR.name: [],
+            UploadError.INVALID_FILE_TYPE.name: [],
+            UploadError.DOCUMENT_NAME_IN_DB.name: [],
         }
 
         # check for unique document names in call
@@ -125,7 +127,7 @@ class Library(Base, CRUD["Library"]):
             lambda x: x not in uniqueIndexes(document_names),
             list(range(len(form_data) // 5)),
         )
-        failed_notes[AppError.DOCUMENT_NAME_IS_NOT_UNIQUE_ERROR] = list(duplicates)
+        failed_notes[UploadError.DOCUMENT_NAME_DUPLICATED.name] = list(duplicates)
 
         for i in range(len(form_data) // 5):
             try:
@@ -144,22 +146,17 @@ class Library(Base, CRUD["Library"]):
                 stmt = select(cls).where(cls.document_name == note.document_name)
                 result = await session.execute(stmt)
                 if result.scalar():
-                    failed_notes[AppError.DOCUMENT_NAME_ALREADY_EXISTS_ERROR].append(i)
+                    failed_notes[UploadError.DOCUMENT_NAME_IN_DB.name].append(i)
                     continue
                 notes.append(note)
             except ValidationError:
-                failed_notes[AppError.SCHEMA_VALIDATION_ERROR].append(i)
+                failed_notes[UploadError.SCHEMA_VALIDATION_ERROR.name].append(i)
             except KeyError:
-                failed_notes[AppError.INVALID_FILE_TYPE_ERROR].append(i)
+                failed_notes[UploadError.INVALID_FILE_TYPE.name].append(i)
 
         if len([e for sub in failed_notes.values() for e in sub]) != 0:
-            res = dict()
-            for detail, values in zip(
-                [err.detail for err in failed_notes.keys()], failed_notes.values()
-            ):
-                res[detail] = values
 
-            raise AppError.MULTIPLE_GENERIC_ERRORS(**res)
+            raise AppError.MULTIPLE_GENERIC_ERRORS(**failed_notes)
 
         objs = []
         files = []

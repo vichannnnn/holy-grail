@@ -16,7 +16,16 @@ export interface ComboboxProps {
   extras?: Extras;
 }
 
-const Combobox = ({ label, value, onChange, options, style, disabled, error, extras }: ComboboxProps) => {
+const Combobox = ({
+  label,
+  value,
+  onChange,
+  options,
+  style,
+  disabled,
+  error,
+  extras,
+}: ComboboxProps) => {
   const muiTheme = createTheme();
   return (
     <ThemeProvider theme={muiTheme}>

@@ -23,11 +23,9 @@ interface NotesProps {
   [key: string]: NoteInfoProps;
 }
 
-
 interface SelectedFilesProps {
   [key: string]: [File, string];
 }
-
 
 const UploadPage = () => {
   const [openAlert, setOpenAlert] = useState<boolean>(false);
@@ -63,7 +61,10 @@ const UploadPage = () => {
 
   const handleSubmit = async () => {
     if (!notes || !selectedFiles) return;
-    const response: AxiosResponse|undefined = await createNote(Object.values(selectedFiles), Object.values(notes))
+    const response: AxiosResponse | undefined = await createNote(
+      Object.values(selectedFiles),
+      Object.values(notes),
+    );
 
     const generalisedAlertError: AlertProps = {
       title: 'Error',
@@ -77,14 +78,13 @@ const UploadPage = () => {
       const responseStatus = response?.status;
       const responseBody = response?.data['detail'];
       if (responseStatus === 400) {
-
         if (responseBody === undefined) return generalisedAlertError;
         const friendlyErrorText: Record<string, string> = {
-          "Document name is not unique": "Ensure all document names are unique: ",
+          'Document name is not unique': 'Ensure all document names are unique: ',
           'Document name already exists': 'Please rename your documents: ',
           'You have uploaded an invalid file type.': 'Ensure all files uploaded are pdf files: ',
           'Schema validation error': 'Ensure all fields are filled in correctly: ',
-        }
+        };
         let alertDescription = '';
         responseBody.forEach((error: string[]) => {
           if (error[1].length !== 0) {
@@ -92,14 +92,11 @@ const UploadPage = () => {
           }
         });
 
-
-
         return {
           title: 'Error',
           description: alertDescription,
           severity: 'error',
         } as AlertProps;
-
       }
       if (responseStatus === 500) {
         return {
@@ -107,18 +104,16 @@ const UploadPage = () => {
           description: 'Please try again later.',
           severity: 'error',
         } as AlertProps;
-      };
+      }
       if (responseStatus === 200) {
         return {
           title: 'Success',
           description: 'Successfully sent for review and will be shown in library once uploaded.',
           severity: 'success',
         } as AlertProps;
-      };
+      }
       return generalisedAlertError;
-
     };
-
 
     if (response?.status === 200) {
       navigate('/', { state: { alertContent: statusAlertContent() } });

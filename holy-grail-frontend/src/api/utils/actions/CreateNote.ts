@@ -6,7 +6,10 @@ export const createNote = async (files: [File, string][], notes: NoteInfoProps[]
   const allData = new FormData();
 
   // Pair each note with its file
-  const noteFilePairs: {file: File, note: NoteInfoProps}[] = files.map((file, idx) => ({file: file[0], note: notes[idx]}));
+  const noteFilePairs: { file: File; note: NoteInfoProps }[] = files.map((file, idx) => ({
+    file: file[0],
+    note: notes[idx],
+  }));
 
   // Append each pair to the FormData
   noteFilePairs.forEach((pair, index) => {

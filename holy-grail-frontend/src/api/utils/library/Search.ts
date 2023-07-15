@@ -78,14 +78,12 @@ export const fetchData = async (category_id: number | null = null) => {
   };
 };
 
-export const fetchCategory = async (searchParams: {
-  category_id: number;
-}) => {
+export const fetchCategory = async (searchParams: { category_id: number }) => {
   const response = await apiClient.get<CategoryType>('/category', {
     params: searchParams,
   });
   return response.data;
-}
+};
 
 export const fetchApprovedNotes = async (searchParams: {
   category?: string;

@@ -1,7 +1,7 @@
-import {useState} from "react";
+import { useState } from 'react';
 import { Box, Card, CardContent, Grid, Typography, Link } from '@mui/material';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import {Note, fetchData, fetchCategory, SubjectType} from '../../api/utils/library/Search';
+import { Note, fetchData, fetchCategory, SubjectType } from '../../api/utils/library/Search';
 import Combobox from '../../features/Library/Combobox';
 import { ComboboxProps } from '../../features/Library/Combobox';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -61,7 +61,6 @@ const NotesTable = ({
   const [isCategorySelected, setIsCategorySelected] = useState(false);
   const [subjectsData, setSubjectsData] = useState([]);
 
-
   return (
     <Box>
       <ThemeProvider theme={muiTheme}>
@@ -85,7 +84,12 @@ const NotesTable = ({
                   setIsCategorySelected(true);
                   const categoryData = await fetchCategory({ category_id: value });
                   const data = await fetchData(categoryData.id);
-                  setSubjectsData(data.subjects.map((subject: SubjectType) => ({ value: subject.id, label: subject.name })));
+                  setSubjectsData(
+                    data.subjects.map((subject: SubjectType) => ({
+                      value: subject.id,
+                      label: subject.name,
+                    })),
+                  );
                 } else {
                   setIsCategorySelected(false);
                   setSubjectsData([]);
@@ -103,9 +107,7 @@ const NotesTable = ({
                 handlePageChange(1);
               }}
               options={isCategorySelected ? subjectsData : subjects}
-              style={{ width: isDesktop ? '15%' : '100%',
-                opacity: isCategorySelected ? 1 : 0.5,
-              }}
+              style={{ width: isDesktop ? '15%' : '100%', opacity: isCategorySelected ? 1 : 0.5 }}
               disabled={!isCategorySelected}
             />
             <Combobox

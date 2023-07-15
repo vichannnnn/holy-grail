@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import MediaQueryContext from '../../providers/MediaQueryProvider';
 import AuthContext from '../../providers/AuthProvider';
-import { fetchData, fetchCategory, SubjectType} from '../../api/utils/library/Search';
+import { fetchData, fetchCategory, SubjectType } from '../../api/utils/library/Search';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -40,7 +40,6 @@ export const UploadNote = ({ fileName, options, saveNoteUpdates, deleteNote }: U
   const [subject, setSubject] = useState<number>(0);
   const [type, setType] = useState<number>(0);
   const [subjectsData, setSubjectsData] = useState([]);
-
 
   const [validInput, setValidInput] = useState<boolean>(false);
 
@@ -176,7 +175,12 @@ export const UploadNote = ({ fileName, options, saveNoteUpdates, deleteNote }: U
                         if (newValue === '') return;
                         const categoryData = await fetchCategory({ category_id: Number(newValue) });
                         const data = await fetchData(categoryData.id);
-                        setSubjectsData(data.subjects.map((subject: SubjectType) => ({ value: subject.id, label: subject.name })));
+                        setSubjectsData(
+                          data.subjects.map((subject: SubjectType) => ({
+                            value: subject.id,
+                            label: subject.name,
+                          })),
+                        );
                       }}
                       options={
                         options?.categories.map((category) => ({
@@ -185,7 +189,6 @@ export const UploadNote = ({ fileName, options, saveNoteUpdates, deleteNote }: U
                         })) || []
                       }
                       error={!validChecks.category}
-
                     />
 
                     <Combobox
@@ -196,14 +199,14 @@ export const UploadNote = ({ fileName, options, saveNoteUpdates, deleteNote }: U
                         setSubject(newValue || 0);
                       }}
                       options={
-                        subjectsData
-                        ||
+                        subjectsData ||
                         options?.subjects.map((subject) => ({
                           value: subject.id,
                           label: subject.name,
-                        })) || []
+                        })) ||
+                        []
                       }
-                      error={category !==0&&!validChecks.subject}
+                      error={category !== 0 && !validChecks.subject}
                       disabled={category === 0}
                     />
 
