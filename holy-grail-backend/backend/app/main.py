@@ -8,7 +8,7 @@ from starlette_validation_uploadfile import ValidateUploadFileMiddleware
 from prometheus_fastapi_instrumentator import Instrumentator
 
 from app.api.api import api_router
-from app.limiter import limiter
+from app.utils.limiter import limiter
 
 app = FastAPI(
     root_path="/api/v1" if os.getenv("PRODUCTION") in ["true", "dev"] else None,

@@ -114,7 +114,7 @@ services:
       - holy-grail-redis
     build:
       context: ./holy-grail-backend/backend
-    command: celery -A app.worker worker -B --loglevel=info
+    command: celery -A app.utils.worker worker -B --loglevel=info
     restart: unless-stopped
     healthcheck:
       test: [ "CMD-SHELL", "celery inspect ping" ]

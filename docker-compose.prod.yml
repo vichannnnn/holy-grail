@@ -116,7 +116,7 @@ services:
       AWS_S3_SECRET_ACCESS_KEY: ${AWS_S3_SECRET_ACCESS_KEY}
       MAILTRAP_BEARER_TOKEN: ${MAILTRAP_BEARER_TOKEN}
       MAILTRAP_API_KEY: ${MAILTRAP_API_KEY}
-    command: celery -A app.worker worker -B --loglevel=info
+    command: celery -A app.utils.worker worker -B --loglevel=info
     healthcheck:
       test: [ "CMD-SHELL", "celery inspect ping" ]
     restart: always

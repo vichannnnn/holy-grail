@@ -60,7 +60,6 @@ def test_update_password(
     assert response.status_code == 200
     assert "username" in response.json()
 
-    # first login to get the auth token
     login_response = test_not_logged_in_client.post(
         "/auth/login", json=jsonable_encoder(test_user)
     )
@@ -72,7 +71,7 @@ def test_update_password(
         json=jsonable_encoder(test_user_new_password_data),
         headers=headers,
     )
-    assert response.status_code == 200
+    assert response.status_code == 204
 
 
 def test_get_account_name(

@@ -68,7 +68,7 @@ def test_create_note_with_verified_user_and_create_txt_and_create_duplicate_name
         params={**payload},
     )
 
-    assert response.status_code == 403
+    assert response.status_code == 400
 
     payload = dict(test_note_insert)
     response = test_client_verified_user.post(

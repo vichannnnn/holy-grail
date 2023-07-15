@@ -1,9 +1,9 @@
-from os import environ
+from os import environ  # pylint: disable=E0611
 
 from pydantic import EmailStr
 
-from app.email_handler import send_new_password_mail
-from app.worker import celery_app
+from app.utils.email_handler import send_new_password_mail
+from app.utils.worker import celery_app
 
 FRONTEND_URL = environ["FRONTEND_URL"]
 
