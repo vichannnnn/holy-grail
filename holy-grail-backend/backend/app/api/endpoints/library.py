@@ -19,14 +19,14 @@ notes_router = APIRouter()
 @router.post("/", response_model=NoteSchema)
 @conditional_rate_limit("5/minute")
 async def create_note(
-    request: Request,
+    request: Request,  # pylint: disable=W0613
     session: CurrentSession,
     s3_bucket: SessionBucket,
     authenticated: SessionVerifiedUser,
     data: NoteCreateSchema = Depends(),
     file: UploadFile = File(None),
 ):
-    note = await Library.create(
+    note = await Library.create_note(
         session,
         uploaded_file=file,
         uploaded_by=authenticated.user_id,
@@ -39,7 +39,7 @@ async def create_note(
 @router.get("/{id}", response_model=NoteSchema)
 async def read_note_by_id(
     session: CurrentSession,
-    id: int,
+    id: int,  # pylint: disable=W0622, C0103
 ):
     note = await Library.get(session, id)
     return note
@@ -54,7 +54,7 @@ async def get_all_approved_notes(
     subject: Optional[str] = None,
     doc_type: Optional[str] = None,
 ):
-    notes = await Library.get_all(
+    notes = await Library.get_all_notes_paginated(
         session,
         page=page,
         size=size,
@@ -76,7 +76,7 @@ async def get_all_pending_approval_notes(
     subject: Optional[str] = None,
     doc_type: Optional[str] = None,
 ):
-    notes = await Library.get_all(
+    notes = await Library.get_all_notes_paginated(
         session,
         page=page,
         size=size,
@@ -92,10 +92,10 @@ async def get_all_pending_approval_notes(
 async def update_note_by_id(
     session: CurrentSession,
     authenticated: SessionAdmin,
-    id: int,
+    id: int,  # pylint: disable=W0622, C0103
     note: NoteUpdateSchema,
 ):
-    updated_note = await Library.update(
+    updated_note = await Library.update_note(
         session, id, authenticated, data=note.dict(exclude_unset=True)
     )
     return updated_note
@@ -105,7 +105,7 @@ async def update_note_by_id(
 async def delete_note_by_id(
     session: CurrentSession,
     authenticated: SessionAdmin,
-    id: int,
+    id: int,  # pylint: disable=W0622, C0103
 ):
-    deleted_note = await Library.delete(session, authenticated, id)
+    deleted_note = await Library.delete_note(session, authenticated, id)
     return deleted_note

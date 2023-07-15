@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from os import environ
+from os import environ  # pylint: disable=E0611
 from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt

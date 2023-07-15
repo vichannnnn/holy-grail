@@ -48,7 +48,7 @@ class Library(Base, CRUD["Library"]):
         ForeignKey("account.user_id"), nullable=False
     )
     uploaded_on: Mapped[datetime.datetime] = mapped_column(
-        nullable=False, server_default=func.now(), index=True
+        nullable=False, server_default=func.now(), index=True  # pylint: disable=E1102
     )
     approved: Mapped[bool] = mapped_column(nullable=False, server_default="f")
 
@@ -58,7 +58,7 @@ class Library(Base, CRUD["Library"]):
     doc_type: Mapped["DocumentTypes"] = relationship(back_populates="documents")
 
     @classmethod
-    async def create(
+    async def create_note(
         cls,
         session: AsyncSession,
         uploaded_file: UploadFile,
@@ -66,7 +66,7 @@ class Library(Base, CRUD["Library"]):
         data: NoteCreateSchema,
         s3_bucket,
     ):
-        if uploaded_file.content_type not in accepted_doc_type_extensions.keys():
+        if uploaded_file.content_type not in accepted_doc_type_extensions:
             raise AppError.BAD_REQUEST_ERROR
 
         if not isinstance(uploaded_file, StarletteUploadFile):
@@ -87,7 +87,7 @@ class Library(Base, CRUD["Library"]):
         return res
 
     @classmethod
-    async def get_all(
+    async def get_all_notes_paginated(
         cls,
         session: AsyncSession,
         page: int,
@@ -108,7 +108,7 @@ class Library(Base, CRUD["Library"]):
         if doc_type:
             stmt = stmt.where(cls.doc_type.has(name=doc_type))
 
-        count_stmt = select(func.count()).select_from(stmt)
+        count_stmt = select(func.count()).select_from(stmt)  # pylint: disable=E1102
         total = await session.scalar(count_stmt)
 
         stmt = stmt.limit(size).offset((page - 1) * size)
@@ -130,7 +130,7 @@ class Library(Base, CRUD["Library"]):
         }
 
     @classmethod
-    async def get(cls, session: AsyncSession, id: int):
+    async def get(cls, session: AsyncSession, id: int):  # pylint: disable=W0622, C0103
         stmt = (
             select(cls)
             .where(cls.id == id)
@@ -142,7 +142,6 @@ class Library(Base, CRUD["Library"]):
             )
         )
         result = await session.execute(stmt)
-
         res = result.scalar()
 
         if not res:
@@ -150,8 +149,12 @@ class Library(Base, CRUD["Library"]):
         return res
 
     @classmethod
-    async def update(
-        cls: Base, session: AsyncSession, id: int, authenticated: Account, data: dict
+    async def update_note(
+        cls,
+        session: AsyncSession,
+        id: int,  # pylint: disable=W0622, C0103
+        authenticated: Account,
+        data: dict,
     ):
         stmt = update(cls)
         fetch_stmt = select(cls)
@@ -186,7 +189,9 @@ class Library(Base, CRUD["Library"]):
         return updated_note
 
     @classmethod
-    async def approve_note(cls: Base, session: AsyncSession, id: int):
+    async def approve_note(
+        cls, session: AsyncSession, id: int  # pylint: disable=W0622, C0103
+    ):
         stmt = update(cls)
         fetch_stmt = select(cls)
         fetch_stmt = fetch_stmt.where(cls.id == id)
@@ -208,7 +213,12 @@ class Library(Base, CRUD["Library"]):
         return updated_object
 
     @classmethod
-    async def delete(cls: Base, session: AsyncSession, authenticated: Account, id: int):
+    async def delete_note(
+        cls,
+        session: AsyncSession,
+        authenticated: Account,
+        id: int,  # pylint: disable=W0622, C0103
+    ):
         stmt = delete(cls).where(cls.id == id)
         fetch_stmt = (
             select(cls)

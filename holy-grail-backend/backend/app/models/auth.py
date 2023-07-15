@@ -1,4 +1,4 @@
-from os import environ
+from os import environ  # pylint: disable=E0611
 from typing import TYPE_CHECKING
 from uuid import uuid4
 import jwt
@@ -61,7 +61,6 @@ class Account(Base, CRUD["Account"]):
     async def register_development(
         cls, session: AsyncSession, data: AccountRegisterSchema
     ) -> CurrentUserSchema:
-
         if data.password != data.repeat_password:
             raise AppError.BAD_REQUEST_ERROR
         hashed_password = Authenticator.pwd_context.hash(data.password)
@@ -77,7 +76,6 @@ class Account(Base, CRUD["Account"]):
     async def register(
         cls, session: AsyncSession, data: AccountRegisterSchema
     ) -> CurrentUserSchema:
-
         if data.password != data.repeat_password:
             raise AppError.BAD_REQUEST_ERROR
 
@@ -108,7 +106,6 @@ class Account(Base, CRUD["Account"]):
     async def login(
         cls, session: AsyncSession, data: AuthSchema
     ) -> CurrentUserWithJWTSchema:
-
         if not (credentials := await cls.select_from_username(session, data.username)):
             raise AppError.INVALID_CREDENTIALS_ERROR
         if not Authenticator.pwd_context.verify(data.password, credentials.password):
@@ -190,8 +187,8 @@ class Account(Base, CRUD["Account"]):
             res = await session.execute(stmt)
             account = res.scalars().one()
 
-        except SQLAlchemyExceptions.NoResultFound:
-            raise AppError.BAD_REQUEST_ERROR
+        except SQLAlchemyExceptions.NoResultFound as e:  # pylint: disable=C0103
+            raise AppError.BAD_REQUEST_ERROR from e
 
         if account.verified:
             raise AppError.BAD_REQUEST_ERROR
@@ -232,7 +229,7 @@ class Account(Base, CRUD["Account"]):
             raise AppError.BAD_REQUEST_ERROR
 
     @classmethod
-    async def send_reset_email(cls: Base, session: AsyncSession, email: EmailStr):
+    async def send_reset_email(cls, session: AsyncSession, email: EmailStr):
         token = uuid4().hex
         confirm_url = f"{FRONTEND_URL}/reset-password?token={token}"
 
@@ -242,7 +239,7 @@ class Account(Base, CRUD["Account"]):
 
         try:
             send_reset_password_email_task.delay(email, account.username, confirm_url)
-        except:
+        except Exception as e:  # pylint: disable=C0103, W0612, W0703
             return FastAPIResponse(status_code=200)
 
         stmt = (
@@ -261,8 +258,8 @@ class Account(Base, CRUD["Account"]):
             res = await session.execute(stmt)
             account = res.scalars().one()
 
-        except SQLAlchemyExceptions.NoResultFound:
-            raise AppError.RESOURCES_NOT_FOUND_ERROR
+        except SQLAlchemyExceptions.NoResultFound as e:  # pylint: disable=C0103
+            raise AppError.RESOURCES_NOT_FOUND_ERROR from e
 
         password = generate_password()
 

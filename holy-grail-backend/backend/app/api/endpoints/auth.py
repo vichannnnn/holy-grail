@@ -21,7 +21,7 @@ if os.getenv("PRODUCTION") != "local" or os.getenv("TESTING"):
     @router.post("/create", response_model=CurrentUserSchema)
     @conditional_rate_limit("10/5minute")
     async def create_account(
-        request: Request,
+        request: Request,  # pylint: disable=W0613
         session: CurrentSession,
         data: AccountRegisterSchema,
     ):
@@ -33,7 +33,7 @@ else:
     @router.post("/create", response_model=CurrentUserSchema)
     @conditional_rate_limit("10/5minute")
     async def create_account_development(
-        request: Request,
+        request: Request,  # pylint: disable=W0613
         session: CurrentSession,
         data: AccountRegisterSchema,
     ):
@@ -78,7 +78,7 @@ async def verify_email(session: CurrentSession, data: VerifyEmailSchema):
 @router.post("/resend_email_verification_token")
 @conditional_rate_limit("5/10minute")
 async def resend_verify_email_token(
-    request: Request,
+    request: Request,  # pylint: disable=W0613
     session: CurrentSession,
     authenticated: SessionUser,
 ):
@@ -88,8 +88,8 @@ async def resend_verify_email_token(
 
 @router.post("/send_reset_password_mail")
 @conditional_rate_limit("5/10minute")
-async def reset_password(
-    request: Request,
+async def send_reset_password_mail(
+    request: Request,  # pylint: disable=W0613
     session: CurrentSession,
     data: SendPasswordResetEmailSchema,
 ):

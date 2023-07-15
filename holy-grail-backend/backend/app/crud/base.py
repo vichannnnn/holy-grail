@@ -35,7 +35,11 @@ class CRUD(Generic[ModelType]):
         return obj
 
     @classmethod
-    async def get(cls: Type[ModelType], session: AsyncSession, id: int) -> ModelType:  # type: ignore
+    async def get(
+        cls: Type[ModelType],  # type: ignore
+        session: AsyncSession,
+        id: int,  # pylint: disable=W0622
+    ) -> ModelType:
         stmt = select(cls).where(cls.id == id)
         result = await session.execute(stmt)
         instance = result.scalar()
@@ -46,7 +50,10 @@ class CRUD(Generic[ModelType]):
 
     @classmethod
     async def update(  # type: ignore
-        cls: Type[ModelType], session: AsyncSession, id: int, data: Dict[str, Any]
+        cls: Type[ModelType],
+        session: AsyncSession,
+        id: int,  # pylint: disable=W0622
+        data: Dict[str, Any],
     ) -> ModelType:
         stmt = update(cls).returning(cls).where(cls.id == id).values(**data)
         res = await session.execute(stmt)
@@ -60,7 +67,7 @@ class CRUD(Generic[ModelType]):
 
     @classmethod
     async def delete(  # type: ignore
-        cls: Type[ModelType], session: AsyncSession, id: int
+        cls: Type[ModelType], session: AsyncSession, id: int  # pylint: disable=W0622
     ) -> FastAPIResponse:
         stmt = delete(cls).returning(cls).where(cls.id == id)
         res = await session.execute(stmt)

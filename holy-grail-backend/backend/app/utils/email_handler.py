@@ -1,4 +1,4 @@
-from os import environ
+from os import environ  # pylint: disable=E0611
 import httpx
 from pydantic import EmailStr
 

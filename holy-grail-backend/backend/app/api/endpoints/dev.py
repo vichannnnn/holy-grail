@@ -14,8 +14,7 @@ def parse_metric_line(line: str) -> Optional[Dict[str, Any]]:
         metric_name, labels_str, value = match.groups()
         labels = dict(re.findall(r'(\w+)="(.+?)"', labels_str))
         return {"metric_name": metric_name, "labels": labels, "value": float(value)}
-    else:
-        return None
+    return None
 
 
 def metrics_to_json(metrics_str: str) -> List[Dict[str, Any]]:
@@ -30,6 +29,6 @@ def metrics_to_json(metrics_str: str) -> List[Dict[str, Any]]:
 
 
 @router.get("/metrics")
-async def expose_metrics(authenticated: SessionDeveloper):
+async def expose_metrics(authenticated: SessionDeveloper):  # pylint: disable=W0613
     metrics_str = generate_latest().decode("utf8")
     return metrics_to_json(metrics_str)

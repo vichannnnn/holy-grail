@@ -81,7 +81,7 @@ class Subjects(Base, CRUD["subjects"]):
 
     @classmethod
     async def update(
-        cls: Base, session: AsyncSession, id: int, data: dict
+        cls, session: AsyncSession, id: int, data: dict  # pylint: disable=W0622, C0103
     ) -> "Subjects":
         stmt = select(CategoryLevel).where(CategoryLevel.id == data["category_id"])
         result = await session.execute(stmt)

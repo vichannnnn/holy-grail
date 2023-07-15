@@ -58,7 +58,7 @@ async def get_notes_type_list(
 async def add_subject(
     data: SubjectCreateSchema,
     session: CurrentSession,
-    is_developer: SessionDeveloper,
+    is_developer: SessionDeveloper,  # pylint: disable=W0613
 ):
     data = await Subjects.create(session, dict(data))
     return data
@@ -68,7 +68,7 @@ async def add_subject(
 async def add_category(
     data: CategoryCreateSchema,
     session: CurrentSession,
-    is_developer: SessionDeveloper,
+    is_developer: SessionDeveloper,  # pylint: disable=W0613
 ):
     data = await CategoryLevel.create(session, dict(data))
     return data
@@ -78,7 +78,7 @@ async def add_category(
 async def add_notes_type(
     data: DocumentTypeCreateSchema,
     session: CurrentSession,
-    is_developer: SessionDeveloper,
+    is_developer: SessionDeveloper,  # pylint: disable=W0613
 ):
     data = await DocumentTypes.create(session, dict(data))
     return data
@@ -86,10 +86,10 @@ async def add_notes_type(
 
 @router.put("/subject", response_model=SubjectSchema)
 async def update_subject(
-    id: int,
+    id: int,  # pylint: disable=W0622, C0103
     data: SubjectUpdateSchema,
     session: CurrentSession,
-    is_developer: SessionDeveloper,
+    is_developer: SessionDeveloper,  # pylint: disable=W0613
 ):
     data = await Subjects.update(session, id, dict(data))
     return data
@@ -97,10 +97,10 @@ async def update_subject(
 
 @router.put("/category", response_model=CategorySchema)
 async def update_category(
-    id: int,
+    id: int,  # pylint: disable=W0622, C0103
     data: CategoryUpdateSchema,
     session: CurrentSession,
-    is_developer: SessionDeveloper,
+    is_developer: SessionDeveloper,  # pylint: disable=W0613
 ):
     data = await CategoryLevel.update(session, id, dict(data))
     return data
@@ -108,10 +108,10 @@ async def update_category(
 
 @router.put("/document_type", response_model=DocumentTypeSchema)
 async def update_notes_type(
-    id: int,
+    id: int,  # pylint: disable=W0622, C0103
     data: DocumentTypeUpdateSchema,
     session: CurrentSession,
-    is_developer: SessionDeveloper,
+    is_developer: SessionDeveloper,  # pylint: disable=W0613
 ):
     data = await DocumentTypes.update(session, id, dict(data))
     return data
