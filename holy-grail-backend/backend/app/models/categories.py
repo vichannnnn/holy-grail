@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.crud.base import CRUD
 from app.db.base_class import Base
-from app.exceptions import AppError
+from app.utils.exceptions import AppError
 
 if TYPE_CHECKING:
     from app.models.library import Library
@@ -34,7 +34,7 @@ class CategoryLevel(Base, CRUD["category_level"]):
         category = result.scalar()
 
         if category:
-            raise AppError.CATEGORY_ALREADY_EXISTS_ERROR
+            raise AppError.RESOURCES_ALREADY_EXISTS_ERROR
         return await super().create(session, data)
 
 
@@ -66,7 +66,7 @@ class Subjects(Base, CRUD["subjects"]):
         category = result.scalar()
 
         if not category:
-            raise AppError.CATEGORY_DOES_NOT_EXISTS_ERROR
+            raise AppError.RESOURCES_NOT_FOUND_ERROR
 
         stmt = select(cls).where(
             (cls.name == data["name"]) & (cls.category_id == data["category_id"])
@@ -75,20 +75,20 @@ class Subjects(Base, CRUD["subjects"]):
         existing_subject = result.scalar()
 
         if existing_subject:
-            raise AppError.SUBJECT_ALREADY_EXISTS_FOR_CATEGORY_ERROR
+            raise AppError.RESOURCES_ALREADY_EXISTS_ERROR
 
         return await super().create(session, data)
 
     @classmethod
     async def update(
-        cls: Base, session: AsyncSession, id: int, data: dict
+        cls, session: AsyncSession, id: int, data: dict  # pylint: disable=W0622, C0103
     ) -> "Subjects":
         stmt = select(CategoryLevel).where(CategoryLevel.id == data["category_id"])
         result = await session.execute(stmt)
         category = result.scalar()
 
         if not category:
-            raise AppError.CATEGORY_DOES_NOT_EXISTS_ERROR
+            raise AppError.RESOURCES_NOT_FOUND_ERROR
 
         stmt = select(cls).where(
             (cls.name == data["name"])
@@ -99,7 +99,7 @@ class Subjects(Base, CRUD["subjects"]):
         existing_subject = result.scalar()
 
         if existing_subject:
-            raise AppError.SUBJECT_ALREADY_EXISTS_FOR_CATEGORY_ERROR
+            raise AppError.RESOURCES_ALREADY_EXISTS_ERROR
 
         return await super().update(session, id, data)
 
@@ -121,5 +121,5 @@ class DocumentTypes(Base, CRUD["documents"]):
         document_type = result.scalar()
 
         if document_type:
-            raise AppError.DOCUMENT_NAME_ALREADY_EXISTS_ERROR
+            raise AppError.RESOURCES_ALREADY_EXISTS_ERROR
         return await super().create(session, data)

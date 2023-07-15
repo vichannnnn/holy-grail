@@ -5,8 +5,10 @@ from pydantic import constr, EmailStr
 
 from app.schemas.base import CustomBaseModel as BaseModel
 
-password_validator = constr(regex="^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&^])[^\s]{8,20}$")
-username_validator = constr(regex="^[a-zA-Z0-9]{4,20}$")
+password_validator = constr(  # pylint: disable=C0103
+    regex="^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&^])[^\s]{8,20}$"  # pylint: disable= W1401
+)  # pylint: disable=C0103
+username_validator = constr(regex="^[a-zA-Z0-9]{4,20}$")  # pylint: disable=C0103, W1401
 
 
 class RoleEnum(IntEnum):
@@ -20,6 +22,12 @@ class AccountRegisterSchema(BaseModel):
     email: EmailStr  # type: ignore
     password: password_validator  # type: ignore
     repeat_password: password_validator  # type: ignore
+
+
+class AccountCreateSchema(BaseModel):
+    username: username_validator  # type: ignore
+    password: str
+    email: EmailStr
 
 
 class AccountUpdatePasswordSchema(BaseModel):
@@ -44,6 +52,13 @@ class CurrentUserSchema(BaseModel):
 
 class UpdateUserRoleSchema(BaseModel):
     role: Optional[RoleEnum]
+
+
+class CurrentUserWithJWTSchema(BaseModel):
+    data: CurrentUserSchema
+    access_token: str
+    token_type: str
+    exp: int
 
 
 class AuthSchema(BaseModel):

@@ -3,16 +3,15 @@ from typing import TYPE_CHECKING, Optional
 import uuid
 
 from fastapi import UploadFile, HTTPException
-from sqlalchemy import exc as SQLAlchemyExceptions
 from sqlalchemy import func, ForeignKey, select, update, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Mapped, mapped_column, relationship, selectinload
 from sqlalchemy.sql.expression import text
 from starlette.datastructures import UploadFile as StarletteUploadFile
-
+from app.crud.base import CRUD
 from app.db.base_class import Base
-from app.exceptions import AppError
-from app.file_handler import save_file, accepted_doc_type_extensions
+from app.utils.exceptions import AppError
+from app.utils.file_handler import save_file, accepted_doc_type_extensions
 from app.models.auth import Account
 from app.schemas.library import NoteCreateSchema, NoteInsertSchema
 
@@ -20,7 +19,7 @@ if TYPE_CHECKING:
     from app.models.categories import CategoryLevel, Subjects, DocumentTypes
 
 
-class Library(Base):
+class Library(Base, CRUD["Library"]):
     __tablename__ = "library"
 
     id: Mapped[int] = mapped_column(
@@ -49,7 +48,7 @@ class Library(Base):
         ForeignKey("account.user_id"), nullable=False
     )
     uploaded_on: Mapped[datetime.datetime] = mapped_column(
-        nullable=False, server_default=func.now(), index=True
+        nullable=False, server_default=func.now(), index=True  # pylint: disable=E1102
     )
     approved: Mapped[bool] = mapped_column(nullable=False, server_default="f")
 
@@ -59,7 +58,7 @@ class Library(Base):
     doc_type: Mapped["DocumentTypes"] = relationship(back_populates="documents")
 
     @classmethod
-    async def create(
+    async def create_note(
         cls,
         session: AsyncSession,
         uploaded_file: UploadFile,
@@ -67,12 +66,11 @@ class Library(Base):
         data: NoteCreateSchema,
         s3_bucket,
     ):
-
-        if uploaded_file.content_type not in accepted_doc_type_extensions.keys():
-            raise AppError.INVALID_FILE_TYPE_ERROR
+        if uploaded_file.content_type not in accepted_doc_type_extensions:
+            raise AppError.BAD_REQUEST_ERROR
 
         if not isinstance(uploaded_file, StarletteUploadFile):
-            raise AppError.INVALID_FILE_TYPE_ERROR
+            raise AppError.BAD_REQUEST_ERROR
 
         extension = accepted_doc_type_extensions[uploaded_file.content_type]
         file_id = uuid.uuid4().hex
@@ -81,26 +79,15 @@ class Library(Base):
             **data.dict(), uploaded_by=uploaded_by, file_name=file_name
         )
 
-        try:
-            obj = Library(**data_insert.dict())
-            session.add(obj)
-            await session.commit()
-            await save_file(uploaded_file, file_name, s3_bucket)
-            await session.refresh(
-                obj, ["doc_category", "doc_type", "doc_subject", "account"]
-            )
-
-        except SQLAlchemyExceptions.IntegrityError as exc:
-            await session.rollback()
-            if str(exc).find("ForeignKeyViolationError") != -1:
-                raise AppError.CATEGORY_DOES_NOT_EXISTS_ERROR
-            elif str(exc).find("UniqueViolationError") != -1:
-                raise AppError.DOCUMENT_NAME_ALREADY_EXISTS_ERROR from exc
-            raise AppError.DOCUMENT_NAME_ALREADY_EXISTS_ERROR from exc
-        return obj
+        res = await super().create(session, data_insert.dict())
+        await session.refresh(
+            res, ["doc_category", "doc_type", "doc_subject", "account"]
+        )
+        await save_file(uploaded_file, file_name, s3_bucket)
+        return res
 
     @classmethod
-    async def get_all(
+    async def get_all_notes_paginated(
         cls,
         session: AsyncSession,
         page: int,
@@ -121,7 +108,7 @@ class Library(Base):
         if doc_type:
             stmt = stmt.where(cls.doc_type.has(name=doc_type))
 
-        count_stmt = select(func.count()).select_from(stmt)
+        count_stmt = select(func.count()).select_from(stmt)  # pylint: disable=E1102
         total = await session.scalar(count_stmt)
 
         stmt = stmt.limit(size).offset((page - 1) * size)
@@ -143,7 +130,7 @@ class Library(Base):
         }
 
     @classmethod
-    async def get(cls, session: AsyncSession, id: int):
+    async def get(cls, session: AsyncSession, id: int):  # pylint: disable=W0622, C0103
         stmt = (
             select(cls)
             .where(cls.id == id)
@@ -155,7 +142,6 @@ class Library(Base):
             )
         )
         result = await session.execute(stmt)
-
         res = result.scalar()
 
         if not res:
@@ -163,8 +149,12 @@ class Library(Base):
         return res
 
     @classmethod
-    async def update(
-        cls: Base, session: AsyncSession, id: int, authenticated: Account, data: dict
+    async def update_note(
+        cls,
+        session: AsyncSession,
+        id: int,  # pylint: disable=W0622, C0103
+        authenticated: Account,
+        data: dict,
     ):
         stmt = update(cls)
         fetch_stmt = select(cls)
@@ -199,7 +189,9 @@ class Library(Base):
         return updated_note
 
     @classmethod
-    async def approve_note(cls: Base, session: AsyncSession, id: int):
+    async def approve_note(
+        cls, session: AsyncSession, id: int  # pylint: disable=W0622, C0103
+    ):
         stmt = update(cls)
         fetch_stmt = select(cls)
         fetch_stmt = fetch_stmt.where(cls.id == id)
@@ -221,7 +213,12 @@ class Library(Base):
         return updated_object
 
     @classmethod
-    async def delete(cls: Base, session: AsyncSession, authenticated: Account, id: int):
+    async def delete_note(
+        cls,
+        session: AsyncSession,
+        authenticated: Account,
+        id: int,  # pylint: disable=W0622, C0103
+    ):
         stmt = delete(cls).where(cls.id == id)
         fetch_stmt = (
             select(cls)

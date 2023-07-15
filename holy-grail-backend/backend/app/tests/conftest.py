@@ -1,7 +1,5 @@
 import asyncio
 from typing import AsyncGenerator
-from pydantic import PostgresDsn
-from os import environ
 from fastapi.testclient import TestClient
 from sqlalchemy import text
 import sqlalchemy.exc as SQLAlchemyExceptions
@@ -12,16 +10,21 @@ from app.schemas.auth import (
     AuthSchema,
 )
 from app import schemas
-from app.api.deps import get_session
+from app.api.deps import (
+    get_session,
+    get_current_user,
+    get_admin,
+    get_developer,
+    get_verified_user,
+)
 from app.db.base_class import Base
 from app.db.database import (
     engine as test_engine,
     async_session as TestingSessionLocal,
     SQLALCHEMY_DATABASE_URL_WITHOUT_DB,
-    TESTING,
 )
 from app.main import app
-from app.models.auth import Authenticator, Account
+from app.models.auth import Account
 from app.models.categories import DocumentTypes, Subjects, CategoryLevel
 import pytest
 
@@ -140,7 +143,7 @@ def test_authentication_client():
 
 @pytest.fixture(name="test_client_user")
 def test_client_user():
-    app.dependency_overrides[Authenticator.get_current_user] = override_get_current_user
+    app.dependency_overrides[get_current_user] = override_get_current_user
     with TestClient(app) as test_client:
         yield test_client
     app.dependency_overrides = {}
@@ -148,10 +151,8 @@ def test_client_user():
 
 @pytest.fixture(name="test_client_verified_user")
 def test_client_verified_user():
-    app.dependency_overrides[Authenticator.get_current_user] = override_get_current_user
-    app.dependency_overrides[
-        Authenticator.get_verified_user
-    ] = override_get_current_user
+    app.dependency_overrides[get_current_user] = override_get_current_user
+    app.dependency_overrides[get_verified_user] = override_get_current_user
     with TestClient(app) as test_client:
         yield test_client
     app.dependency_overrides = {}
@@ -159,9 +160,9 @@ def test_client_verified_user():
 
 @pytest.fixture(name="test_client_admin")
 def test_client_admin():
-    app.dependency_overrides[Authenticator.get_current_user] = override_get_admin
-    app.dependency_overrides[Authenticator.get_verified_user] = override_get_admin
-    app.dependency_overrides[Authenticator.get_admin] = override_get_admin
+    app.dependency_overrides[get_current_user] = override_get_admin
+    app.dependency_overrides[get_verified_user] = override_get_admin
+    app.dependency_overrides[get_admin] = override_get_admin
     with TestClient(app) as test_client:
         yield test_client
     app.dependency_overrides = {}
@@ -169,10 +170,10 @@ def test_client_admin():
 
 @pytest.fixture(name="test_client_developer")
 def test_client_developer():
-    app.dependency_overrides[Authenticator.get_current_user] = override_get_developer
-    app.dependency_overrides[Authenticator.get_verified_user] = override_get_developer
-    app.dependency_overrides[Authenticator.get_admin] = override_get_developer
-    app.dependency_overrides[Authenticator.get_developer] = override_get_developer
+    app.dependency_overrides[get_current_user] = override_get_developer
+    app.dependency_overrides[get_verified_user] = override_get_developer
+    app.dependency_overrides[get_admin] = override_get_developer
+    app.dependency_overrides[get_developer] = override_get_developer
     yield TestClient(app)
     app.dependency_overrides = {}
 

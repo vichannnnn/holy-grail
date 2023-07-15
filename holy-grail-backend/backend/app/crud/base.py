@@ -1,70 +1,90 @@
-from typing import TypeVar, Generic, Optional
-
+from typing import TypeVar, Generic, Optional, Sequence, Type, Dict, Any
+from fastapi import Response as FastAPIResponse
 from sqlalchemy import update, delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import declared_attr
-from sqlalchemy.orm.decl_api import DeclarativeMeta
 from sqlalchemy import exc as SQLAlchemyExceptions, and_
 
 from app.db.base_class import Base
-from app.exceptions import AppError
+from app.utils.exceptions import AppError
 
-ModelType = TypeVar("ModelType")
+ModelType = TypeVar("ModelType", bound=Base)
 
 
 class CRUD(Generic[ModelType]):
-    @declared_attr
+    @declared_attr  # type: ignore
     def __tablename__(self) -> str:
         return self.__class__.__name__.lower()
 
     @classmethod
-    async def create(
-        cls: DeclarativeMeta, session: AsyncSession, data: dict
+    async def create(  # type: ignore
+        cls: Type[ModelType], session: AsyncSession, data: Dict[str, Any]
     ) -> ModelType:
         try:
             obj = cls(**data)
             session.add(obj)
             await session.commit()
 
-        except SQLAlchemyExceptions.IntegrityError:
+        except SQLAlchemyExceptions.IntegrityError as exc:
             await session.rollback()
-            raise SQLAlchemyExceptions.IntegrityError
-
+            if str(exc).find("ForeignKeyViolationError") != -1:
+                raise AppError.RESOURCES_NOT_FOUND_ERROR
+            elif str(exc).find("UniqueViolationError") != -1:
+                raise AppError.RESOURCES_ALREADY_EXISTS_ERROR from exc
+            raise AppError.RESOURCES_ALREADY_EXISTS_ERROR from exc
         return obj
 
     @classmethod
-    async def get(cls: Base, session: AsyncSession, id: int) -> ModelType:
+    async def get(
+        cls: Type[ModelType],  # type: ignore
+        session: AsyncSession,
+        id: int,  # pylint: disable=W0622
+    ) -> ModelType:
         stmt = select(cls).where(cls.id == id)
         result = await session.execute(stmt)
         instance = result.scalar()
 
         if instance is None:
-            raise AppError.GENERIC_ITEM_NOT_FOUND_ERROR
+            raise AppError.RESOURCES_NOT_FOUND_ERROR
         return instance
 
     @classmethod
-    async def update(
-        cls: Base, session: AsyncSession, id: int, data: dict
+    async def update(  # type: ignore
+        cls: Type[ModelType],
+        session: AsyncSession,
+        id: int,  # pylint: disable=W0622
+        data: Dict[str, Any],
     ) -> ModelType:
         stmt = update(cls).returning(cls).where(cls.id == id).values(**data)
         res = await session.execute(stmt)
         await session.commit()
-        res_fetchone = res.fetchone()
-        return res_fetchone[0]
+        updated_instance = res.scalar()
+
+        if updated_instance is None:
+            await session.rollback()
+            raise AppError.RESOURCES_NOT_FOUND_ERROR
+        return updated_instance
 
     @classmethod
-    async def delete(cls: Base, session: AsyncSession, id: int) -> ModelType:
-        stmt = delete(cls).where(cls.id == id)
-        fetch_stmt = select(cls).where(cls.id == id)
-
-        res = await session.execute(fetch_stmt)
-        await session.execute(stmt)
-        res_scalar = res.scalar()
+    async def delete(  # type: ignore
+        cls: Type[ModelType], session: AsyncSession, id: int  # pylint: disable=W0622
+    ) -> FastAPIResponse:
+        stmt = delete(cls).returning(cls).where(cls.id == id)
+        res = await session.execute(stmt)
         await session.commit()
-        return res_scalar
+        deleted_instance = res.scalar()
+
+        if not deleted_instance:
+            await session.rollback()
+            raise AppError.RESOURCES_NOT_FOUND_ERROR
+        return FastAPIResponse(status_code=204)
 
     @classmethod
-    async def get_all(cls: Base, session: AsyncSession, filter_: Optional[dict] = None):
+    async def get_all(  # type: ignore
+        cls: Type[ModelType],
+        session: AsyncSession,
+        filter_: Optional[Dict[str, Any]] = None,
+    ) -> Sequence[ModelType]:
         stmt = select(cls)
         if filter_:
             conditions = [getattr(cls, key) == value for key, value in filter_.items()]
