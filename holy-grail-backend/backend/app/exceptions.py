@@ -56,38 +56,11 @@ class AppError:
         headers={"WWW-Authenticate": "Bearer"},
     )
 
-    CATEGORY_DOES_NOT_EXISTS_ERROR = HTTPException(
+    RESOURCES_NOT_FOUND_ERROR: HTTPException = HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
-        detail="Category does not exists",
-        headers={"WWW-Authenticate": "Bearer"},
+        detail="Resource does not exists",
     )
 
-    GENERIC_ITEM_NOT_FOUND_ERROR: HTTPException = HTTPException(
-        status_code=status.HTTP_404_NOT_FOUND,
-        detail="Data does not exists",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
-
-    USERNAME_ALREADY_EXISTS_ERROR = HTTPException(
-        status_code=status.HTTP_409_CONFLICT,
-        detail="Username already exists",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
-
-    CATEGORY_ALREADY_EXISTS_ERROR = HTTPException(
-        status_code=status.HTTP_409_CONFLICT,
-        detail="Category already exists",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
-
-    SUBJECT_ALREADY_EXISTS_FOR_CATEGORY_ERROR = HTTPException(
-        status_code=status.HTTP_409_CONFLICT,
-        detail="Category and Subject combination already exists",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
-
-    DOCUMENT_NAME_ALREADY_EXISTS_ERROR = HTTPException(
-        status_code=status.HTTP_409_CONFLICT,
-        detail="Document name already exists",
-        headers={"WWW-Authenticate": "Bearer"},
+    RESOURCES_ALREADY_EXISTS_ERROR = HTTPException(
+        status_code=status.HTTP_409_CONFLICT, detail="Resource already exists"
     )

@@ -1,15 +1,14 @@
-from typing import TypeVar, Generic, Optional, Sequence
+from typing import TypeVar, Generic, Optional, Sequence, Type
 
 from sqlalchemy import update, delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import declared_attr
-from sqlalchemy.orm.decl_api import DeclarativeMeta
 from sqlalchemy import exc as SQLAlchemyExceptions, and_
 
 from app.db.base_class import Base
 from app.exceptions import AppError
 
-ModelType = TypeVar("ModelType")
+ModelType = TypeVar("ModelType", bound=Base)
 
 
 class CRUD(Generic[ModelType]):
@@ -19,49 +18,51 @@ class CRUD(Generic[ModelType]):
 
     @classmethod
     async def create(
-        cls: DeclarativeMeta, session: AsyncSession, data: dict
+        cls: Type[ModelType], session: AsyncSession, data: dict
     ) -> ModelType:
         try:
             obj = cls(**data)
             session.add(obj)
             await session.commit()
 
-        except SQLAlchemyExceptions.IntegrityError:
+        except SQLAlchemyExceptions.IntegrityError as exc:
             await session.rollback()
-            raise SQLAlchemyExceptions.IntegrityError
-
+            if str(exc).find("ForeignKeyViolationError") != -1:
+                raise AppError.RESOURCES_NOT_FOUND_ERROR
+            elif str(exc).find("UniqueViolationError") != -1:
+                raise AppError.RESOURCES_ALREADY_EXISTS_ERROR from exc
+            raise AppError.RESOURCES_ALREADY_EXISTS_ERROR from exc
         return obj
 
     @classmethod
-    async def get(cls: Base, session: AsyncSession, id: int) -> ModelType:
+    async def get(cls: Type[ModelType], session: AsyncSession, id: int) -> ModelType:
         stmt = select(cls).where(cls.id == id)
         result = await session.execute(stmt)
         instance = result.scalar()
 
         if instance is None:
-            raise AppError.GENERIC_ITEM_NOT_FOUND_ERROR
+            raise AppError.RESOURCES_NOT_FOUND_ERROR
         return instance
 
     @classmethod
     async def update(
-        cls: Base, session: AsyncSession, id: int, data: dict
+        cls: Type[ModelType], session: AsyncSession, id: int, data: dict
     ) -> ModelType:
         stmt = update(cls).returning(cls).where(cls.id == id).values(**data)
         res = await session.execute(stmt)
         await session.commit()
-        res_fetchone = res.fetchone()
-        return res_fetchone[0]
+        updated_instance = res.scalar_one()
+
+        if updated_instance is None:
+            raise AppError.RESOURCES_NOT_FOUND_ERROR
+        return updated_instance
 
     @classmethod
-    async def delete(cls: Base, session: AsyncSession, id: int) -> ModelType:
+    async def delete(cls: Type[ModelType], session: AsyncSession, id: int) -> ModelType:
         stmt = delete(cls).where(cls.id == id)
-        fetch_stmt = select(cls).where(cls.id == id)
-
-        res = await session.execute(fetch_stmt)
-        await session.execute(stmt)
-        res_scalar = res.scalar()
+        res = await session.execute(stmt)
         await session.commit()
-        return res_scalar
+        return res.scalar_one()
 
     @classmethod
     async def get_all(

@@ -1,10 +1,10 @@
 from os import environ
-
 import httpx
 from pydantic import EmailStr
 
 MAILTRAP_BEARER_TOKEN = environ["MAILTRAP_BEARER_TOKEN"]
 MAILTRAP_API_KEY = environ["MAILTRAP_API_KEY"]
+MAILTRAP_SEND_API_URL = "https://send.api.mailtrap.io/api/send"
 
 
 def send_email_verification_mail(
@@ -14,8 +14,6 @@ def send_email_verification_mail(
     confirm_url: str,
     username: str,
 ):
-    url = "https://send.api.mailtrap.io/api/send"
-
     payload = {
         "to": [{"email": to_email}],
         "from": {"email": from_email, "name": sender_name},
@@ -30,7 +28,7 @@ def send_email_verification_mail(
     }
 
     with httpx.Client() as client:
-        response = client.post(url, headers=headers, json=payload)
+        response = client.post(MAILTRAP_SEND_API_URL, headers=headers, json=payload)
         return response.status_code
 
 
@@ -41,8 +39,6 @@ def send_reset_password_mail(
     confirm_url: str,
     username: str,
 ):
-    url = "https://send.api.mailtrap.io/api/send"
-
     payload = {
         "to": [{"email": to_email}],
         "from": {"email": from_email, "name": sender_name},
@@ -57,15 +53,13 @@ def send_reset_password_mail(
     }
 
     with httpx.Client() as client:
-        response = client.post(url, headers=headers, json=payload)
+        response = client.post(MAILTRAP_SEND_API_URL, headers=headers, json=payload)
         return response.status_code
 
 
 def send_new_password_mail(
     sender_name: str, from_email: str, to_email: EmailStr, username: str, password: str
 ):
-    url = "https://send.api.mailtrap.io/api/send"
-
     payload = {
         "to": [{"email": to_email}],
         "from": {"email": from_email, "name": sender_name},
@@ -82,5 +76,5 @@ def send_new_password_mail(
     }
 
     with httpx.Client() as client:
-        response = client.post(url, headers=headers, json=payload)
+        response = client.post(MAILTRAP_SEND_API_URL, headers=headers, json=payload)
         return response.status_code

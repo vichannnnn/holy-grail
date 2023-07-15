@@ -34,7 +34,7 @@ class CategoryLevel(Base, CRUD["category_level"]):
         category = result.scalar()
 
         if category:
-            raise AppError.CATEGORY_ALREADY_EXISTS_ERROR
+            raise AppError.RESOURCES_ALREADY_EXISTS_ERROR
         return await super().create(session, data)
 
 
@@ -66,7 +66,7 @@ class Subjects(Base, CRUD["subjects"]):
         category = result.scalar()
 
         if not category:
-            raise AppError.CATEGORY_DOES_NOT_EXISTS_ERROR
+            raise AppError.RESOURCES_NOT_FOUND_ERROR
 
         stmt = select(cls).where(
             (cls.name == data["name"]) & (cls.category_id == data["category_id"])
@@ -88,7 +88,7 @@ class Subjects(Base, CRUD["subjects"]):
         category = result.scalar()
 
         if not category:
-            raise AppError.CATEGORY_DOES_NOT_EXISTS_ERROR
+            raise AppError.RESOURCES_NOT_FOUND_ERROR
 
         stmt = select(cls).where(
             (cls.name == data["name"])
@@ -121,5 +121,5 @@ class DocumentTypes(Base, CRUD["documents"]):
         document_type = result.scalar()
 
         if document_type:
-            raise AppError.DOCUMENT_NAME_ALREADY_EXISTS_ERROR
+            raise AppError.RESOURCES_ALREADY_EXISTS_ERROR
         return await super().create(session, data)

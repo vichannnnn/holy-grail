@@ -80,23 +80,12 @@ class Library(Base):
             **data.dict(), uploaded_by=uploaded_by, file_name=file_name
         )
 
-        try:
-            obj = Library(**data_insert.dict())
-            session.add(obj)
-            await session.commit()
-            await save_file(uploaded_file, file_name, s3_bucket)
-            await session.refresh(
-                obj, ["doc_category", "doc_type", "doc_subject", "account"]
-            )
-
-        except SQLAlchemyExceptions.IntegrityError as exc:
-            await session.rollback()
-            if str(exc).find("ForeignKeyViolationError") != -1:
-                raise AppError.CATEGORY_DOES_NOT_EXISTS_ERROR
-            elif str(exc).find("UniqueViolationError") != -1:
-                raise AppError.DOCUMENT_NAME_ALREADY_EXISTS_ERROR from exc
-            raise AppError.DOCUMENT_NAME_ALREADY_EXISTS_ERROR from exc
-        return obj
+        res = await super().create(session, data_insert.dict())
+        await session.refresh(
+            res, ["doc_category", "doc_type", "doc_subject", "account"]
+        )
+        await save_file(uploaded_file, file_name, s3_bucket)
+        return res
 
     @classmethod
     async def get_all(

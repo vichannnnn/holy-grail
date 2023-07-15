@@ -14,7 +14,7 @@ from sqlalchemy import Index
 from sqlalchemy import exc as SQLAlchemyExceptions
 from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import relationship, Mapped, mapped_column
+from sqlalchemy.orm import relationship, Mapped, mapped_column, synonym
 from sqlalchemy.sql.expression import text
 from app.crud.base import CRUD
 from app.db.base_class import Base
@@ -95,6 +95,8 @@ class Account(Base, CRUD["Account"]):
     email_verification_token: Mapped[str] = mapped_column(nullable=True)
     reset_password_token: Mapped[str] = mapped_column(nullable=True)
 
+    id = synonym("user_id")
+
     async def register_development(
         self, session: AsyncSession, data: AccountRegisterSchema
     ) -> CurrentUserSchema:
@@ -124,7 +126,7 @@ class Account(Base, CRUD["Account"]):
 
         except SQLAlchemyExceptions.IntegrityError as exc:
             await session.rollback()
-            raise AppError.USERNAME_ALREADY_EXISTS_ERROR from exc
+            raise AppError.RESOURCES_ALREADY_EXISTS_ERROR from exc
 
     async def register(
         self, session: AsyncSession, data: AccountRegisterSchema
@@ -170,7 +172,7 @@ class Account(Base, CRUD["Account"]):
 
         except SQLAlchemyExceptions.IntegrityError as exc:
             await session.rollback()
-            raise AppError.USERNAME_ALREADY_EXISTS_ERROR from exc
+            raise AppError.RESOURCES_ALREADY_EXISTS_ERROR from exc
 
     @classmethod
     async def login(
