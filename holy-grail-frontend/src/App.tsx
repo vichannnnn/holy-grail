@@ -29,6 +29,7 @@ function App() {
     if (location.state && location.state.alertContent) {
       setAlertContent(location.state.alertContent);
       setOpenAlert(true);
+      window.history.replaceState({}, document.title);
     }
   }, [location.state]);
 
