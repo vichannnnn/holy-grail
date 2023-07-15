@@ -1,7 +1,6 @@
 from typing import List
 
-from fastapi import APIRouter, Depends
-from sqlalchemy.ext.asyncio import AsyncSession
+from fastapi import APIRouter
 
 from app.api.deps import CurrentSession, SessionDeveloper
 from app.models.categories import Subjects, CategoryLevel, DocumentTypes
@@ -59,7 +58,7 @@ async def get_notes_type_list(
 async def add_subject(
     data: SubjectCreateSchema,
     session: CurrentSession,
-    is_admin: SessionDeveloper,
+    is_developer: SessionDeveloper,
 ):
     data = await Subjects.create(session, dict(data))
     return data
@@ -69,7 +68,7 @@ async def add_subject(
 async def add_category(
     data: CategoryCreateSchema,
     session: CurrentSession,
-    is_admin: SessionDeveloper,
+    is_developer: SessionDeveloper,
 ):
     data = await CategoryLevel.create(session, dict(data))
     return data
@@ -79,7 +78,7 @@ async def add_category(
 async def add_notes_type(
     data: DocumentTypeCreateSchema,
     session: CurrentSession,
-    is_admin: SessionDeveloper,
+    is_developer: SessionDeveloper,
 ):
     data = await DocumentTypes.create(session, dict(data))
     return data
@@ -90,7 +89,7 @@ async def update_subject(
     id: int,
     data: SubjectUpdateSchema,
     session: CurrentSession,
-    is_admin: SessionDeveloper,
+    is_developer: SessionDeveloper,
 ):
     data = await Subjects.update(session, id, dict(data))
     return data
@@ -101,7 +100,7 @@ async def update_category(
     id: int,
     data: CategoryUpdateSchema,
     session: CurrentSession,
-    is_admin: SessionDeveloper,
+    is_developer: SessionDeveloper,
 ):
     data = await CategoryLevel.update(session, id, dict(data))
     return data
@@ -112,7 +111,7 @@ async def update_notes_type(
     id: int,
     data: DocumentTypeUpdateSchema,
     session: CurrentSession,
-    is_admin: SessionDeveloper,
+    is_developer: SessionDeveloper,
 ):
     data = await DocumentTypes.update(session, id, dict(data))
     return data

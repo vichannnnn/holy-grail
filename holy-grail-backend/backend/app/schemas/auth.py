@@ -25,6 +25,7 @@ class AccountRegisterSchema(BaseModel):
 class AccountCreateSchema(BaseModel):
     username: username_validator  # type: ignore
     password: str
+    email: EmailStr
 
 
 class AccountUpdatePasswordSchema(BaseModel):

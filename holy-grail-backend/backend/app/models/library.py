@@ -8,7 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Mapped, mapped_column, relationship, selectinload
 from sqlalchemy.sql.expression import text
 from starlette.datastructures import UploadFile as StarletteUploadFile
-
+from app.crud.base import CRUD
 from app.db.base_class import Base
 from app.utils.exceptions import AppError
 from app.utils.file_handler import save_file, accepted_doc_type_extensions
@@ -19,7 +19,7 @@ if TYPE_CHECKING:
     from app.models.categories import CategoryLevel, Subjects, DocumentTypes
 
 
-class Library(Base):
+class Library(Base, CRUD["Library"]):
     __tablename__ = "library"
 
     id: Mapped[int] = mapped_column(

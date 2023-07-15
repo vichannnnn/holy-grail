@@ -61,32 +61,30 @@ class Account(Base, CRUD["Account"]):
     async def register_development(
         cls, session: AsyncSession, data: AccountRegisterSchema
     ) -> CurrentUserSchema:
-        username = data.username
-        password = Authenticator.pwd_context.hash(data.password)
-        repeat_password = data.repeat_password
 
-        if data.password != repeat_password:
+        if data.password != data.repeat_password:
             raise AppError.BAD_REQUEST_ERROR
-
-        hashed_password = Authenticator.pwd_context.hash(password)
-        insert_data = AccountCreateSchema(username=username, password=hashed_password)
+        hashed_password = Authenticator.pwd_context.hash(data.password)
+        insert_data = AccountCreateSchema(
+            username=data.username, password=hashed_password, email=data.email
+        )
         res = await super().create(session, insert_data.dict())
         await session.refresh(res)
+
         return CurrentUserSchema(**res.__dict__)
 
     @classmethod
     async def register(
         cls, session: AsyncSession, data: AccountRegisterSchema
     ) -> CurrentUserSchema:
-        username = data.username
-        password = Authenticator.pwd_context.hash(data.password)
-        repeat_password = data.repeat_password
 
-        if data.password != repeat_password:
+        if data.password != data.repeat_password:
             raise AppError.BAD_REQUEST_ERROR
 
-        hashed_password = Authenticator.pwd_context.hash(password)
-        insert_data = AccountCreateSchema(username=username, password=hashed_password)
+        hashed_password = Authenticator.pwd_context.hash(data.password)
+        insert_data = AccountCreateSchema(
+            username=data.username, password=hashed_password, email=data.email
+        )
         res = await super().create(session, insert_data.dict())
         await session.refresh(res)
 
@@ -110,6 +108,7 @@ class Account(Base, CRUD["Account"]):
     async def login(
         cls, session: AsyncSession, data: AuthSchema
     ) -> CurrentUserWithJWTSchema:
+
         if not (credentials := await cls.select_from_username(session, data.username)):
             raise AppError.INVALID_CREDENTIALS_ERROR
         if not Authenticator.pwd_context.verify(data.password, credentials.password):
@@ -118,9 +117,7 @@ class Account(Base, CRUD["Account"]):
         access_token = Authenticator.create_access_token(data={"sub": data.username})
         decoded_token = jwt.decode(access_token, SECRET_KEY, algorithms=[ALGORITHM])
 
-        current_user = CurrentUserSchema(
-            user_id=credentials.user_id, username=credentials.username
-        )
+        current_user = CurrentUserSchema(**credentials.__dict__)
         res = CurrentUserWithJWTSchema(
             data=current_user,
             access_token=access_token,

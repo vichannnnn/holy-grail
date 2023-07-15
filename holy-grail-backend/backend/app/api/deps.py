@@ -136,5 +136,5 @@ async def get_developer(
 SessionUser = Annotated[CurrentUserSchema, Depends(get_current_user)]
 SessionVerifiedUser = Annotated[CurrentUserSchema, Depends(get_verified_user)]
 SessionAdmin = Annotated[CurrentUserSchema, Depends(get_admin)]
-SessionDeveloper = Annotated[CurrentUserSchema, Depends(get_admin)]
-SessionBucket = Annotated[boto3.Session, get_s3_client()]
+SessionDeveloper = Annotated[CurrentUserSchema, Depends(get_developer)]
+SessionBucket = Annotated[boto3.Session, Depends(get_s3_client)]

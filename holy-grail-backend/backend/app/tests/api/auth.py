@@ -71,7 +71,7 @@ def test_update_password(
         json=jsonable_encoder(test_user_new_password_data),
         headers=headers,
     )
-    assert response.status_code == 200
+    assert response.status_code == 204
 
 
 def test_get_account_name(

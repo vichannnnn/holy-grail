@@ -75,7 +75,7 @@ class Subjects(Base, CRUD["subjects"]):
         existing_subject = result.scalar()
 
         if existing_subject:
-            raise AppError.SUBJECT_ALREADY_EXISTS_FOR_CATEGORY_ERROR
+            raise AppError.RESOURCES_ALREADY_EXISTS_ERROR
 
         return await super().create(session, data)
 
@@ -99,7 +99,7 @@ class Subjects(Base, CRUD["subjects"]):
         existing_subject = result.scalar()
 
         if existing_subject:
-            raise AppError.SUBJECT_ALREADY_EXISTS_FOR_CATEGORY_ERROR
+            raise AppError.RESOURCES_ALREADY_EXISTS_ERROR
 
         return await super().update(session, id, data)
 

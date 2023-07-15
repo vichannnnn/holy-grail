@@ -1,6 +1,6 @@
 import re
 from typing import List, Dict, Any, Optional
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter
 from app.api.deps import SessionDeveloper
 from prometheus_client import generate_latest
 

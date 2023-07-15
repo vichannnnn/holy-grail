@@ -10,7 +10,7 @@ from app.api.deps import (
 from app.utils.limiter import conditional_rate_limit
 from app.models.library import Library
 from app.schemas.library import NoteCreateSchema, NoteUpdateSchema, NoteSchema
-import boto3
+
 
 router = APIRouter()
 notes_router = APIRouter()
