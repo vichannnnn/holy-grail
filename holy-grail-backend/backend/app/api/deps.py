@@ -1,7 +1,7 @@
 from typing import AsyncGenerator, Generator
 from fastapi import Depends
 from app.db.database import SessionLocal, async_session
-from app.file_handler import s3_app_client
+from app.utils.file_handler import s3_app_client
 from app.models.auth import (
     Authenticator,
     AppError,

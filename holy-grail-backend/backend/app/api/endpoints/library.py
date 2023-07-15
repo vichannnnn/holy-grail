@@ -5,7 +5,7 @@ from fastapi_pagination import Page
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import get_session, get_s3_client, get_verified_user, get_admin
-from app.limiter import conditional_rate_limit
+from app.utils.limiter import conditional_rate_limit
 from app.models.auth import Account
 from app.models.library import Library
 from app.schemas.library import NoteCreateSchema, NoteUpdateSchema, NoteSchema

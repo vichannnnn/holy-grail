@@ -1,14 +1,9 @@
-import string
 import traceback
-from datetime import datetime, timedelta
 from os import environ
 from typing import TYPE_CHECKING, Union
 from uuid import uuid4
 
-from fastapi import Depends, status
-from fastapi.security import OAuth2PasswordBearer
-from jose import JWTError, jwt
-from passlib.context import CryptContext
+from fastapi import status
 from pydantic import EmailStr
 from sqlalchemy import Index
 from sqlalchemy import exc as SQLAlchemyExceptions
@@ -18,20 +13,21 @@ from sqlalchemy.orm import relationship, Mapped, mapped_column, synonym
 from sqlalchemy.sql.expression import text
 from app.crud.base import CRUD
 from app.db.base_class import Base
-from app.exceptions import AppError
+from app.utils.exceptions import AppError
+from app.utils.auth import Authenticator, generate_password
 from app.schemas.admin import UpdateRoleSchema
 from app.schemas.auth import (
     AccountRegisterSchema,
+    AccountCreateSchema,
     AccountUpdatePasswordSchema,
     CurrentUserSchema,
 )
-
-if TYPE_CHECKING:
-    from app.models.library import Library
-import random
 from app.tasks.verify_email import send_verification_email_task
 from app.tasks.reset_password_email import send_reset_password_email_task
 from app.tasks.new_password_email import send_new_password_email_task
+
+if TYPE_CHECKING:
+    from app.models.library import Library
 
 BACKEND_URL = environ["BACKEND_URL"]
 FRONTEND_URL = environ["FRONTEND_URL"]
@@ -40,53 +36,16 @@ ALGORITHM = environ["ALGORITHM"]
 SECRET_KEY = environ["SECRET_KEY"]
 
 
-def generate_password():
-    letter_group = string.ascii_letters
-    digit_group = string.digits
-    special_group = "@$!%*?&^"
-
-    password = [
-        random.choice(letter_group),
-        random.choice(digit_group),
-        random.choice(special_group),
-    ]
-    all_characters = letter_group + digit_group + special_group
-    password += random.choices(all_characters, k=5)  # k=5 to make total length 8
-
-    random.shuffle(password)
-
-    return "".join(password)
-
-
-class Authenticator:
-    pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-    oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
-
-    @classmethod
-    def create_access_token(cls, data: dict):
-        expiry = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-        expiry_timestamp = int(expiry.timestamp())
-        return jwt.encode(
-            {**data, "exp": expiry_timestamp}, SECRET_KEY, algorithm=ALGORITHM
-        )
-
-    @classmethod
-    async def verify(cls, token: str = Depends(oauth2_scheme)):
-        try:
-            jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
-            return True
-        except JWTError as exc:
-            raise AppError.INVALID_CREDENTIALS_ERROR from exc
-
-
 class Account(Base, CRUD["Account"]):
     __tablename__ = "account"
     __table_args__ = (
         Index("username_case_sensitive_index", text("upper(username)"), unique=True),
     )
 
-    user_id: Mapped[int] = mapped_column(primary_key=True)
-    username: Mapped[str] = mapped_column(nullable=False, unique=True)
+    user_id: Mapped[int] = mapped_column(
+        primary_key=True, index=True, autoincrement=True
+    )
+    username: Mapped[str] = mapped_column(nullable=False, index=True, unique=True)
     email: Mapped[str] = mapped_column(nullable=True, unique=True)
     password: Mapped[str] = mapped_column(nullable=False)
     documents: Mapped["Library"] = relationship(back_populates="account", uselist=True)
@@ -95,84 +54,56 @@ class Account(Base, CRUD["Account"]):
     email_verification_token: Mapped[str] = mapped_column(nullable=True)
     reset_password_token: Mapped[str] = mapped_column(nullable=True)
 
-    id = synonym("user_id")
+    id: Mapped[int] = synonym("user_id")
 
+    @classmethod
     async def register_development(
-        self, session: AsyncSession, data: AccountRegisterSchema
+        cls, session: AsyncSession, data: AccountRegisterSchema
     ) -> CurrentUserSchema:
-        self.username: str = data.username
-        self.password: str = Authenticator.pwd_context.hash(data.password)
-        self.email: EmailStr = data.email
-        self.verified: bool = True
+        username = data.username
+        password = Authenticator.pwd_context.hash(data.password)
+        repeat_password = data.repeat_password
 
-        if data.password != data.repeat_password:
+        if data.password != repeat_password:
             raise AppError.PASSWORD_MISMATCH_ERROR
 
-        try:
-            session.add(self)
-            await session.commit()
-            await session.refresh(self)
+        hashed_password = Authenticator.pwd_context.hash(password)
+        insert_data = AccountCreateSchema(username=username, password=hashed_password)
+        res = await super().create(session, insert_data.dict())
+        await session.refresh(res)
+        return CurrentUserSchema(**res.__dict__)
 
-            user_data = {
-                "user_id": self.user_id,
-                "username": self.username,
-                "email": self.email,
-                "role": self.role,
-                "verified": True,
-            }
-
-            current_user = CurrentUserSchema(**user_data)
-            return current_user
-
-        except SQLAlchemyExceptions.IntegrityError as exc:
-            await session.rollback()
-            raise AppError.RESOURCES_ALREADY_EXISTS_ERROR from exc
-
+    @classmethod
     async def register(
-        self, session: AsyncSession, data: AccountRegisterSchema
+        cls, session: AsyncSession, data: AccountRegisterSchema
     ) -> CurrentUserSchema:
-        self.username = data.username
-        self.password = Authenticator.pwd_context.hash(data.password)
-        self.email = data.email
+        username = data.username
+        password = Authenticator.pwd_context.hash(data.password)
+        repeat_password = data.repeat_password
 
-        if data.password != data.repeat_password:
+        if data.password != repeat_password:
             raise AppError.PASSWORD_MISMATCH_ERROR
 
-        try:
-            session.add(self)
-            await session.commit()
-            await session.refresh(self)
+        hashed_password = Authenticator.pwd_context.hash(password)
+        insert_data = AccountCreateSchema(username=username, password=hashed_password)
+        res = await super().create(session, insert_data.dict())
+        await session.refresh(res)
 
-            user_data = {
-                "user_id": self.user_id,
-                "username": self.username,
-                "email": self.email,
-                "role": self.role,
-                "verified": self.verified,
-            }
+        created_user = CurrentUserSchema(**res.__dict__)
 
-            self.email_verification_token = uuid4().hex
-            confirm_url = (
-                f"{FRONTEND_URL}/verify-account?token={self.email_verification_token}"
-            )
+        email_verification_token = uuid4().hex
+        confirm_url = f"{FRONTEND_URL}/verify-account?token={email_verification_token}"
+        send_verification_email_task.delay(data.email, data.username, confirm_url)
 
-            send_verification_email_task.delay(data.email, data.username, confirm_url)
-
-            stmt = (
-                update(Account)
-                .returning(Account)
-                .where(Account.user_id == self.user_id)
-                .values({"email_verification_token": self.email_verification_token})
-            )
-            await session.execute(stmt)
-            await session.commit()
-
-            current_user = CurrentUserSchema(**user_data)
-            return current_user
-
-        except SQLAlchemyExceptions.IntegrityError as exc:
-            await session.rollback()
-            raise AppError.RESOURCES_ALREADY_EXISTS_ERROR from exc
+        stmt = (
+            update(Account)
+            .returning(Account)
+            .where(Account.user_id == created_user.user_id)
+            .values({"email_verification_token": email_verification_token})
+        )
+        await session.execute(stmt)
+        await session.commit()
+        return created_user
 
     @classmethod
     async def login(

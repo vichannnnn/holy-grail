@@ -3,7 +3,6 @@ from typing import TYPE_CHECKING, Optional
 import uuid
 
 from fastapi import UploadFile, HTTPException
-from sqlalchemy import exc as SQLAlchemyExceptions
 from sqlalchemy import func, ForeignKey, select, update, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Mapped, mapped_column, relationship, selectinload
@@ -11,8 +10,8 @@ from sqlalchemy.sql.expression import text
 from starlette.datastructures import UploadFile as StarletteUploadFile
 
 from app.db.base_class import Base
-from app.exceptions import AppError
-from app.file_handler import save_file, accepted_doc_type_extensions
+from app.utils.exceptions import AppError
+from app.utils.file_handler import save_file, accepted_doc_type_extensions
 from app.models.auth import Account
 from app.schemas.library import NoteCreateSchema, NoteInsertSchema
 

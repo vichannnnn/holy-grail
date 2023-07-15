@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.crud.base import CRUD
 from app.db.base_class import Base
-from app.exceptions import AppError
+from app.utils.exceptions import AppError
 
 if TYPE_CHECKING:
     from app.models.library import Library

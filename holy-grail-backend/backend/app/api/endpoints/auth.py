@@ -3,8 +3,8 @@ from fastapi import APIRouter, Depends, Request, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import get_session, get_current_user
-from app.exceptions import AppError
-from app.limiter import conditional_rate_limit
+from app.utils.exceptions import AppError
+from app.utils.limiter import conditional_rate_limit
 from app.models.auth import Account, Authenticator, ALGORITHM, SECRET_KEY
 from app.schemas.auth import (
     AuthSchema,
