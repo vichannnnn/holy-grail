@@ -67,10 +67,10 @@ class Library(Base):
         s3_bucket,
     ):
         if uploaded_file.content_type not in accepted_doc_type_extensions.keys():
-            raise AppError.INVALID_FILE_TYPE_ERROR
+            raise AppError.BAD_REQUEST_ERROR
 
         if not isinstance(uploaded_file, StarletteUploadFile):
-            raise AppError.INVALID_FILE_TYPE_ERROR
+            raise AppError.BAD_REQUEST_ERROR
 
         extension = accepted_doc_type_extensions[uploaded_file.content_type]
         file_id = uuid.uuid4().hex

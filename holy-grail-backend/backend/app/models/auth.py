@@ -65,7 +65,7 @@ class Account(Base, CRUD["Account"]):
         repeat_password = data.repeat_password
 
         if data.password != repeat_password:
-            raise AppError.PASSWORD_MISMATCH_ERROR
+            raise AppError.BAD_REQUEST_ERROR
 
         hashed_password = Authenticator.pwd_context.hash(password)
         insert_data = AccountCreateSchema(username=username, password=hashed_password)
@@ -82,7 +82,7 @@ class Account(Base, CRUD["Account"]):
         repeat_password = data.repeat_password
 
         if data.password != repeat_password:
-            raise AppError.PASSWORD_MISMATCH_ERROR
+            raise AppError.BAD_REQUEST_ERROR
 
         hashed_password = Authenticator.pwd_context.hash(password)
         insert_data = AccountCreateSchema(username=username, password=hashed_password)
@@ -139,7 +139,7 @@ class Account(Base, CRUD["Account"]):
             raise AppError.INVALID_CREDENTIALS_ERROR
 
         if data.password != data.repeat_password:
-            raise AppError.PASSWORD_MISMATCH_ERROR
+            raise AppError.BAD_REQUEST_ERROR
 
         data_dict = data.dict()
         data_dict.pop("before_password", None)
@@ -214,7 +214,7 @@ class Account(Base, CRUD["Account"]):
             account = res.scalars().one()
 
         except SQLAlchemyExceptions.NoResultFound:
-            raise AppError.INVALID_EMAIL_VERIFICATION_TOKEN
+            raise AppError.BAD_REQUEST_ERROR
 
         if account.verified:
             raise AppError.ACCOUNT_ALREADY_VERIFIED
@@ -258,7 +258,7 @@ class Account(Base, CRUD["Account"]):
             send_verification_email_task.delay(res.email, res.username, confirm_url)
 
         else:
-            raise AppError.USER_EMAIL_ALREADY_VERIFIED_ERROR
+            raise AppError.BAD_REQUEST_ERROR
 
     @classmethod
     async def send_reset_email(cls: Base, session: AsyncSession, email: EmailStr):
