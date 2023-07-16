@@ -10,10 +10,12 @@ import {
   Collapse,
   IconButton,
   Box,
+  Tooltip,
 } from '@mui/material';
 import MediaQueryContext from '../../providers/MediaQueryProvider';
 import AuthContext from '../../providers/AuthProvider';
 import { fetchData, fetchCategory, SubjectType } from '../../api/utils/library/Search';
+import ErrorIcon from '@mui/icons-material/Error';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -32,9 +34,16 @@ interface UploadNoteProps {
   options: OptionsProps | null;
   saveNoteUpdates: (note: NoteInfoProps) => void;
   deleteNote: () => void;
+  errors?: string[];
 }
 
-export const UploadNote = ({ fileName, options, saveNoteUpdates, deleteNote }: UploadNoteProps) => {
+export const UploadNote = ({
+  fileName,
+  options,
+  saveNoteUpdates,
+  deleteNote,
+  errors,
+}: UploadNoteProps) => {
   const [documentName, setDocumentName] = useState<string>('');
   const [category, setCategory] = useState<number>(0);
   const [subject, setSubject] = useState<number>(0);
@@ -99,16 +108,24 @@ export const UploadNote = ({ fileName, options, saveNoteUpdates, deleteNote }: U
         style={{
           display: 'flex',
           flexDirection: 'row',
-          justifyContent: 'space-between',
-          gap: '10%',
-          margin: '1%',
         }}
       >
+        <div style={{ position: 'absolute', display: errors ? '' : 'none' }}>
+          <Tooltip
+            title={errors?.map((err) => (
+              <Typography>- {err}</Typography>
+            ))}
+            placement='bottom'
+            arrow
+          >
+            <ErrorIcon color='error' />
+          </Tooltip>
+        </div>
         <div style={{ width: '50vw' }}>
           <Grid
             container
             sx={{
-              border: validInput ? '1px solid green' : '1px solid red',
+              border: validInput ? '1px solid green' : '1px solid black',
               borderRadius: '10px',
             }}
           >

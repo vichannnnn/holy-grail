@@ -26,6 +26,6 @@ class AppError:
     def MULTIPLE_GENERIC_ERRORS(**kwargs):
         return HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=[*kwargs.items()],
+            detail=kwargs,
             headers={"WWW-Authenticate": "Bearer"},
         )

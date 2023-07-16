@@ -42,6 +42,11 @@ const UploadPage = () => {
   const [openDeleteAlert, setOpenDeleteAlert] = useState<boolean>(false);
   const [deleteAlertKey, setDeleteAlertKey] = useState<string | null>(null);
 
+  const [serverValidationErrors, setServerValidationErrors] = useState<Record<
+    string,
+    string[]
+  > | null>(null);
+
   const muiTheme = createTheme();
 
   if (!user) {
@@ -80,21 +85,37 @@ const UploadPage = () => {
       if (responseStatus === 400) {
         if (responseBody === undefined) return generalisedAlertError;
         const friendlyErrorText: Record<string, string> = {
-          'Document name is not unique': 'Ensure all document names are unique: ',
-          'Document name already exists': 'Please rename your documents: ',
-          'You have uploaded an invalid file type.': 'Ensure all files uploaded are pdf files: ',
-          'Schema validation error': 'Ensure all fields are filled in correctly: ',
+          DOCUMENT_NAME_DUPLICATED: 'Document name already exists. Please rename this document.',
+          DOCUMENT_NAME_IN_DB:
+            'We have another document in our database with the same name. Please rename this document.',
+          SCHEMA_VALIDATION_ERROR:
+            'Please ensure your document name is between 1 and 100 characters long.',
+          INVALID_FILE_TYPE: 'Please ensure all files uploaded are pdf files.',
         };
-        let alertDescription = '';
-        responseBody.forEach((error: string[]) => {
-          if (error[1].length !== 0) {
-            alertDescription += friendlyErrorText[error[0]] + error[1] + '\n';
-          }
-        });
+        let indexedErrors: Record<number, string[]> = {};
+        for (const [err, val] of Object.entries<number[]>(responseBody)) {
+          if (val.length === 0) continue;
+
+          // if there is an error
+          val.forEach((errIndex: number) => {
+            if (indexedErrors[errIndex] === undefined) {
+              indexedErrors[errIndex] = [friendlyErrorText[err]];
+            } else {
+              indexedErrors[errIndex].push(friendlyErrorText[err]);
+            }
+          });
+        }
+        let keyedErrors: Record<string, string[]> = {};
+        for (const [errIndex, err] of Object.entries(indexedErrors)) {
+          keyedErrors[Object.keys(notes)[Number(errIndex)]] = err;
+        }
+        // map each indexed error to its key
+        console.log(keyedErrors);
+        setServerValidationErrors(keyedErrors);
 
         return {
           title: 'Error',
-          description: alertDescription,
+          description: 'You have errors in your submission. Please fix them and try again.',
           severity: 'error',
         } as AlertProps;
       }
@@ -203,6 +224,7 @@ const UploadPage = () => {
                     setOpenDeleteAlert(true);
                     setDeleteAlertKey(key);
                   }}
+                  errors={serverValidationErrors ? serverValidationErrors[key] : undefined}
                 />
               ))
             : null}
