@@ -18,6 +18,5 @@ repos:
     rev: 'v2.3.2'
     hooks:
         - id: prettier
-          files: \.(js|ts|tsx)$
+          files: holy-grail-frontend/src/.*\.(js|jsx|ts|tsx)$
           args: [ '--write', '--config', './holy-grail-frontend/.prettierrc' ]
-          exclude: '^holy-grail-frontend/src/'
