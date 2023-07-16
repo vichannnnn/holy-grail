@@ -1,13 +1,9 @@
 from datetime import datetime
 from typing import Optional, Any
-
-from pydantic import constr, validator
-from app.file_handler import accepted_doc_type_extensions
+from pydantic import constr
 from app.schemas.auth import UploaderSchema
 from app.schemas.base import CustomBaseModel as BaseModel
 from app.schemas.categories import DocumentTypeSchema, CategorySchema, SubjectSchema
-from app.exceptions import AppError
-from starlette.datastructures import UploadFile as StarletteUploadFile
 
 
 DocumentNameStr = constr(min_length=1, max_length=100)

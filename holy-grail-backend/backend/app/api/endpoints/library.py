@@ -23,11 +23,11 @@ async def create_note(
     session: CurrentSession,
     s3_bucket: SessionBucket,
     authenticated: SessionVerifiedUser,
-    file: Annotated[List[UploadFile], Form()] = List,
-    category: Annotated[List[int], Form()] = List,
-    subject: Annotated[List[int], Form()] = List,
-    document_type: Annotated[List[int], Form()] = List,
-    document_name: Annotated[List[DocumentNameStr], Form()] = List,
+    file: Annotated[List[UploadFile], Form()] = list(),
+    category: Annotated[List[int], Form()] = list(),
+    subject: Annotated[List[int], Form()] = list(),
+    document_type: Annotated[List[int], Form()] = list(),
+    document_name: Annotated[List[DocumentNameStr], Form()] = list(),
 ):
     form_data = {
         "file": file,
