@@ -163,7 +163,7 @@ const NotesApplication = () => {
           if (noteId !== null) {
             handleDelete(noteId)
               .then(() => null)
-              .catch((err) => {});
+              .catch((err) => console.error(err));
           }
         }}
       />
@@ -185,7 +185,7 @@ const NotesApplication = () => {
             newDocName,
           )
             .then(() => filterNotes())
-            .catch((err) => {});
+            .catch((err) => console.error(err));
         }}
         categories={categories.map((c) => ({ id: c.id, name: c.name }))}
         subjects={subjects.map((s) => ({ id: s.id, name: s.name }))}
