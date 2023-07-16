@@ -8,7 +8,7 @@ import {
   PaginatedNotes,
   SubjectType,
 } from '@api/library';
-import { approveNote, deleteNote } from '@api/actions';
+import { approveNote, deleteNote, updateNote } from '@api/actions';
 import DeleteAlert from './DeleteAlert';
 import EditModal from './EditModal';
 import NotesTable from '../../components/NotesTable/NotesTable';
@@ -45,6 +45,7 @@ const ApprovalTable = () => {
   const [category, setCategory] = useState<number | ''>(0);
   const [subject, setSubject] = useState<number | ''>(0);
   const [type, setType] = useState<number | ''>(0);
+  const [keyword, setKeyword] = useState<string | ''>('');
 
   useEffect(() => {
     fetchData().then(({ categories, subjects, types }) => {
@@ -63,6 +64,7 @@ const ApprovalTable = () => {
       category: category !== 0 ? categories.find((c) => c.id === category)?.name : undefined,
       subject: subject !== 0 ? subjects.find((s) => s.id === subject)?.name : undefined,
       doc_type: type !== 0 ? types.find((t) => t.id === type)?.name : undefined,
+      keyword: keyword !== '' ? keyword : '',
       page: pageInfo.page,
       size: pageInfo.size,
     }).then((response) => {
@@ -74,7 +76,7 @@ const ApprovalTable = () => {
         total: response.total,
       });
     });
-  }, [category, subject, type, pageInfo.page, pageInfo.size, categories, subjects, types]);
+  }, [category, subject, type, keyword, pageInfo.page, pageInfo.size, categories, subjects, types]);
 
   useEffect(() => {
     filterNotes();
@@ -115,9 +117,11 @@ const ApprovalTable = () => {
         category={category !== '' ? Number(category) : ''}
         subject={subject !== '' ? Number(subject) : ''}
         type={type !== '' ? Number(type) : ''}
+        keyword={keyword !== '' ? String(keyword) : ''}
         onCategoryChange={(newValue) => setCategory(Number(newValue))}
         onSubjectChange={(newValue) => setSubject(Number(newValue))}
         onTypeChange={(newValue) => setType(Number(newValue))}
+        onKeywordChange={(newValue) => setKeyword(String(newValue))}
         pageInfo={pageInfo}
         handlePageChange={handlePageChange}
         isAdmin={Boolean(user?.role && user.role >= 2)}
