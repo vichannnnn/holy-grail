@@ -1,5 +1,5 @@
 import { Button, IconButton, Menu, MenuItem, Typography } from '@mui/material';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState, MouseEvent } from 'react';
 import DensityMediumIcon from '@mui/icons-material/DensityMedium';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import MediaQueryContext from '../../providers/MediaQueryProvider';
@@ -15,14 +15,14 @@ const DesktopButtonFace = ({
   onClick,
 }: {
   label: string;
-  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onClick: (event: MouseEvent<HTMLButtonElement>) => void;
 }) => {
   return (
     <Button
       onClick={onClick}
       disableRipple={true}
       variant='outlined'
-      sx={{ borderColor: 'black', height: '30px', width: '107.25px' }}
+      sx={{ borderColor: 'black', height: '30px', width: '150px' }}
     >
       <Typography sx={{ textTransform: 'none', color: 'black' }}>{label}</Typography>
     </Button>
@@ -31,7 +31,7 @@ const DesktopButtonFace = ({
 const MobileButtonFace = ({
   onClick,
 }: {
-  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onClick: (event: MouseEvent<HTMLButtonElement>) => void;
 }) => {
   return (
     <IconButton
@@ -48,18 +48,7 @@ const MobileButtonFace = ({
 export const HeaderRightButton = ({ children }: HeaderRightButtonProps) => {
   const muiTheme = createTheme({
     typography: {
-      fontFamily: [
-        '-apple-system',
-        'BlinkMacSystemFont',
-        '"Segoe UI SemiBold"',
-        'Roboto',
-        '"Helvetica Neue"',
-        'Arial',
-        'sans-serif',
-        '"Apple Color Emoji"',
-        '"Segoe UI Emoji"',
-        '"Segoe UI Symbol"',
-      ].join(','),
+      fontFamily: ['Nunito', 'Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif'].join(','),
     },
   });
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -109,10 +98,10 @@ export const HeaderRightButton = ({ children }: HeaderRightButtonProps) => {
               borderRadius: '8px',
               boxSizing: 'border-box',
               outline: '1px solid transparent',
+              transition: 'all 0.2s ease',
               '&:hover': {
-                color: 'rgb(100,108,255)',
-                outlineColor: 'rgb(100,108,255)',
-                backgroundColor: 'white',
+                backgroundColor: '#e9e9e9',
+                outlineColor: 'transparent',
               },
             }}
             onClick={child.callback}
