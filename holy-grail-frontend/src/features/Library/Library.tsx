@@ -1,4 +1,4 @@
-import MaterialsGrid from './MaterialsGrid';
+import NotesApplication from './NotesApplication';
 import { useNavigate } from 'react-router-dom';
 
 const Library = () => {
@@ -16,7 +16,7 @@ const Library = () => {
           after you have logged in (subjected to approval of administrators).
         </div>
       </div>
-      <MaterialsGrid />
+      <NotesApplication />
     </section>
   );
 };

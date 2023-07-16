@@ -1,22 +1,23 @@
-import { useState, useEffect, useContext, useCallback } from 'react';
+import { Box } from '@mui/material';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import {
-  fetchData,
-  fetchApprovedNotes,
   CategoryType,
-  SubjectType,
   DocumentType,
+  fetchApprovedNotes,
+  fetchData,
   PaginatedNotes,
+  SubjectType,
   Note,
 } from '../../api/utils/library/Search';
-import DeleteAlert from '../Approval/DeleteAlert';
-import EditModal from '../Approval/EditModal';
 import AuthContext from '../../providers/AuthProvider';
-import NotesTable from '../../components/NotesTable/NotesTable';
 import deleteNote from '../../api/utils/actions/DeleteNote';
 import updateNote from '../../api/utils/actions/UpdateNote';
+import NotesTable from '../../components/NotesTable/NotesTable';
 import AdminDeleteIcon from '../../components/AdminDeleteIcon/AdminDeleteIcon';
+import DeleteAlert from '../Approval/DeleteAlert';
+import './library.css';
+import EditModal from '../Approval/EditModal';
 import AdminEditIcon from '../../components/AdminEditIcon/AdminEditIcon';
-import { Box } from '@mui/material';
 
 const NotesApplication = () => {
   const [notes, setNotes] = useState<PaginatedNotes>({
@@ -27,24 +28,25 @@ const NotesApplication = () => {
     total: 0,
   });
   const { user } = useContext(AuthContext);
-  const [isAlertOpen, setIsAlertOpen] = useState<boolean>(false);
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
-  const [noteInitialProperties, setNoteInitialProperties] = useState<Note | null>(null);
   const [noteId, setNoteId] = useState<number>(0);
 
+  const [noteInitialProperties, setNoteInitialProperties] = useState<Note | null>(null);
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [subjects, setSubjects] = useState<SubjectType[]>([]);
   const [types, setTypes] = useState<DocumentType[]>([]);
   const [pageInfo, setPageInfo] = useState({
     page: 1,
     pages: 1,
-    size: 20,
+    size: 10,
     total: 0,
   });
 
   const [category, setCategory] = useState<number | ''>(0);
   const [subject, setSubject] = useState<number | ''>(0);
   const [type, setType] = useState<number | ''>(0);
+  const [keyword, setKeyword] = useState<string | ''>('');
 
   useEffect(() => {
     fetchData().then(({ categories, subjects, types }) => {
@@ -63,6 +65,7 @@ const NotesApplication = () => {
       category: category !== 0 ? categories.find((c) => c.id === category)?.name : undefined,
       subject: subject !== 0 ? subjects.find((s) => s.id === subject)?.name : undefined,
       doc_type: type !== 0 ? types.find((t) => t.id === type)?.name : undefined,
+      keyword: keyword !== '' ? keyword : '',
       page: pageInfo.page,
       size: pageInfo.size,
     }).then((response) => {
@@ -74,7 +77,7 @@ const NotesApplication = () => {
         total: response.total,
       });
     });
-  }, [category, subject, type, pageInfo.page, pageInfo.size, categories, subjects, types]);
+  }, [category, subject, type, keyword, pageInfo.page, pageInfo.size, categories, subjects, types]);
 
   useEffect(() => {
     filterNotes();
@@ -111,8 +114,14 @@ const NotesApplication = () => {
     setPageInfo({ ...pageInfo, page: 1 });
   };
 
+  const handleKeywordChange = (newValue: string | '') => {
+    setKeyword(String(newValue));
+    setPageInfo({ ...pageInfo, page: 1 });
+  };
+  console.log(keyword);
+
   return (
-    <>
+    <section className='materials container'>
       <NotesTable
         notes={notes.items}
         categories={categories.map((c) => ({ value: c.id, label: c.name }))}
@@ -121,15 +130,17 @@ const NotesApplication = () => {
         category={category !== '' ? Number(category) : ''}
         subject={subject !== '' ? Number(subject) : ''}
         type={type !== '' ? Number(type) : ''}
+        keyword={keyword !== '' ? String(keyword) : ''}
         onCategoryChange={handleCategoryChange}
         onSubjectChange={handleSubjectChange}
         onTypeChange={handleTypeChange}
+        onKeywordChange={handleKeywordChange}
         pageInfo={pageInfo}
         handlePageChange={handlePageChange}
         isAdmin={Boolean(user?.role && user.role >= 2)}
         renderAdminActions={(note) =>
           user && user.role >= 2 ? (
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Box sx={{ display: 'flex' }}>
               <AdminDeleteIcon
                 setIsAlertOpen={setIsAlertOpen}
                 setNoteId={setNoteId}
@@ -185,7 +196,7 @@ const NotesApplication = () => {
         type={noteInitialProperties ? noteInitialProperties.type : ''}
         documentName={noteInitialProperties ? noteInitialProperties.document_name : ''}
       />
-    </>
+    </section>
   );
 };
 

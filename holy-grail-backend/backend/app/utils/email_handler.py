@@ -49,7 +49,6 @@ def send_reset_password_mail(
     confirm_url: str,
     username: str,
 ):
-
     payload = {
         "to": [{"email": to_email}],
         "from": {"email": from_email, "name": sender_name},
@@ -73,7 +72,6 @@ def send_reset_password_mail(
 def send_new_password_mail(
     sender_name: str, from_email: str, to_email: EmailStr, username: str, password: str
 ):
-
     payload = {
         "to": [{"email": to_email}],
         "from": {"email": from_email, "name": sender_name},

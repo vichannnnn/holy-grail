@@ -1,9 +1,9 @@
-import {useState} from "react";
+import { useState } from 'react';
 import { Box, Card, CardContent, Grid, Typography, Link } from '@mui/material';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import {Note, fetchData, fetchCategory, SubjectType} from '../../api/utils/library/Search';
-import Combobox from '../../features/Library/Combobox';
-import { ComboboxProps } from '../../features/Library/Combobox';
+import { Note, fetchData, fetchCategory, SubjectType } from '../../api/utils/library/Search';
+import { Combobox, ComboboxProps } from '../../features/Library/Combobox';
+import { FreeTextCombobox, FreeTextComboboxProps } from '../../features/Library/FreeTextCombobox';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Pagination } from '../Pagination/Pagination';
 import { useContext } from 'react';
@@ -19,9 +19,11 @@ interface NotesTableProps {
   category: ComboboxProps['value'];
   subject: ComboboxProps['value'];
   type: ComboboxProps['value'];
+  keyword: FreeTextComboboxProps['value'];
   onCategoryChange: ComboboxProps['onChange'];
   onSubjectChange: ComboboxProps['onChange'];
   onTypeChange: ComboboxProps['onChange'];
+  onKeywordChange: FreeTextComboboxProps['onChange'];
   pageInfo: { page: number; size: number; total: number; pages: number };
   handlePageChange: (page: number) => void;
   renderAdminActions?: (note: Note) => JSX.Element | null;
@@ -48,9 +50,11 @@ const NotesTable = ({
   category,
   subject,
   type,
+  keyword,
   onCategoryChange,
   onSubjectChange,
   onTypeChange,
+  onKeywordChange,
   pageInfo,
   handlePageChange,
   renderAdminActions,
@@ -60,7 +64,6 @@ const NotesTable = ({
   const { isDesktop } = useContext(MediaQueryContext);
   const [isCategorySelected, setIsCategorySelected] = useState(false);
   const [subjectsData, setSubjectsData] = useState([]);
-
 
   return (
     <Box>
@@ -79,17 +82,26 @@ const NotesTable = ({
               label='Category'
               value={category}
               onChange={async (value) => {
-                onCategoryChange(value);
-                handlePageChange(1);
+                if (onCategoryChange) {
+                  onCategoryChange(value);
+                  handlePageChange(1);
+                }
                 if (value) {
                   setIsCategorySelected(true);
                   const categoryData = await fetchCategory({ category_id: value });
                   const data = await fetchData(categoryData.id);
-                  setSubjectsData(data.subjects.map((subject: SubjectType) => ({ value: subject.id, label: subject.name })));
+                  setSubjectsData(
+                    data.subjects.map((subject: SubjectType) => ({
+                      value: subject.id,
+                      label: subject.name,
+                    })),
+                  );
                 } else {
                   setIsCategorySelected(false);
                   setSubjectsData([]);
-                  onSubjectChange('');
+                  if (onSubjectChange) {
+                    onSubjectChange('');
+                  }
                 }
               }}
               options={categories}
@@ -99,23 +111,36 @@ const NotesTable = ({
               label='Subject'
               value={subject}
               onChange={(value) => {
-                onSubjectChange(value);
-                handlePageChange(1);
+                if (onSubjectChange) {
+                  onSubjectChange(value);
+                  handlePageChange(1);
+                }
               }}
               options={isCategorySelected ? subjectsData : subjects}
-              style={{ width: isDesktop ? '15%' : '100%',
-                opacity: isCategorySelected ? 1 : 0.5,
-              }}
+              style={{ width: isDesktop ? '15%' : '100%', opacity: isCategorySelected ? 1 : 0.5 }}
               disabled={!isCategorySelected}
             />
             <Combobox
               label='Type'
               value={type}
               onChange={(value) => {
-                onTypeChange(value);
-                handlePageChange(1);
+                if (onTypeChange) {
+                  onTypeChange(value);
+                  handlePageChange(1);
+                }
               }}
               options={types}
+              style={{ width: isDesktop ? '15%' : '100%' }}
+            />
+            <FreeTextCombobox
+              label='Document Name'
+              value={keyword}
+              onChange={(value) => {
+                if (onKeywordChange) {
+                  onKeywordChange(value);
+                }
+                handlePageChange(1);
+              }}
               style={{ width: isDesktop ? '15%' : '100%' }}
             />
           </Box>

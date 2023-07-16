@@ -78,19 +78,18 @@ export const fetchData = async (category_id: number | null = null) => {
   };
 };
 
-export const fetchCategory = async (searchParams: {
-  category_id: number;
-}) => {
+export const fetchCategory = async (searchParams: { category_id: number }) => {
   const response = await apiClient.get<CategoryType>('/category', {
     params: searchParams,
   });
   return response.data;
-}
+};
 
 export const fetchApprovedNotes = async (searchParams: {
   category?: string;
   subject?: string;
   doc_type?: string;
+  keyword?: string;
   page?: number;
   size?: number;
 }) => {
@@ -104,6 +103,7 @@ export const fetchPendingApprovalNotes = async (searchParams: {
   category?: string;
   subject?: string;
   doc_type?: string;
+  keyword?: string;
   page?: number;
   size?: number;
 }) => {
