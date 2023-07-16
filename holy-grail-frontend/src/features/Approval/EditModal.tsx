@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 
-import Combobox, { ComboboxProps } from '../../features/Library/Combobox';
+import { Combobox, ComboboxProps } from '../Library/Combobox';
 import { TextField, Modal, Box, Button, Typography, Tooltip } from '@mui/material';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -50,7 +50,7 @@ const EditModal = ({
   }, [isOpen]);
 
   const validityChecks = () => {
-    let res: Object = {
+    const res: Object = {
       'Title must be between 4 and 100 characters long':
         newDocName.length >= 4 && newDocName.length <= 100,
       'Category must be selected': newCategory !== '',
@@ -98,7 +98,7 @@ const EditModal = ({
             value={newCategory}
             options={categories}
             onChange={(newValue) => setNewCategory(newValue)}
-            extras={{ disablePortal: true }}
+            disablePortal={true}
             style={{ marginBottom: '4%' }}
           />
           <Combobox
@@ -106,7 +106,7 @@ const EditModal = ({
             value={newSubject}
             options={subjects}
             onChange={(newValue) => setNewSubject(newValue)}
-            extras={{ disablePortal: true }}
+            disablePortal={true}
             style={{ marginBottom: '4%' }}
           />
           <Combobox
@@ -114,7 +114,7 @@ const EditModal = ({
             value={newType}
             options={types}
             onChange={(newValue) => setNewType(newValue)}
-            extras={{ disablePortal: true }}
+            disablePortal={true}
             style={{ marginBottom: '4%' }}
           />
 

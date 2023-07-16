@@ -46,6 +46,7 @@ const MaterialsGrid = () => {
   const [category, setCategory] = useState<number | ''>(0);
   const [subject, setSubject] = useState<number | ''>(0);
   const [type, setType] = useState<number | ''>(0);
+  const [keyword, setKeyword] = useState<string | ''>('');
 
   useEffect(() => {
     fetchData().then(({ categories, subjects, types }) => {
@@ -64,6 +65,7 @@ const MaterialsGrid = () => {
       category: category !== 0 ? categories.find((c) => c.id === category)?.name : undefined,
       subject: subject !== 0 ? subjects.find((s) => s.id === subject)?.name : undefined,
       doc_type: type !== 0 ? types.find((t) => t.id === type)?.name : undefined,
+      keyword: keyword !== '' ? keyword : '',
       page: pageInfo.page,
       size: pageInfo.size,
     }).then((response) => {
@@ -75,7 +77,7 @@ const MaterialsGrid = () => {
         total: response.total,
       });
     });
-  }, [category, subject, type, pageInfo.page, pageInfo.size, categories, subjects, types]);
+  }, [category, subject, type, keyword, pageInfo.page, pageInfo.size, categories, subjects, types]);
 
   useEffect(() => {
     filterNotes();
@@ -112,25 +114,11 @@ const MaterialsGrid = () => {
     setPageInfo({ ...pageInfo, page: 1 });
   };
 
-  // const renderNotes = () => {
-  //   return notes.items.map((note: Note) => (
-  //     <TableRow key={note.id}>
-  //       <TableCell>{note.doc_category?.name}</TableCell>
-  //       <TableCell>{note.doc_subject?.name}</TableCell>
-  //       <TableCell>{note.doc_type?.name}</TableCell>
-  //       <TableCell>{note.account?.username}</TableCell>
-  //       <TableCell>
-  //         <a
-  //           href={`https://holy-grail-bucket.s3.ap-southeast-1.amazonaws.com/${note.file_name}`}
-  //           target="_blank"
-  //           rel="noopener noreferrer"
-  //         >
-  //           View PDF
-  //         </a>
-  //       </TableCell>
-  //     </TableRow>
-  //   ));
-  // };
+  const handleKeywordChange = (newValue: string | '') => {
+    setKeyword(String(newValue));
+    setPageInfo({ ...pageInfo, page: 1 });
+  };
+  console.log(keyword);
 
   return (
     <section className='materials container'>
@@ -142,9 +130,11 @@ const MaterialsGrid = () => {
         category={category !== '' ? Number(category) : ''}
         subject={subject !== '' ? Number(subject) : ''}
         type={type !== '' ? Number(type) : ''}
+        keyword={keyword !== '' ? String(keyword) : ''}
         onCategoryChange={handleCategoryChange}
         onSubjectChange={handleSubjectChange}
         onTypeChange={handleTypeChange}
+        onKeywordChange={handleKeywordChange}
         pageInfo={pageInfo}
         handlePageChange={handlePageChange}
         isAdmin={Boolean(user?.role && user.role >= 2)}

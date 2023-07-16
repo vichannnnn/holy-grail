@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import { Button, Text, Input } from '@chakra-ui/react';
-import Combobox from '../Library/Combobox';
+import { Combobox } from '../Library/Combobox';
 import { fetchData, CategoryType, SubjectType, DocumentType } from '../../api/utils/library/Search';
 import { createNote } from '../../api/utils/actions/CreateNote';
 import AuthContext from '../../providers/AuthProvider';
@@ -78,60 +78,54 @@ const UploadPage = () => {
 
     if (selectedFile) {
       const responseStatus = await createNote(
-          selectedFile,
-          category,
-          subject,
-          type,
-          documentName || '',
+        selectedFile,
+        category,
+        subject,
+        type,
+        documentName || '',
       );
 
-      let alertContentRedirect: AlertProps;  // Initialize the alertContentRedirect object outside the conditions
+      let alertContentRedirect: AlertProps; // Initialize the alertContentRedirect object outside the conditions
 
       if (responseStatus == 200) {
         alertContentRedirect = {
           title: 'Success',
           description: 'Successfully sent for review and will be shown in library once uploaded.',
           severity: 'success',
-
         };
         setAlertContent(alertContentRedirect);
         setOpenAlert(true);
         navigate('/', { state: { alertContent: alertContentRedirect } });
-
       } else if (responseStatus === 429) {
         alertContentRedirect = {
-          title: "Rate limit exceeded",
-          description: 'You\'re trying too fast! Please try again in 1 minutes.',
+          title: 'Rate limit exceeded',
+          description: "You're trying too fast! Please try again in 1 minutes.",
           severity: 'error',
-
         };
       } else if (responseStatus === 401) {
         alertContentRedirect = {
           title: 'Account not verified',
           description: 'Please verify your account with the verification mail sent to your email.',
           severity: 'error',
-
         };
       } else if (responseStatus === 409) {
         alertContentRedirect = {
           title: 'Notes upload unsuccessful',
-          description: 'A name of the note that you\'re trying to upload already exists in the repository.',
+          description:
+            "A name of the note that you're trying to upload already exists in the repository.",
           severity: 'error',
-
         };
       } else {
         alertContentRedirect = {
           title: 'Error',
           description: 'Something went wrong. Please contact an administrator!',
           severity: 'error',
-
         };
       }
       setAlertContent(alertContentRedirect);
       setOpenAlert(true);
     }
   };
-
 
   return (
     <section className='upload section container'>

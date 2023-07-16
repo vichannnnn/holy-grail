@@ -1,38 +1,36 @@
-import Autocomplete from '@mui/material/Autocomplete';
-import TextField from '@mui/material/TextField';
+import { Autocomplete, AutocompleteProps, TextField } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { CSSProperties } from 'react';
 
-export interface Extras {
-  disablePortal?: boolean;
+export interface Element {
+  value: number;
+  label: string;
 }
-export interface ComboboxProps {
+
+export interface ComboboxProps
+  extends Omit<
+    AutocompleteProps<Element, false, false, boolean>,
+    'onChange' | 'value' | 'onInputChange' | 'options' | 'renderInput'
+  > {
   label: string;
   value: number | '';
   onChange: (newValue: number | '') => void;
-  options: { value: number; label: string }[];
-  style?: CSSProperties;
-  disabled?: boolean;
-  extras?: Extras;
+  options?: Element[];
 }
 
-const Combobox = ({ label, value, onChange, options, style, disabled, extras }: ComboboxProps) => {
+export const Combobox = ({ label, value, onChange, options = [], ...props }: ComboboxProps) => {
   const muiTheme = createTheme();
+
   return (
     <ThemeProvider theme={muiTheme}>
       <Autocomplete
-        style={style}
-        value={options.find((option) => option.value === value) || null}
+        value={options?.find((option) => option.value === value) || null}
         options={options}
         onChange={(_, newValue) => onChange(newValue?.value || '')}
         renderInput={(params) => <TextField {...params} label={label} />}
         isOptionEqualToValue={(option, value) => option.value === value?.value}
         getOptionLabel={(option) => option.label}
-        disabled={disabled}
-        {...extras}
+        {...props}
       />
     </ThemeProvider>
   );
 };
-
-export default Combobox;
