@@ -1,13 +1,6 @@
 import { apiClient } from '@apiClient';
-import { PaginatedNotes } from './types';
-export const fetchApprovedNotes = async (searchParams: {
-  category?: string;
-  subject?: string;
-  doc_type?: string;
-  keyword?: string;
-  page?: number;
-  size?: number;
-}) => {
+import { PaginatedNotes, NotesSearchParams } from './types';
+export const fetchApprovedNotes = async (searchParams: NotesSearchParams) => {
   const response = await apiClient.get<PaginatedNotes>('/notes/approved', {
     params: searchParams,
   });

@@ -1,3 +1,23 @@
+// Holy Grail API Request
+
+export interface NotesSearchParams {
+  category?: string;
+  subject?: string;
+  doc_type?: string;
+  keyword?: string;
+  page?: number;
+  size?: number;
+}
+
+export interface CategorySearchParams {
+  category_id: number;
+}
+
+export interface CategorySearchParamsOptionalCategoryID {
+  category_id?: number;
+}
+// Holy Grail API Response
+
 export type PaginatedNotes = {
   items: Note[];
   page: number;

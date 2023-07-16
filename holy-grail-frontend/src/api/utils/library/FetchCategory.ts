@@ -1,6 +1,6 @@
 import { apiClient } from '@apiClient';
-import { CategoryType } from './types';
-export const fetchCategory = async (searchParams: { category_id: number }) => {
+import { CategoryType, CategorySearchParams } from './types';
+export const fetchCategory = async (searchParams: CategorySearchParams) => {
   const response = await apiClient.get<CategoryType>('/category', {
     params: searchParams,
   });

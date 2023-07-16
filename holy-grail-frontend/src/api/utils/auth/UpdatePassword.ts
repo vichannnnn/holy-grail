@@ -1,15 +1,12 @@
 import { apiClient } from '@apiClient';
 import { AxiosError } from 'axios';
-
-type ErrorResponseData = {
-  detail: string;
-};
+import { ResponseData } from './types';
 
 export const updatePassword = async (
   beforePassword: string,
   password: string,
   repeatPassword: string,
-) => {
+): Promise<ResponseData> => {
   try {
     await apiClient.post('/auth/update_password', {
       before_password: beforePassword,
@@ -17,20 +14,26 @@ export const updatePassword = async (
       repeat_password: repeatPassword,
     });
 
-    return { success: true };
+    return { success: true, message: 'Password successfully updated.' };
   } catch (error) {
+    const axiosError = error as AxiosError;
+
     let errorDescription = 'Unable to update password. Please check your input and try again.';
-
-    const axiosError = error as AxiosError<ErrorResponseData>;
-
-    if (axiosError.response && axiosError.response.status === 401) {
-      errorDescription = "The password you've entered is invalid.";
-    } else if (axiosError.response && axiosError.response.status === 400) {
-      errorDescription = 'Your password does not match. Please check your password and try again.';
-    } else if (axiosError.response && axiosError.response.status === 422) {
-      errorDescription = 'Please ensure your new password format is valid';
+    if (axiosError.response) {
+      switch (axiosError.response.status) {
+        case 401:
+          errorDescription = "The password you've entered is invalid.";
+          break;
+        case 400:
+          errorDescription =
+            'Your password does not match. Please check your password and try again.';
+          break;
+        case 422:
+          errorDescription = 'Please ensure your new password format is valid';
+          break;
+      }
     }
 
-    return { success: false, errorDescription: errorDescription };
+    return { success: false, message: errorDescription };
   }
 };
