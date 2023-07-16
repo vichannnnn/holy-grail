@@ -96,6 +96,7 @@ class Library(Base, CRUD["Library"]):
         category: Optional[str] = None,
         subject: Optional[str] = None,
         doc_type: Optional[str] = None,
+        keyword: Optional[str] = None,
     ):
         stmt = select(cls).where(cls.approved == approved)
 
@@ -107,6 +108,9 @@ class Library(Base, CRUD["Library"]):
 
         if doc_type:
             stmt = stmt.where(cls.doc_type.has(name=doc_type))
+
+        if keyword:
+            stmt = stmt.where(cls.document_name.ilike(f"%{keyword}%"))
 
         count_stmt = select(func.count()).select_from(stmt)  # pylint: disable=E1102
         total = await session.scalar(count_stmt)
