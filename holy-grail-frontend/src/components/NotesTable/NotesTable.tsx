@@ -20,7 +20,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Pagination } from '../Pagination/Pagination';
 import MediaQueryContext from '../../providers/MediaQueryProvider';
 import '../../features/Library/library.css';
-import NotesIcon from './notesHelper';
+import NotesIcon from './NotesHelper';
 
 interface NotesTableProps {
   notes: Note[];
@@ -103,8 +103,8 @@ const NotesTable = ({
                   const data = await fetchData(categoryData.id);
                   setSubjectsData(
                     data.subjects.map((subject: SubjectType) => ({
-                      value: subject.id,
-                      label: subject.name,
+                      id: subject.id,
+                      name: subject.name,
                     })),
                   );
                 } else {
