@@ -32,11 +32,7 @@ const ChangePasswordPage = () => {
 
   const handleUpdatePassword = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { success, errorDescription } = await updatePassword(
-      beforePassword,
-      password,
-      repeatPassword,
-    );
+    const { success, message } = await updatePassword(beforePassword, password, repeatPassword);
     if (success) {
       const alertContentRedirect: AlertProps = {
         title: 'Password successfully updated.',
@@ -48,9 +44,7 @@ const ChangePasswordPage = () => {
     } else {
       setAlertContent({
         title: 'Password update failed.',
-        description: errorDescription
-          ? errorDescription
-          : 'An error occurred while updating your password.',
+        description: message,
         severity: 'error',
       });
       setOpenAlert(true);
