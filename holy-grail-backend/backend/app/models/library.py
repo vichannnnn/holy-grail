@@ -1,17 +1,20 @@
 import datetime
-from typing import TYPE_CHECKING, Optional
 import uuid
-
+import boto3
+from typing import TYPE_CHECKING, Optional, List
+from pydantic import ValidationError
 from fastapi import UploadFile, HTTPException
 from sqlalchemy import func, ForeignKey, select, update, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Mapped, mapped_column, relationship, selectinload
 from sqlalchemy.sql.expression import text
+from sqlalchemy import exc as SQLAlchemyExceptions
 from starlette.datastructures import UploadFile as StarletteUploadFile
 from app.crud.base import CRUD
 from app.db.base_class import Base
 from app.utils.exceptions import AppError
 from app.utils.file_handler import save_file, accepted_doc_type_extensions
+from app.utils.upload_errors import UploadError
 from app.models.auth import Account
 from app.schemas.library import NoteCreateSchema, NoteInsertSchema
 
@@ -85,6 +88,106 @@ class Library(Base, CRUD["Library"]):
         )
         await save_file(uploaded_file, file_name, s3_bucket)
         return res
+
+    @classmethod
+    async def create_many(
+        cls,
+        session: AsyncSession,
+        form_data: List[NoteCreateSchema],
+        uploaded_by: int,
+        s3_bucket: boto3.client,
+    ):
+        # a list of valid NoteCreateSchema objects
+        notes = []
+
+        failed_notes = {
+            UploadError.DOCUMENT_NAME_DUPLICATED.name: [],
+            UploadError.SCHEMA_VALIDATION_ERROR.name: [],
+            UploadError.INVALID_FILE_TYPE.name: [],
+            UploadError.DOCUMENT_NAME_IN_DB.name: [],
+        }
+
+        # check for unique document names in call
+        document_names = [
+            form_data[f"notes[{i}].document_name"] for i in range(len(form_data) // 5)
+        ]
+
+        def unique_indexes(l):
+            seen = set()
+            res = []
+            for i, n in enumerate(l):
+                if n not in seen:
+                    res.append(i)
+                    seen.add(n)
+            return res
+
+        duplicates = filter(
+            lambda x: x not in unique_indexes(document_names),
+            list(range(len(form_data) // 5)),
+        )
+        failed_notes[UploadError.DOCUMENT_NAME_DUPLICATED.name] = list(duplicates)
+
+        for i in range(len(form_data) // 5):
+            try:
+                note = NoteCreateSchema(
+                    file=form_data[f"notes[{i}].file"],
+                    category=int(form_data[f"notes[{i}].category"]),
+                    subject=int(form_data[f"notes[{i}].subject"]),
+                    type=int(form_data[f"notes[{i}].type"]),
+                    document_name=form_data[f"notes[{i}].document_name"],
+                )
+
+                accepted_doc_type_extensions[note.file.content_type]
+
+                stmt = select(cls).where(cls.document_name == note.document_name)
+                result = await session.execute(stmt)
+                if result.scalar():
+                    failed_notes[UploadError.DOCUMENT_NAME_IN_DB.name].append(i)
+                    continue
+                notes.append(note)
+            except ValidationError:
+                failed_notes[UploadError.SCHEMA_VALIDATION_ERROR.name].append(i)
+            except KeyError:
+                failed_notes[UploadError.INVALID_FILE_TYPE.name].append(i)
+
+        if len([e for sub in failed_notes.values() for e in sub]) != 0:
+            raise AppError.MULTIPLE_GENERIC_ERRORS(**failed_notes)
+
+        objs = []
+        files = []
+        for note in notes:
+            extension = accepted_doc_type_extensions[note.file.content_type]
+
+            file_id = uuid.uuid4().hex
+            file_name = file_id + extension
+            data_insert = NoteInsertSchema(
+                **note.dict(), uploaded_by=uploaded_by, file_name=file_name
+            )
+
+            obj = Library(**data_insert.dict())
+            objs.append(obj)
+
+        try:
+            session.add_all(objs)
+            await session.commit()
+
+            for file, file_name in files:
+                await save_file(file, file_name, s3_bucket)
+
+            for obj in objs:
+                await session.refresh(
+                    obj, ["doc_category", "doc_type", "doc_subject", "account"]
+                )
+
+        except SQLAlchemyExceptions.IntegrityError as exc:
+            await session.rollback()
+            if str(exc).find("ForeignKeyViolationError") != -1:
+                raise AppError.RESOURCES_NOT_FOUND_ERROR
+            elif str(exc).find("UniqueViolationError") != -1:
+                raise AppError.RESOURCES_ALREADY_EXISTS_ERROR from exc
+            raise AppError.RESOURCES_ALREADY_EXISTS_ERROR from exc
+
+        return objs
 
     @classmethod
     async def get_all_notes_paginated(

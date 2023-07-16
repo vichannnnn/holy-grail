@@ -1,5 +1,5 @@
-from typing import Optional
-from fastapi import APIRouter, Depends, UploadFile, File, Query, Request
+from typing import Optional, Annotated, List
+from fastapi import APIRouter, UploadFile, Query, Request, Form
 from fastapi_pagination import Page
 from app.api.deps import (
     SessionBucket,
@@ -9,31 +9,42 @@ from app.api.deps import (
 )
 from app.utils.limiter import conditional_rate_limit
 from app.models.library import Library
-from app.schemas.library import NoteCreateSchema, NoteUpdateSchema, NoteSchema
+from app.schemas.library import NoteUpdateSchema, NoteSchema, DocumentNameStr
 
 
 router = APIRouter()
 notes_router = APIRouter()
 
 
-@router.post("/", response_model=NoteSchema)
+@router.post("/", response_model=List[NoteSchema])
 @conditional_rate_limit("5/minute")
 async def create_note(
-    request: Request,  # pylint: disable=W0613
+    request: Request,
     session: CurrentSession,
     s3_bucket: SessionBucket,
     authenticated: SessionVerifiedUser,
-    data: NoteCreateSchema = Depends(),
-    file: UploadFile = File(None),
+    file: Annotated[List[UploadFile], Form()] = List,
+    category: Annotated[List[int], Form()] = List,
+    subject: Annotated[List[int], Form()] = List,
+    document_type: Annotated[List[int], Form()] = List,
+    document_name: Annotated[List[DocumentNameStr], Form()] = List,
 ):
-    note = await Library.create_note(
-        session,
-        uploaded_file=file,
-        uploaded_by=authenticated.user_id,
-        data=data,
-        s3_bucket=s3_bucket,
-    )
-    return note
+    form_data = {
+        "file": file,
+        "category": category,
+        "subject": subject,
+        "document_type": document_type,
+        "document_name": document_name,
+    }
+
+    async with request.form() as form:
+        notes = await Library.create_many(
+            session,
+            form_data=form,
+            uploaded_by=authenticated.user_id,
+            s3_bucket=s3_bucket,
+        )
+    return notes
 
 
 @router.get("/{id}", response_model=NoteSchema)

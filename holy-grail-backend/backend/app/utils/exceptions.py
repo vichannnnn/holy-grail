@@ -22,3 +22,10 @@ class AppError:
     RESOURCES_ALREADY_EXISTS_ERROR = HTTPException(
         status_code=status.HTTP_409_CONFLICT, detail="Resource already exists"
     )
+
+    def MULTIPLE_GENERIC_ERRORS(**kwargs):
+        return HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=[*kwargs.items()],
+            headers={"WWW-Authenticate": "Bearer"},
+        )
