@@ -1,10 +1,10 @@
 import { FormEvent, useState } from 'react';
-import { Button, FormControl, FormLabel, Input, VStack, Link, Box } from '@chakra-ui/react';
+import { Box, Button, FormControl, FormLabel, Input, Link, VStack } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { AccountForm } from '../../components/AccountForm/AccountForm';
 import '../SignIn/login.css';
-import sendResetPasswordEmail from '../../api/utils/auth/ResetPasswordMail';
-import AlertToast, { AlertProps } from '../../components/AlertToast/AlertToast';
+import { sendResetPasswordEmail } from '@api/auth';
+import { AlertToast, AlertProps } from '../../components/AlertToast/AlertToast';
 
 const ForgotPasswordPage = () => {
   const [email, setEmail] = useState('');

@@ -1,11 +1,11 @@
-import { useState, useEffect, FormEvent } from 'react';
-import { Button, FormControl, FormLabel, Input, VStack, Link, Box } from '@chakra-ui/react';
+import { FormEvent, useEffect, useState } from 'react';
+import { Box, Button, FormControl, FormLabel, Input, Link, VStack } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import PasswordValidationBox from './PasswordValidationBox';
 import { AccountForm } from '../../components/AccountForm/AccountForm';
 import '../SignIn/login.css';
-import registerAccount from '../../api/utils/auth/RegisterAccount';
-import AlertToast, { AlertProps } from '../../components/AlertToast/AlertToast';
+import { registerAccount } from '@api/auth';
+import { AlertToast, AlertProps } from '../../components/AlertToast/AlertToast';
 
 const SignUpPage = () => {
   const [username, setUsername] = useState('');

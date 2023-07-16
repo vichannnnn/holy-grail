@@ -1,11 +1,11 @@
 import './header.css';
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import Logo from '../../assets/placeholder.svg';
 import AuthContext from '../../providers/AuthProvider';
-import { resendVerificationEmail } from '../../api/utils/auth/ResendVerificationEmail';
+import { resendVerificationEmail } from '@api/auth';
 import { HeaderRightButton } from './HeaderRightButton';
-import AlertToast, { AlertProps } from '../../components/AlertToast/AlertToast';
+import { AlertToast, AlertProps } from '../../components/AlertToast/AlertToast';
 import MediaQueryContext from '../../providers/MediaQueryProvider';
 
 const Header = () => {

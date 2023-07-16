@@ -1,8 +1,7 @@
-import { Box } from '@chakra-ui/react';
+import { Box, Grid } from '@chakra-ui/react';
 import { Text } from '../../components/Text/Text';
 import { FeatureCard } from './FeatureCard';
 import GrailLogo from '../../assets/holy-grail.svg';
-import { Grid } from '@chakra-ui/react';
 
 const Features = () => {
   return (

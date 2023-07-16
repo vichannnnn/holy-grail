@@ -1,4 +1,4 @@
-import { TextField, TextFieldProps, createTheme, ThemeProvider } from '@mui/material';
+import { createTheme, TextField, TextFieldProps, ThemeProvider } from '@mui/material';
 
 export interface FreeTextComboboxProps extends Omit<TextFieldProps, 'onChange' | 'value'> {
   label: string;

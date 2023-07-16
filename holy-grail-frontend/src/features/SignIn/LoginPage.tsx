@@ -1,10 +1,10 @@
-import { useState, useContext, FormEvent } from 'react';
-import { Button, FormControl, FormLabel, Input, VStack, Link, Box } from '@chakra-ui/react';
+import { FormEvent, useContext, useState } from 'react';
+import { Box, Button, FormControl, FormLabel, Input, Link, VStack } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import AuthContext from '../../providers/AuthProvider';
 import { AccountForm } from '../../components/AccountForm/AccountForm';
 import './login.css';
-import AlertToast, { AlertProps } from '../../components/AlertToast/AlertToast';
+import { AlertToast, AlertProps } from '../../components/AlertToast/AlertToast';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');

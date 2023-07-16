@@ -1,18 +1,8 @@
-import apiClient from '../../../api/apiClient';
+import { apiClient } from '@apiClient';
 import { AxiosError } from 'axios';
+import { ResponseData, AccountDetails } from './types';
 
-export type ErrorResponseData = {
-  detail: string;
-};
-
-export type AccountDetails = {
-  username: string;
-  password: string;
-  repeatPassword: string;
-  email: string;
-};
-
-async function registerAccount(accountDetails: AccountDetails) {
+export async function registerAccount(accountDetails: AccountDetails): Promise<ResponseData> {
   try {
     await apiClient.post('/auth/create', {
       username: accountDetails.username,
@@ -23,26 +13,28 @@ async function registerAccount(accountDetails: AccountDetails) {
 
     return { success: true, message: 'Account successfully created.' };
   } catch (error) {
+    const axiosError = error as AxiosError;
+
     let errorDescription = 'Unable to create account. Please check your input and try again.';
-
-    const axiosError = error as AxiosError<ErrorResponseData>;
-
     if (axiosError.response) {
-      if (axiosError.response.status === 409) {
-        errorDescription = 'The username or email has already been taken.';
-      } else if (axiosError.response.status === 400) {
-        errorDescription =
-          'Your password does not match. Please check your password and try again.';
-      } else if (axiosError.response.status === 422) {
-        errorDescription =
-          'Please ensure your username is valid. It should contain 4 to 20 alphanumeric characters.';
-      } else if (axiosError.response.status === 429) {
-        errorDescription = "You're trying too fast! Please try again in 10 minutes.";
+      switch (axiosError.response.status) {
+        case 409:
+          errorDescription = 'The username or email has already been taken.';
+          break;
+        case 400:
+          errorDescription =
+            'Your password does not match. Please check your password and try again.';
+          break;
+        case 422:
+          errorDescription =
+            'Please ensure your username is valid. It should contain 4 to 20 alphanumeric characters.';
+          break;
+        case 429:
+          errorDescription = "You're trying too fast! Please try again in 10 minutes.";
+          break;
       }
     }
 
     return { success: false, message: errorDescription };
   }
 }
-
-export default registerAccount;

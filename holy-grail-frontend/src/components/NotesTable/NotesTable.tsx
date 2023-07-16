@@ -1,15 +1,26 @@
-import { useState } from 'react';
-import { Box, Card, CardContent, Grid, Typography, Link } from '@mui/material';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import { Note, fetchData, fetchCategory, SubjectType } from '../../api/utils/library/Search';
+import { useContext, useState } from 'react';
+import {
+  Box,
+  Card,
+  CardContent,
+  Grid,
+  Link,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from '@mui/material';
+import { fetchCategory, fetchData, Note, SubjectType } from '@api/library';
 import { Combobox, ComboboxProps } from '../../features/Library/Combobox';
 import { FreeTextCombobox, FreeTextComboboxProps } from '../../features/Library/FreeTextCombobox';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Pagination } from '../Pagination/Pagination';
-import { useContext } from 'react';
 import MediaQueryContext from '../../providers/MediaQueryProvider';
 import '../../features/Library/library.css';
-import NotesIcon from './notesHelper';
+import NotesIcon from './NotesIcon';
 
 interface NotesTableProps {
   notes: Note[];
@@ -92,8 +103,8 @@ const NotesTable = ({
                   const data = await fetchData(categoryData.id);
                   setSubjectsData(
                     data.subjects.map((subject: SubjectType) => ({
-                      value: subject.id,
-                      label: subject.name,
+                      id: subject.id,
+                      name: subject.name,
                     })),
                   );
                 } else {
