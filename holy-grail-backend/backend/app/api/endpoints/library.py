@@ -53,6 +53,7 @@ async def get_all_approved_notes(
     category: Optional[str] = None,
     subject: Optional[str] = None,
     doc_type: Optional[str] = None,
+    keyword: Optional[str] = None,
 ):
     notes = await Library.get_all_notes_paginated(
         session,
@@ -62,6 +63,7 @@ async def get_all_approved_notes(
         category=category,
         subject=subject,
         doc_type=doc_type,
+        keyword=keyword,
     )
     return notes
 
@@ -75,6 +77,7 @@ async def get_all_pending_approval_notes(
     category: Optional[str] = None,
     subject: Optional[str] = None,
     doc_type: Optional[str] = None,
+    keyword: Optional[str] = None,
 ):
     notes = await Library.get_all_notes_paginated(
         session,
@@ -84,6 +87,7 @@ async def get_all_pending_approval_notes(
         category=category,
         subject=subject,
         doc_type=doc_type,
+        keyword=keyword,
     )
     return notes
 
