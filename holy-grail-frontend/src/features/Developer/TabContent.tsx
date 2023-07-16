@@ -1,6 +1,7 @@
 import { CategoryType, DocumentType, SubjectType } from '../../api/utils/library/Search';
 import {
   Button,
+  OutlinedInput,
   Paper,
   Table,
   TableBody,
@@ -8,10 +9,9 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  OutlinedInput,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
-import { useState, ChangeEvent } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
 import { Pagination } from '../../components/Pagination/Pagination';
 

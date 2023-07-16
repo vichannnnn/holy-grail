@@ -1,12 +1,12 @@
-import { useState, useEffect, useRef, useContext } from 'react';
-import { Button, Text, Input } from '@chakra-ui/react';
+import { useContext, useEffect, useRef, useState } from 'react';
+import { Button, Input, Text } from '@chakra-ui/react';
 import { Combobox } from '../Library/Combobox';
-import { fetchData, CategoryType, SubjectType, DocumentType } from '../../api/utils/library/Search';
-import { createNote } from '../../api/utils/actions/CreateNote';
+import { CategoryType, DocumentType, fetchData, SubjectType } from '@api/library';
+import { createNote } from '@api/actions';
 import AuthContext from '../../providers/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 import MediaQueryContext from '../../providers/MediaQueryProvider';
-import AlertToast, { AlertProps } from '../../components/AlertToast/AlertToast';
+import { AlertToast, AlertProps } from '../../components/AlertToast/AlertToast';
 import './upload.css';
 
 const UploadPage = () => {

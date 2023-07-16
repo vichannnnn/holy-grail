@@ -1,11 +1,11 @@
-import apiClient from '../../../api/apiClient';
+import { apiClient } from '@apiClient';
 import { AxiosError } from 'axios';
 
-export type ErrorResponseData = {
+type ErrorResponseData = {
   detail: string;
 };
 
-async function sendResetPasswordEmail(email: string) {
+export const sendResetPasswordEmail = async (email: string) => {
   try {
     await apiClient.post('/auth/send_reset_password_mail', {
       email: email,
@@ -23,6 +23,4 @@ async function sendResetPasswordEmail(email: string) {
 
     return { success: false, message: errorDescription };
   }
-}
-
-export default sendResetPasswordEmail;
+};

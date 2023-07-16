@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { resetPassword } from '../../api/utils/auth/ResetPassword';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { resetPassword } from '@api/auth';
 import { Link } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
 import '../SignIn/login.css';
 
 const ResetPasswordPage = () => {

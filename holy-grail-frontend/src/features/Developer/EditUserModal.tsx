@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Box, Button, Modal, Select, MenuItem } from '@mui/material';
+import { Box, Button, MenuItem, Modal, Select } from '@mui/material';
 import { RoleEnum } from './TabContentUsers';
 import { SelectChangeEvent } from '@mui/material/Select';
 import { VStack } from '@chakra-ui/react';

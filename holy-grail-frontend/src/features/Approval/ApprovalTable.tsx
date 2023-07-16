@@ -1,16 +1,14 @@
-import { useState, useEffect, useContext, useCallback } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import {
+  CategoryType,
+  DocumentType,
   fetchData,
   fetchPendingApprovalNotes,
-  CategoryType,
-  SubjectType,
-  DocumentType,
-  PaginatedNotes,
   Note,
-} from '../../api/utils/library/Search';
-import approveNote from '../../api/utils/actions/ApproveNote';
-import deleteNote from '../../api/utils/actions/DeleteNote';
-import updateNote from '../../api/utils/actions/UpdateNote';
+  PaginatedNotes,
+  SubjectType,
+} from '@api/library';
+import { approveNote, deleteNote } from '@api/actions';
 import DeleteAlert from './DeleteAlert';
 import EditModal from './EditModal';
 import NotesTable from '../../components/NotesTable/NotesTable';

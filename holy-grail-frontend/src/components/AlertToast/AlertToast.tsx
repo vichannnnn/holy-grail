@@ -1,4 +1,4 @@
-import { Snackbar, Alert, ThemeProvider, createTheme, Typography } from '@mui/material';
+import { Alert, createTheme, Snackbar, ThemeProvider, Typography } from '@mui/material';
 
 interface AlertProps {
   title: string;
@@ -12,7 +12,7 @@ interface AlertToastProps {
   alertContent?: AlertProps;
 }
 
-const AlertToast = ({ openAlert, onClose, alertContent }: AlertToastProps) => {
+export const AlertToast = ({ openAlert, onClose, alertContent }: AlertToastProps) => {
   const muiTheme = createTheme();
   if (!alertContent) {
     return null;
@@ -34,5 +34,4 @@ const AlertToast = ({ openAlert, onClose, alertContent }: AlertToastProps) => {
   );
 };
 
-export default AlertToast;
 export type { AlertProps };

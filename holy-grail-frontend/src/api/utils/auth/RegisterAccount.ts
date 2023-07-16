@@ -1,18 +1,18 @@
-import apiClient from '../../../api/apiClient';
+import { apiClient } from '@apiClient';
 import { AxiosError } from 'axios';
 
-export type ErrorResponseData = {
+type ErrorResponseData = {
   detail: string;
 };
 
-export type AccountDetails = {
+type AccountDetails = {
   username: string;
   password: string;
   repeatPassword: string;
   email: string;
 };
 
-async function registerAccount(accountDetails: AccountDetails) {
+export async function registerAccount(accountDetails: AccountDetails) {
   try {
     await apiClient.post('/auth/create', {
       username: accountDetails.username,

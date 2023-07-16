@@ -1,6 +1,6 @@
-import apiClient from '../../apiClient';
+import { apiClient } from '@apiClient';
 
-const updateNote = async (
+export const updateNote = async (
   noteId: number,
   uploaded_by: number | undefined,
   newCategory: number | '',
@@ -21,5 +21,3 @@ const updateNote = async (
     throw error;
   }
 };
-
-export default updateNote;

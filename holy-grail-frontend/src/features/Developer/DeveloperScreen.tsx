@@ -1,29 +1,22 @@
-import { useState, useEffect, SyntheticEvent } from 'react';
+import { SyntheticEvent, useEffect, useState } from 'react';
 import { Box, Tab, Tabs } from '@mui/material';
-import { fetchData } from '../../api/utils/library/Search';
-import {
-  CommonType,
-  CategoryType,
-  SubjectType,
-  DocumentType,
-} from '../../api/utils/library/Search';
-import EditModal from './EditModal';
-import EditUserModal from './EditUserModal';
-import {
-  updateSubject,
-  updateCategory,
-  updateDocumentType,
-} from '../../api/utils/actions/UpdateCategory';
+import { CategoryType, CommonType, DocumentType, fetchData, SubjectType } from '@api/library';
 import {
   createCategory,
-  createSubject,
   createDocumentType,
-} from '../../api/utils/actions/CreateCategory';
+  createSubject,
+  updateCategory,
+  updateDocumentType,
+  updateSubject,
+  fetchAllUsers,
+  updateUserRole,
+} from '@api/actions';
+import EditModal from './EditModal';
+import EditUserModal from './EditUserModal';
 import AddModal from './AddModal';
 import { TabContent } from './TabContent';
-import { TabContentUsers } from './TabContentUsers';
-import { updateUserRole, fetchAllUsers } from '../../api/utils/actions/UpdateUser';
-import { User, RoleEnum } from './TabContentUsers';
+import { RoleEnum, TabContentUsers, User } from './TabContentUsers';
+
 type DataTypeKey = 'categories' | 'subjects' | 'types';
 
 const DeveloperScreen = () => {

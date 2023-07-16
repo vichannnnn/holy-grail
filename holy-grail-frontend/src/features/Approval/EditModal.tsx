@@ -1,7 +1,7 @@
-import { useRef, useState, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { Combobox, ComboboxProps } from '../Library/Combobox';
-import { TextField, Modal, Box, Button, Typography, Tooltip } from '@mui/material';
+import { Box, Button, Modal, TextField, Tooltip, Typography } from '@mui/material';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const VITE_APP_API_URL = import.meta.env.VITE_APP_API_URL;
 
-const apiClient = axios.create({
+export const apiClient = axios.create({
   baseURL: VITE_APP_API_URL,
   headers: {
     'Content-Type': 'application/json',
@@ -21,5 +21,3 @@ apiClient.interceptors.request.use(
     return Promise.reject(error);
   },
 );
-
-export default apiClient;

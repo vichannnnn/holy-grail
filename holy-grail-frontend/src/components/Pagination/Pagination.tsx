@@ -1,5 +1,5 @@
-import { Stack, Button, Typography } from '@mui/material';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { Button, Stack, Typography } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import debounce from 'lodash/debounce';
 import { useContext } from 'react';
 import MediaQueryContext from '../../providers/MediaQueryProvider';

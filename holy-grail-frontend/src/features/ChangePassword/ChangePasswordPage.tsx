@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, FormControl, FormLabel, Input, VStack } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import PasswordValidationBox from '../SignUp/PasswordValidationBox';
 import { AccountForm } from '../../components/AccountForm/AccountForm';
 import '../SignIn/login.css';
 import { updatePassword } from '../../api/utils/auth/UpdatePassword';
-import AlertToast, { AlertProps } from '../../components/AlertToast/AlertToast';
+import { AlertToast, AlertProps } from '../../components/AlertToast/AlertToast';
 
 const ChangePasswordPage = () => {
   const [beforePassword, setBeforePassword] = useState('');
