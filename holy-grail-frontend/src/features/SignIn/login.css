@@ -10,6 +10,7 @@
 .login__title {
     font-size: calc(var(--h2-font-size) * 1.5);
     font-weight: var(--font-semi-bold);
+    margin-top: 80px;
 }
 
 .login__fields {
