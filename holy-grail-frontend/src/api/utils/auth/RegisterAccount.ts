@@ -27,19 +27,18 @@ async function registerAccount(accountDetails: AccountDetails) {
 
     const axiosError = error as AxiosError<ErrorResponseData>;
 
-    if (axiosError.response && axiosError.response.status === 409) {
-      if (axiosError.response.data.detail === 'Username already exists') {
-        errorDescription = 'An account with this username already exists.';
-      }
-    } else if (axiosError.response && axiosError.response.status === 400) {
-      errorDescription = 'Your password does not match. Please check your password and try again.';
-    } else if (axiosError.response && axiosError.response.status === 422) {
-      errorDescription =
-        'Please ensure your username is valid. It should contain 4 to 20 alphanumeric characters.';
-    }
-      else if (axiosError.response && axiosError.response.status === 429) {
+    if (axiosError.response) {
+      if (axiosError.response.status === 409) {
+        errorDescription = 'The username or email has already been taken.';
+      } else if (axiosError.response.status === 400) {
         errorDescription =
-            'You\'re trying too fast! Please try again in 10 minutes.';
+          'Your password does not match. Please check your password and try again.';
+      } else if (axiosError.response.status === 422) {
+        errorDescription =
+          'Please ensure your username is valid. It should contain 4 to 20 alphanumeric characters.';
+      } else if (axiosError.response.status === 429) {
+        errorDescription = "You're trying too fast! Please try again in 10 minutes.";
+      }
     }
 
     return { success: false, message: errorDescription };
