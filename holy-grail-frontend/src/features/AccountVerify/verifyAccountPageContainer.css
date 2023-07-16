@@ -1,0 +1,6 @@
+.verifyAccountPageContainer {
+    min-height: calc(80vh - 120px);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
