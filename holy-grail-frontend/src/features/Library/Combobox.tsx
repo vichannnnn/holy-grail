@@ -1,5 +1,10 @@
-import { Autocomplete, AutocompleteProps, TextField } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import {
+  Autocomplete,
+  AutocompleteProps,
+  TextField,
+  createTheme,
+  ThemeProvider,
+} from '@mui/material';
 
 export interface Element {
   value: number;
@@ -14,21 +19,21 @@ export interface ComboboxProps
   label: string;
   value: number | '';
   onChange: (newValue: number | '') => void;
-  options?: Element[];
+  options: Element[];
 }
 
-export const Combobox = ({ label, value, onChange, options = [], ...props }: ComboboxProps) => {
+export const Combobox = ({ label, value, onChange, options, ...props }: ComboboxProps) => {
   const muiTheme = createTheme();
 
   return (
     <ThemeProvider theme={muiTheme}>
       <Autocomplete
-        value={options?.find((option) => option.value === value) || null}
+        value={options.find((option) => option.value === value) || null}
         options={options}
-        onChange={(_, newValue) => onChange(newValue?.value || '')}
+        onChange={(_, newValue: Element) => onChange(newValue?.value || '')}
         renderInput={(params) => <TextField {...params} label={label} />}
-        isOptionEqualToValue={(option, value) => option.value === value?.value}
-        getOptionLabel={(option) => option.label}
+        isOptionEqualToValue={(option, value: Element) => option.value === value?.value}
+        getOptionLabel={(option: Element) => option.label}
         {...props}
       />
     </ThemeProvider>

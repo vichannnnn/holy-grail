@@ -1,10 +1,9 @@
-import { Autocomplete, AutocompleteProps, TextField, TextFieldProps } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { TextField, TextFieldProps, createTheme, ThemeProvider } from '@mui/material';
 
 export interface FreeTextComboboxProps extends Omit<TextFieldProps, 'onChange' | 'value'> {
   label: string;
   value: string;
-  onChange?: (newValue: string) => void;
+  onChange: (newValue: string) => void;
 }
 
 export const FreeTextCombobox = ({ label, value, onChange, ...props }: FreeTextComboboxProps) => {
@@ -15,7 +14,7 @@ export const FreeTextCombobox = ({ label, value, onChange, ...props }: FreeTextC
       <TextField
         value={value}
         label={label}
-        onChange={(event) => onChange && onChange(event.target.value)}
+        onChange={(event) => onChange(event.target.value)}
         {...props}
       />
     </ThemeProvider>
