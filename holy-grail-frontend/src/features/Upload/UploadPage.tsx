@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState, ChangeEvent, FormEvent } from 'react';
 import { Button, Input, Text } from '@chakra-ui/react';
 import { Combobox } from '../Library/Combobox';
 import { CategoryType, DocumentType, fetchData, SubjectType } from '@api/library';
@@ -44,7 +44,7 @@ const UploadPage = () => {
       };
       navigate('/login', { state: { alertContent: alertContentRedirect } });
     }
-  }, []);
+  }, [navigate, user]);
 
   const handleButtonClick = () => {
     if (inputFileRef.current) {
@@ -52,18 +52,18 @@ const UploadPage = () => {
     }
   };
 
-  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setDocumentName(event.target.value);
   };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       setSelectedFile(event.target.files[0]);
       setFileName(event.target.files[0].name);
     }
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (!selectedFile || category === '' || subject === '' || type === '') {
@@ -148,8 +148,8 @@ const UploadPage = () => {
             style={{ width: '90%' }}
             onChange={(newValue) => setCategory(Number(newValue))}
             options={categories.map((category) => ({
-              value: category.id,
-              label: category.name,
+              id: category.id,
+              name: category.name,
             }))}
           />
 
@@ -159,8 +159,8 @@ const UploadPage = () => {
             style={{ width: '90%' }}
             onChange={(newValue) => setSubject(Number(newValue))}
             options={subjects.map((subject) => ({
-              value: subject.id,
-              label: subject.name,
+              id: subject.id,
+              name: subject.name,
             }))}
           />
 
@@ -170,8 +170,8 @@ const UploadPage = () => {
             style={{ width: '90%' }}
             onChange={(newValue) => setType(Number(newValue))}
             options={types.map((type) => ({
-              value: type.id,
-              label: type.name,
+              id: type.id,
+              name: type.name,
             }))}
           />
         </div>

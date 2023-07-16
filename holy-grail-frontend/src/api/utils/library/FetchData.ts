@@ -1,11 +1,6 @@
 import { apiClient } from '@apiClient';
-import {
-  CategoryType,
-  SubjectType,
-  DocumentType,
-  CategorySearchParamsOptionalCategoryID,
-} from './types';
-export const fetchData = async (category_id: CategorySearchParamsOptionalCategoryID) => {
+import { CategoryType, SubjectType, DocumentType, CategorySearchParams } from './types';
+export const fetchData = async (category_id: CategorySearchParams | null = null) => {
   const [categories, types] = await Promise.all([
     apiClient.get('/all_category_level'),
     apiClient.get('/all_document_type'),

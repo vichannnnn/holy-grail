@@ -13,9 +13,6 @@ export interface CategorySearchParams {
   category_id: number;
 }
 
-export interface CategorySearchParamsOptionalCategoryID {
-  category_id?: number;
-}
 // Holy Grail API Response
 
 export type PaginatedNotes = {

@@ -10,7 +10,7 @@ const LandingPage = () => {
 
   useEffect(() => {
     if (location.hash) {
-      let elem = document.getElementById(location.hash.slice(1));
+      const elem = document.getElementById(location.hash.slice(1));
       if (elem) {
         scroll.scrollTo(elem.offsetTop);
       }
