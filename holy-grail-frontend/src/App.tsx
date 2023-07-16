@@ -1,9 +1,9 @@
 import './App.css';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
 import LoginPage from './features/SignIn/LoginPage';
 import LandingPage from './features/Landing/LandingPage';
-import { useLocation, Router, Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import Footer from './features/Footer/Footer';
 import SignUpPage from './features/SignUp/SignUpPage';
 import UploadPage from './features/Upload/UploadPage';
@@ -15,7 +15,7 @@ import ChangePasswordPage from './features/ChangePassword/ChangePasswordPage';
 import ForgotPasswordPage from './features/ForgotPassword/ForgotPasswordPage';
 import ResetPasswordPage from './features/ResetPassword/ResetPasswordPage';
 import AccountVerifyPage from './features/AccountVerify/AccountVerifyPage';
-import AlertToast, { AlertProps } from './components/AlertToast/AlertToast';
+import { AlertToast, AlertProps } from './components/AlertToast/AlertToast';
 
 import Header from './features/Header/Header';
 import { MediaQueryProvider } from './providers/MediaQueryProvider';

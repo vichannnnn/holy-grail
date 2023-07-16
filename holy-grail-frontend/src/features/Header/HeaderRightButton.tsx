@@ -1,7 +1,7 @@
-import { IconButton, Menu, MenuItem, Button, Typography } from '@mui/material';
-import { useEffect, useState, useContext } from 'react';
+import { Button, IconButton, Menu, MenuItem, Typography } from '@mui/material';
+import { useContext, useEffect, useState } from 'react';
 import DensityMediumIcon from '@mui/icons-material/DensityMedium';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import MediaQueryContext from '../../providers/MediaQueryProvider';
 import AuthContext from '../../providers/AuthProvider';
 import { useNavigate } from 'react-router-dom';

@@ -1,4 +1,4 @@
-import apiClient from '../../apiClient';
+import { apiClient } from '@apiClient';
 
 export const resendVerificationEmail = async () => {
   const response = await apiClient.post(`/auth/resend_email_verification_token`);

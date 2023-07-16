@@ -1,4 +1,4 @@
-import { AccordionItem, AccordionButton, AccordionPanel, Box } from '@chakra-ui/react';
+import { AccordionButton, AccordionItem, AccordionPanel, Box } from '@chakra-ui/react';
 import { AddIcon, MinusIcon } from '@chakra-ui/icons';
 import { Text } from '../../components/Text/Text';
 import { ReactNode, useContext } from 'react';

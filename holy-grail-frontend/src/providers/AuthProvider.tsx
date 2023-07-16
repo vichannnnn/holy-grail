@@ -1,5 +1,5 @@
-import React, { createContext, useState, useEffect } from 'react';
-import apiClient from '../api/apiClient';
+import React, { createContext, useEffect, useState } from 'react';
+import { apiClient } from '@apiClient';
 import { isTokenExpired } from '../api/utils/auth/CheckToken';
 
 export interface User {

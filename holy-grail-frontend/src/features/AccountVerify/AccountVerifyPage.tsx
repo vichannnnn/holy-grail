@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { verifyAccount } from '../../api/utils/auth/VerifyAccount';
+import { resendVerificationEmail, verifyAccount } from '@api/auth';
 import { Link } from '@chakra-ui/react';
-import { resendVerificationEmail } from '../../api/utils/auth/ResendVerificationEmail';
 import '../SignIn/login.css';
-import AlertToast, { AlertProps } from '../../components/AlertToast/AlertToast';
+import { AlertToast, AlertProps } from '../../components/AlertToast/AlertToast';
 
 const VerifyAccountPage = () => {
   const [token, setToken] = useState<string | null>(null);

@@ -1,7 +1,8 @@
 import { useRef } from 'react';
-import { Modal, Box, Button, Typography } from '@mui/material';
+import { Box, Button, Modal, Typography } from '@mui/material';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+
 interface DeleteAlertProps {
   isOpen: boolean;
   onClose: () => void;

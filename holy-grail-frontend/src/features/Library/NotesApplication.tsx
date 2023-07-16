@@ -5,13 +5,12 @@ import {
   DocumentType,
   fetchApprovedNotes,
   fetchData,
+  Note,
   PaginatedNotes,
   SubjectType,
-  Note,
-} from '../../api/utils/library/Search';
+} from '@api/library';
+import { deleteNote, updateNote } from '@api/actions';
 import AuthContext from '../../providers/AuthProvider';
-import deleteNote from '../../api/utils/actions/DeleteNote';
-import updateNote from '../../api/utils/actions/UpdateNote';
 import NotesTable from '../../components/NotesTable/NotesTable';
 import AdminDeleteIcon from '../../components/AdminDeleteIcon/AdminDeleteIcon';
 import DeleteAlert from '../Approval/DeleteAlert';
@@ -124,9 +123,9 @@ const NotesApplication = () => {
     <section className='materials container'>
       <NotesTable
         notes={notes.items}
-        categories={categories.map((c) => ({ value: c.id, label: c.name }))}
-        subjects={subjects.map((s) => ({ value: s.id, label: s.name }))}
-        types={types.map((t) => ({ value: t.id, label: t.name }))}
+        categories={categories.map((c) => ({ id: c.id, name: c.name }))}
+        subjects={subjects.map((s) => ({ id: s.id, name: s.name }))}
+        types={types.map((t) => ({ id: t.id, name: t.name }))}
         category={category !== '' ? Number(category) : ''}
         subject={subject !== '' ? Number(subject) : ''}
         type={type !== '' ? Number(type) : ''}
@@ -188,9 +187,9 @@ const NotesApplication = () => {
             .then(() => filterNotes())
             .catch((err) => {});
         }}
-        categories={categories.map((c) => ({ value: c.id, label: c.name }))}
-        subjects={subjects.map((s) => ({ value: s.id, label: s.name }))}
-        types={types.map((t) => ({ value: t.id, label: t.name }))}
+        categories={categories.map((c) => ({ id: c.id, name: c.name }))}
+        subjects={subjects.map((s) => ({ id: s.id, name: s.name }))}
+        types={types.map((t) => ({ id: t.id, name: t.name }))}
         category={noteInitialProperties ? noteInitialProperties.category : ''}
         subject={noteInitialProperties ? noteInitialProperties.subject : ''}
         type={noteInitialProperties ? noteInitialProperties.type : ''}

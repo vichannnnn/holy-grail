@@ -1,12 +1,12 @@
 import {
+  Box,
   Card,
   CardBody,
   CardFooter,
   CardHeader,
-  Heading,
   CardProps,
+  Heading,
   Image,
-  Box,
   LinkBox,
 } from '@chakra-ui/react';
 import { ReactNode } from 'react';

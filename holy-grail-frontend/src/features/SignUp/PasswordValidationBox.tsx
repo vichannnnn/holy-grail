@@ -1,4 +1,4 @@
-import { Box, VStack, Icon, HStack } from '@chakra-ui/react';
+import { Box, HStack, Icon, VStack } from '@chakra-ui/react';
 import { CheckIcon, CloseIcon } from '@chakra-ui/icons';
 
 interface PasswordValidationBoxProps {
