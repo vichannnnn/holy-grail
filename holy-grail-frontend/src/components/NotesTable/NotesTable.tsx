@@ -20,7 +20,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Pagination } from '../Pagination/Pagination';
 import MediaQueryContext from '../../providers/MediaQueryProvider';
 import '../../features/Library/library.css';
-import NotesIcon from './NotesHelper';
+import NotesIcon from './NotesIcon';
 
 interface NotesTableProps {
   notes: Note[];
