@@ -116,6 +116,9 @@ class Library(Base, CRUD["Library"]):
         s3_bucket: boto3.client,
     ):
 
+        if len(form_data) > 50:
+            raise AppError.BAD_REQUEST_ERROR
+
         valid_notes: List[tuple[NoteCreateSchema, int]] = []
         failed_notes = {
             UploadError.DOCUMENT_NAME_DUPLICATED.name: [],
