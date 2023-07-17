@@ -117,39 +117,35 @@ export const UploadPage = () => {
         }
 
         setServerValidationErrors(keyedErrors);
-        setSubmitLoading(false);
+
         return {
           title: 'Error',
           description: 'You have errors in your submission. Please fix them and try again.',
           severity: 'error',
         } as AlertProps;
-      }
-      if (responseStatus === 401) {
-        setSubmitLoading(false);
+      } else if (responseStatus === 401) {
         return {
           title: 'Error',
           description: 'Please login to upload documents.',
           severity: 'error',
         } as AlertProps;
-      }
-      if (responseStatus === 500) {
-        setSubmitLoading(false);
+      } else if (responseStatus === 500) {
         return {
           title: 'Internal Server Error',
           description: 'Please try again later.',
           severity: 'error',
         } as AlertProps;
-      }
-      if (responseStatus === 200) {
+      } else if (responseStatus === 200) {
         return {
           title: 'Success',
           description: 'Successfully sent for review and will be shown in library once uploaded.',
           severity: 'success',
         } as AlertProps;
+      } else {
+        return generalisedAlertError;
       }
-      return generalisedAlertError;
     };
-
+    setSubmitLoading(false);
     if (response?.status === 200) {
       navigate('/', { state: { alertContent: statusAlertContent() } });
     }
