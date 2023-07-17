@@ -99,7 +99,7 @@ export const NotesTable = ({
                 if (value) {
                   setIsCategorySelected(true);
                   const categoryData = await fetchCategory({ category_id: value });
-                  const data = await fetchData({ category_id: value });
+                  const data = await fetchData({ category_id: categoryData.id });
                   setSubjectsData(
                     data.subjects.map((subject: SubjectType) => ({
                       id: subject.id,
