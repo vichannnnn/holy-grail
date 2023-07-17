@@ -9,58 +9,64 @@ frontend_container := holy-grail-frontend
 local_postgres_user := postgres
 local_postgres_db_name := app
 
+ifeq ($(version),)
+	DC_COMMAND := docker compose
+else
+	DC_COMMAND := $(DC_COMMAND)
+endif
+
 -include ./Makefile.properties
 
 hello:
 	echo "Hello, world!"
 
 coverage:
-	docker compose -f docker-compose.$(version).yml run -e TESTING=true --rm $(backend_container) coverage run --source=app -m pytest -x
+	$(DC_COMMAND) run -e TESTING=true --rm $(backend_container) coverage run --source=app -m pytest -x
 
 generate_xml:
-	docker compose -f docker-compose.$(version).yml run -e TESTING=true --rm $(backend_container) coverage xml
+	$(DC_COMMAND) run -e TESTING=true --rm $(backend_container) coverage xml
 
 build:
-	docker compose -f docker-compose.$(version).yml stop && docker compose -f docker-compose.$(version).yml build --no-cache && docker compose -f docker-compose.$(version).yml up -d
+	$(DC_COMMAND) stop && $(DC_COMMAND) build --no-cache && $(DC_COMMAND) up -d
 
 stop:
-	docker compose -f docker-compose.$(version).yml stop
+	$(DC_COMMAND) stop
 
 run:
-	docker compose -f docker-compose.$(version).yml up -d
+	$(DC_COMMAND) up -d
 down:
-	docker compose -f docker-compose.$(version).yml down
+	$(DC_COMMAND) down
 
 runserver:
 	docker exec -it $(backend_container_name) uvicorn app.main:app --port 9005 --host 0.0.0.0 --reload
 
 buildbackend:
-	docker compose -f docker-compose.$(version).yml up -d --build $(backend_container)
+	$(DC_COMMAND) up -d --build $(backend_container)
 
 buildfrontend:
-	docker compose -f docker-compose.$(version).yml up -d --build $(frontend_container)
+	$(DC_COMMAND) up -d --build $(frontend_container)
 
 migrate:
-	docker compose -f docker-compose.$(version).yml run --rm $(backend_container) alembic upgrade head
+	$(DC_COMMAND) run --rm $(backend_container) alembic upgrade head
 
 migrations:
-	docker compose -f docker-compose.$(version).yml run --rm $(backend_container) alembic revision --autogenerate -m $(name)
+	$(DC_COMMAND) run --rm $(backend_container) alembic revision --autogenerate -m $(name)
 
 pylint:
-	docker compose -f docker-compose.$(version).yml run --rm $(backend_container) pylint ./app --disable=C0114,C0115,C0116,R0903,R0913,C0411 --extension-pkg-whitelist=pydantic --load-plugins pylint_flask_sqlalchemy
+	$(DC_COMMAND) run --rm $(backend_container) pylint ./app --disable=C0114,C0115,C0116,R0903,R0913,C0411 --extension-pkg-whitelist=pydantic --load-plugins pylint_flask_sqlalchemy
 
 mypy:
-	docker compose -f docker-compose.$(version).yml run --rm $(backend_container) mypy ./app --install-types --strict
+	$(DC_COMMAND) run --rm $(backend_container) mypy ./app --install-types --strict
 
 check: pylint \
 	mypy \
 	tests \
 
 tests:
-	docker compose -f docker-compose.$(version).yml run -e TESTING=true --rm $(backend_container) pytest ./app/tests -x -vv
+	$(DC_COMMAND) run -e TESTING=true --rm $(backend_container) pytest ./app/tests -x -vv
 
 test:
-	docker compose -f docker-compose.$(version).yml run --rm -e TESTING=true $(backend_container) pytest ./app/tests/api/$(file).py -x -vv
+	$(DC_COMMAND) run --rm -e TESTING=true $(backend_container) pytest ./app/tests/api/$(file).py -x -vv
 
 local-dump:
 	scp $(user)@$(domain):./holy-grail/$(sql_file_name).sql .
@@ -68,6 +74,7 @@ local-dump:
 
 dump:
 	docker exec -i holy-grail-db psql -U $(local_postgres_user) -d $(local_postgres_db_name) < $(sql_file_name).sql
+
 venv:
 	( \
 	  pip install virtualenv; \

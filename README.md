@@ -3,7 +3,7 @@
 # Holy Grail
 
 [![codecov](https://codecov.io/gh/vichannnnn/holy-grail/branch/dev/graph/badge.svg)](https://codecov.io/gh/vichannnnn/holy-grail/tree/dev)
-[![Python](https://img.shields.io/badge/python-3.10-blue.svg)](https://www.python.org/)
+[![Python](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/)
 [![Docker](https://img.shields.io/badge/built%20with-Docker-blue)](https://www.docker.com/)
 [![test](https://github.com/vichannnnn/holy-grail/actions/workflows/test.yml/badge.svg)](https://github.com/vichannnnn/holy-grail/actions)
 [![build](https://github.com/vichannnnn/holy-grail/actions/workflows/build.yml/badge.svg)](https://github.com/vichannnnn/holy-grail/actions)
@@ -27,8 +27,8 @@ secret_key = secrets.token_hex(32)
 
 ```
 cp .env.example .env
-make build version="dev"
-make migrate version="dev"
+make build
+make migrate
 ```
 
 - Run the following command (For frontend development only)
@@ -37,7 +37,7 @@ make migrate version="dev"
 cp .env.example .env
 cd holy-grail-frontend
 yarn --frozen-lockfile
-yarn dev
+yarn local
 ```
 
 - To set up your virtualenv for pre-commit hooks
@@ -53,7 +53,7 @@ packages required for development of the app now. If your pre-commit hook is fai
 make sure you re-add and commit the changed files.
 
 
-NOTE: You can also run the `make build` instructions and `yarn dev` instructions, but your frontend will be
+NOTE: You can also run the `make build` instructions and `yarn local` instructions, but your frontend will be
 in http://localhost:5174, it will still connect to the backend API correctly.
 
 ## Usage
@@ -73,4 +73,4 @@ Pull requests are welcome. For major changes, please open an issue first
 to discuss what you would like to change.
 
 Please make sure that all backend contributions are updated with appropriate tests and passed
-with `make tests version="dev"` first.
+with `make tests` first.
