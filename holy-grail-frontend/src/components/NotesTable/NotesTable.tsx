@@ -1,13 +1,12 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Box, Card, CardContent, Grid, Typography, Link } from '@mui/material';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import { Note, fetchData, fetchCategory, SubjectType } from '../../api/utils/library/Search';
-import Combobox from '../../features/Library/Combobox';
-import { ComboboxProps } from '../../features/Library/Combobox';
+import { Note, fetchData, fetchCategory, SubjectType } from '@api/library';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Combobox, ComboboxProps, FreeTextCombobox, FreeTextComboboxProps } from '../Combobox';
+import { Combobox, ComboboxProps, FreeTextCombobox, FreeTextComboboxProps } from '@components';
 import { Pagination } from '../Pagination';
 import { NotesIcon } from './NotesIcon';
+import { MediaQueryContext } from '@providers';
 import '../../features/Library/library.css';
 
 interface NotesTableProps {
@@ -88,7 +87,7 @@ export const NotesTable = ({
                 if (value) {
                   setIsCategorySelected(true);
                   const categoryData = await fetchCategory({ category_id: value });
-                  const data = await fetchData(categoryData.id);
+                  const data = await fetchData({ category_id: categoryData.id });
                   setSubjectsData(
                     data.subjects.map((subject: SubjectType) => ({
                       value: subject.id,

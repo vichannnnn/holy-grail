@@ -1,5 +1,5 @@
-import { AxiosError, all } from 'axios';
-import apiClient from '../../apiClient';
+import { AxiosError } from 'axios';
+import { apiClient } from '@apiClient';
 import { NoteInfoProps } from '../../../features/Upload/UploadNote';
 
 export const createNote = async (files: [File, string][], notes: NoteInfoProps[]) => {

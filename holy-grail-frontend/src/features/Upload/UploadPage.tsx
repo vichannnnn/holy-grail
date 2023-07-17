@@ -1,13 +1,13 @@
 import { useState, useEffect, useContext, useRef } from 'react';
-import { fetchData, CategoryType, SubjectType, DocumentType } from '../../api/utils/library/Search';
+import { fetchData, CategoryType, SubjectType, DocumentType } from '@api/library';
 import { createNote } from '../../api/utils/actions/CreateNote';
-import AuthContext from '../../providers/AuthProvider';
+import { AuthContext } from '@providers';
 import { useNavigate } from 'react-router-dom';
-import AlertToast, { AlertProps } from '../../components/AlertToast/AlertToast';
+import { AlertToast, AlertProps } from '@components';
 import UploadNote, { NoteInfoProps } from './UploadNote';
 import './upload.css';
 import { Button, ThemeProvider, createTheme } from '@mui/material';
-import DeleteAlert from '../Approval/DeleteAlert';
+import { DeleteAlert } from '@features';
 import FileSelect from './FileSelect';
 import { AxiosResponse } from 'axios';
 
@@ -27,7 +27,7 @@ interface SelectedFilesProps {
   [key: string]: [File, string];
 }
 
-const UploadPage = () => {
+export const UploadPage = () => {
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
 
@@ -266,5 +266,3 @@ const UploadPage = () => {
     </section>
   );
 };
-
-export default UploadPage;

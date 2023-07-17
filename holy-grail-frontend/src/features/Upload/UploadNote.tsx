@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from 'react';
 import { OptionsProps } from './UploadPage';
-import Combobox from '../Library/Combobox';
+import { Combobox } from '@components';
 import {
   createTheme,
   ThemeProvider,
@@ -12,9 +12,8 @@ import {
   Box,
   Tooltip,
 } from '@mui/material';
-import MediaQueryContext from '../../providers/MediaQueryProvider';
-import AuthContext from '../../providers/AuthProvider';
-import { fetchData, fetchCategory, SubjectType } from '../../api/utils/library/Search';
+import { MediaQueryContext, AuthContext } from '@providers';
+import { fetchData, fetchCategory, SubjectType } from '@api/library';
 import ErrorIcon from '@mui/icons-material/Error';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -191,18 +190,18 @@ export const UploadNote = ({
                         setCategory(newValue || 0);
                         if (newValue === '') return;
                         const categoryData = await fetchCategory({ category_id: Number(newValue) });
-                        const data = await fetchData(categoryData.id);
+                        const data = await fetchData({ category_id: categoryData.id });
                         setSubjectsData(
                           data.subjects.map((subject: SubjectType) => ({
-                            value: subject.id,
-                            label: subject.name,
+                            id: subject.id,
+                            name: subject.name,
                           })),
                         );
                       }}
                       options={
                         options?.categories.map((category) => ({
-                          value: category.id,
-                          label: category.name,
+                          id: category.id,
+                          name: category.name,
                         })) || []
                       }
                       error={!validChecks.category}
@@ -218,8 +217,8 @@ export const UploadNote = ({
                       options={
                         subjectsData ||
                         options?.subjects.map((subject) => ({
-                          value: subject.id,
-                          label: subject.name,
+                          id: subject.id,
+                          name: subject.name,
                         })) ||
                         []
                       }
@@ -235,7 +234,7 @@ export const UploadNote = ({
                         setType(newValue || 0);
                       }}
                       options={
-                        options?.types.map((type) => ({ value: type.id, label: type.name })) || []
+                        options?.types.map((type) => ({ id: type.id, name: type.name })) || []
                       }
                       error={!validChecks.type}
                     />
