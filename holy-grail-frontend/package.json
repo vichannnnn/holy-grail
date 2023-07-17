@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "local": "vite",
-    "dev": "vite --host 0.0.0.0 --port 5175",
+    "local": "vite --mode custom --host 0.0.0.0 --port 5175",
+    "dev-build": "vite build --mode development",
     "build": "vite build --mode production",
     "test": "react-scripts test",
     "lint": "eslint .",

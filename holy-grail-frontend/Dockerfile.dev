@@ -1,10 +1,22 @@
-FROM node:19
+FROM node:19 AS base
+
+
+FROM base AS dependencies
 
 WORKDIR /app
-
 COPY package.json yarn.lock ./
 RUN yarn --frozen-lockfile
 
-COPY . .
+FROM base AS build
 
-CMD ["yarn", "turbo", "dev"]
+WORKDIR /app
+COPY . .
+COPY --from=dependencies /app/node_modules ./node_modules
+RUN yarn dev-build
+
+FROM node:19 AS deploy
+WORKDIR /app
+COPY --from=build /app/dist ./
+RUN yarn global add http-server
+CMD ["http-server", "-p", "5175"]
+EXPOSE 5175

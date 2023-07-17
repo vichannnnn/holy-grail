@@ -4,28 +4,32 @@ version: '3.8'
 services:
   holy-grail-frontend:
     container_name: holy-grail-frontend
+    ports:
+      - "5175:5175"
     networks:
       - holy-grail-network
-    image: ghcr.io/vichannnnn/holy-grail/holy-grail-frontend-dev:latest
-    depends_on:
-      - holy-grail-backend
+    build:
+      context: ./holy-grail-frontend
+      dockerfile: Dockerfile.local
     environment:
       VITE_APP_API_URL: ${VITE_APP_API_URL}
       VITE_APP_AWS_S3_BUCKET_URL: ${VITE_APP_AWS_S3_BUCKET_URL}
-    ports:
-      - "5175:5175"
+    depends_on:
+      - holy-grail-backend
+    volumes:
+      - ./holy-grail-frontend/src:/app/src
     restart:
-      always
+      unless-stopped
 
   holy-grail-backend:
     container_name: holy-grail-backend
-    networks:
-      - holy-grail-network
     build: ./holy-grail-backend/backend
     command: uvicorn app.main:app --host 0.0.0.0 --port 8005 --reload
     ports:
       - "8005:8005"
       - "9005:9005"
+    networks:
+      - holy-grail-network
     depends_on:
       - holy-grail-db
       - holy-grail-scheduler
@@ -49,9 +53,9 @@ services:
       MAILTRAP_BEARER_TOKEN: ${MAILTRAP_BEARER_TOKEN}
       MAILTRAP_API_KEY: ${MAILTRAP_API_KEY}
       PRODUCTION: ${PRODUCTION}
+    restart: unless-stopped
     volumes:
       - ./holy-grail-backend/backend:/app
-    restart: always
 
   holy-grail-db:
     container_name: holy-grail-db
