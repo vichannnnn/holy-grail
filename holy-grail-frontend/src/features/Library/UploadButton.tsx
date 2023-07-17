@@ -1,7 +1,7 @@
 import { Button, ButtonProps, Text } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
-import { AuthContext } from '../../providers/AuthProvider';
+import { AuthContext } from '../../providers/AuthProvider/AuthProvider';
 
 type UploadButtonProps = ButtonProps & {
   text: string;

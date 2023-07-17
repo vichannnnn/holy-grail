@@ -18,7 +18,7 @@ import { Combobox, ComboboxProps } from '../../features/Library/Combobox';
 import { FreeTextCombobox, FreeTextComboboxProps } from '../../features/Library/FreeTextCombobox';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Pagination } from '../Pagination/Pagination';
-import { MediaQueryContext } from '../../providers/MediaQueryProvider';
+import { MediaQueryContext } from '../../providers/MediaQueryProvider/MediaQueryProvider';
 import '../../features/Library/library.css';
 import { NotesIcon } from './NotesIcon';
 

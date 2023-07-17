@@ -2,7 +2,7 @@ import { AccordionButton, AccordionItem, AccordionPanel, Box } from '@chakra-ui/
 import { AddIcon, MinusIcon } from '@chakra-ui/icons';
 import { Text } from '@components';
 import { ReactNode, useContext } from 'react';
-import { MediaQueryContext } from '../../providers/MediaQueryProvider';
+import { MediaQueryContext } from '../../providers/MediaQueryProvider/MediaQueryProvider';
 
 type FAQLineProps = {
   question: string;

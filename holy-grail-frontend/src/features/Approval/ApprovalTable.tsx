@@ -13,7 +13,7 @@ import { Box } from '@mui/material';
 import { AdminApproveIcon, AdminDeleteIcon, AdminEditIcon, NotesTable } from '@components';
 import { DeleteAlert } from './DeleteAlert';
 import { ApprovalEditModal } from './ApprovalEditModal';
-import { AuthContext } from '../../providers/AuthProvider';
+import { AuthContext } from '../../providers/AuthProvider/AuthProvider';
 
 export const ApprovalTable = () => {
   const [notes, setNotes] = useState<PaginatedNotes>({
