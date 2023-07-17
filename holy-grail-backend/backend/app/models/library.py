@@ -1,7 +1,7 @@
 import datetime
 import uuid
 import boto3
-from typing import TYPE_CHECKING, Optional, Union, Tuple, List
+from typing import TYPE_CHECKING, Optional, Union, Tuple, List, Any
 from pydantic import ValidationError
 from fastapi import UploadFile, HTTPException
 from sqlalchemy import func, ForeignKey, select, update, delete
@@ -189,7 +189,7 @@ class Library(Base, CRUD["Library"]):
             raise AppError.MULTIPLE_GENERIC_ERRORS(**failed_notes)
 
         objs = []
-        files = []
+        files: List[Tuple[UploadFile, str]] = []
         for note, idx in valid_notes:
             extension = accepted_doc_type_extensions[note.file.content_type]
 
@@ -200,15 +200,15 @@ class Library(Base, CRUD["Library"]):
             )
             obj = Library(**data_insert.dict())
             objs.append(obj)
-            files.append(note.file)
+            files.append((note.file, file_name))
 
         try:
             session.add_all(objs)
-            await session.commit()
 
             for file, file_name in files:
                 await save_file(file, file_name, s3_bucket)
 
+            await session.commit()
             for obj in objs:
                 await session.refresh(
                     obj, ["doc_category", "doc_type", "doc_subject", "account"]
@@ -221,6 +221,7 @@ class Library(Base, CRUD["Library"]):
             elif str(exc).find("UniqueViolationError") != -1:
                 raise AppError.RESOURCES_ALREADY_EXISTS_ERROR from exc
             raise AppError.RESOURCES_ALREADY_EXISTS_ERROR from exc
+
         return objs
 
     @classmethod
