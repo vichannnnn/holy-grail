@@ -1,16 +1,16 @@
 import { useState, useEffect, useContext, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { fetchData, CategoryType, SubjectType, DocumentType } from '@api/library';
 import { createNote } from '@api/actions';
-import { AuthContext } from '@providers';
-import { useNavigate } from 'react-router-dom';
 import { AlertToast, AlertProps } from '@components';
-import { UploadNote, NoteInfoProps } from './UploadNote';
-import './upload.css';
+import { DeleteAlert } from '@features';
+import { AuthContext } from '@providers';
 import { ThemeProvider, createTheme } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-import { DeleteAlert } from '@features';
+import { UploadNote, NoteInfoProps } from './UploadNote';
 import { FileSelect } from './FileSelect';
 import { AxiosResponse } from 'axios';
+import './upload.css';
 
 interface OptionsProps {
   categories: CategoryType[];
@@ -91,8 +91,8 @@ export const UploadPage = () => {
       if (responseStatus === 400) {
         if (responseBody === undefined) return generalisedAlertError;
         const friendlyErrorText: Record<string, string> = {
-          DOCUMENT_NAME_DUPLICATED: 'Document name already exists.',
-          DOCUMENT_NAME_IN_DB: 'We have another document in our database with the same name.',
+          DOCUMENT_NAME_DUPLICATED: 'You are uploading multiple documents with the same name.',
+          DOCUMENT_NAME_IN_DB: 'Document name already exists.',
           SCHEMA_VALIDATION_ERROR:
             'Please ensure your document name is between 1 and 100 characters long.',
           INVALID_FILE_TYPE: 'Please ensure all files uploaded are pdf files.',

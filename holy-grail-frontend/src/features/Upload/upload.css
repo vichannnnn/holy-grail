@@ -4,14 +4,14 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    margin: 0 !important;
+    align-items: center;
 }
 
 .upload__multiContainer{
     display: flex;
     flex-direction: column;
-    
     justify-content: center;
     align-items: center;
     gap: 2vh;
+    margin-top: 3rem;
 }

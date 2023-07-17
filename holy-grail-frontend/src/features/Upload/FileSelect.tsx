@@ -44,8 +44,7 @@ export const FileSelect = ({ handleAddNotes }: FileSelectProps) => {
     <div
       style={{
         width: '60vw',
-        aspectRatio: 1.618,
-        padding: '3%',
+        padding: '4%',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
