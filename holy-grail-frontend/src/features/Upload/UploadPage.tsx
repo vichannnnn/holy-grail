@@ -91,9 +91,8 @@ export const UploadPage = () => {
       if (responseStatus === 400) {
         if (responseBody === undefined) return generalisedAlertError;
         const friendlyErrorText: Record<string, string> = {
-          DOCUMENT_NAME_DUPLICATED: 'Document name already exists. Please rename this document.',
-          DOCUMENT_NAME_IN_DB:
-            'We have another document in our database with the same name. Please rename this document.',
+          DOCUMENT_NAME_DUPLICATED: 'Document name already exists.',
+          DOCUMENT_NAME_IN_DB: 'We have another document in our database with the same name.',
           SCHEMA_VALIDATION_ERROR:
             'Please ensure your document name is between 1 and 100 characters long.',
           INVALID_FILE_TYPE: 'Please ensure all files uploaded are pdf files.',

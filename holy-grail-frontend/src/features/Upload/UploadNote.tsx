@@ -115,23 +115,6 @@ export const UploadNote = ({
           flexDirection: 'row',
         }}
       >
-        <div style={{ position: 'absolute', display: errors ? '' : 'none' }}>
-          <Tooltip
-            title={
-              <ul>
-                {errors?.map((error, idx) => (
-                  <li key={idx}>
-                    <Typography>• {error}</Typography>
-                  </li>
-                ))}
-              </ul>
-            }
-            placement='bottom'
-            arrow
-          >
-            <ErrorIcon color='error' />
-          </Tooltip>
-        </div>
         <div style={{ width: '60vw' }}>
           <Grid
             container
@@ -184,7 +167,10 @@ export const UploadNote = ({
                       onChange={(event) => {
                         setDocumentName(event.target.value);
                       }}
-                      error={!validChecks.name}
+                      error={!validChecks.name || errors ? errors?.length !== 0 : false}
+                      helperText={errors?.map((error) => (
+                        <Typography sx={{ fontSize: '100%' }}>{error}</Typography>
+                      ))}
                     />
                   </Grid>
                   <Grid
