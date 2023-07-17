@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, FormControl, FormLabel, Input, VStack } from '@chakra-ui/react';
+import { AccountForm, AlertToast, AlertProps } from '@components';
+import { updatePassword } from '@api/auth';
 import { useNavigate } from 'react-router-dom';
-import PasswordValidationBox from '../SignUp/PasswordValidationBox';
-import { AccountForm } from '../../components/AccountForm/AccountForm';
+import { PasswordValidationBox } from '../SignUp/PasswordValidationBox';
 import '../SignIn/login.css';
-import { updatePassword } from '../../api/utils/auth/UpdatePassword';
-import { AlertToast, AlertProps } from '../../components/AlertToast/AlertToast';
 
-const ChangePasswordPage = () => {
+export const ChangePasswordPage = () => {
   const [beforePassword, setBeforePassword] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
@@ -109,5 +108,3 @@ const ChangePasswordPage = () => {
     </section>
   );
 };
-
-export default ChangePasswordPage;

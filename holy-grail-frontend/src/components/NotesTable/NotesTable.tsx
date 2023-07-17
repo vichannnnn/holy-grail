@@ -18,9 +18,9 @@ import { Combobox, ComboboxProps } from '../../features/Library/Combobox';
 import { FreeTextCombobox, FreeTextComboboxProps } from '../../features/Library/FreeTextCombobox';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Pagination } from '../Pagination/Pagination';
-import MediaQueryContext from '../../providers/MediaQueryProvider';
+import { MediaQueryContext } from '../../providers/MediaQueryProvider';
 import '../../features/Library/library.css';
-import NotesIcon from './NotesIcon';
+import { NotesIcon } from './NotesIcon';
 
 interface NotesTableProps {
   notes: Note[];
@@ -53,7 +53,7 @@ function formatDate(dateString: string) {
   return new Date(dateString).toLocaleDateString(undefined, options);
 }
 
-const NotesTable = ({
+export const NotesTable = ({
   notes,
   categories,
   subjects,
@@ -281,5 +281,3 @@ const NotesTable = ({
     </Box>
   );
 };
-
-export default NotesTable;

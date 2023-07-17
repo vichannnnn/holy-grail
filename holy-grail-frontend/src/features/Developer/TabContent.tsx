@@ -1,4 +1,4 @@
-import { CategoryType, DocumentType, SubjectType } from '../../api/utils/library/Search';
+import { CategoryType, SubjectType, DocumentType } from '@api/library';
 import {
   Button,
   OutlinedInput,
@@ -13,7 +13,7 @@ import {
 import EditIcon from '@mui/icons-material/Edit';
 import { ChangeEvent, useState } from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
-import { Pagination } from '../../components/Pagination/Pagination';
+import { Pagination } from '@components';
 
 type DataTypeKey = 'categories' | 'subjects' | 'types';
 
@@ -35,15 +35,15 @@ export const TabContent = ({ title, data, handleEdit, handleAdd, type }: TabCont
   };
 
   const handleFilterContent = () => {
-    let validData: Array<CategoryType | SubjectType | DocumentType> = data.filter((option) => {
+    const validData: Array<CategoryType | SubjectType | DocumentType> = data.filter((option) => {
       return option.name.toLowerCase().includes(query.toLowerCase());
     });
     return validData;
   };
 
   const handlePaging = () => {
-    let pagedData: Array<Array<CategoryType | SubjectType | DocumentType>> = [];
-    let validData: Array<CategoryType | SubjectType | DocumentType> = handleFilterContent();
+    const pagedData: Array<Array<CategoryType | SubjectType | DocumentType>> = [];
+    const validData: Array<CategoryType | SubjectType | DocumentType> = handleFilterContent();
     for (let i = 0; i < validData.length; i += chunkSize) {
       pagedData.push(validData.slice(i, i + chunkSize));
     }

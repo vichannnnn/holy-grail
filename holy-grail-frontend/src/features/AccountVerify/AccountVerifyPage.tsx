@@ -2,11 +2,11 @@ import { Link } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { resendVerificationEmail, verifyAccount } from '@api/auth';
-import { AlertToast, AlertProps } from '../../components/AlertToast/AlertToast';
+import { AlertToast, AlertProps } from '@components';
 import '../SignIn/login.css';
 import './verifyAccountPageContainer.css';
 
-const VerifyAccountPage = () => {
+export const AccountVerifyPage = () => {
   const [token, setToken] = useState<string | null>(null);
   const [resetStatus, setResetStatus] = useState<string | null>(null);
   const [isFailed, setFailed] = useState<boolean>(false);
@@ -82,5 +82,3 @@ const VerifyAccountPage = () => {
     </section>
   );
 };
-
-export default VerifyAccountPage;

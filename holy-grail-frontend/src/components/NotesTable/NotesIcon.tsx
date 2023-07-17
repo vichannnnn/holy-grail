@@ -102,10 +102,8 @@ interface NotesIconProps {
   docSubject: CommonType;
 }
 
-const NotesIcon = ({ docSubject }: NotesIconProps) => {
+export const NotesIcon = ({ docSubject }: NotesIconProps) => {
   const subject = (subjectMap[docSubject.name] as IconType) || 'default';
 
   return <>{iconMapping[subject]}</>;
 };
-
-export default NotesIcon;

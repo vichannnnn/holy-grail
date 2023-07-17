@@ -1,9 +1,8 @@
 import { Flex } from '@chakra-ui/react';
 import { UploadButton } from './UploadButton';
-import { Text } from '../../components/Text/Text';
-import { Title } from '../../components/Title/Title';
+import { Text, Title } from '@components';
 
-const Upload = () => {
+export const Upload = () => {
   return (
     <div id='upload'>
       <Flex direction='column' bgColor='white' mt='5%' mr='auto' ml='auto' maxW='80%'>
@@ -20,5 +19,3 @@ const Upload = () => {
     </div>
   );
 };
-
-export default Upload;

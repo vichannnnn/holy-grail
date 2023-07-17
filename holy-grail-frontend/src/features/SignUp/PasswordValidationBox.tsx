@@ -9,7 +9,7 @@ interface PasswordValidationBoxProps {
   allCriteriaMet: boolean;
 }
 
-const PasswordValidationBox = ({
+export const PasswordValidationBox = ({
   lengthValid,
   specialCharValid,
   capitalLetterValid,
@@ -44,5 +44,3 @@ const PasswordValidationBox = ({
     </Box>
   );
 };
-
-export default PasswordValidationBox;

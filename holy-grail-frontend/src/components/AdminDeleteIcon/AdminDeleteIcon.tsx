@@ -6,7 +6,7 @@ interface AdminDeleteIconProps {
   setIsAlertOpen: (isOpen: boolean) => void;
   setNoteId: (id: number) => void;
 }
-const AdminDeleteIcon = ({ noteId, setIsAlertOpen, setNoteId }: AdminDeleteIconProps) => (
+export const AdminDeleteIcon = ({ noteId, setIsAlertOpen, setNoteId }: AdminDeleteIconProps) => (
   <Box sx={{ display: 'flex', justifyContent: 'center' }}>
     <IconButton
       size='small'
@@ -20,5 +20,3 @@ const AdminDeleteIcon = ({ noteId, setIsAlertOpen, setNoteId }: AdminDeleteIconP
     </IconButton>
   </Box>
 );
-
-export default AdminDeleteIcon;

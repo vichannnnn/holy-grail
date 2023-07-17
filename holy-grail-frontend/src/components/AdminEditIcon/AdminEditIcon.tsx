@@ -1,6 +1,6 @@
 import { Box, IconButton } from '@mui/material';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
-import { Note } from '../../api/utils/library/Search';
+import { Note } from '@api/library';
 
 interface AdminEditIconProps {
   noteId: number;
@@ -10,7 +10,7 @@ interface AdminEditIconProps {
   noteProperties: Note | null;
   setNoteProperties: (note: Note | null) => void;
 }
-const AdminEditIcon = ({
+export const AdminEditIcon = ({
   noteId,
   setIsEditOpen,
   setNoteId,
@@ -31,5 +31,3 @@ const AdminEditIcon = ({
     </IconButton>
   </Box>
 );
-
-export default AdminEditIcon;

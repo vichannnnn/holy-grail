@@ -11,15 +11,15 @@ import {
   fetchAllUsers,
   updateUserRole,
 } from '@api/actions';
-import EditModal from './EditModal';
-import EditUserModal from './EditUserModal';
-import AddModal from './AddModal';
+import { DeveloperEditModal } from './DeveloperEditModal';
+import { DeveloperEditUserModal } from './DeveloperEditUserModal';
+import { AddModal } from './AddModal';
 import { TabContent } from './TabContent';
 import { RoleEnum, TabContentUsers, User } from './TabContentUsers';
 
 type DataTypeKey = 'categories' | 'subjects' | 'types';
 
-const DeveloperScreen = () => {
+export const DeveloperScreen = () => {
   const [value, setValue] = useState(0);
   const [data, setData] = useState<{
     categories: CategoryType[];
@@ -155,7 +155,7 @@ const DeveloperScreen = () => {
       )}
       {value === 3 && <TabContentUsers data={users} handleEdit={openEditUserModal} />}
       {editId !== null && editType !== null && (
-        <EditModal
+        <DeveloperEditModal
           isOpen={true}
           onClose={closeEditModal}
           onSubmit={handleUpdate}
@@ -165,7 +165,7 @@ const DeveloperScreen = () => {
         />
       )}
       {editUserId !== null && editUserRole !== null && (
-        <EditUserModal
+        <DeveloperEditUserModal
           isOpen={isEditUserModalOpen}
           onClose={closeEditUserModal}
           onSubmit={handleUpdateUser}
@@ -177,5 +177,3 @@ const DeveloperScreen = () => {
     </Box>
   );
 };
-
-export default DeveloperScreen;

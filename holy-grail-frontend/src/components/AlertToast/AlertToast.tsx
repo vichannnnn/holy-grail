@@ -1,10 +1,5 @@
 import { Alert, createTheme, Snackbar, ThemeProvider, Typography } from '@mui/material';
-
-interface AlertProps {
-  title: string;
-  description: string;
-  severity: 'success' | 'error' | 'warning' | 'info';
-}
+import { AlertProps } from './types';
 
 interface AlertToastProps {
   openAlert: boolean;
@@ -33,5 +28,3 @@ export const AlertToast = ({ openAlert, onClose, alertContent }: AlertToastProps
     </ThemeProvider>
   );
 };
-
-export type { AlertProps };

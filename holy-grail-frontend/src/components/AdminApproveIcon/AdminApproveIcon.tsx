@@ -5,12 +5,10 @@ interface AdminApproveIconProps {
   noteId: number;
   handleApprove: (id: number) => void;
 }
-const AdminApproveIcon = ({ noteId, handleApprove }: AdminApproveIconProps) => (
+export const AdminApproveIcon = ({ noteId, handleApprove }: AdminApproveIconProps) => (
   <Box sx={{ display: 'flex', justifyContent: 'center' }}>
     <IconButton size='small' color='primary' onClick={() => handleApprove(noteId)}>
       <CheckIcon />
     </IconButton>
   </Box>
 );
-
-export default AdminApproveIcon;

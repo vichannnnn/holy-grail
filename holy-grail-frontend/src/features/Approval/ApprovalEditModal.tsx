@@ -1,9 +1,16 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { Combobox, ComboboxProps } from '../Library/Combobox';
-import { Box, Button, Modal, TextField, Tooltip, Typography } from '@mui/material';
-
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import {
+  Box,
+  Button,
+  createTheme,
+  Modal,
+  TextField,
+  ThemeProvider,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 
 interface EditModalProps {
   isOpen: boolean;
@@ -23,7 +30,9 @@ interface EditModalProps {
   documentName: string;
 }
 
-const EditModal = ({
+type ValidationResult = Record<string, boolean>;
+
+export const ApprovalEditModal = ({
   isOpen,
   onClose,
   onConfirm,
@@ -47,18 +56,16 @@ const EditModal = ({
     setNewSubject(subject);
     setNewType(type);
     setNewDocName(documentName);
-  }, [isOpen]);
+  }, [category, documentName, isOpen, subject, type]);
 
-  const validityChecks = () => {
-    const res: Object = {
+  const validityChecks = (): ValidationResult => {
+    return {
       'Title must be between 4 and 100 characters long':
         newDocName.length >= 4 && newDocName.length <= 100,
       'Category must be selected': newCategory !== '',
       'Subject must be selected': newSubject !== '',
       'Type must be selected': newType !== '',
     };
-
-    return res;
   };
 
   const muiTheme = createTheme();
@@ -144,7 +151,7 @@ const EditModal = ({
             <span>
               <Button
                 sx={{ margin: '1%' }}
-                disabled={Object.values(validityChecks()).some((elem) => elem === false)}
+                disabled={Object.values(validityChecks()).some((elem) => !elem)}
                 variant='contained'
                 color='success'
                 onClick={() => {
@@ -165,5 +172,3 @@ const EditModal = ({
     </ThemeProvider>
   );
 };
-
-export default EditModal;

@@ -1,5 +1,4 @@
-import { Button } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Button, createTheme, ThemeProvider } from '@mui/material';
 import { ButtonHTMLAttributes, forwardRef } from 'react';
 
 export const HomeButton = forwardRef<HTMLButtonElement, ButtonHTMLAttributes<HTMLButtonElement>>(

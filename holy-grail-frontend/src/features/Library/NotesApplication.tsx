@@ -10,15 +10,12 @@ import {
   SubjectType,
 } from '@api/library';
 import { deleteNote, updateNote } from '@api/actions';
-import AuthContext from '../../providers/AuthProvider';
-import NotesTable from '../../components/NotesTable/NotesTable';
-import AdminDeleteIcon from '../../components/AdminDeleteIcon/AdminDeleteIcon';
-import DeleteAlert from '../Approval/DeleteAlert';
+import { AdminDeleteIcon, AdminEditIcon, NotesTable } from '@components';
+import { AuthContext } from '../../providers/AuthProvider';
+import { DeleteAlert, EditModal } from '../Approval';
 import './library.css';
-import EditModal from '../Approval/EditModal';
-import AdminEditIcon from '../../components/AdminEditIcon/AdminEditIcon';
 
-const NotesApplication = () => {
+export const NotesApplication = () => {
   const [notes, setNotes] = useState<PaginatedNotes>({
     items: [],
     page: 0,
@@ -198,5 +195,3 @@ const NotesApplication = () => {
     </section>
   );
 };
-
-export default NotesApplication;

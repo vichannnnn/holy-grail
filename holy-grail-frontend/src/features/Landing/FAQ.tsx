@@ -1,9 +1,9 @@
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import './landing.css';
 import { useContext } from 'react';
-import AuthContext from '../../providers/AuthProvider';
+import { AuthContext } from '../../providers/AuthProvider';
 
-const FAQ = () => {
+export const FAQ = () => {
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
 
@@ -132,5 +132,3 @@ const FAQ = () => {
     </section>
   );
 };
-
-export default FAQ;
