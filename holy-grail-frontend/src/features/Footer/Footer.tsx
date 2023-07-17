@@ -1,10 +1,10 @@
 import Logo from '../../assets/placeholder.svg';
 import { Link as RouterLink } from 'react-router-dom';
 import { useContext } from 'react';
-import AuthContext from '../../providers/AuthProvider';
+import { AuthContext } from '../../providers/AuthProvider';
 import './footer.css';
 
-const Footer = () => {
+export const Footer = () => {
   const { user } = useContext(AuthContext);
   return (
     <footer className='footer'>
@@ -41,5 +41,3 @@ const Footer = () => {
     </footer>
   );
 };
-
-export default Footer;

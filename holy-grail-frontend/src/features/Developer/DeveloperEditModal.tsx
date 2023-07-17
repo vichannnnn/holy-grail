@@ -15,7 +15,7 @@ interface EditModalProps {
   initialName: string;
 }
 
-const EditModal = ({ isOpen, onClose, onSubmit, initialName }: EditModalProps) => {
+export const DeveloperEditModal = ({ isOpen, onClose, onSubmit, initialName }: EditModalProps) => {
   const [name, setName] = useState(initialName);
 
   const handleSubmit = async () => {
@@ -44,5 +44,3 @@ const EditModal = ({ isOpen, onClose, onSubmit, initialName }: EditModalProps) =
     </Dialog>
   );
 };
-
-export default EditModal;

@@ -1,6 +1,6 @@
 import './approval.css';
 
-const ApprovalScreen = () => {
+export const ApprovalScreen = () => {
   return (
     <section id='upload'>
       <div>
@@ -13,5 +13,3 @@ const ApprovalScreen = () => {
     </section>
   );
 };
-
-export default ApprovalScreen;

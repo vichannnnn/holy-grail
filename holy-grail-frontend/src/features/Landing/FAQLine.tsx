@@ -1,15 +1,15 @@
 import { AccordionButton, AccordionItem, AccordionPanel, Box } from '@chakra-ui/react';
 import { AddIcon, MinusIcon } from '@chakra-ui/icons';
-import { Text } from '../../components/Text/Text';
+import { Text } from '@components';
 import { ReactNode, useContext } from 'react';
-import MediaQueryContext from '../../providers/MediaQueryProvider';
+import { MediaQueryContext } from '../../providers/MediaQueryProvider';
 
 type FAQLineProps = {
   question: string;
   children: ReactNode;
 };
 
-const FAQLine = ({ question, children }: FAQLineProps) => {
+export const FAQLine = ({ question, children }: FAQLineProps) => {
   const { isDesktop } = useContext(MediaQueryContext);
 
   return (
@@ -54,5 +54,3 @@ const FAQLine = ({ question, children }: FAQLineProps) => {
     </AccordionItem>
   );
 };
-
-export default FAQLine;

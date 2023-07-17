@@ -1,8 +1,8 @@
 import { Link as RouterLink } from 'react-router-dom';
-import { HomeButton } from '../../components/HomeButton/HomeButton';
+import { HomeButton } from '@components';
 import './notFound.css';
 
-const NotFound = () => {
+export const NotFound = () => {
   return (
     <div className='notFound section container' id='notFound'>
       <div className='section__title'>Oops!</div>
@@ -54,5 +54,3 @@ const NotFound = () => {
     </div>
   );
 };
-
-export default NotFound;

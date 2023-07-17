@@ -1,13 +1,12 @@
 import { FormEvent, useEffect, useState } from 'react';
 import { Box, Button, FormControl, FormLabel, Input, Link, VStack } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
-import PasswordValidationBox from './PasswordValidationBox';
-import { AccountForm } from '../../components/AccountForm/AccountForm';
-import '../SignIn/login.css';
 import { registerAccount } from '@api/auth';
-import { AlertToast, AlertProps } from '../../components/AlertToast/AlertToast';
+import { AccountForm, AlertToast, AlertProps } from '@components';
+import { useNavigate } from 'react-router-dom';
+import { PasswordValidationBox } from './PasswordValidationBox';
+import '../SignIn/login.css';
 
-const SignUpPage = () => {
+export const SignUpPage = () => {
   const [username, setUsername] = useState('');
   const [usernameValid, setUsernameValid] = useState(true);
   const [password, setPassword] = useState('');
@@ -148,5 +147,3 @@ const SignUpPage = () => {
     </section>
   );
 };
-
-export default SignUpPage;

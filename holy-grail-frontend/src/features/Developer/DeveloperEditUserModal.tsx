@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { Box, Button, MenuItem, Modal, Select } from '@mui/material';
+import { Box, Button, MenuItem, Modal, Select, SelectChangeEvent } from '@mui/material';
 import { RoleEnum } from './TabContentUsers';
-import { SelectChangeEvent } from '@mui/material/Select';
 import { VStack } from '@chakra-ui/react';
 
 interface EditUserModalProps {
@@ -13,7 +12,7 @@ interface EditUserModalProps {
   userId: number;
 }
 
-const EditUserModal = ({
+export const DeveloperEditUserModal = ({
   isOpen,
   onClose,
   onSubmit,
@@ -66,5 +65,3 @@ const EditUserModal = ({
     </Modal>
   );
 };
-
-export default EditUserModal;

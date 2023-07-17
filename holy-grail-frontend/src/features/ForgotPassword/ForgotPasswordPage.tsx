@@ -1,12 +1,11 @@
 import { FormEvent, useState } from 'react';
+import { sendResetPasswordEmail } from '@api/auth';
+import { AccountForm, AlertToast, AlertProps } from '@components';
 import { Box, Button, FormControl, FormLabel, Input, Link, VStack } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-import { AccountForm } from '../../components/AccountForm/AccountForm';
 import '../SignIn/login.css';
-import { sendResetPasswordEmail } from '@api/auth';
-import { AlertToast, AlertProps } from '../../components/AlertToast/AlertToast';
 
-const ForgotPasswordPage = () => {
+export const ForgotPasswordPage = () => {
   const [email, setEmail] = useState('');
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
   const [openAlert, setOpenAlert] = useState<boolean>(false);
@@ -65,5 +64,3 @@ const ForgotPasswordPage = () => {
     </section>
   );
 };
-
-export default ForgotPasswordPage;

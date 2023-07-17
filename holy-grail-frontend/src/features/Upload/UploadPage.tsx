@@ -3,13 +3,13 @@ import { Button, Input, Text } from '@chakra-ui/react';
 import { Combobox } from '../Library/Combobox';
 import { CategoryType, DocumentType, fetchData, SubjectType } from '@api/library';
 import { createNote } from '@api/actions';
-import AuthContext from '../../providers/AuthProvider';
+import { AlertToast, AlertProps } from '@components';
+import { AuthContext } from '../../providers/AuthProvider';
 import { useNavigate } from 'react-router-dom';
-import MediaQueryContext from '../../providers/MediaQueryProvider';
-import { AlertToast, AlertProps } from '../../components/AlertToast/AlertToast';
+import { MediaQueryContext } from '../../providers/MediaQueryProvider';
 import './upload.css';
 
-const UploadPage = () => {
+export const UploadPage = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [subjects, setSubjects] = useState<SubjectType[]>([]);
@@ -207,5 +207,3 @@ const UploadPage = () => {
     </section>
   );
 };
-
-export default UploadPage;

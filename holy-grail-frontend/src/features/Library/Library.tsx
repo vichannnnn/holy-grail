@@ -1,7 +1,7 @@
-import NotesApplication from './NotesApplication';
+import { NotesApplication } from './NotesApplication';
 import { useNavigate } from 'react-router-dom';
 
-const Library = () => {
+export const Library = () => {
   const navigate = useNavigate();
 
   return (
@@ -20,5 +20,3 @@ const Library = () => {
     </section>
   );
 };
-
-export default Library;

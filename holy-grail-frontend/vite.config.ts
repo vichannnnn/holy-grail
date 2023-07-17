@@ -11,6 +11,9 @@ export default ({ mode }) => {
         '@api/actions': path.resolve(__dirname, 'src/api/utils/actions/index.ts'),
         '@api/library': path.resolve(__dirname, 'src/api/utils/library/index.ts'),
         '@apiClient': path.resolve(__dirname, 'src/api/apiClient.ts'),
+        '@components': path.resolve(__dirname, 'src/components/'),
+        '@features': path.resolve(__dirname, 'src/features/'),
+        '@providers': path.resolve(__dirname, 'src/providers/'),
       },
     },
   });

@@ -4,7 +4,7 @@ import { resetPassword } from '@api/auth';
 import { Link } from '@chakra-ui/react';
 import '../SignIn/login.css';
 
-const ResetPasswordPage = () => {
+export const ResetPasswordPage = () => {
   const [token, setToken] = useState<string | null>(null);
   const [resetStatus, setResetStatus] = useState<string | null>(null);
   const [isFailed, setFailed] = useState<boolean>(false);
@@ -59,5 +59,3 @@ const ResetPasswordPage = () => {
     </section>
   );
 };
-
-export default ResetPasswordPage;

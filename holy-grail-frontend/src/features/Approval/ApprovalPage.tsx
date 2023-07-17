@@ -1,7 +1,7 @@
-import ApprovalTable from './ApprovalTable';
-import ApprovalScreen from './ApprovalScreen';
+import { ApprovalTable } from './ApprovalTable';
+import { ApprovalScreen } from './ApprovalScreen';
 
-const ApprovalPage = () => {
+export const ApprovalPage = () => {
   return (
     <section className='admin section container'>
       <ApprovalScreen />
@@ -9,5 +9,3 @@ const ApprovalPage = () => {
     </section>
   );
 };
-
-export default ApprovalPage;

@@ -20,7 +20,10 @@
       "@apiClient": ["src/api/apiClient.ts"],
       "@api/auth": ["src/api/utils/auth/index.ts"],
       "@api/actions": ["src/api/utils/actions/index.ts"],
-      "@api/library": ["src/api/utils/library/index.ts"]
+      "@api/library": ["src/api/utils/library/index.ts"],
+      "@components": ["src/components/"],
+      "@features": ["src/features/"],
+      "@providers": ["src/providers/"]
     }
   },
   "include": ["src"],

@@ -15,7 +15,7 @@ interface AddModalProps {
   onSubmit: (newName: string) => void;
 }
 
-const AddModal = ({ isOpen, onClose, onSubmit }: AddModalProps) => {
+export const AddModal = ({ isOpen, onClose, onSubmit }: AddModalProps) => {
   const [name, setName] = useState('');
 
   const handleSubmit = () => {
@@ -46,5 +46,3 @@ const AddModal = ({ isOpen, onClose, onSubmit }: AddModalProps) => {
     </Dialog>
   );
 };
-
-export default AddModal;

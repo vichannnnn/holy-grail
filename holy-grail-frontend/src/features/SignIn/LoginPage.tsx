@@ -1,12 +1,11 @@
 import { FormEvent, useContext, useState } from 'react';
 import { Box, Button, FormControl, FormLabel, Input, Link, VStack } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-import AuthContext from '../../providers/AuthProvider';
-import { AccountForm } from '../../components/AccountForm/AccountForm';
+import { AccountForm, AlertToast, AlertProps } from '@components';
+import { AuthContext } from '../../providers/AuthProvider';
 import './login.css';
-import { AlertToast, AlertProps } from '../../components/AlertToast/AlertToast';
 
-const LoginPage = () => {
+export const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [openAlert, setOpenAlert] = useState<boolean>(false);
@@ -102,5 +101,3 @@ const LoginPage = () => {
     </section>
   );
 };
-
-export default LoginPage;

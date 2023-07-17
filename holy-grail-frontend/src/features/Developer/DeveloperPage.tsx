@@ -1,8 +1,8 @@
-import DeveloperScreen from './DeveloperScreen';
+import { DeveloperScreen } from './DeveloperScreen';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import './developer.css';
 
-const DeveloperPage = () => {
+export const DeveloperPage = () => {
   const muiTheme = createTheme();
   return (
     <section className='developer section container'>
@@ -12,5 +12,3 @@ const DeveloperPage = () => {
     </section>
   );
 };
-
-export default DeveloperPage;

@@ -1,8 +1,8 @@
 import { useContext } from 'react';
-import AuthContext from '../../providers/AuthProvider';
+import { AuthContext } from '../../providers/AuthProvider';
 import './landing.css';
 
-const Hero = () => {
+export const Hero = () => {
   const { user, logout } = useContext(AuthContext);
 
   return (
@@ -23,5 +23,3 @@ const Hero = () => {
     </section>
   );
 };
-
-export default Hero;

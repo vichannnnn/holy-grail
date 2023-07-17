@@ -1,9 +1,9 @@
 import { Box, Grid } from '@chakra-ui/react';
-import { Text } from '../../components/Text/Text';
+import { Text } from '@components';
 import { FeatureCard } from './FeatureCard';
 import GrailLogo from '../../assets/holy-grail.svg';
 
-const Features = () => {
+export const Features = () => {
   return (
     <Box id='features' display='flex' justifyContent='center' w='90%' ml='auto' mr='auto'>
       <Grid
@@ -50,5 +50,3 @@ const Features = () => {
     </Box>
   );
 };
-
-export default Features;

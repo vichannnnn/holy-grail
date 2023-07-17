@@ -21,7 +21,7 @@ const modalStyle = {
   p: 4,
 };
 
-const DeleteAlert = ({ isOpen, onClose, onConfirm }: DeleteAlertProps) => {
+export const DeleteAlert = ({ isOpen, onClose, onConfirm }: DeleteAlertProps) => {
   const cancelRef = useRef<HTMLButtonElement | null>(null);
   const muiTheme = createTheme();
   return (
@@ -45,5 +45,3 @@ const DeleteAlert = ({ isOpen, onClose, onConfirm }: DeleteAlertProps) => {
     </ThemeProvider>
   );
 };
-
-export default DeleteAlert;

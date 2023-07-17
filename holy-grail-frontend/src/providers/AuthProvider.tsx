@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from 'react';
 import { apiClient } from '@apiClient';
-import { isTokenExpired } from '../api/utils/auth/CheckToken';
+import { isTokenExpired } from '@api/auth';
 
 export interface User {
   user_id: number;
@@ -17,7 +17,7 @@ interface AuthContextType {
   updateUser: (updatedUser: User) => void;
 }
 
-const AuthContext = createContext<AuthContextType>({
+export const AuthContext = createContext<AuthContextType>({
   user: null,
   login: async () => {},
   logout: () => {},
@@ -83,5 +83,3 @@ export const AuthProvider: React.FC<{
     </AuthContext.Provider>
   );
 };
-
-export default AuthContext;

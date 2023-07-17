@@ -9,16 +9,13 @@ import {
   SubjectType,
 } from '@api/library';
 import { approveNote, deleteNote, updateNote } from '@api/actions';
-import DeleteAlert from './DeleteAlert';
-import EditModal from './EditModal';
-import NotesTable from '../../components/NotesTable/NotesTable';
-import AuthContext from '../../providers/AuthProvider';
-import AdminApproveIcon from '../../components/AdminApproveIcon/AdminApproveIcon';
-import AdminDeleteIcon from '../../components/AdminDeleteIcon/AdminDeleteIcon';
-import AdminEditIcon from '../../components/AdminEditIcon/AdminEditIcon';
 import { Box } from '@mui/material';
+import { AdminApproveIcon, AdminDeleteIcon, AdminEditIcon, NotesTable } from '@components';
+import { DeleteAlert } from './DeleteAlert';
+import { ApprovalEditModal } from './ApprovalEditModal';
+import { AuthContext } from '../../providers/AuthProvider';
 
-const ApprovalTable = () => {
+export const ApprovalTable = () => {
   const [notes, setNotes] = useState<PaginatedNotes>({
     items: [],
     page: 0,
@@ -159,7 +156,7 @@ const ApprovalTable = () => {
         }}
       />
 
-      <EditModal
+      <ApprovalEditModal
         isOpen={isEditOpen}
         onClose={() => setIsEditOpen(false)}
         onConfirm={(
@@ -192,5 +189,3 @@ const ApprovalTable = () => {
     </>
   );
 };
-
-export default ApprovalTable;
