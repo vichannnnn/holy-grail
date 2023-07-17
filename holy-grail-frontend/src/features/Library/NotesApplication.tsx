@@ -50,10 +50,6 @@ export const NotesApplication = () => {
       setSubjects(subjects);
       setTypes(types);
     });
-
-    fetchApprovedNotes({}).then((fetchApprovedNotes) => {
-      setNotes(fetchApprovedNotes);
-    });
   }, []);
 
   const filterNotes = useCallback(() => {
@@ -76,8 +72,10 @@ export const NotesApplication = () => {
   }, [category, subject, type, keyword, pageInfo.page, pageInfo.size, categories, subjects, types]);
 
   useEffect(() => {
-    filterNotes();
-  }, [filterNotes]);
+    if (categories.length && subjects.length && types.length) {
+      filterNotes();
+    }
+  }, [filterNotes, category, subject, type, keyword, pageInfo.page, pageInfo.size]);
 
   const handlePageChange = (newPage: number) => {
     if (newPage >= 1 && newPage <= Math.ceil(pageInfo.total / pageInfo.size)) {
@@ -114,7 +112,6 @@ export const NotesApplication = () => {
     setKeyword(String(newValue));
     setPageInfo({ ...pageInfo, page: 1 });
   };
-  console.log(keyword);
 
   return (
     <section className='materials container'>

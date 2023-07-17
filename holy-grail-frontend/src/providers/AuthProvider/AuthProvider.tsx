@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useEffect, useState, ReactNode } from 'react';
 import { apiClient } from '@apiClient';
 import { isTokenExpired } from '@api/auth';
 
@@ -17,6 +17,10 @@ interface AuthContextType {
   updateUser: (updatedUser: User) => void;
 }
 
+interface AuthProviderProps {
+  children: ReactNode;
+}
+
 export const AuthContext = createContext<AuthContextType>({
   user: null,
   login: async () => {},
@@ -24,9 +28,7 @@ export const AuthContext = createContext<AuthContextType>({
   updateUser: () => {},
 });
 
-export const AuthProvider: React.FC<{
-  children: React.ReactNode;
-}> = ({ children }) => {
+export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
