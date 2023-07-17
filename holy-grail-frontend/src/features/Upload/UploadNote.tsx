@@ -119,8 +119,8 @@ export const UploadNote = ({
           <Tooltip
             title={
               <ul>
-                {errors?.map((error) => (
-                  <li>
+                {errors?.map((error, idx) => (
+                  <li key={idx}>
                     <Typography>• {error}</Typography>
                   </li>
                 ))}

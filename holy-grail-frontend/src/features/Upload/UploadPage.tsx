@@ -52,19 +52,18 @@ export const UploadPage = () => {
 
   const muiTheme = createTheme();
 
-  if (!user) {
-    const alertContentRedirect: AlertProps = {
-      title: 'Please login.',
-      description: 'You need to be logged in to upload documents.',
-      severity: 'error',
-    };
-    navigate('/login', { state: { alertContent: alertContentRedirect } });
-  }
-
   useEffect(() => {
     fetchData().then((options) => {
       setOptions(options as OptionsProps);
     });
+    if (!user) {
+      const alertContentRedirect: AlertProps = {
+        title: 'Please login.',
+        description: 'You need to be logged in to upload documents.',
+        severity: 'error',
+      };
+      navigate('/login', { state: { alertContent: alertContentRedirect } });
+    }
   }, []);
 
   const handleSubmit = async () => {
@@ -125,6 +124,14 @@ export const UploadPage = () => {
           severity: 'error',
         } as AlertProps;
       }
+      if (responseStatus === 401) {
+        setSubmitLoading(false);
+        return {
+          title: 'Error',
+          description: 'Please login to upload documents.',
+          severity: 'error',
+        } as AlertProps;
+      }
       if (responseStatus === 500) {
         setSubmitLoading(false);
         return {
@@ -145,6 +152,9 @@ export const UploadPage = () => {
 
     if (response?.status === 200) {
       navigate('/', { state: { alertContent: statusAlertContent() } });
+    }
+    if (response?.status === 401) {
+      navigate('/login', { state: { alertContent: statusAlertContent() } });
     }
     setAlertContent(statusAlertContent());
     setOpenAlert(true);
