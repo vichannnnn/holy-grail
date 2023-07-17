@@ -7,6 +7,7 @@ import { AlertToast, AlertProps } from '@components';
 import UploadNote, { NoteInfoProps } from './UploadNote';
 import './upload.css';
 import { Button, ThemeProvider, createTheme } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 import { DeleteAlert } from '@features';
 import FileSelect from './FileSelect';
 import { AxiosResponse } from 'axios';
@@ -47,6 +48,8 @@ export const UploadPage = () => {
     string[]
   > | null>(null);
 
+  const [submitLoading, setSubmitLoading] = useState<boolean>(false);
+
   const muiTheme = createTheme();
 
   if (!user) {
@@ -65,7 +68,11 @@ export const UploadPage = () => {
   }, []);
 
   const handleSubmit = async () => {
-    if (!notes || !selectedFiles) return;
+    setSubmitLoading(true);
+    if (!notes || !selectedFiles) {
+      setSubmitLoading(false);
+      return;
+    }
     const response: AxiosResponse | undefined = await createNote(
       Object.values(selectedFiles),
       Object.values(notes),
@@ -92,7 +99,7 @@ export const UploadPage = () => {
             'Please ensure your document name is between 1 and 100 characters long.',
           INVALID_FILE_TYPE: 'Please ensure all files uploaded are pdf files.',
         };
-        let indexedErrors: Record<number, string[]> = {};
+        const indexedErrors: Record<number, string[]> = {};
         for (const [err, val] of Object.entries<number[]>(responseBody)) {
           if (val.length === 0) continue;
 
@@ -105,14 +112,13 @@ export const UploadPage = () => {
             }
           });
         }
-        let keyedErrors: Record<string, string[]> = {};
+        const keyedErrors: Record<string, string[]> = {};
         for (const [errIndex, err] of Object.entries(indexedErrors)) {
           keyedErrors[Object.keys(notes)[Number(errIndex)]] = err;
         }
-        // map each indexed error to its key
-        console.log(keyedErrors);
-        setServerValidationErrors(keyedErrors);
 
+        setServerValidationErrors(keyedErrors);
+        setSubmitLoading(false);
         return {
           title: 'Error',
           description: 'You have errors in your submission. Please fix them and try again.',
@@ -120,6 +126,7 @@ export const UploadPage = () => {
         } as AlertProps;
       }
       if (responseStatus === 500) {
+        setSubmitLoading(false);
         return {
           title: 'Internal Server Error',
           description: 'Please try again later.',
@@ -230,13 +237,16 @@ export const UploadPage = () => {
             : null}
           <FileSelect handleAddNotes={handleAddNotes} />
 
-          <Button
+          <LoadingButton
+            loading={submitLoading}
+            loadingIndicator='Submitting...'
             sx={{
               borderColor: 'transparent',
               backgroundColor: 'rgb(237, 242, 247)',
               textTransform: 'capitalize',
               color: 'black',
               fontWeight: 'bold',
+              width: '10%',
               aspectRatio: 1.618,
               borderRadius: '10%',
             }}
@@ -244,7 +254,7 @@ export const UploadPage = () => {
             disabled={handleDisableSumbit()}
           >
             Submit
-          </Button>
+          </LoadingButton>
         </div>
         <DeleteAlert
           isOpen={openDeleteAlert}

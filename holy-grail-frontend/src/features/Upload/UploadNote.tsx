@@ -59,6 +59,7 @@ export const UploadNote = ({
   };
 
   const [expanded, setExpanded] = useState<boolean>(true);
+  const [serverValidationError, setServerValidationError] = useState<boolean>(false);
 
   const { user } = useContext(AuthContext);
   const { isDesktop } = useContext(MediaQueryContext);
@@ -79,7 +80,11 @@ export const UploadNote = ({
       },
     },
   });
-
+  useEffect(() => {
+    if (errors) {
+      setServerValidationError(true);
+    }
+  }, [errors]);
   useEffect(() => {
     const valid = Object.values(validChecks).every((value) => Boolean(value));
     setValidInput(valid);
@@ -90,6 +95,7 @@ export const UploadNote = ({
       name: documentName,
       valid: valid,
     });
+    setServerValidationError(false);
   }, [category, subject, type, documentName]);
 
   const gridStyles = {
@@ -111,20 +117,30 @@ export const UploadNote = ({
       >
         <div style={{ position: 'absolute', display: errors ? '' : 'none' }}>
           <Tooltip
-            title={errors?.map((err) => (
-              <Typography>- {err}</Typography>
-            ))}
+            title={
+              <ul>
+                {errors?.map((error) => (
+                  <li>
+                    <Typography>• {error}</Typography>
+                  </li>
+                ))}
+              </ul>
+            }
             placement='bottom'
             arrow
           >
             <ErrorIcon color='error' />
           </Tooltip>
         </div>
-        <div style={{ width: '50vw' }}>
+        <div style={{ width: '60vw' }}>
           <Grid
             container
             sx={{
-              border: validInput ? '1px solid green' : '1px solid black',
+              border: serverValidationError
+                ? '1px solid red'
+                : validInput
+                ? '1px solid green'
+                : '1px solid black',
               borderRadius: '10px',
             }}
           >

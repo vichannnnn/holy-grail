@@ -90,8 +90,8 @@ export const NotesTable = ({
                   const data = await fetchData({ category_id: categoryData.id });
                   setSubjectsData(
                     data.subjects.map((subject: SubjectType) => ({
-                      value: subject.id,
-                      label: subject.name,
+                      id: subject.id,
+                      name: subject.name,
                     })),
                   );
                 } else {
