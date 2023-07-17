@@ -27,10 +27,11 @@ export interface ComboboxProps
   label: string;
   value: number | '';
   onChange: (newValue: number | '') => void;
+  error?: boolean;
   options: CommonType[];
 }
 
-export const Combobox = ({ label, value, onChange, options, ...props }: ComboboxProps) => {
+export const Combobox = ({ label, value, onChange, error, options, ...props }: ComboboxProps) => {
   const muiTheme = createTheme();
 
   return (
@@ -45,7 +46,7 @@ export const Combobox = ({ label, value, onChange, options, ...props }: Combobox
             onChange(newValue.id);
           }
         }}
-        renderInput={(params) => <TextField {...params} label={label} />}
+        renderInput={(params) => <TextField {...params} label={label} error={error} />}
         isOptionEqualToValue={(option: string | CommonType, value: string | CommonType) =>
           typeof option !== 'string' && typeof value !== 'string' ? option.id === value.id : false
         }

@@ -1,38 +1,60 @@
-import { useContext, useEffect, useRef, useState, ChangeEvent, FormEvent } from 'react';
-import { Button, Input, Text } from '@chakra-ui/react';
-import { CategoryType, DocumentType, fetchData, SubjectType } from '@api/library';
-import { createNote } from '@api/actions';
-import { AlertToast, AlertProps, Combobox } from '@components';
-import { AuthContext, MediaQueryContext } from '@providers';
+import { useState, useEffect, useContext, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { fetchData, CategoryType, SubjectType, DocumentType } from '@api/library';
+import { createNote } from '@api/actions';
+import { AlertToast, AlertProps } from '@components';
+import { DeleteAlert } from '@features';
+import { AuthContext } from '@providers';
+import { ThemeProvider, createTheme } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
+import { UploadNote, NoteInfoProps } from './UploadNote';
+import { FileSelect } from './FileSelect';
+import { AxiosResponse } from 'axios';
 import './upload.css';
 
+interface OptionsProps {
+  categories: CategoryType[];
+  subjects: SubjectType[];
+  types: DocumentType[];
+}
+
+export type { OptionsProps, SelectedFilesProps };
+
+interface NotesProps {
+  [key: string]: NoteInfoProps;
+}
+
+interface SelectedFilesProps {
+  [key: string]: [File, string];
+}
+
 export const UploadPage = () => {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [categories, setCategories] = useState<CategoryType[]>([]);
-  const [subjects, setSubjects] = useState<SubjectType[]>([]);
-  const [types, setTypes] = useState<DocumentType[]>([]);
-  const [documentName, setDocumentName] = useState<string | null>(null);
-
-  const [category, setCategory] = useState<number | ''>(0);
-  const [subject, setSubject] = useState<number | ''>(0);
-  const [type, setType] = useState<number | ''>(0);
-
-  const [fileName, setFileName] = useState<string | null>(null);
-  const inputFileRef = useRef<HTMLInputElement | null>(null);
-
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
 
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
-  const { isDesktop } = useContext(MediaQueryContext);
+  const [options, setOptions] = useState<OptionsProps | null>(null);
+
+  const key = useRef<number>(0);
+  const [selectedFiles, setSelectedFiles] = useState<SelectedFilesProps | null>(null);
+  const [notes, setNotes] = useState<NotesProps | null>(null);
+
+  const [openDeleteAlert, setOpenDeleteAlert] = useState<boolean>(false);
+  const [deleteAlertKey, setDeleteAlertKey] = useState<string | null>(null);
+
+  const [serverValidationErrors, setServerValidationErrors] = useState<Record<
+    string,
+    string[]
+  > | null>(null);
+
+  const [submitLoading, setSubmitLoading] = useState<boolean>(false);
+
+  const muiTheme = createTheme();
 
   useEffect(() => {
-    fetchData().then(({ categories, subjects, types }) => {
-      setCategories(categories);
-      setSubjects(subjects);
-      setTypes(types);
+    fetchData().then((options) => {
+      setOptions(options as OptionsProps);
     });
     if (!user) {
       const alertContentRedirect: AlertProps = {
@@ -42,166 +64,220 @@ export const UploadPage = () => {
       };
       navigate('/login', { state: { alertContent: alertContentRedirect } });
     }
-  }, [navigate, user]);
+  }, []);
 
-  const handleButtonClick = () => {
-    if (inputFileRef.current) {
-      inputFileRef.current.click();
+  const handleSubmit = async () => {
+    setSubmitLoading(true);
+    if (!notes || !selectedFiles) {
+      setSubmitLoading(false);
+      return;
     }
-  };
+    const response: AxiosResponse | undefined = await createNote(
+      Object.values(selectedFiles),
+      Object.values(notes),
+    );
 
-  const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setDocumentName(event.target.value);
-  };
+    const generalisedAlertError: AlertProps = {
+      title: 'Error',
+      description: 'Something went wrong.',
+      severity: 'error',
+    };
 
-  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      setSelectedFile(event.target.files[0]);
-      setFileName(event.target.files[0].name);
+    const statusAlertContent: () => AlertProps = () => {
+      if (response === undefined) return generalisedAlertError;
+
+      const responseStatus = response?.status;
+      const responseBody = response?.data['detail'];
+      if (responseStatus === 400) {
+        if (responseBody === undefined) return generalisedAlertError;
+        const friendlyErrorText: Record<string, string> = {
+          DOCUMENT_NAME_DUPLICATED: 'You are uploading multiple documents with the same name.',
+          DOCUMENT_NAME_IN_DB: 'Document name already exists.',
+          SCHEMA_VALIDATION_ERROR:
+            'Please ensure your document name is between 1 and 100 characters long.',
+          INVALID_FILE_TYPE: 'Please ensure all files uploaded are pdf files.',
+        };
+        const indexedErrors: Record<number, string[]> = {};
+        for (const [err, val] of Object.entries<number[]>(responseBody)) {
+          if (val.length === 0) continue;
+
+          // if there is an error
+          val.forEach((errIndex: number) => {
+            if (indexedErrors[errIndex] === undefined) {
+              indexedErrors[errIndex] = [friendlyErrorText[err]];
+            } else {
+              indexedErrors[errIndex].push(friendlyErrorText[err]);
+            }
+          });
+        }
+        const keyedErrors: Record<string, string[]> = {};
+        for (const [errIndex, err] of Object.entries(indexedErrors)) {
+          keyedErrors[Object.keys(notes)[Number(errIndex)]] = err;
+        }
+
+        setServerValidationErrors(keyedErrors);
+
+        return {
+          title: 'Error',
+          description: 'You have errors in your submission. Please fix them and try again.',
+          severity: 'error',
+        } as AlertProps;
+      } else if (responseStatus === 401) {
+        return {
+          title: 'Error',
+          description: 'Please login to upload documents.',
+          severity: 'error',
+        } as AlertProps;
+      } else if (responseStatus === 500) {
+        return {
+          title: 'Internal Server Error',
+          description: 'Please try again later.',
+          severity: 'error',
+        } as AlertProps;
+      } else if (responseStatus === 200) {
+        return {
+          title: 'Success',
+          description: 'Successfully sent for review and will be shown in library once uploaded.',
+          severity: 'success',
+        } as AlertProps;
+      } else {
+        return generalisedAlertError;
+      }
+    };
+    setSubmitLoading(false);
+    if (response?.status === 200) {
+      navigate('/', { state: { alertContent: statusAlertContent() } });
     }
+    if (response?.status === 401) {
+      navigate('/login', { state: { alertContent: statusAlertContent() } });
+    }
+    setAlertContent(statusAlertContent());
+    setOpenAlert(true);
   };
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleDisableSumbit = () => {
+    if (!notes) return true;
 
-    if (!selectedFile || category === '' || subject === '' || type === '') {
+    return !Object.values(notes)
+      .map((note) => note.valid)
+      .every((valid) => valid);
+  };
+
+  const handleAddNotes = (eventFiles: FileList) => {
+    const files = Array.from(eventFiles);
+
+    if (files.some((file) => file.type !== 'application/pdf')) {
       setAlertContent({
         title: 'Error',
-        description: 'You need to select everything and upload at least one file.',
+        description: 'Please ensure all files uploaded are pdf files.',
+        severity: 'error',
+      });
+      setOpenAlert(true);
+      return;
+    }
+    if (files.length + Object.values(selectedFiles || {}).length >= 10) {
+      setAlertContent({
+        title: 'Error',
+        description: 'You can only upload up to 10 documents at a time.',
         severity: 'error',
       });
       setOpenAlert(true);
       return;
     }
 
-    if (selectedFile) {
-      const responseStatus = await createNote(
-        selectedFile,
-        category,
-        subject,
-        type,
-        documentName || '',
-      );
+    let newKey = key.current;
+    const newSelectedFiles = { ...selectedFiles };
+    const newNotes = { ...notes };
 
-      let alertContentRedirect: AlertProps; // Initialize the alertContentRedirect object outside the conditions
+    files.forEach((file: File) => {
+      newKey += 1;
+      newSelectedFiles[newKey] = [file, file.name];
+      newNotes[newKey] = { category: 0, subject: 0, type: 0, name: '', valid: false };
+    });
+    key.current = newKey;
 
-      if (responseStatus == 200) {
-        alertContentRedirect = {
-          title: 'Success',
-          description: 'Successfully sent for review and will be shown in library once uploaded.',
-          severity: 'success',
-        };
-        setAlertContent(alertContentRedirect);
-        setOpenAlert(true);
-        navigate('/', { state: { alertContent: alertContentRedirect } });
-      } else if (responseStatus === 429) {
-        alertContentRedirect = {
-          title: 'Rate limit exceeded',
-          description: "You're trying too fast! Please try again in 1 minutes.",
-          severity: 'error',
-        };
-      } else if (responseStatus === 401) {
-        alertContentRedirect = {
-          title: 'Account not verified',
-          description: 'Please verify your account with the verification mail sent to your email.',
-          severity: 'error',
-        };
-      } else if (responseStatus === 409) {
-        alertContentRedirect = {
-          title: 'Notes upload unsuccessful',
-          description:
-            "A name of the note that you're trying to upload already exists in the repository.",
-          severity: 'error',
-        };
-      } else {
-        alertContentRedirect = {
-          title: 'Error',
-          description: 'Something went wrong. Please contact an administrator!',
-          severity: 'error',
-        };
-      }
-      setAlertContent(alertContentRedirect);
-      setOpenAlert(true);
+    setSelectedFiles(newSelectedFiles);
+    setNotes(newNotes);
+  };
+
+  const handleDeleteNote = (key: string | null) => {
+    if (key === null) {
+      setOpenDeleteAlert(false);
+      return;
     }
+    const newNotes = { ...notes };
+    const newSelectedFiles = { ...selectedFiles };
+    delete newNotes[Number(key)];
+    delete newSelectedFiles[Number(key)];
+
+    setNotes(newNotes);
+    setSelectedFiles(newSelectedFiles);
+    setOpenDeleteAlert(false);
+    setDeleteAlertKey(null);
   };
 
   return (
     <section className='upload section container'>
-      <form onSubmit={handleSubmit}>
-        <div className='section__title'>Upload Materials</div>
-        <div className='section__subtitle'>
-          Upload your materials here! All submitted materials will be reviewed before being
-          published to the Holy Grail.
-        </div>
-        <div className='upload__file'>
-          <Button onClick={handleButtonClick} colorScheme='blue'>
-            Upload File
-          </Button>
-          <Text>{fileName || 'No file chosen'}</Text>
-        </div>
-        <div className='upload__filter grid'>
-          <Combobox
-            label='Category'
-            value={category !== '' ? Number(category) : ''}
-            style={{ width: '90%' }}
-            onChange={(newValue) => setCategory(Number(newValue))}
-            options={categories.map((category) => ({
-              id: category.id,
-              name: category.name,
-            }))}
-          />
+      <div className='section__title'>Upload Materials</div>
+      <div className='section__subtitle'>
+        Upload your materials here! All submitted materials will be reviewed before being published
+        to the Holy Grail.
+      </div>
+      <ThemeProvider theme={muiTheme}>
+        <div className='upload__multiContainer'>
+          {notes
+            ? Object.keys(notes).map((key) => (
+                <UploadNote
+                  fileName={selectedFiles ? selectedFiles[key][1] : ''}
+                  key={key}
+                  options={options}
+                  saveNoteUpdates={(note) => setNotes({ ...notes, [key]: note })}
+                  deleteNote={() => {
+                    setOpenDeleteAlert(true);
+                    setDeleteAlertKey(key);
+                  }}
+                  errors={serverValidationErrors ? serverValidationErrors[key] : undefined}
+                />
+              ))
+            : null}
+          <FileSelect handleAddNotes={handleAddNotes} />
 
-          <Combobox
-            label='Subject'
-            value={subject !== '' ? Number(subject) : ''}
-            style={{ width: '90%' }}
-            onChange={(newValue) => setSubject(Number(newValue))}
-            options={subjects.map((subject) => ({
-              id: subject.id,
-              name: subject.name,
-            }))}
-          />
-
-          <Combobox
-            label='Type'
-            value={type !== '' ? Number(type) : ''}
-            style={{ width: '90%' }}
-            onChange={(newValue) => setType(Number(newValue))}
-            options={types.map((type) => ({
-              id: type.id,
-              name: type.name,
-            }))}
-          />
+          <LoadingButton
+            loading={submitLoading}
+            loadingIndicator='Submitting...'
+            sx={{
+              borderColor: 'transparent',
+              backgroundColor: 'rgb(237, 242, 247)',
+              textTransform: 'capitalize',
+              color: 'black',
+              fontWeight: 'bold',
+              width: '10%',
+              aspectRatio: 1.618,
+              borderRadius: '10%',
+            }}
+            onClick={handleSubmit}
+            disabled={handleDisableSumbit()}
+          >
+            Submit
+          </LoadingButton>
         </div>
-        <div className='upload__docName'>
-          <Input
-            value={documentName || ''}
-            onChange={handleNameChange}
-            placeholder='Enter document name'
-            required={true}
-            minLength={4}
-            maxLength={100}
-          />
+        <DeleteAlert
+          isOpen={openDeleteAlert}
+          onClose={() => {
+            setOpenDeleteAlert(false);
+            setDeleteAlertKey(null);
+          }}
+          onConfirm={() => {
+            handleDeleteNote(deleteAlertKey);
+          }}
+        />
 
-          <input
-            ref={inputFileRef}
-            width={isDesktop ? '30%' : '90%'}
-            type='file'
-            accept='application/pdf'
-            // , text/plain, application/vnd.openxmlformats-officedocument.wordprocessingml.document
-            onChange={handleFileChange}
-            style={{ display: 'none' }}
-          />
-        </div>
-        <Button colorScheme='blue' type='submit'>
-          Submit
-        </Button>
-      </form>
-      <AlertToast
-        openAlert={openAlert}
-        onClose={() => setOpenAlert(false)}
-        alertContent={alertContent}
-      />
+        <AlertToast
+          openAlert={openAlert}
+          onClose={() => setOpenAlert(false)}
+          alertContent={alertContent}
+        />
+      </ThemeProvider>
     </section>
   );
 };

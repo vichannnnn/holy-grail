@@ -131,8 +131,9 @@ export const ApprovalEditModal = ({
           <Tooltip
             title={
               <Box>
-                {Object.entries(validityChecks()).map(([text, value]) => (
+                {Object.entries(validityChecks()).map(([text, value], idx) => (
                   <Typography
+                    key={idx}
                     sx={{
                       color: value ? muiTheme.palette.success.light : muiTheme.palette.error.light,
                       fontSize: '0.8rem',
