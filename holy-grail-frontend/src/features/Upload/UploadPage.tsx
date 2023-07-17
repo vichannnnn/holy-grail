@@ -1,15 +1,15 @@
 import { useState, useEffect, useContext, useRef } from 'react';
 import { fetchData, CategoryType, SubjectType, DocumentType } from '@api/library';
-import { createNote } from '../../api/utils/actions/CreateNote';
+import { createNote } from '@api/actions';
 import { AuthContext } from '@providers';
 import { useNavigate } from 'react-router-dom';
 import { AlertToast, AlertProps } from '@components';
-import UploadNote, { NoteInfoProps } from './UploadNote';
+import { UploadNote, NoteInfoProps } from './UploadNote';
 import './upload.css';
-import { Button, ThemeProvider, createTheme } from '@mui/material';
+import { ThemeProvider, createTheme } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { DeleteAlert } from '@features';
-import FileSelect from './FileSelect';
+import { FileSelect } from './FileSelect';
 import { AxiosResponse } from 'axios';
 
 interface OptionsProps {

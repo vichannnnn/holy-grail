@@ -5,7 +5,7 @@ interface FileSelectProps {
   handleAddNotes: (files: FileList) => void;
 }
 
-const FileSelect = ({ handleAddNotes }: FileSelectProps) => {
+export const FileSelect = ({ handleAddNotes }: FileSelectProps) => {
   const dragDropRef = useRef<HTMLDivElement | null>(null);
   const fileRef = useRef<HTMLInputElement | null>(null);
 
@@ -95,5 +95,3 @@ const FileSelect = ({ handleAddNotes }: FileSelectProps) => {
     </div>
   );
 };
-
-export default FileSelect;

@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from 'react';
-import { OptionsProps } from './UploadPage';
+import { OptionsProps } from '@features';
 import { Combobox } from '@components';
 import {
   createTheme,
@@ -269,5 +269,3 @@ export const UploadNote = ({
     </ThemeProvider>
   );
 };
-
-export default UploadNote;
