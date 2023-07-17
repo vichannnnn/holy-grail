@@ -1,12 +1,10 @@
 import { useContext, useEffect, useRef, useState, ChangeEvent, FormEvent } from 'react';
 import { Button, Input, Text } from '@chakra-ui/react';
-import { Combobox } from '../Library/Combobox';
 import { CategoryType, DocumentType, fetchData, SubjectType } from '@api/library';
 import { createNote } from '@api/actions';
-import { AlertToast, AlertProps } from '@components';
-import { AuthContext } from '../../providers/AuthProvider/AuthProvider';
+import { AlertToast, AlertProps, Combobox } from '@components';
+import { AuthContext, MediaQueryContext } from '@providers';
 import { useNavigate } from 'react-router-dom';
-import { MediaQueryContext } from '../../providers/MediaQueryProvider/MediaQueryProvider';
 import './upload.css';
 
 export const UploadPage = () => {

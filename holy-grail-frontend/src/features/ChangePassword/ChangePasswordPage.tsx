@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Button, FormControl, FormLabel, Input, VStack } from '@chakra-ui/react';
-import { AccountForm, AlertToast, AlertProps } from '@components';
-import { updatePassword } from '@api/auth';
 import { useNavigate } from 'react-router-dom';
-import { PasswordValidationBox } from '../SignUp/PasswordValidationBox';
+import { Button, FormControl, FormLabel, Input, VStack } from '@chakra-ui/react';
+import { updatePassword } from '@api/auth';
+import { AccountForm, AlertToast, AlertProps } from '@components';
+import { PasswordValidationBox } from '../SignUp';
 import '../SignIn/login.css';
 
 export const ChangePasswordPage = () => {

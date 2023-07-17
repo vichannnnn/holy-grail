@@ -1,9 +1,15 @@
-import { Button, IconButton, Menu, MenuItem, Typography } from '@mui/material';
 import { useContext, useEffect, useState, MouseEvent } from 'react';
+import {
+  Button,
+  IconButton,
+  Menu,
+  MenuItem,
+  Typography,
+  createTheme,
+  ThemeProvider,
+} from '@mui/material';
 import DensityMediumIcon from '@mui/icons-material/DensityMedium';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { MediaQueryContext } from '../../providers/MediaQueryProvider/MediaQueryProvider';
-import { AuthContext } from '../../providers/AuthProvider/AuthProvider';
+import { AuthContext, MediaQueryContext } from '@providers';
 import { useNavigate } from 'react-router-dom';
 
 interface HeaderRightButtonProps {

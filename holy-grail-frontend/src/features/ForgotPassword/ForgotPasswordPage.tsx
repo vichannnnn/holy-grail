@@ -1,8 +1,8 @@
 import { FormEvent, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { sendResetPasswordEmail } from '@api/auth';
 import { AccountForm, AlertToast, AlertProps } from '@components';
 import { Box, Button, FormControl, FormLabel, Input, Link, VStack } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
 import '../SignIn/login.css';
 
 export const ForgotPasswordPage = () => {

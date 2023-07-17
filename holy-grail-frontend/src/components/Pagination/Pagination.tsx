@@ -1,8 +1,8 @@
+import { useContext } from 'react';
 import { Button, Stack, Typography } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { MediaQueryContext } from '@providers';
 import debounce from 'lodash/debounce';
-import { useContext } from 'react';
-import { MediaQueryContext } from '../../providers/MediaQueryProvider/MediaQueryProvider';
 
 interface PaginationProps {
   pageInfo: { page: number; size: number; total: number; pages: number };

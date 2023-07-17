@@ -20,7 +20,7 @@ import {
 } from '@features';
 import { AuthProvider, MediaQueryProvider } from '@providers';
 
-function App() {
+export function App() {
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
   const [openAlert, setOpenAlert] = useState<boolean>(false);
 
@@ -63,5 +63,3 @@ function App() {
     </MediaQueryProvider>
   );
 }
-
-export default App;

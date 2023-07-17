@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { Combobox, ComboboxProps } from '../Library/Combobox';
+import { Combobox, ComboboxProps } from '@components';
 import {
   Box,
   Button,
