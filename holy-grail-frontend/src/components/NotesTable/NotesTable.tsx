@@ -100,7 +100,7 @@ const NotesTable = ({
                 if (value) {
                   setIsCategorySelected(true);
                   const categoryData = await fetchCategory({ category_id: value });
-                  const data = await fetchData(categoryData.id);
+                  const data = await fetchData({ category_id: value });
                   setSubjectsData(
                     data.subjects.map((subject: SubjectType) => ({
                       id: subject.id,
