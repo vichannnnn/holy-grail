@@ -12,7 +12,7 @@ local_postgres_db_name := app
 ifeq ($(version),)
 	DC_COMMAND := docker compose
 else
-	DC_COMMAND := $(DC_COMMAND)
+	DC_COMMAND := docker compose -f docker-compose.$(version).yml
 endif
 
 -include ./Makefile.properties
