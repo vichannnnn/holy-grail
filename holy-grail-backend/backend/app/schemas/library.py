@@ -1,10 +1,9 @@
 from datetime import datetime
-from typing import Optional, Any
+from typing import Optional, Any, List
 from pydantic import constr
 from app.schemas.auth import UploaderSchema
 from app.schemas.base import CustomBaseModel as BaseModel
 from app.schemas.categories import DocumentTypeSchema, CategorySchema, SubjectSchema
-
 
 DocumentNameStr = constr(min_length=1, max_length=100)
 

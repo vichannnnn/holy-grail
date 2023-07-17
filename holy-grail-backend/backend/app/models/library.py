@@ -1,7 +1,7 @@
 import datetime
 import uuid
 import boto3
-from typing import TYPE_CHECKING, Optional, List
+from typing import TYPE_CHECKING, Optional, Union, Tuple, List
 from pydantic import ValidationError
 from fastapi import UploadFile, HTTPException
 from sqlalchemy import func, ForeignKey, select, update, delete
@@ -9,7 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Mapped, mapped_column, relationship, selectinload
 from sqlalchemy.sql.expression import text
 from sqlalchemy import exc as SQLAlchemyExceptions
-from starlette.datastructures import UploadFile as StarletteUploadFile
+from starlette.datastructures import UploadFile as StarletteUploadFile, FormData
 from app.crud.base import CRUD
 from app.db.base_class import Base
 from app.utils.exceptions import AppError
@@ -20,6 +20,24 @@ from app.schemas.library import NoteCreateSchema, NoteInsertSchema
 
 if TYPE_CHECKING:
     from app.models.categories import CategoryLevel, Subjects, DocumentTypes
+
+
+def form_data_note_parser(
+    form_data: FormData, idx: int
+) -> Union[bool, Tuple[NoteCreateSchema, int]]:
+    try:
+        note_ds = NoteCreateSchema(
+            file=form_data[f"notes[{idx}].file"],
+            category=int(form_data[f"notes[{idx}].category"]),
+            subject=int(form_data[f"notes[{idx}].subject"]),
+            type=int(form_data[f"notes[{idx}].type"]),
+            document_name=form_data[f"notes[{idx}].document_name"],
+        )
+
+    except ValidationError:
+        return False
+
+    return note_ds, idx
 
 
 class Library(Base, CRUD["Library"]):
@@ -93,13 +111,12 @@ class Library(Base, CRUD["Library"]):
     async def create_many(
         cls,
         session: AsyncSession,
-        form_data: List[NoteCreateSchema],
+        form_data: FormData,
         uploaded_by: int,
         s3_bucket: boto3.client,
     ):
-        # a list of valid NoteCreateSchema objects
-        notes = []
 
+        valid_notes: List[tuple[NoteCreateSchema, int]] = []
         failed_notes = {
             UploadError.DOCUMENT_NAME_DUPLICATED.name: [],
             UploadError.SCHEMA_VALIDATION_ERROR.name: [],
@@ -107,55 +124,73 @@ class Library(Base, CRUD["Library"]):
             UploadError.DOCUMENT_NAME_IN_DB.name: [],
         }
 
-        # check for unique document names in call
+        # Create an array to keep track of the indexes of the duplicate document names.
+        # Create a list of tuples where the first element is the document name and the second is the index.
+        track_duplicate_names = []
+
         document_names = [
-            form_data[f"notes[{i}].document_name"] for i in range(len(form_data) // 5)
+            (form_data[f"notes[{i}].document_name"], i)
+            for i in range(len(form_data) // 5)
         ]
 
-        def unique_indexes(l):
-            seen = set()
-            res = []
-            for i, n in enumerate(l):
-                if n not in seen:
-                    res.append(i)
-                    seen.add(n)
-            return res
+        # First check where we verify user input
+        # Go through the list and add the name of document names to 'duplicates', to verify error for subsequent docs.
+        # If the input passes this check, check for data structure validation and add into valid_notes, else pass error.
+        for name, idx in document_names:
+            if name not in track_duplicate_names:
+                track_duplicate_names.append(name)
 
-        duplicates = filter(
-            lambda x: x not in unique_indexes(document_names),
-            list(range(len(form_data) // 5)),
+                res, idx = form_data_note_parser(form_data, idx)
+                if res:
+                    valid_notes.append((res, idx))
+                else:
+                    failed_notes[UploadError.SCHEMA_VALIDATION_ERROR.name].append(idx)
+
+            else:
+                failed_notes[UploadError.DOCUMENT_NAME_DUPLICATED.name].append(idx)
+
+        # Second check where we verify the valid notes with reference to the DB
+        all_valid_notes_names = {idx[0].document_name: idx[1] for idx in valid_notes}
+        stmt = select(cls.document_name).where(
+            cls.document_name.in_(
+                [doc_name for doc_name in all_valid_notes_names.keys()]
+            )
         )
-        failed_notes[UploadError.DOCUMENT_NAME_DUPLICATED.name] = list(duplicates)
+        result = await session.execute(stmt)
 
-        for i in range(len(form_data) // 5):
+        idxes_to_remove = []
+        for conflicting_note_name in result.scalars().all():
+            idx = all_valid_notes_names[conflicting_note_name]
+            failed_notes[UploadError.DOCUMENT_NAME_IN_DB.name].append(idx)
+            idxes_to_remove.append(idx)
+
+        valid_notes: List[tuple[NoteCreateSchema, int]] = [
+            (elem[0], elem[1]) for elem in valid_notes if elem[1] not in idxes_to_remove
+        ]
+
+        # At this point, we have filtered out all the conflicting document names and validation errors.
+        # Now we are validating the file type of every non-filtered upload at this point
+
+        idxes_to_remove = []
+        for note, idx in valid_notes:
             try:
-                note = NoteCreateSchema(
-                    file=form_data[f"notes[{i}].file"],
-                    category=int(form_data[f"notes[{i}].category"]),
-                    subject=int(form_data[f"notes[{i}].subject"]),
-                    type=int(form_data[f"notes[{i}].type"]),
-                    document_name=form_data[f"notes[{i}].document_name"],
-                )
-
                 accepted_doc_type_extensions[note.file.content_type]
 
-                stmt = select(cls).where(cls.document_name == note.document_name)
-                result = await session.execute(stmt)
-                if result.scalar():
-                    failed_notes[UploadError.DOCUMENT_NAME_IN_DB.name].append(i)
-                    continue
-                notes.append(note)
-            except ValidationError:
-                failed_notes[UploadError.SCHEMA_VALIDATION_ERROR.name].append(i)
             except KeyError:
-                failed_notes[UploadError.INVALID_FILE_TYPE.name].append(i)
+                failed_notes[UploadError.INVALID_FILE_TYPE.name].append(idx)
+                idxes_to_remove.append(idx)
 
+        valid_notes: List[tuple[NoteCreateSchema, int]] = [
+            (elem[0], elem[1]) for elem in valid_notes if elem[1] not in idxes_to_remove
+        ]
+
+        # Check if there are any note input field that are not valid, if so, raise an error for them to fix.
         if len([e for sub in failed_notes.values() for e in sub]) != 0:
             raise AppError.MULTIPLE_GENERIC_ERRORS(**failed_notes)
 
         objs = []
         files = []
-        for note in notes:
+        for note, idx in valid_notes:
             extension = accepted_doc_type_extensions[note.file.content_type]
 
             file_id = uuid.uuid4().hex
@@ -163,9 +198,9 @@ class Library(Base, CRUD["Library"]):
             data_insert = NoteInsertSchema(
                 **note.dict(), uploaded_by=uploaded_by, file_name=file_name
             )
-
             obj = Library(**data_insert.dict())
             objs.append(obj)
+            files.append(note.file)
 
         try:
             session.add_all(objs)
@@ -186,7 +221,6 @@ class Library(Base, CRUD["Library"]):
             elif str(exc).find("UniqueViolationError") != -1:
                 raise AppError.RESOURCES_ALREADY_EXISTS_ERROR from exc
             raise AppError.RESOURCES_ALREADY_EXISTS_ERROR from exc
-
         return objs
 
     @classmethod

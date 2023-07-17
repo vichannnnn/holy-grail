@@ -1,5 +1,5 @@
-from typing import Optional, Annotated, List
-from fastapi import APIRouter, UploadFile, Query, Request, Form
+from typing import Optional, List
+from fastapi import APIRouter, Query, Request
 from fastapi_pagination import Page
 from app.api.deps import (
     SessionBucket,
@@ -9,7 +9,7 @@ from app.api.deps import (
 )
 from app.utils.limiter import conditional_rate_limit
 from app.models.library import Library
-from app.schemas.library import NoteUpdateSchema, NoteSchema, DocumentNameStr
+from app.schemas.library import NoteUpdateSchema, NoteSchema
 
 
 router = APIRouter()
@@ -23,19 +23,7 @@ async def create_note(
     session: CurrentSession,
     s3_bucket: SessionBucket,
     authenticated: SessionVerifiedUser,
-    file: Annotated[List[UploadFile], Form()] = list(),
-    category: Annotated[List[int], Form()] = list(),
-    subject: Annotated[List[int], Form()] = list(),
-    document_type: Annotated[List[int], Form()] = list(),
-    document_name: Annotated[List[DocumentNameStr], Form()] = list(),
 ):
-    form_data = {
-        "file": file,
-        "category": category,
-        "subject": subject,
-        "document_type": document_type,
-        "document_name": document_name,
-    }
 
     async with request.form() as form:
         notes = await Library.create_many(

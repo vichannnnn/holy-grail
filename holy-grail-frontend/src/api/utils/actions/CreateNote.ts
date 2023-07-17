@@ -21,12 +21,11 @@ export const createNote = async (files: [File, string][], notes: NoteInfoProps[]
   });
 
   try {
-    const response = await apiClient.post('/note/', allData, {
+    return await apiClient.post('/note/', allData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     });
-    return response;
   } catch (error) {
     const axiosError = error as AxiosError;
     return axiosError.response;
