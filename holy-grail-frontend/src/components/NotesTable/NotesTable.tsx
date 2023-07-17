@@ -1,24 +1,12 @@
-import { useContext, useState } from 'react';
-import {
-  Box,
-  Card,
-  CardContent,
-  Grid,
-  Link,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-} from '@mui/material';
-import { fetchCategory, fetchData, Note, SubjectType } from '@api/library';
-import { MediaQueryContext } from '@providers';
+import { useState, useContext } from 'react';
+import { Box, Card, CardContent, Grid, Typography, Link } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Note, fetchData, fetchCategory, SubjectType } from '@api/library';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Combobox, ComboboxProps, FreeTextCombobox, FreeTextComboboxProps } from '../Combobox';
+import { Combobox, ComboboxProps, FreeTextCombobox, FreeTextComboboxProps } from '@components';
 import { Pagination } from '../Pagination';
 import { NotesIcon } from './NotesIcon';
+import { MediaQueryContext } from '@providers';
 import '../../features/Library/library.css';
 
 interface NotesTableProps {

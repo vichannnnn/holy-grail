@@ -23,7 +23,6 @@ class CRUD(Generic[ModelType]):
         try:
             obj = cls(**data)
             session.add(obj)
-            await session.commit()
 
         except SQLAlchemyExceptions.IntegrityError as exc:
             await session.rollback()
@@ -32,6 +31,7 @@ class CRUD(Generic[ModelType]):
             elif str(exc).find("UniqueViolationError") != -1:
                 raise AppError.RESOURCES_ALREADY_EXISTS_ERROR from exc
             raise AppError.RESOURCES_ALREADY_EXISTS_ERROR from exc
+        await session.commit()
         return obj
 
     @classmethod
@@ -57,12 +57,12 @@ class CRUD(Generic[ModelType]):
     ) -> ModelType:
         stmt = update(cls).returning(cls).where(cls.id == id).values(**data)
         res = await session.execute(stmt)
-        await session.commit()
         updated_instance = res.scalar()
 
         if updated_instance is None:
             await session.rollback()
             raise AppError.RESOURCES_NOT_FOUND_ERROR
+        await session.commit()
         return updated_instance
 
     @classmethod
@@ -71,12 +71,12 @@ class CRUD(Generic[ModelType]):
     ) -> FastAPIResponse:
         stmt = delete(cls).returning(cls).where(cls.id == id)
         res = await session.execute(stmt)
-        await session.commit()
         deleted_instance = res.scalar()
 
         if not deleted_instance:
             await session.rollback()
             raise AppError.RESOURCES_NOT_FOUND_ERROR
+        await session.commit()
         return FastAPIResponse(status_code=204)
 
     @classmethod
