@@ -1,7 +1,7 @@
 import Logo from '../../assets/placeholder.svg';
 import { Link as RouterLink } from 'react-router-dom';
 import { useContext } from 'react';
-import { AuthContext } from '../../providers/AuthProvider';
+import { AuthContext } from '../../providers/AuthProvider/AuthProvider';
 import './footer.css';
 
 export const Footer = () => {

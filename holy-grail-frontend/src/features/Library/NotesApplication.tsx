@@ -11,7 +11,7 @@ import {
 } from '@api/library';
 import { deleteNote, updateNote } from '@api/actions';
 import { AdminDeleteIcon, AdminEditIcon, NotesTable } from '@components';
-import { AuthContext } from '../../providers/AuthProvider';
+import { AuthContext } from '../../providers/AuthProvider/AuthProvider';
 import { DeleteAlert, EditModal } from '../Approval';
 import './library.css';
 

@@ -4,9 +4,9 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { resendVerificationEmail } from '@api/auth';
 import { AlertToast, AlertProps } from '@components';
 import Logo from '../../assets/placeholder.svg';
-import { AuthContext } from '../../providers/AuthProvider';
+import { AuthContext } from '../../providers/AuthProvider/AuthProvider';
 import { HeaderRightButton } from './HeaderRightButton';
-import { MediaQueryContext } from '../../providers/MediaQueryProvider';
+import { MediaQueryContext } from '../../providers/MediaQueryProvider/MediaQueryProvider';
 
 export const Header = () => {
   const { user, logout } = useContext(AuthContext);
