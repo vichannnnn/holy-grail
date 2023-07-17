@@ -11,8 +11,8 @@ import {
 } from '@api/library';
 import { deleteNote, updateNote } from '@api/actions';
 import { AdminDeleteIcon, AdminEditIcon, NotesTable } from '@components';
-import { AuthContext } from '../../providers/AuthProvider/AuthProvider';
-import { DeleteAlert, EditModal } from '../Approval';
+import { AuthContext } from '@providers';
+import { DeleteAlert, ApprovalEditModal } from '../Approval';
 import './library.css';
 
 export const NotesApplication = () => {
@@ -164,7 +164,7 @@ export const NotesApplication = () => {
           }
         }}
       />
-      <EditModal
+      <ApprovalEditModal
         isOpen={isEditOpen}
         onClose={() => setIsEditOpen(false)}
         onConfirm={(

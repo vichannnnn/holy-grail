@@ -2,7 +2,7 @@ import { FormEvent, useContext, useState } from 'react';
 import { Box, Button, FormControl, FormLabel, Input, Link, VStack } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { AccountForm, AlertToast, AlertProps } from '@components';
-import { AuthContext } from '../../providers/AuthProvider/AuthProvider';
+import { AuthContext } from '@providers';
 import './login.css';
 
 export const LoginPage = () => {

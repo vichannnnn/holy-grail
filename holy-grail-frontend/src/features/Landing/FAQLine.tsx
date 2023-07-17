@@ -1,8 +1,8 @@
+import { ReactNode, useContext } from 'react';
 import { AccordionButton, AccordionItem, AccordionPanel, Box } from '@chakra-ui/react';
 import { AddIcon, MinusIcon } from '@chakra-ui/icons';
 import { Text } from '@components';
-import { ReactNode, useContext } from 'react';
-import { MediaQueryContext } from '../../providers/MediaQueryProvider/MediaQueryProvider';
+import { MediaQueryContext } from '@providers';
 
 type FAQLineProps = {
   question: string;

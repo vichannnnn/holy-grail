@@ -1,7 +1,7 @@
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import './landing.css';
 import { useContext } from 'react';
-import { AuthContext } from '../../providers/AuthProvider/AuthProvider';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { AuthContext } from '@providers';
+import './landing.css';
 
 export const FAQ = () => {
   const navigate = useNavigate();

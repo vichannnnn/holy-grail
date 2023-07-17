@@ -3,6 +3,7 @@ export * from './AdminApproveIcon';
 export * from './AdminDeleteIcon';
 export * from './AdminEditIcon';
 export * from './AlertToast';
+export * from './Combobox';
 export * from './HeroBox';
 export * from './HomeButton';
 export * from './NotesTable';

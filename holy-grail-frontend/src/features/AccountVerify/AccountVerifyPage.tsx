@@ -1,6 +1,6 @@
-import { Link } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { Link } from '@chakra-ui/react';
 import { resendVerificationEmail, verifyAccount } from '@api/auth';
 import { AlertToast, AlertProps } from '@components';
 import '../SignIn/login.css';
