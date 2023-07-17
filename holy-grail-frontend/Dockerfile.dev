@@ -18,5 +18,5 @@ FROM node:19 AS deploy
 WORKDIR /app
 COPY --from=build /app/dist ./
 RUN yarn global add http-server
-CMD ["http-server", "-p", "5175"]
+CMD ["http-server", "-c-1", "-p", "5175"]
 EXPOSE 5175
