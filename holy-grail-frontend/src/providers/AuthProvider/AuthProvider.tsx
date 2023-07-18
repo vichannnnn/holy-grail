@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState, ReactNode } from 'react';
 import { apiClient } from '@apiClient';
 import { isTokenExpired, AccountDetails, registerAccount } from '@api/auth';
-import { AxiosResponse } from 'axios';
+import { AxiosError, AxiosResponse } from 'axios';
 
 export interface User {
   user_id: number;
@@ -83,14 +83,20 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const register = async (accountDetails: AccountDetails): Promise<number> => {
-    const response: AxiosResponse = await registerAccount(accountDetails);
-    if (response.status === 200) {
+    try {
+      const response: AxiosResponse = await registerAccount(accountDetails);
       const user: CurrentUserWithJWT = response.data;
       setUser(user.data);
       localStorage.setItem('user', JSON.stringify(user.data));
       localStorage.setItem('access_token', user.access_token);
+      return response.status;
+    } catch (error) {
+      const axiosError = error as AxiosError;
+      if (axiosError.response) {
+        return axiosError.response.status;
+      }
+      return 0;
     }
-    return response.status;
   };
 
   return (

@@ -100,7 +100,11 @@ class Library(Base, CRUD["Library"]):
             **data.dict(), uploaded_by=uploaded_by, file_name=file_name
         )
 
-        res = await super().create(session, data_insert.dict())
+        try:
+            res = await super().create(session, data_insert.dict())
+        except SQLAlchemyExceptions.IntegrityError:
+            raise AppError.RESOURCES_ALREADY_EXISTS_ERROR
+
         await session.refresh(
             res, ["doc_category", "doc_type", "doc_subject", "account"]
         )

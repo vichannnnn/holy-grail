@@ -67,7 +67,11 @@ class Account(Base, CRUD["Account"]):
         insert_data = AccountCreateSchema(
             username=data.username, password=hashed_password, email=data.email
         )
-        res = await super().create(session, insert_data.dict())
+        try:
+            res = await super().create(session, insert_data.dict())
+
+        except SQLAlchemyExceptions.IntegrityError:
+            raise AppError.RESOURCES_ALREADY_EXISTS_ERROR
         await session.refresh(res)
 
         return CurrentUserSchema(**res.__dict__)
@@ -83,7 +87,13 @@ class Account(Base, CRUD["Account"]):
         insert_data = AccountCreateSchema(
             username=data.username, password=hashed_password, email=data.email
         )
-        res = await super().create(session, insert_data.dict())
+
+        try:
+            res = await super().create(session, insert_data.dict())
+
+        except SQLAlchemyExceptions.IntegrityError:
+            raise AppError.RESOURCES_ALREADY_EXISTS_ERROR
+
         await session.refresh(res)
 
         created_user = CurrentUserSchema(**res.__dict__)
@@ -92,39 +102,33 @@ class Account(Base, CRUD["Account"]):
         confirm_url = f"{FRONTEND_URL}/verify-account?token={email_verification_token}"
         send_verification_email_task.delay(data.email, data.username, confirm_url)
 
-        try:
-            stmt = (
-                update(Account)
-                .returning(Account)
-                .where(Account.user_id == created_user.user_id)
-                .values({"email_verification_token": email_verification_token})
-            )
-            res = await session.execute(stmt)
-            await session.commit()
+        stmt = (
+            update(Account)
+            .returning(Account)
+            .where(Account.user_id == created_user.user_id)
+            .values({"email_verification_token": email_verification_token})
+        )
+        res = await session.execute(stmt)
+        await session.commit()
 
-            access_token = Authenticator.create_access_token(
-                data={"sub": data.username}
-            )
-            decoded_token = jwt.decode(access_token, SECRET_KEY, algorithms=[ALGORITHM])
+        access_token = Authenticator.create_access_token(data={"sub": data.username})
+        decoded_token = jwt.decode(access_token, SECRET_KEY, algorithms=[ALGORITHM])
 
-            user = res.scalar_one()
+        user = res.scalar_one()
 
-            res = CurrentUserWithJWTSchema(
-                data=CurrentUserSchema(
-                    user_id=user.user_id,
-                    email=user.email,
-                    username=user.username,
-                    role=user.role,
-                    verified=user.verified,
-                ),
-                access_token=access_token,
-                token_type="bearer",
-                exp=decoded_token["exp"],
-            )
+        res = CurrentUserWithJWTSchema(
+            data=CurrentUserSchema(
+                user_id=user.user_id,
+                email=user.email,
+                username=user.username,
+                role=user.role,
+                verified=user.verified,
+            ),
+            access_token=access_token,
+            token_type="bearer",
+            exp=decoded_token["exp"],
+        )
 
-        except SQLAlchemyExceptions.IntegrityError as exc:
-            await session.rollback()
-            raise AppError.RESOURCES_ALREADY_EXISTS_ERROR
         return res
 
     @classmethod

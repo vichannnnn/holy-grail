@@ -13,7 +13,7 @@ export const SignUpPage = () => {
   const [repeatPassword, setRepeatPassword] = useState('');
   const [email, setEmail] = useState('');
   const { user, register } = useContext(AuthContext);
-  const [openAlert, setOpenAlert] = useState<boolean>(true);
+  const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
   const navigate = useNavigate();
 
@@ -58,7 +58,7 @@ export const SignUpPage = () => {
     });
 
     let alertContent: AlertProps;
-
+    console.log(status);
     switch (status) {
       case 200:
         alertContent = {
