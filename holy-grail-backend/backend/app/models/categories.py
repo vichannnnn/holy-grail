@@ -53,7 +53,7 @@ class Subjects(Base, CRUD["subjects"]):
         back_populates="doc_subject", uselist=True
     )
     category_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey("category_level.id"), nullable=False
+        Integer, ForeignKey("category_level.id"), nullable=False, index=True
     )
     category: Mapped[CategoryLevel] = relationship(
         "CategoryLevel", back_populates="subjects"
