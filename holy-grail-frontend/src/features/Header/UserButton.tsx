@@ -1,4 +1,6 @@
 import { useContext, useEffect, useState, MouseEvent } from 'react';
+import { HeaderRightButton } from '@components';
+import { AuthContext, MediaQueryContext } from '@providers';
 import {
   Button,
   IconButton,
@@ -9,54 +11,27 @@ import {
   ThemeProvider,
 } from '@mui/material';
 import DensityMediumIcon from '@mui/icons-material/DensityMedium';
-import { AuthContext, MediaQueryContext } from '@providers';
 import { useNavigate } from 'react-router-dom';
+import { Header } from './Header';
 
-interface HeaderRightButtonProps {
+interface UserButtonProps {
   children: { label: string; callback: () => void }[];
 }
 
-const DesktopButtonFace = ({
-  label,
-  onClick,
-}: {
-  label: string;
-  onClick: (event: MouseEvent<HTMLButtonElement>) => void;
-}) => {
-  return (
-    <Button
-      onClick={onClick}
-      disableRipple={true}
-      variant='outlined'
-      sx={{ borderColor: 'black', height: '30px', width: '150px' }}
-    >
-      <Typography sx={{ textTransform: 'none', color: 'black' }}>{label}</Typography>
-    </Button>
-  );
-};
 const MobileButtonFace = ({
   onClick,
 }: {
   onClick: (event: MouseEvent<HTMLButtonElement>) => void;
 }) => {
   return (
-    <IconButton
-      onClick={onClick}
-      aria-label='Menu'
-      sx={{ borderRadius: '10%' }}
-      disableRipple={true}
-    >
+    <IconButton onClick={onClick} aria-label='Menu' sx={{ borderRadius: '10%' }}>
       <DensityMediumIcon />
     </IconButton>
   );
 };
 
-export const HeaderRightButton = ({ children }: HeaderRightButtonProps) => {
-  const muiTheme = createTheme({
-    typography: {
-      fontFamily: ['Nunito', 'Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif'].join(','),
-    },
-  });
+export const UserButton = ({ children }: UserButtonProps) => {
+  const muiTheme = createTheme();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { isDesktop } = useContext(MediaQueryContext);
   const { user } = useContext(AuthContext);
@@ -70,12 +45,12 @@ export const HeaderRightButton = ({ children }: HeaderRightButtonProps) => {
     <ThemeProvider theme={muiTheme}>
       {isDesktop ? (
         user ? (
-          <DesktopButtonFace
+          <HeaderRightButton
             label={user.username}
             onClick={(event) => setAnchorEl(event.currentTarget)}
           />
         ) : (
-          <DesktopButtonFace label={'Log In'} onClick={(event) => navigate('/login')} />
+          <HeaderRightButton label='Log In' onClick={(event) => navigate('/login')} />
         )
       ) : (
         <MobileButtonFace onClick={(event) => setAnchorEl(event.currentTarget)} />
@@ -96,7 +71,6 @@ export const HeaderRightButton = ({ children }: HeaderRightButtonProps) => {
       >
         {children.map((child) => (
           <MenuItem
-            disableRipple={true}
             key={child.label}
             sx={{
               margin: '3px',
@@ -120,4 +94,4 @@ export const HeaderRightButton = ({ children }: HeaderRightButtonProps) => {
   );
 };
 
-HeaderRightButton.displayName = 'HeaderRightButton';
+UserButton.displayName = 'UserButton';

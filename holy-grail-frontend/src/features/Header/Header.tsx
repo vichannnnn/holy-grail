@@ -2,9 +2,9 @@ import './header.css';
 import { useContext, useEffect, useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { resendVerificationEmail } from '@api/auth';
-import { AlertToast, AlertProps } from '@components';
+import { AlertToast, AlertProps, HeaderRightButton } from '@components';
 import { AuthContext, MediaQueryContext } from '@providers';
-import { HeaderRightButton } from './HeaderRightButton';
+import { UserButton } from './UserButton';
 import Logo from '../../assets/placeholder.svg';
 
 export const Header = () => {
@@ -16,7 +16,7 @@ export const Header = () => {
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
 
-  const [headerRightButtonChildren, setHeaderRightButtonChildren] = useState<
+  const [UserButtonChildren, setUserButtonChildren] = useState<
     { label: string; callback: () => void }[]
   >([]);
 
@@ -50,7 +50,7 @@ export const Header = () => {
       children.push({ label: 'Log In', callback: () => navigate('/login') });
     }
 
-    setHeaderRightButtonChildren(children);
+    setUserButtonChildren(children);
   }, [isDesktop, user]);
 
   const handleLogout = async () => {
@@ -120,7 +120,8 @@ export const Header = () => {
             </ul>
           </div>
         ) : null}
-        <HeaderRightButton children={headerRightButtonChildren} />
+        <HeaderRightButton label='Contribute Notes' onClick={() => {}} />
+        <UserButton children={UserButtonChildren} />
       </nav>
       <AlertToast
         openAlert={openAlert}
