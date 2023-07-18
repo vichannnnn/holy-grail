@@ -32,7 +32,7 @@ export const UploadPage = () => {
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
 
-  const { user } = useContext(AuthContext);
+  const { user, isLoading } = useContext(AuthContext);
   const navigate = useNavigate();
   const [options, setOptions] = useState<OptionsProps | null>(null);
 
@@ -56,15 +56,24 @@ export const UploadPage = () => {
     fetchData().then((options) => {
       setOptions(options as OptionsProps);
     });
-    if (!user) {
-      const alertContentRedirect: AlertProps = {
-        title: 'Please login.',
-        description: 'You need to be logged in to upload documents.',
-        severity: 'error',
-      };
-      navigate('/login', { state: { alertContent: alertContentRedirect } });
+    if (!isLoading) {
+      if (!user) {
+        const alertContentRedirect: AlertProps = {
+          title: 'Please login.',
+          description: 'You need to be logged in to upload documents.',
+          severity: 'error',
+        };
+        navigate('/login', { state: { alertContent: alertContentRedirect } });
+      } else if (!user.verified) {
+        const alertContentNotVerified: AlertProps = {
+          title: 'Verification Required',
+          description: 'You need to be verified to upload documents.',
+          severity: 'error',
+        };
+        navigate('/', { state: { alertContent: alertContentNotVerified } });
+      }
     }
-  }, []);
+  }, [isLoading, user]);
 
   const handleSubmit = async () => {
     setSubmitLoading(true);

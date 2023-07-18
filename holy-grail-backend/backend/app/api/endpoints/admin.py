@@ -34,7 +34,7 @@ async def approve_note(
 async def get_all_account(
     session: CurrentSession, authenticated: SessionDeveloper  # pylint: disable=W0613
 ):
-    res = await Account.get_all(session)
+    res = await Account.get_all_users_ascending_by_id(session)
     return res
 
 

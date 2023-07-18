@@ -1,10 +1,10 @@
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useContext, useEffect, useState } from 'react';
 import { Box, Button, FormControl, FormLabel, Input, Link, VStack } from '@chakra-ui/react';
-import { registerAccount } from '@api/auth';
 import { AccountForm, AlertToast, AlertProps } from '@components';
 import { useNavigate } from 'react-router-dom';
 import { PasswordValidationBox } from './PasswordValidationBox';
 import '../SignIn/login.css';
+import { AuthContext } from '@providers';
 
 export const SignUpPage = () => {
   const [username, setUsername] = useState('');
@@ -12,7 +12,8 @@ export const SignUpPage = () => {
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
   const [email, setEmail] = useState('');
-  const [openAlert, setOpenAlert] = useState<boolean>(true);
+  const { user, register } = useContext(AuthContext);
+  const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
   const navigate = useNavigate();
 
@@ -49,28 +50,65 @@ export const SignUpPage = () => {
       return;
     }
 
-    const result = await registerAccount({
+    const status = await register({
       username: username,
       password: password,
       repeatPassword: repeatPassword,
       email: email,
     });
-    if (!result.success) {
-      setAlertContent({
-        title: 'Registration failed.',
-        description: result.message,
-        severity: 'error',
-      });
-      setOpenAlert(true);
-      return;
-    }
-    const alertContentRedirect: AlertProps = {
-      title: 'Account successfully created.',
-      description: result.message,
-      severity: 'success',
-    };
 
-    navigate('/', { state: { alertContent: alertContentRedirect } });
+    let alertContent: AlertProps;
+    console.log(status);
+    switch (status) {
+      case 200:
+        alertContent = {
+          title: 'Account successfully created.',
+          description: 'Please check your email for the verification link to verify your account.',
+          severity: 'success',
+        };
+
+        navigate('/', { state: { alertContent: alertContent } });
+        break;
+      case 409:
+        alertContent = {
+          title: 'Registration failed.',
+          description: 'The username or email has already been taken.',
+          severity: 'error',
+        };
+        break;
+      case 400:
+        alertContent = {
+          title: 'Registration failed.',
+          description: 'Your password does not match. Please check your password and try again.',
+          severity: 'error',
+        };
+        break;
+      case 422:
+        alertContent = {
+          title: 'Registration failed.',
+          description:
+            'Please ensure your username is valid. It should contain 4 to 20 alphanumeric characters.',
+          severity: 'error',
+        };
+        break;
+      case 429:
+        alertContent = {
+          title: 'Registration failed.',
+          description: "You're trying too fast! Please try again in 10 minutes.",
+          severity: 'error',
+        };
+        break;
+      default:
+        alertContent = {
+          title: 'Registration failed.',
+          description: 'Unable to create account. Please check your input and try again.',
+          severity: 'error',
+        };
+        break;
+    }
+
+    setAlertContent(alertContent);
+    setOpenAlert(true);
   };
 
   return (

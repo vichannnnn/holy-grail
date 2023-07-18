@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState, ReactNode } from 'react';
 import { apiClient } from '@apiClient';
-import { isTokenExpired } from '@api/auth';
+import { isTokenExpired, AccountDetails, registerAccount } from '@api/auth';
+import { AxiosError, AxiosResponse } from 'axios';
 
 export interface User {
   user_id: number;
@@ -10,11 +11,20 @@ export interface User {
   verified: boolean;
 }
 
+export interface CurrentUserWithJWT {
+  data: User;
+  access_token: string;
+  token_type: string;
+  exp: number;
+}
+
 interface AuthContextType {
   user: User | null;
+  isLoading: boolean;
   login: (username: string, password: string) => Promise<void>;
   logout: () => void;
   updateUser: (updatedUser: User) => void;
+  register: (accountDetails: AccountDetails) => Promise<number>;
 }
 
 interface AuthProviderProps {
@@ -23,19 +33,23 @@ interface AuthProviderProps {
 
 export const AuthContext = createContext<AuthContextType>({
   user: null,
+  isLoading: true,
   login: async () => {},
   logout: () => {},
   updateUser: () => {},
+  register: async () => 0,
 });
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
+    setIsLoading(false);
   }, []);
 
   useEffect(() => {
@@ -72,16 +86,35 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     localStorage.setItem('user', JSON.stringify(updatedUser));
   };
 
+  const register = async (accountDetails: AccountDetails): Promise<number> => {
+    try {
+      const response: AxiosResponse = await registerAccount(accountDetails);
+      const user: CurrentUserWithJWT = response.data;
+      setUser(user.data);
+      localStorage.setItem('user', JSON.stringify(user.data));
+      localStorage.setItem('access_token', user.access_token);
+      return response.status;
+    } catch (error) {
+      const axiosError = error as AxiosError;
+      if (axiosError.response) {
+        return axiosError.response.status;
+      }
+      return 0;
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
         user,
+        isLoading,
         login,
         logout,
         updateUser,
+        register,
       }}
     >
-      {children}
+      {!isLoading ? children : 'Loading...'}
     </AuthContext.Provider>
   );
 };
