@@ -56,7 +56,7 @@ export const ChangePasswordPage = () => {
         <div className='login__title'>Update Password</div>
         <div className='section__subtitle'>You can change your password here.</div>
 
-        <form onSubmit={handleUpdatePassword}>
+        <form className='login__fields' onSubmit={handleUpdatePassword}>
           <VStack spacing='4'>
             <FormControl id='before-password'>
               <FormLabel>Current Password</FormLabel>

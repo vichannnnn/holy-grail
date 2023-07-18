@@ -4,7 +4,7 @@ from uuid import uuid4
 import jwt
 from fastapi import Response as FastAPIResponse
 from pydantic import EmailStr
-from sqlalchemy import Index
+from sqlalchemy import Index, asc
 from sqlalchemy import exc as SQLAlchemyExceptions
 from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -67,7 +67,11 @@ class Account(Base, CRUD["Account"]):
         insert_data = AccountCreateSchema(
             username=data.username, password=hashed_password, email=data.email
         )
-        res = await super().create(session, insert_data.dict())
+        try:
+            res = await super().create(session, insert_data.dict())
+
+        except SQLAlchemyExceptions.IntegrityError:
+            raise AppError.RESOURCES_ALREADY_EXISTS_ERROR
         await session.refresh(res)
 
         return CurrentUserSchema(**res.__dict__)
@@ -75,7 +79,7 @@ class Account(Base, CRUD["Account"]):
     @classmethod
     async def register(
         cls, session: AsyncSession, data: AccountRegisterSchema
-    ) -> CurrentUserSchema:
+    ) -> CurrentUserWithJWTSchema:
         if data.password != data.repeat_password:
             raise AppError.BAD_REQUEST_ERROR
 
@@ -83,7 +87,13 @@ class Account(Base, CRUD["Account"]):
         insert_data = AccountCreateSchema(
             username=data.username, password=hashed_password, email=data.email
         )
-        res = await super().create(session, insert_data.dict())
+
+        try:
+            res = await super().create(session, insert_data.dict())
+
+        except SQLAlchemyExceptions.IntegrityError:
+            raise AppError.RESOURCES_ALREADY_EXISTS_ERROR
+
         await session.refresh(res)
 
         created_user = CurrentUserSchema(**res.__dict__)
@@ -98,9 +108,28 @@ class Account(Base, CRUD["Account"]):
             .where(Account.user_id == created_user.user_id)
             .values({"email_verification_token": email_verification_token})
         )
-        await session.execute(stmt)
+        res = await session.execute(stmt)
         await session.commit()
-        return created_user
+
+        access_token = Authenticator.create_access_token(data={"sub": data.username})
+        decoded_token = jwt.decode(access_token, SECRET_KEY, algorithms=[ALGORITHM])
+
+        user = res.scalar_one()
+
+        res = CurrentUserWithJWTSchema(
+            data=CurrentUserSchema(
+                user_id=user.user_id,
+                email=user.email,
+                username=user.username,
+                role=user.role,
+                verified=user.verified,
+            ),
+            access_token=access_token,
+            token_type="bearer",
+            exp=decoded_token["exp"],
+        )
+
+        return res
 
     @classmethod
     async def login(
@@ -282,3 +311,9 @@ class Account(Base, CRUD["Account"]):
         account.reset_password_token = None
         await session.commit()
         return FastAPIResponse(status_code=200)
+
+    @classmethod
+    async def get_all_users_ascending_by_id(cls, session: AsyncSession):
+        stmt = select(cls).order_by(asc(cls.id))
+        result = await session.execute(stmt)
+        return result.scalars().all()

@@ -28,7 +28,7 @@ export const Header = () => {
         { label: 'Home', callback: () => navigate('/') },
         { label: 'Library', callback: () => navigate('/#library') },
         { label: 'FAQ', callback: () => navigate('/#faq') },
-        { label: 'Contribute Notes', callback: () => navigate('/upload') },
+        { label: 'Contribute', callback: () => navigate('/upload') },
       );
     }
 
@@ -112,9 +112,21 @@ export const Header = () => {
                 </RouterLink>
               </li>
               <li className='nav__item'>
-                <RouterLink to='/#faq' onClick={() => setActiveNav('#FAQ')}>
+                <RouterLink to='/upload'>
                   <a className={activeNav === '#FAQ' ? 'nav__link active-link' : 'nav__link'}>
                     FAQ
+                  </a>
+                </RouterLink>
+              </li>
+              <li className='nav__item'>
+                <RouterLink
+                  to='/upload'
+                  onClick={() =>
+                    user && user.verified ? setActiveNav('#upload') : setActiveNav('#home')
+                  }
+                >
+                  <a className={activeNav === '#upload' ? 'nav__link active-link' : 'nav__link'}>
+                    Contribute
                   </a>
                 </RouterLink>
               </li>
@@ -122,11 +134,11 @@ export const Header = () => {
           </div>
         ) : null}
         <div className='right-section' style={{ display: 'flex', gap: '30px' }}>
-          {isDesktop ? (
-            <HeaderRightButton onClick={() => navigate('/upload')}>
-              Contribute Notes
-            </HeaderRightButton>
-          ) : null}
+          {/*{isDesktop ? (*/}
+          {/*  <HeaderRightButton onClick={() => navigate('/upload')}>*/}
+          {/*    Contribute Notes*/}
+          {/*  </HeaderRightButton>*/}
+          {/*) : null}*/}
           <UserButton children={UserButtonChildren} />
         </div>
       </nav>
