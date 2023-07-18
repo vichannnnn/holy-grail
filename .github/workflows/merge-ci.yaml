@@ -1,20 +1,41 @@
-name: Build
+name: CI/CD Pipeline
 
 on:
-  workflow_run:
-    workflows: [Test]
-    types:
-      - completed
+  push:
+    branches:
+      - dev
+      - master
 
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: vichannnnn/holy-grail
 
 jobs:
-  build:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+  test:
     runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
 
+      - name: Copy .env.example to .env
+        run: cp .env.example .env
+
+      - name: Run tests with coverage
+        run: make coverage version="dev"
+
+      - name: Generate xml
+        run: make generate_xml version="dev"
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
+          verbose: true
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
@@ -68,3 +89,29 @@ jobs:
           context: ./holy-grail-backend/backend
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/holy-grail-scheduler${{ env.TAG_SUFFIX }}:latest
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Print github.ref
+        run: echo "github.ref=${{ github.ref }}"
+
+      - name: executing remote ssh commands using private key
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ github.ref == 'refs/heads/dev' && secrets.DEV_REMOTE_HOST || secrets.MASTER_REMOTE_HOST }}
+          username: ${{ github.ref == 'refs/heads/dev' && secrets.DEV_REMOTE_USER || secrets.MASTER_REMOTE_USER }}
+          key: ${{ github.ref == 'refs/heads/dev' && secrets.DEV_SSH_PRIVATE_KEY || secrets.MASTER_SSH_PRIVATE_KEY }}
+          script: |
+            cd ./holy-grail
+            if [[ "${{ github.ref }}" == 'refs/heads/master' ]]; then
+              docker compose -f docker-compose.prod.yml pull
+              docker compose -f docker-compose.prod.yml up -d
+              make migrate version=prod
+            else
+              docker compose pull
+              docker compose up -d
+              make migrate
+            fi
