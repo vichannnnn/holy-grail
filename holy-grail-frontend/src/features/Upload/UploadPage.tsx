@@ -219,7 +219,7 @@ export const UploadPage = () => {
   return (
     <section className='upload section container'>
       <div className='section__title'>Upload Materials</div>
-      <div className='section__subtitle'>
+      <div className='section__subtitle' style={{ textAlign: 'center' }}>
         Upload your materials here! All submitted materials will be reviewed before being published
         to the Holy Grail.
       </div>

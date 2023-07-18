@@ -1,5 +1,6 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useContext } from 'react';
 import { Button, Typography } from '@mui/material';
+import { MediaQueryContext } from '@providers';
 
 interface FileSelectProps {
   handleAddNotes: (files: FileList) => void;
@@ -8,6 +9,7 @@ interface FileSelectProps {
 export const FileSelect = ({ handleAddNotes }: FileSelectProps) => {
   const dragDropRef = useRef<HTMLDivElement | null>(null);
   const fileRef = useRef<HTMLInputElement | null>(null);
+  const { isDesktop } = useContext(MediaQueryContext);
 
   useEffect(() => {
     const drop = dragDropRef.current as HTMLDivElement;
@@ -43,18 +45,20 @@ export const FileSelect = ({ handleAddNotes }: FileSelectProps) => {
   return (
     <div
       style={{
-        width: '60vw',
+        width: isDesktop ? '60vw' : '0px',
         padding: '4%',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         flexFlow: 'column nowrap',
-        border: '2px #c3c3c3 dashed',
+        border: isDesktop ? '2px #c3c3c3 dashed' : 'none',
         borderRadius: '12px',
       }}
       ref={dragDropRef}
     >
-      <Typography sx={{ margin: '2%' }}>Drag and drop your PDFs here, or</Typography>
+      <Typography sx={{ margin: '2%', display: isDesktop ? null : 'none' }}>
+        Drag and drop your PDFs here, or
+      </Typography>
       <Button
         onClick={() => {
           if (fileRef.current) {
@@ -72,6 +76,7 @@ export const FileSelect = ({ handleAddNotes }: FileSelectProps) => {
           '&:hover': {
             backgroundColor: 'rgba(49, 130, 206, 0.75)',
           },
+          whiteSpace: 'nowrap',
         }}
       >
         Upload Files
