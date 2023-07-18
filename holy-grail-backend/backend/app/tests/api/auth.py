@@ -16,8 +16,8 @@ def test_create_valid_user_and_login(
     response = test_not_logged_in_client.post(CREATE_URL, json=payload)
     resp_data = response.json()
     assert response.status_code == status.HTTP_200_OK
-    assert resp_data["username"] == test_valid_user.username
-    assert resp_data == {
+    assert resp_data["data"]["username"] == test_valid_user.username
+    assert resp_data["data"] == {
         "username": test_valid_user.username,
         "role": 1,
         "verified": False,
@@ -35,7 +35,7 @@ def test_create_account(test_not_logged_in_client, test_user_registration_data):
         "/auth/create", json=jsonable_encoder(test_user_registration_data)
     )
     assert response.status_code == 200
-    assert "username" in response.json()
+    assert "username" in response.json()["data"]
 
 
 def test_create_account_password_mismatch(
@@ -58,7 +58,7 @@ def test_update_password(
         "/auth/create", json=jsonable_encoder(test_user_registration_data)
     )
     assert response.status_code == 200
-    assert "username" in response.json()
+    assert "username" in response.json()["data"]
 
     login_response = test_not_logged_in_client.post(
         "/auth/login", json=jsonable_encoder(test_user)
@@ -81,7 +81,7 @@ def test_get_account_name(
         "/auth/create", json=jsonable_encoder(test_user_registration_data)
     )
     assert response.status_code == 200
-    assert "username" in response.json()
+    assert "username" in response.json()["data"]
     # first login to get the auth token
     login_response = test_not_logged_in_client.post(
         "/auth/login", json=jsonable_encoder(test_user)
