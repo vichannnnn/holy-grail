@@ -1,18 +1,11 @@
 name: Pull Request Test
 
 on:
-<<<<<<<< HEAD:.github/workflows/pull-request-test.yml
   pull_request:
     branches:
       - dev
       - master
 
-========
-  push:
-    branches:
-      - dev
-      - master
->>>>>>>> f52a5fa (v1.0.0 official release  (#72)):.github/workflows/test.yml
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: vichannnnn/holy-grail
