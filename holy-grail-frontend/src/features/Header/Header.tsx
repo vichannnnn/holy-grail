@@ -28,6 +28,7 @@ export const Header = () => {
         { label: 'Home', callback: () => navigate('/') },
         { label: 'Library', callback: () => navigate('/#library') },
         { label: 'FAQ', callback: () => navigate('/#faq') },
+        { label: 'Contribute Notes', callback: () => navigate('/upload') },
       );
     }
 
@@ -120,10 +121,14 @@ export const Header = () => {
             </ul>
           </div>
         ) : null}
-        {isDesktop ? (
-          <HeaderRightButton onClick={() => {}}>Contribute Notes</HeaderRightButton>
-        ) : null}
-        <UserButton children={UserButtonChildren} />
+        <div className='right-section' style={{ display: 'flex', gap: '30px' }}>
+          {isDesktop ? (
+            <HeaderRightButton onClick={() => navigate('/upload')}>
+              Contribute Notes
+            </HeaderRightButton>
+          ) : null}
+          <UserButton children={UserButtonChildren} />
+        </div>
       </nav>
       <AlertToast
         openAlert={openAlert}

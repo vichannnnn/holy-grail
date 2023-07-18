@@ -1,18 +1,9 @@
 import { useContext, useEffect, useState, MouseEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { HeaderRightButton } from '@components';
 import { AuthContext, MediaQueryContext } from '@providers';
-import {
-  Button,
-  IconButton,
-  Menu,
-  MenuItem,
-  Typography,
-  createTheme,
-  ThemeProvider,
-} from '@mui/material';
+import { IconButton, Menu, MenuItem, createTheme, ThemeProvider } from '@mui/material';
 import DensityMediumIcon from '@mui/icons-material/DensityMedium';
-import { useNavigate } from 'react-router-dom';
-import { Header } from './Header';
 
 interface UserButtonProps {
   children: { label: string; callback: () => void }[];
