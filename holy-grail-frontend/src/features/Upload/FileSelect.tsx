@@ -76,6 +76,7 @@ export const FileSelect = ({ handleAddNotes }: FileSelectProps) => {
           '&:hover': {
             backgroundColor: 'rgba(49, 130, 206, 0.75)',
           },
+          whiteSpace: 'nowrap',
         }}
       >
         Upload Files

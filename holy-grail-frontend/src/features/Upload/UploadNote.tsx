@@ -183,16 +183,16 @@ export const UploadNote = ({
                   <Grid
                     container
                     item
-                    wrap='nowrap'
                     sx={{
                       ...gridStyles,
                       margin: '1%',
                       gap: '2%',
                       justifyContent: 'space-evenly',
+                      flexDirection: isDesktop ? 'row' : 'column !important',
                     }}
                   >
                     <Combobox
-                      style={{ flex: '1 1 0' }}
+                      style={{ flex: '1 1 0', width: '100%' }}
                       label='Category'
                       value={category || 0}
                       onChange={async (newValue) => {
@@ -217,7 +217,7 @@ export const UploadNote = ({
                     />
 
                     <Combobox
-                      style={{ flex: '1 1 0' }}
+                      style={{ flex: '1 1 0', width: '100%' }}
                       label='Subject'
                       value={subject || 0}
                       onChange={(newValue) => {
@@ -236,7 +236,7 @@ export const UploadNote = ({
                     />
 
                     <Combobox
-                      style={{ flex: '1 1 0' }}
+                      style={{ flex: '1 1 0', width: '100%' }}
                       label='Type'
                       value={type || 0}
                       onChange={(newValue) => {
