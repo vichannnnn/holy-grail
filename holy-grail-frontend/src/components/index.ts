@@ -4,6 +4,7 @@ export * from './AdminDeleteIcon';
 export * from './AdminEditIcon';
 export * from './AlertToast';
 export * from './Combobox';
+export * from './HeaderRightButton';
 export * from './HeroBox';
 export * from './HomeButton';
 export * from './NotesTable';
