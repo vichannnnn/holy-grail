@@ -225,6 +225,15 @@ class Account(Base, CRUD["Account"]):
             )
             send_verification_email_task.delay(res.email, res.username, confirm_url)
 
+            stmt = (
+                update(Account)
+                .returning(Account)
+                .where(Account.user_id == user_id)
+                .values({"email_verification_token": email_verification_token})
+            )
+            await session.execute(stmt)
+            await session.commit()
+
         else:
             raise AppError.BAD_REQUEST_ERROR
 

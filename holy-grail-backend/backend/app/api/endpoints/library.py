@@ -24,7 +24,6 @@ async def create_note(
     s3_bucket: SessionBucket,
     authenticated: SessionVerifiedUser,
 ):
-
     async with request.form() as form:
         notes = await Library.create_many(
             session,
