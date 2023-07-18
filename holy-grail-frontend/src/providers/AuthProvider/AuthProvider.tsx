@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState, ReactNode } from 'react';
 import { apiClient } from '@apiClient';
-import { isTokenExpired } from '@api/auth';
+import { isTokenExpired, AccountDetails, registerAccount } from '@api/auth';
+import { AxiosResponse } from 'axios';
 
 export interface User {
   user_id: number;
@@ -10,11 +11,19 @@ export interface User {
   verified: boolean;
 }
 
+export interface CurrentUserWithJWT {
+  data: User;
+  access_token: string;
+  token_type: string;
+  exp: number;
+}
+
 interface AuthContextType {
   user: User | null;
   login: (username: string, password: string) => Promise<void>;
   logout: () => void;
   updateUser: (updatedUser: User) => void;
+  register: (accountDetails: AccountDetails) => Promise<number>;
 }
 
 interface AuthProviderProps {
@@ -26,6 +35,7 @@ export const AuthContext = createContext<AuthContextType>({
   login: async () => {},
   logout: () => {},
   updateUser: () => {},
+  register: async () => 0,
 });
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
@@ -72,6 +82,17 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     localStorage.setItem('user', JSON.stringify(updatedUser));
   };
 
+  const register = async (accountDetails: AccountDetails): Promise<number> => {
+    const response: AxiosResponse = await registerAccount(accountDetails);
+    if (response.status === 200) {
+      const user: CurrentUserWithJWT = response.data;
+      setUser(user.data);
+      localStorage.setItem('user', JSON.stringify(user.data));
+      localStorage.setItem('access_token', user.access_token);
+    }
+    return response.status;
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -79,6 +100,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         login,
         logout,
         updateUser,
+        register,
       }}
     >
       {children}
