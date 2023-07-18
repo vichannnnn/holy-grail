@@ -4,7 +4,7 @@ from uuid import uuid4
 import jwt
 from fastapi import Response as FastAPIResponse
 from pydantic import EmailStr
-from sqlalchemy import Index
+from sqlalchemy import Index, asc
 from sqlalchemy import exc as SQLAlchemyExceptions
 from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -311,3 +311,9 @@ class Account(Base, CRUD["Account"]):
         account.reset_password_token = None
         await session.commit()
         return FastAPIResponse(status_code=200)
+
+    @classmethod
+    async def get_all_users_ascending_by_id(cls, session: AsyncSession):
+        stmt = select(cls).order_by(asc(cls.id))
+        result = await session.execute(stmt)
+        return result.scalars().all()
