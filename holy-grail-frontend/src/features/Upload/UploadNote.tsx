@@ -10,7 +10,6 @@ import {
   Collapse,
   IconButton,
   Box,
-  Tooltip,
 } from '@mui/material';
 import { MediaQueryContext, AuthContext } from '@providers';
 import { fetchData, fetchCategory, SubjectType } from '@api/library';
@@ -185,10 +184,10 @@ export const UploadNote = ({
                     item
                     sx={{
                       ...gridStyles,
-                      margin: '1%',
-                      gap: '2%',
+
+                      gap: '1vh',
                       justifyContent: 'space-evenly',
-                      flexDirection: isDesktop ? 'row' : 'column !important',
+                      flexDirection: isDesktop ? 'row' : 'column',
                     }}
                   >
                     <Combobox
