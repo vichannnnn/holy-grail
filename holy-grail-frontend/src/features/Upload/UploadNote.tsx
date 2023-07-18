@@ -14,7 +14,6 @@ import {
 } from '@mui/material';
 import { MediaQueryContext, AuthContext } from '@providers';
 import { fetchData, fetchCategory, SubjectType } from '@api/library';
-import ErrorIcon from '@mui/icons-material/Error';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -115,7 +114,7 @@ export const UploadNote = ({
           flexDirection: 'row',
         }}
       >
-        <div style={{ width: '60vw' }}>
+        <div style={{ width: isDesktop ? '60vw' : '90vw' }}>
           <Grid
             container
             sx={{
@@ -130,6 +129,7 @@ export const UploadNote = ({
             <Grid
               container
               item
+              wrap='nowrap'
               sx={{
                 ...gridStyles,
                 gap: '2%',
@@ -137,14 +137,21 @@ export const UploadNote = ({
                 margin: '1%',
               }}
             >
-              <Typography sx={{ marginLeft: '4%' }}>{fileName}</Typography>
-
-              <IconButton
-                sx={{ marginLeft: 'auto', display: isDesktop ? null : 'none' }}
-                onClick={() => setExpanded(!expanded)}
-              >
-                <ExpandMoreIcon />
-              </IconButton>
+              <Typography noWrap sx={{ marginLeft: '4%' }}>
+                {fileName}
+              </Typography>
+              {isDesktop ? (
+                <IconButton
+                  sx={{ marginLeft: 'auto', display: isDesktop ? null : 'none' }}
+                  onClick={() => setExpanded(!expanded)}
+                >
+                  <ExpandMoreIcon />
+                </IconButton>
+              ) : (
+                <IconButton onClick={deleteNote} sx={{ flexGrow: 0 }}>
+                  <DeleteIcon color='error' />
+                </IconButton>
+              )}
             </Grid>
 
             <Collapse
@@ -176,11 +183,11 @@ export const UploadNote = ({
                   <Grid
                     container
                     item
+                    wrap='nowrap'
                     sx={{
                       ...gridStyles,
                       margin: '1%',
                       gap: '2%',
-
                       justifyContent: 'space-evenly',
                     }}
                   >
@@ -243,7 +250,10 @@ export const UploadNote = ({
                   </Grid>
                 </Box>
                 <Box sx={{ marginLeft: '2%' }}>
-                  <IconButton onClick={deleteNote} sx={{ flexGrow: 0 }}>
+                  <IconButton
+                    onClick={deleteNote}
+                    sx={{ flexGrow: 0, display: isDesktop ? null : 'none' }}
+                  >
                     <DeleteIcon color='error' />
                   </IconButton>
                 </Box>
