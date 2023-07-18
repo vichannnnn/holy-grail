@@ -1,12 +1,12 @@
-import { Button, createTheme, ThemeProvider } from '@mui/material';
-import { ButtonHTMLAttributes, forwardRef, MouseEvent } from 'react';
+import { Button, ButtonProps, createTheme, SxProps, Theme, ThemeProvider } from '@mui/material';
+import { forwardRef, MouseEvent } from 'react';
 
-interface HeaderRightButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  label: string;
+interface HeaderRightButtonProps extends ButtonProps {
   onClick: (event: MouseEvent<HTMLButtonElement>) => void;
+  sx?: SxProps<Theme>;
 }
 export const HeaderRightButton = forwardRef<HTMLButtonElement, HeaderRightButtonProps>(
-  ({ label, onClick }, ref) => {
+  ({ onClick, children, sx, ...props }, ref) => {
     const muiTheme = createTheme();
     return (
       <ThemeProvider theme={muiTheme}>
@@ -19,10 +19,12 @@ export const HeaderRightButton = forwardRef<HTMLButtonElement, HeaderRightButton
             backgroundColor: 'white',
             paddingX: '30px',
             height: '40px',
-            textTransform: 'capitalize',
+            textTransform: 'none',
+            ...sx,
           }}
+          {...props}
         >
-          <div className='button-text'>{label}</div>
+          <div className='button-text'>{children}</div>
         </Button>
       </ThemeProvider>
     );

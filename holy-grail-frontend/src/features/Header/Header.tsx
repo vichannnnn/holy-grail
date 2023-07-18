@@ -120,7 +120,9 @@ export const Header = () => {
             </ul>
           </div>
         ) : null}
-        <HeaderRightButton label='Contribute Notes' onClick={() => {}} />
+        {isDesktop ? (
+          <HeaderRightButton onClick={() => {}}>Contribute Notes</HeaderRightButton>
+        ) : null}
         <UserButton children={UserButtonChildren} />
       </nav>
       <AlertToast

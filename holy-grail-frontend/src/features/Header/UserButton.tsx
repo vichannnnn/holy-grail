@@ -44,14 +44,12 @@ export const UserButton = ({ children }: UserButtonProps) => {
   return (
     <ThemeProvider theme={muiTheme}>
       {isDesktop ? (
-        user ? (
-          <HeaderRightButton
-            label={user.username}
-            onClick={(event) => setAnchorEl(event.currentTarget)}
-          />
-        ) : (
-          <HeaderRightButton label='Log In' onClick={(event) => navigate('/login')} />
-        )
+        <HeaderRightButton
+          onClick={(event) => (user ? setAnchorEl(event.currentTarget) : navigate('/login'))}
+          sx={{ width: 'fit-content' }}
+        >
+          {user ? user.username : 'Log In'}
+        </HeaderRightButton>
       ) : (
         <MobileButtonFace onClick={(event) => setAnchorEl(event.currentTarget)} />
       )}
