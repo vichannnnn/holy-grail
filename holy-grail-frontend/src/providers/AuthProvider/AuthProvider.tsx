@@ -20,6 +20,7 @@ export interface CurrentUserWithJWT {
 
 interface AuthContextType {
   user: User | null;
+  isLoading: boolean;
   login: (username: string, password: string) => Promise<void>;
   logout: () => void;
   updateUser: (updatedUser: User) => void;
@@ -32,6 +33,7 @@ interface AuthProviderProps {
 
 export const AuthContext = createContext<AuthContextType>({
   user: null,
+  isLoading: true,
   login: async () => {},
   logout: () => {},
   updateUser: () => {},
@@ -40,12 +42,14 @@ export const AuthContext = createContext<AuthContextType>({
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
+    setIsLoading(false);
   }, []);
 
   useEffect(() => {
@@ -103,13 +107,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     <AuthContext.Provider
       value={{
         user,
+        isLoading,
         login,
         logout,
         updateUser,
         register,
       }}
     >
-      {children}
+      {!isLoading ? children : 'Loading...'}
     </AuthContext.Provider>
   );
 };

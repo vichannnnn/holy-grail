@@ -121,7 +121,9 @@ export const Header = () => {
               <li className='nav__item'>
                 <RouterLink
                   to='/upload'
-                  onClick={() => (user ? setActiveNav('#upload') : setActiveNav('#home'))}
+                  onClick={() =>
+                    user && user.verified ? setActiveNav('#upload') : setActiveNav('#home')
+                  }
                 >
                   <a className={activeNav === '#upload' ? 'nav__link active-link' : 'nav__link'}>
                     Contribute
