@@ -2,9 +2,9 @@ import './header.css';
 import { useContext, useEffect, useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { resendVerificationEmail } from '@api/auth';
-import { AlertToast, AlertProps } from '@components';
+import { AlertToast, AlertProps, HeaderRightButton } from '@components';
 import { AuthContext, MediaQueryContext } from '@providers';
-import { HeaderRightButton } from './HeaderRightButton';
+import { UserButton } from './UserButton';
 import Logo from '../../assets/placeholder.svg';
 
 export const Header = () => {
@@ -16,7 +16,7 @@ export const Header = () => {
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
 
-  const [headerRightButtonChildren, setHeaderRightButtonChildren] = useState<
+  const [UserButtonChildren, setUserButtonChildren] = useState<
     { label: string; callback: () => void }[]
   >([]);
 
@@ -28,6 +28,7 @@ export const Header = () => {
         { label: 'Home', callback: () => navigate('/') },
         { label: 'Library', callback: () => navigate('/#library') },
         { label: 'FAQ', callback: () => navigate('/#faq') },
+        { label: 'Contribute Notes', callback: () => navigate('/upload') },
       );
     }
 
@@ -50,7 +51,7 @@ export const Header = () => {
       children.push({ label: 'Log In', callback: () => navigate('/login') });
     }
 
-    setHeaderRightButtonChildren(children);
+    setUserButtonChildren(children);
   }, [isDesktop, user]);
 
   const handleLogout = async () => {
@@ -120,7 +121,14 @@ export const Header = () => {
             </ul>
           </div>
         ) : null}
-        <HeaderRightButton children={headerRightButtonChildren} />
+        <div className='right-section' style={{ display: 'flex', gap: '30px' }}>
+          {isDesktop ? (
+            <HeaderRightButton onClick={() => navigate('/upload')}>
+              Contribute Notes
+            </HeaderRightButton>
+          ) : null}
+          <UserButton children={UserButtonChildren} />
+        </div>
       </nav>
       <AlertToast
         openAlert={openAlert}
