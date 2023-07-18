@@ -30,14 +30,14 @@ if os.getenv("PRODUCTION") != "local" or os.getenv("TESTING"):
 
 else:
 
-    @router.post("/create", response_model=CurrentUserSchema)
+    @router.post("/create", response_model=CurrentUserWithJWTSchema)
     @conditional_rate_limit("10/5minute")
-    async def create_account_development(
+    async def create_account(
         request: Request,  # pylint: disable=W0613
         session: CurrentSession,
         data: AccountRegisterSchema,
     ):
-        created_user = await Account.register_development(session, data)
+        created_user = await Account.register(session, data)
         return created_user
 
 

@@ -66,7 +66,8 @@ export const SignUpPage = () => {
           description: 'Please check your email for the verification link to verify your account.',
           severity: 'success',
         };
-        navigate('/', { state: { alertContent } });
+
+        navigate('/', { state: { alertContent: alertContent } });
         break;
       case 409:
         alertContent = {
