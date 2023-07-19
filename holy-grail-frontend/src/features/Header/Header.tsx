@@ -112,8 +112,8 @@ export const Header = () => {
                 </RouterLink>
               </li>
               <li className='nav__item'>
-                <RouterLink to='/upload'>
-                  <a className={activeNav === '#FAQ' ? 'nav__link active-link' : 'nav__link'}>
+                <RouterLink to='/#faq' onClick={() => setActiveNav('#faq')}>
+                  <a className={activeNav === '#faq' ? 'nav__link active-link' : 'nav__link'}>
                     FAQ
                   </a>
                 </RouterLink>
