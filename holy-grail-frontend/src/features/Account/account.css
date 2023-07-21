@@ -1,0 +1,16 @@
+.account__page {
+    padding-top: calc(var(--header-height) + 3rem);
+    min-height: calc(80vh - var(--header-height));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.account__details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
