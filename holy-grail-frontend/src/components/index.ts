@@ -11,3 +11,4 @@ export * from './Pagination';
 export * from './Text';
 export * from './TextLink';
 export * from './Title';
+export * from './VerticalNav';

@@ -16,6 +16,7 @@ import {
   NotFound,
   SignUpPage,
   UploadPage,
+  AccountPage,
 } from '@features';
 import { AuthProvider, MediaQueryProvider } from '@providers';
 import { createTheme, ThemeProvider } from '@mui/material';
@@ -66,6 +67,7 @@ export function App() {
             <Route path='/update-password' element={<ChangePasswordPage />} />
             <Route path='/reset-password' element={<ResetPasswordPage />} />
             <Route path='/verify-account' element={<AccountVerifyPage />} />
+            <Route path='/account' element={<AccountPage />} />
             <Route path='*' element={<NotFound />} />
           </Routes>
           <Footer />
