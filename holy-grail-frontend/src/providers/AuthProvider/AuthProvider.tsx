@@ -34,8 +34,11 @@ interface AuthProviderProps {
 export const AuthContext = createContext<AuthContextType>({
   user: null,
   isLoading: true,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   login: async () => {},
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   logout: () => {},
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   updateUser: () => {},
   register: async () => 0,
 });
@@ -51,18 +54,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
     setIsLoading(false);
   }, []);
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      if (user && isTokenExpired()) {
-        logout();
-      }
-    }, 60);
-
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, [user]);
 
   const login = async (username: string, password: string) => {
     const response = await apiClient.post('/auth/login', {
