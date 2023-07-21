@@ -21,3 +21,30 @@ apiClient.interceptors.request.use(
     return Promise.reject(error);
   },
 );
+
+apiClient.interceptors.request.use(
+  (config) => {
+    const accessToken = localStorage.getItem('access_token');
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
+    } else {
+      localStorage.removeItem('user');
+      localStorage.removeItem('access_token');
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  },
+);
+
+apiClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      localStorage.removeItem('user');
+      localStorage.removeItem('access_token');
+    }
+    return Promise.reject(error);
+  },
+);

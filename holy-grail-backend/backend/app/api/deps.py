@@ -63,9 +63,12 @@ async def get_verified_user(
                         verified=user.verified,
                     )
 
+                else:
+                    raise AppError.PERMISSION_DENIED_ERROR
+
     except JWTError as exc:
         raise AppError.INVALID_CREDENTIALS_ERROR from exc
-    raise AppError.INVALID_CREDENTIALS_ERROR
+    raise AppError.PERMISSION_DENIED_ERROR
 
 
 async def get_current_user(
@@ -84,9 +87,12 @@ async def get_current_user(
                     verified=user.verified,
                 )
 
+            else:
+                raise AppError.PERMISSION_DENIED_ERROR
+
     except JWTError as exc:
         raise AppError.INVALID_CREDENTIALS_ERROR from exc
-    raise AppError.INVALID_CREDENTIALS_ERROR
+    raise AppError.PERMISSION_DENIED_ERROR
 
 
 async def get_admin(
@@ -106,9 +112,12 @@ async def get_admin(
                         verified=user.verified,
                     )
 
+                else:
+                    raise AppError.PERMISSION_DENIED_ERROR
+
     except JWTError as exc:
         raise AppError.INVALID_CREDENTIALS_ERROR from exc
-    raise AppError.INVALID_CREDENTIALS_ERROR
+    raise AppError.PERMISSION_DENIED_ERROR
 
 
 async def get_developer(
@@ -128,9 +137,12 @@ async def get_developer(
                         verified=user.verified,
                     )
 
+                else:
+                    raise AppError.PERMISSION_DENIED_ERROR
+
     except JWTError as exc:
         raise AppError.INVALID_CREDENTIALS_ERROR from exc
-    raise AppError.INVALID_CREDENTIALS_ERROR
+    raise AppError.PERMISSION_DENIED_ERROR
 
 
 SessionUser = Annotated[CurrentUserSchema, Depends(get_current_user)]

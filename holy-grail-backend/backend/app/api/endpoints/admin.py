@@ -10,16 +10,6 @@ from app.schemas.library import NoteSchema
 router = APIRouter()
 
 
-@router.put("/update_role")
-async def admin_update_role(
-    session: CurrentSession,
-    authenticated: SessionAdmin,  # pylint: disable=W0613
-    data: UpdateRoleSchema,
-):
-    credentials = await Account.update_role(session, data)
-    return credentials
-
-
 @router.put("/approve/{id}", response_model=NoteSchema)
 async def approve_note(
     session: CurrentSession,
@@ -50,7 +40,7 @@ async def get_account(
 
 @router.put("/user/{id}", response_model=CurrentUserSchema)
 async def update_account(
-    session: SessionAdmin,
+    session: CurrentSession,
     authenticated: SessionDeveloper,  # pylint: disable=W0613
     id: int,  # pylint: disable=W0622, C0103
     data: UpdateUserRoleSchema,
