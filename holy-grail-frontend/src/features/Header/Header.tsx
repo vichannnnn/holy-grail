@@ -1,10 +1,10 @@
-import './header.css';
 import { useContext, useEffect, useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { resendVerificationEmail } from '@api/auth';
-import { AlertToast, AlertProps, HeaderRightButton } from '@components';
+import { AlertToast, AlertProps } from '@components';
 import { AuthContext, MediaQueryContext } from '@providers';
 import { UserButton } from './UserButton';
+import './header.css';
 import Logo from '../../assets/placeholder.svg';
 
 export const Header = () => {
