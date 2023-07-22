@@ -1,30 +1,16 @@
 import { useState, useEffect, useContext, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { fetchData, CategoryType, SubjectType, DocumentType } from '@api/library';
+import { AxiosResponse } from 'axios';
+import { fetchData } from '@api/library';
 import { createNote } from '@api/actions';
 import { AlertToast, AlertProps } from '@components';
-import { DeleteAlert } from '@features';
+import { DeleteAlert, OptionsProps, SelectedFilesProps, NotesProps } from '@features';
 import { AuthContext } from '@providers';
 import { ThemeProvider, createTheme } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-import { UploadNote, NoteInfoProps } from './UploadNote';
+import { UploadNote } from './UploadNote';
 import { FileSelect } from './FileSelect';
-import { AxiosResponse } from 'axios';
 import './upload.css';
-
-export interface OptionsProps {
-  categories: CategoryType[];
-  subjects: SubjectType[];
-  types: DocumentType[];
-}
-
-export interface SelectedFilesProps {
-  [key: string]: [File, string];
-}
-
-interface NotesProps {
-  [key: string]: NoteInfoProps;
-}
 
 export const UploadPage = () => {
   const [openAlert, setOpenAlert] = useState<boolean>(false);

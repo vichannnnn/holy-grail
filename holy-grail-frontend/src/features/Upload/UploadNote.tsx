@@ -1,6 +1,8 @@
 import { useState, useContext, useEffect } from 'react';
-import { OptionsProps } from '@features';
+import { fetchData, fetchCategory, SubjectType } from '@api/library';
 import { Combobox } from '@components';
+import { UploadNoteProps } from '@features';
+import { MediaQueryContext, AuthContext } from '@providers';
 import {
   createTheme,
   ThemeProvider,
@@ -11,28 +13,8 @@ import {
   IconButton,
   Box,
 } from '@mui/material';
-import { MediaQueryContext, AuthContext } from '@providers';
-import { fetchData, fetchCategory, SubjectType } from '@api/library';
-
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DeleteIcon from '@mui/icons-material/Delete';
-
-export type { NoteInfoProps };
-interface NoteInfoProps {
-  category: number;
-  subject: number;
-  type: number;
-  name: string | '';
-  valid: boolean;
-}
-
-interface UploadNoteProps {
-  fileName: string;
-  options: OptionsProps | null;
-  saveNoteUpdates: (note: NoteInfoProps) => void;
-  deleteNote: () => void;
-  errors?: string[];
-}
 
 export const UploadNote = ({
   fileName,
