@@ -1,19 +1,15 @@
 import { useState } from 'react';
+import { EditModalProps } from '@features';
 import {
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  Stack,
   TextField,
 } from '@mui/material';
-
-interface EditModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSubmit: (newValue: string) => Promise<void>;
-  initialName: string;
-}
+import './developer.css';
 
 export const DeveloperEditModal = ({ isOpen, onClose, onSubmit, initialName }: EditModalProps) => {
   const [name, setName] = useState(initialName);
@@ -26,21 +22,27 @@ export const DeveloperEditModal = ({ isOpen, onClose, onSubmit, initialName }: E
   return (
     <Dialog open={isOpen} onClose={onClose}>
       <DialogTitle>Edit Name</DialogTitle>
-      <DialogContent>
-        <TextField
-          autoFocus
-          margin='dense'
-          label='Name'
-          type='text'
-          fullWidth
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
-        <Button onClick={handleSubmit}>Submit</Button>
-      </DialogActions>
+      <Stack direction='column' sx={{ alignItems: 'center', justifyContent: 'center' }}>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin='dense'
+            label='Name'
+            type='text'
+            fullWidth
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button type='submit' variant='contained' onClick={handleSubmit}>
+            Submit
+          </Button>
+          <Button type='submit' variant='contained' onClick={onClose}>
+            Cancel
+          </Button>
+        </DialogActions>
+      </Stack>
     </Dialog>
   );
 };

@@ -8,19 +8,8 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
+import { RoleEnum, User } from '@features';
 import EditIcon from '@mui/icons-material/Edit';
-
-export interface User {
-  user_id: number;
-  username: string;
-  role: RoleEnum;
-}
-
-export enum RoleEnum {
-  USER = 1,
-  ADMIN = 2,
-  DEVELOPER = 3,
-}
 
 export const TabContentUsers = ({
   data,

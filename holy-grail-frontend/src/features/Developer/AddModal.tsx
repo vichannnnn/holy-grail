@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { AddModalProps } from '@features';
 import {
   Button,
   Dialog,
@@ -8,12 +9,6 @@ import {
   DialogTitle,
   TextField,
 } from '@mui/material';
-
-interface AddModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSubmit: (newName: string) => void;
-}
 
 export const AddModal = ({ isOpen, onClose, onSubmit }: AddModalProps) => {
   const [name, setName] = useState('');

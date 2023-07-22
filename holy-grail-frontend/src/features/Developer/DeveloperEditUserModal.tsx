@@ -1,16 +1,7 @@
-import { useState } from 'react';
-import { Box, Button, MenuItem, Modal, Select, SelectChangeEvent } from '@mui/material';
-import { RoleEnum } from './TabContentUsers';
-import { VStack } from '@chakra-ui/react';
-
-interface EditUserModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSubmit: (newRole: RoleEnum) => Promise<void>;
-  initialRole: RoleEnum;
-  userName: string;
-  userId: number;
-}
+import { useState, FormEvent } from 'react';
+import { RoleEnum, EditUserModalProps } from '@features';
+import { Box, Button, MenuItem, Modal, Select, SelectChangeEvent, Stack } from '@mui/material';
+import './developer.css';
 
 export const DeveloperEditUserModal = ({
   isOpen,
@@ -26,7 +17,7 @@ export const DeveloperEditUserModal = ({
     setNewRole(event.target.value as RoleEnum);
   };
 
-  const handleFormSubmit = async (event: React.FormEvent) => {
+  const handleFormSubmit = async (event: FormEvent) => {
     event.preventDefault();
     await onSubmit(newRole);
     onClose();
@@ -52,14 +43,21 @@ export const DeveloperEditUserModal = ({
         <h2>User ID: {userId}</h2>
         <h3>Username: {userName}</h3>
         <form onSubmit={handleFormSubmit}>
-          <VStack mt='20%'>
+          <Stack
+            direction='column'
+            sx={{ alignItems: 'center', marginTop: '20%', justifyContent: 'center' }}
+          >
             <Select value={newRole} onChange={handleRoleChange}>
               <MenuItem value={RoleEnum.USER}>User</MenuItem>
               <MenuItem value={RoleEnum.ADMIN}>Admin</MenuItem>
               <MenuItem value={RoleEnum.DEVELOPER}>Developer</MenuItem>
             </Select>
-            <Button type='submit'>Submit</Button>
-          </VStack>
+            <div style={{ marginTop: '20%' }}>
+              <Button type='submit' variant='contained'>
+                Submit
+              </Button>
+            </div>
+          </Stack>
         </form>
       </Box>
     </Modal>

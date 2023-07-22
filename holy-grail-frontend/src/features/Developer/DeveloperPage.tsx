@@ -1,4 +1,4 @@
-import { DeveloperScreen } from './DeveloperScreen';
+import { DeveloperScreen } from '@features';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import './developer.css';
 
