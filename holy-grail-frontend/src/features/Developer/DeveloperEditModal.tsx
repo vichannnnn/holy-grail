@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { EditModalProps } from '@features';
+import { EditModalProps } from './types';
 import {
   Button,
   Dialog,
