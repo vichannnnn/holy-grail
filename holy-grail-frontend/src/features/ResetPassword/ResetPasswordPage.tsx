@@ -49,7 +49,7 @@ export const ResetPasswordPage = () => {
         ) : isFailed ? (
           <div className='section__subtitle '>
             The password reset link is invalid or has expired. Please click{' '}
-            <Link component='button' onClick={handleForgotPassword} underline='always'>
+            <Link onClick={handleForgotPassword} underline='always'>
               here
             </Link>{' '}
             to reset your password again.

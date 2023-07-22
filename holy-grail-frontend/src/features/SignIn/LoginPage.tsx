@@ -82,13 +82,13 @@ export const LoginPage = () => {
         <Box>
           <div className='login__footer'>
             Forgot your password?{' '}
-            <Link component='button' onClick={goToForgotPassword} underline='always'>
+            <Link onClick={goToForgotPassword} underline='always'>
               Click here.
             </Link>
           </div>
           <div className='login__footer'>
             Not a member?{' '}
-            <Link component='button' onClick={goToRegister} underline='always'>
+            <Link onClick={goToRegister} underline='always'>
               Register now.
             </Link>
           </div>
