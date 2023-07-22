@@ -67,7 +67,7 @@ export const AccountVerifyPage = () => {
         ) : isFailed ? (
           <div className='section__subtitle'>
             The account verification link is invalid or has expired. Please click{' '}
-            <Link component='button' onClick={handleResendVerificationEmail} underline='always'>
+            <Link onClick={handleResendVerificationEmail} underline='always'>
               here
             </Link>{' '}
             to send another verification email.

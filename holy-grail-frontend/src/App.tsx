@@ -26,6 +26,7 @@ const customMuiTheme = {
       styleOverrides: {
         root: {
           textDecoration: 'none',
+          cursor: 'pointer',
           ':hover': {
             textDecoration: 'underline',
           },

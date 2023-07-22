@@ -171,7 +171,7 @@ export const SignUpPage = () => {
         <Box>
           <div className='login__footer'>
             Already a member?{' '}
-            <Link component='button' onClick={() => navigate('/login')} underline='always'>
+            <Link onClick={() => navigate('/login')} underline='always'>
               Log in here.
             </Link>
           </div>
