@@ -1,19 +1,17 @@
 import { FormEvent, useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AccountForm, AlertToast, AlertProps } from '@components';
+import { AuthContext } from '@providers';
 import {
   Box,
   Button,
   FormControl,
-  FormLabel,
-  Input,
   Stack,
   createTheme,
   TextField,
   Link,
   ThemeProvider,
 } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import { AccountForm, AlertToast, AlertProps } from '@components';
-import { AuthContext } from '@providers';
 import './login.css';
 
 export const LoginPage = () => {
