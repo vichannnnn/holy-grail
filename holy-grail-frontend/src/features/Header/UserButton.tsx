@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState, MouseEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { HeaderRightButton } from '@components';
 import { AuthContext, MediaQueryContext } from '@providers';
+import { useNavigation } from '@utils';
 import { IconButton, Menu, MenuItem } from '@mui/material';
 import DensityMediumIcon from '@mui/icons-material/DensityMedium';
 
@@ -22,10 +22,10 @@ const MobileButtonFace = ({
 };
 
 export const UserButton = ({ children }: UserButtonProps) => {
+  const { goToLoginPage } = useNavigation();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { isDesktop } = useContext(MediaQueryContext);
   const { user } = useContext(AuthContext);
-  const navigate = useNavigate();
 
   useEffect(() => {
     setAnchorEl(null);
@@ -35,7 +35,7 @@ export const UserButton = ({ children }: UserButtonProps) => {
     <>
       {isDesktop ? (
         <HeaderRightButton
-          onClick={(event) => (user ? setAnchorEl(event.currentTarget) : navigate('/login'))}
+          onClick={(event) => (user ? setAnchorEl(event.currentTarget) : goToLoginPage())}
           sx={{ width: 'fit-content' }}
         >
           {user ? user.username : 'Log In'}

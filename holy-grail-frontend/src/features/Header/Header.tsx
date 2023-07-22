@@ -1,15 +1,26 @@
 import { useContext, useEffect, useState } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import { resendVerificationEmail } from '@api/auth';
 import { AlertToast, AlertProps } from '@components';
+import { UserButton } from '@features';
 import { AuthContext, MediaQueryContext } from '@providers';
-import { UserButton } from './UserButton';
+import { useNavigation } from '@utils';
+
 import './header.css';
 import Logo from '../../assets/placeholder.svg';
 
 export const Header = () => {
+  const {
+    goToHome,
+    goToLibrary,
+    goToFAQ,
+    goToUpdatePassword,
+    goToUploadPage,
+    goToAdminPanel,
+    goToDeveloperPanel,
+    goToLoginPage,
+  } = useNavigation();
   const { user, logout } = useContext(AuthContext);
-  const navigate = useNavigate();
   const { isDesktop } = useContext(MediaQueryContext);
   const [activeNav, setActiveNav] = useState('#home');
 
@@ -25,15 +36,15 @@ export const Header = () => {
 
     if (!isDesktop) {
       children.push(
-        { label: 'Home', callback: () => navigate('/') },
-        { label: 'Library', callback: () => navigate('/#library') },
-        { label: 'FAQ', callback: () => navigate('/#faq') },
-        { label: 'Contribute', callback: () => navigate('/upload') },
+        { label: 'Home', callback: () => goToHome() },
+        { label: 'Library', callback: () => goToLibrary() },
+        { label: 'FAQ', callback: () => goToFAQ() },
+        { label: 'Contribute', callback: () => goToUploadPage() },
       );
     }
 
     if (user) {
-      children.push({ label: 'Change Password', callback: () => navigate('/update-password') });
+      children.push({ label: 'Change Password', callback: () => goToUpdatePassword() });
       if (!user.verified) {
         children.push({
           label: 'Resend Verification Email',
@@ -41,14 +52,14 @@ export const Header = () => {
         });
       }
       if (user.role > 1) {
-        children.push({ label: 'Admin Panel', callback: () => navigate('/admin') });
+        children.push({ label: 'Admin Panel', callback: () => goToAdminPanel() });
       }
       if (user.role > 2) {
-        children.push({ label: 'Developer Panel', callback: () => navigate('/developer') });
+        children.push({ label: 'Developer Panel', callback: () => goToDeveloperPanel() });
       }
       children.push({ label: 'Log Out', callback: handleLogout });
     } else {
-      children.push({ label: 'Log In', callback: () => navigate('/login') });
+      children.push({ label: 'Log In', callback: () => goToLoginPage() });
     }
 
     setUserButtonChildren(children);

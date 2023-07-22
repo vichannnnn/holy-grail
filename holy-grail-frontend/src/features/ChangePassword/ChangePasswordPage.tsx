@@ -1,19 +1,19 @@
 import { useEffect, useState, FormEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { updatePassword } from '@api/auth';
 import { AccountForm, AlertToast, AlertProps } from '@components';
-import { Button, FormControl, TextField, Stack } from '@mui/material';
 import { PasswordValidationBox } from '@features';
+import { useNavigation } from '@utils';
+import { Button, FormControl, TextField, Stack } from '@mui/material';
 import '../SignIn/login.css';
 
 export const ChangePasswordPage = () => {
+  const { goToHome } = useNavigation();
+
   const [beforePassword, setBeforePassword] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
-
-  const navigate = useNavigate();
 
   const [lengthValid, setLengthValid] = useState(false);
   const [specialCharValid, setSpecialCharValid] = useState(false);
@@ -39,7 +39,7 @@ export const ChangePasswordPage = () => {
         severity: 'success',
       };
 
-      navigate('/', { state: { alertContent: alertContentRedirect } });
+      goToHome({ state: { alertContent: alertContentRedirect } });
     } else {
       setAlertContent({
         title: 'Password update failed.',

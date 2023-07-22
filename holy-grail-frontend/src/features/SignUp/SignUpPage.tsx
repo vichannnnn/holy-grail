@@ -1,12 +1,13 @@
 import { FormEvent, useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { AccountForm, AlertToast, AlertProps } from '@components';
 import { AuthContext } from '@providers';
+import { PasswordValidationBox } from '@features';
+import { useNavigation } from '@utils';
 import { Box, Button, FormControl, TextField, Link, Stack } from '@mui/material';
-import { PasswordValidationBox } from './PasswordValidationBox';
 import '../SignIn/login.css';
 
 export const SignUpPage = () => {
+  const { goToLoginPage } = useNavigation();
   const [username, setUsername] = useState('');
   const [usernameValid, setUsernameValid] = useState(true);
   const [password, setPassword] = useState('');
@@ -15,7 +16,6 @@ export const SignUpPage = () => {
   const { user, register } = useContext(AuthContext);
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
-  const navigate = useNavigate();
 
   const [lengthValid, setLengthValid] = useState(false);
   const [specialCharValid, setSpecialCharValid] = useState(false);
@@ -67,7 +67,7 @@ export const SignUpPage = () => {
           severity: 'success',
         };
 
-        navigate('/', { state: { alertContent: alertContent } });
+        goToLoginPage({ state: { alertContent: alertContent } });
         break;
       case 409:
         alertContent = {
@@ -171,7 +171,7 @@ export const SignUpPage = () => {
         <Box>
           <div className='login__footer'>
             Already a member?{' '}
-            <Link onClick={() => navigate('/login')} underline='always'>
+            <Link onClick={goToLoginPage} underline='always'>
               Log in here.
             </Link>
           </div>

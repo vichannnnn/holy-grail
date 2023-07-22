@@ -1,5 +1,4 @@
 import { useState, useEffect, useContext, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { AxiosResponse } from 'axios';
 import { fetchData } from '@api/library';
 import { createNote } from '@api/actions';
@@ -12,16 +11,17 @@ import {
   UploadNote,
   FileSelect,
 } from '@features';
+import { useNavigation } from '@utils';
 import { AuthContext } from '@providers';
 import { LoadingButton } from '@mui/lab';
 import './upload.css';
 
 export const UploadPage = () => {
+  const { goToHome, goToLoginPage } = useNavigation();
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
 
   const { user, isLoading } = useContext(AuthContext);
-  const navigate = useNavigate();
   const [options, setOptions] = useState<OptionsProps | null>(null);
 
   const key = useRef<number>(0);
@@ -49,14 +49,14 @@ export const UploadPage = () => {
           description: 'You need to be logged in to upload documents.',
           severity: 'error',
         };
-        navigate('/login', { state: { alertContent: alertContentRedirect } });
+        goToLoginPage({ state: { alertContent: alertContentRedirect } });
       } else if (!user.verified) {
         const alertContentNotVerified: AlertProps = {
           title: 'Verification Required',
           description: 'You need to be verified to upload documents.',
           severity: 'error',
         };
-        navigate('/', { state: { alertContent: alertContentNotVerified } });
+        goToHome({ state: { alertContent: alertContentNotVerified } });
       }
     }
   }, [isLoading, user]);
@@ -141,10 +141,10 @@ export const UploadPage = () => {
     };
     setSubmitLoading(false);
     if (response?.status === 200) {
-      navigate('/', { state: { alertContent: statusAlertContent() } });
+      goToHome({ state: { alertContent: statusAlertContent() } });
     }
     if (response?.status === 401) {
-      navigate('/login', { state: { alertContent: statusAlertContent() } });
+      goToLoginPage({ state: { alertContent: statusAlertContent() } });
     }
     setAlertContent(statusAlertContent());
     setOpenAlert(true);

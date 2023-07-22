@@ -1,5 +1,5 @@
 import { PasswordValidationBoxProps } from '@features';
-import { Box, Icon, Stack, createTheme } from '@mui/material';
+import { Box, Icon, Stack } from '@mui/material';
 import { Check, Close } from '@mui/icons-material';
 
 export const PasswordValidationBox = ({
