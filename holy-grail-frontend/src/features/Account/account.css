@@ -2,15 +2,16 @@
     padding-top: calc(var(--header-height) + 3rem);
     min-height: calc(80vh - var(--header-height));
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
 }
 
-.account__details {
+.account__main {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-
+    align-items: flex-start;
+    margin: 2rem;
+    flex-grow: 1;
 }
