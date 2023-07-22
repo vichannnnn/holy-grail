@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { DeleteAlertProps } from '@features';
-import { Box, Button, Modal, Typography, createTheme, ThemeProvider } from '@mui/material';
+import { Box, Button, Modal, Typography } from '@mui/material';
 
 const modalStyle = {
   position: 'absolute' as 'absolute',
@@ -17,25 +17,23 @@ const modalStyle = {
 
 export const DeleteAlert = ({ isOpen, onClose, onConfirm }: DeleteAlertProps) => {
   const cancelRef = useRef<HTMLButtonElement | null>(null);
-  const muiTheme = createTheme();
+
   return (
-    <ThemeProvider theme={muiTheme}>
-      <Modal open={isOpen} onClose={onClose}>
-        <Box sx={modalStyle}>
-          <Typography sx={{ marginBottom: '4%', fontWeight: 'bold', fontSize: '130%' }}>
-            Delete Note
-          </Typography>
-          <Typography sx={{ marginBottom: '2%' }}>
-            Are you sure you want to delete this note? This action cannot be undone.
-          </Typography>
-          <Button ref={cancelRef} onClick={onClose} variant='contained' sx={{ margin: '1%' }}>
-            Cancel
-          </Button>
-          <Button onClick={onConfirm} variant='contained' color='error' sx={{ margin: '1%' }}>
-            Confirm
-          </Button>
-        </Box>
-      </Modal>
-    </ThemeProvider>
+    <Modal open={isOpen} onClose={onClose}>
+      <Box sx={modalStyle}>
+        <Typography sx={{ marginBottom: '4%', fontWeight: 'bold', fontSize: '130%' }}>
+          Delete Note
+        </Typography>
+        <Typography sx={{ marginBottom: '2%' }}>
+          Are you sure you want to delete this note? This action cannot be undone.
+        </Typography>
+        <Button ref={cancelRef} onClick={onClose} variant='contained' sx={{ margin: '1%' }}>
+          Cancel
+        </Button>
+        <Button onClick={onConfirm} variant='contained' color='error' sx={{ margin: '1%' }}>
+          Confirm
+        </Button>
+      </Box>
+    </Modal>
   );
 };

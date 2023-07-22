@@ -2,12 +2,11 @@ import { useEffect, useState, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { updatePassword } from '@api/auth';
 import { AccountForm, AlertToast, AlertProps } from '@components';
-import { Button, FormControl, TextField, createTheme, ThemeProvider, Stack } from '@mui/material';
+import { Button, FormControl, TextField, Stack } from '@mui/material';
 import { PasswordValidationBox } from '@features';
 import '../SignIn/login.css';
 
 export const ChangePasswordPage = () => {
-  const muiTheme = createTheme();
   const [beforePassword, setBeforePassword] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
@@ -52,60 +51,58 @@ export const ChangePasswordPage = () => {
   };
 
   return (
-    <ThemeProvider theme={muiTheme}>
-      <section className='updatePw section container'>
-        <AccountForm>
-          <div className='login__title'>Update Password</div>
-          <div className='section__subtitle'>You can change your password here.</div>
+    <section className='updatePw section container'>
+      <AccountForm>
+        <div className='login__title'>Update Password</div>
+        <div className='section__subtitle'>You can change your password here.</div>
 
-          <form className='login__fields' onSubmit={handleUpdatePassword}>
-            <Stack direction='column' spacing={4}>
-              <FormControl id='before-password'>
-                <TextField
-                  type='password'
-                  label='Current Password'
-                  value={beforePassword}
-                  onChange={(e) => setBeforePassword(e.target.value)}
-                  required
-                />
-              </FormControl>
-              <FormControl id='password'>
-                <TextField
-                  type='password'
-                  label='New Password'
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-              </FormControl>
-              <FormControl id='repeat-password'>
-                <TextField
-                  type='password'
-                  label='Repeat Password'
-                  value={repeatPassword}
-                  onChange={(e) => setRepeatPassword(e.target.value)}
-                  required
-                />
-              </FormControl>
-              <PasswordValidationBox
-                lengthValid={lengthValid}
-                specialCharValid={specialCharValid}
-                capitalLetterValid={capitalLetterValid}
-                repeatPasswordValid={repeatPasswordValid}
-                allCriteriaMet={allCriteriaMet}
+        <form className='login__fields' onSubmit={handleUpdatePassword}>
+          <Stack direction='column' spacing={4}>
+            <FormControl id='before-password'>
+              <TextField
+                type='password'
+                label='Current Password'
+                value={beforePassword}
+                onChange={(e) => setBeforePassword(e.target.value)}
+                required
               />
-              <Button type='submit' variant='contained' fullWidth>
-                Update Password
-              </Button>
-            </Stack>
-          </form>
-        </AccountForm>
-        <AlertToast
-          openAlert={openAlert}
-          onClose={() => setOpenAlert(false)}
-          alertContent={alertContent}
-        />
-      </section>
-    </ThemeProvider>
+            </FormControl>
+            <FormControl id='password'>
+              <TextField
+                type='password'
+                label='New Password'
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </FormControl>
+            <FormControl id='repeat-password'>
+              <TextField
+                type='password'
+                label='Repeat Password'
+                value={repeatPassword}
+                onChange={(e) => setRepeatPassword(e.target.value)}
+                required
+              />
+            </FormControl>
+            <PasswordValidationBox
+              lengthValid={lengthValid}
+              specialCharValid={specialCharValid}
+              capitalLetterValid={capitalLetterValid}
+              repeatPasswordValid={repeatPasswordValid}
+              allCriteriaMet={allCriteriaMet}
+            />
+            <Button type='submit' variant='contained' fullWidth>
+              Update Password
+            </Button>
+          </Stack>
+        </form>
+      </AccountForm>
+      <AlertToast
+        openAlert={openAlert}
+        onClose={() => setOpenAlert(false)}
+        alertContent={alertContent}
+      />
+    </section>
   );
 };

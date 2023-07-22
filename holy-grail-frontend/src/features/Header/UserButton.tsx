@@ -2,7 +2,7 @@ import { useContext, useEffect, useState, MouseEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { HeaderRightButton } from '@components';
 import { AuthContext, MediaQueryContext } from '@providers';
-import { IconButton, Menu, MenuItem, createTheme, ThemeProvider } from '@mui/material';
+import { IconButton, Menu, MenuItem } from '@mui/material';
 import DensityMediumIcon from '@mui/icons-material/DensityMedium';
 
 interface UserButtonProps {
@@ -22,7 +22,6 @@ const MobileButtonFace = ({
 };
 
 export const UserButton = ({ children }: UserButtonProps) => {
-  const muiTheme = createTheme();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { isDesktop } = useContext(MediaQueryContext);
   const { user } = useContext(AuthContext);
@@ -33,7 +32,7 @@ export const UserButton = ({ children }: UserButtonProps) => {
   }, [isDesktop, user]);
 
   return (
-    <ThemeProvider theme={muiTheme}>
+    <>
       {isDesktop ? (
         <HeaderRightButton
           onClick={(event) => (user ? setAnchorEl(event.currentTarget) : navigate('/login'))}
@@ -79,7 +78,7 @@ export const UserButton = ({ children }: UserButtonProps) => {
           </MenuItem>
         ))}
       </Menu>
-    </ThemeProvider>
+    </>
   );
 };
 
