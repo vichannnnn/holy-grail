@@ -1,4 +1,3 @@
-import { Box } from '@mui/material';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import {
   CategoryType,
@@ -12,6 +11,7 @@ import {
 import { deleteNote, updateNote } from '@api/actions';
 import { AdminDeleteIcon, AdminEditIcon, NotesTable } from '@components';
 import { AuthContext } from '@providers';
+import { Box } from '@mui/material';
 import { DeleteAlert, ApprovalEditModal } from '../Approval';
 import './library.css';
 
