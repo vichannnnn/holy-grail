@@ -9,6 +9,5 @@ export async function registerAccount(accountDetails: AccountDetails): Promise<A
     repeat_password: accountDetails.repeatPassword,
     email: accountDetails.email,
   });
-  console.log('registerAccount response', response);
   return response;
 }
