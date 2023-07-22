@@ -3,17 +3,15 @@ import { AuthContext } from '@providers';
 import './landing.css';
 
 export const Hero = () => {
-  const { user, logout } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   return (
     <section className='home section container' id='home'>
       <div className='section__title'>
-        <span>Hello</span>
-        {user ? (
-          <span> {user.username}, welcome back to the Holy Grail</span>
-        ) : (
-          <span>, welcome to the Holy Grail</span>
-        )}
+        <span>Hello, </span>
+        <span>
+          {user ? `${user.username}, welcome back to the Holy Grail` : 'welcome to the Holy Grail'}
+        </span>
       </div>
       <div className='section__subtitle'>
         A central repository for your revision materials, consolidated into a library.
