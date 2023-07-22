@@ -7,7 +7,7 @@ export interface DeleteAlertProps {
   onConfirm: () => void;
 }
 
-export interface EditModalProps {
+export interface ApprovalEditModalProps {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: (

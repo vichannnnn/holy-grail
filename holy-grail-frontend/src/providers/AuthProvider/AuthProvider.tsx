@@ -13,7 +13,7 @@ export const AuthContext = createContext<AuthContextType>({
   logout: () => {},
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   updateUser: () => {},
-  register: async () => 0,
+  registerUserAccount: async () => 0,
 });
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     localStorage.setItem('user', JSON.stringify(updatedUser));
   };
 
-  const register = async (accountDetails: AccountDetails): Promise<number> => {
+  const registerUserAccount = async (accountDetails: AccountDetails): Promise<number> => {
     try {
       const response: AxiosResponse = await registerAccount(accountDetails);
       const user: CurrentUserWithJWT = response.data;
@@ -75,7 +75,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         login,
         logout,
         updateUser,
-        register,
+        registerUserAccount,
       }}
     >
       {!isLoading ? children : 'Loading...'}

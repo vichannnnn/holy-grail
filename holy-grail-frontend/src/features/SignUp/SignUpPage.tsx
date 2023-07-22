@@ -1,62 +1,36 @@
-import { FormEvent, useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { AccountForm, AlertToast, AlertProps } from '@components';
 import { AuthContext } from '@providers';
 import { PasswordValidationBox } from '@features';
 import { useNavigation } from '@utils';
+import { SignUpValidation } from '@forms/validation';
 import { Box, Button, FormControl, TextField, Link, Stack } from '@mui/material';
 import '../SignIn/login.css';
 
 export const SignUpPage = () => {
   const { goToLoginPage } = useNavigation();
-  const [username, setUsername] = useState('');
-  const [usernameValid, setUsernameValid] = useState(true);
-  const [password, setPassword] = useState('');
-  const [repeatPassword, setRepeatPassword] = useState('');
-  const [email, setEmail] = useState('');
-  const { user, register } = useContext(AuthContext);
+  const {
+    register,
+    watch,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(SignUpValidation),
+  });
+
+  const { user, registerUserAccount } = useContext(AuthContext);
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
 
-  const [lengthValid, setLengthValid] = useState(false);
-  const [specialCharValid, setSpecialCharValid] = useState(false);
-  const [capitalLetterValid, setCapitalLetterValid] = useState(false);
-  const [repeatPasswordValid, setRepeatPasswordValid] = useState(false);
-  const allCriteriaMet =
-    lengthValid && specialCharValid && capitalLetterValid && repeatPasswordValid;
-
-  useEffect(() => {
-    const usernameRegex = /^[a-zA-Z0-9]{4,20}$/;
-    setUsernameValid(usernameRegex.test(username));
-  }, [username]);
-
-  useEffect(() => {
-    setLengthValid(password.length <= 30 && password.length >= 8);
-    setSpecialCharValid(/[!@#$%^&*]/.test(password));
-    setCapitalLetterValid(/[A-Z]/.test(password));
-    setRepeatPasswordValid(password === repeatPassword && password !== '');
-  }, [password, repeatPassword]);
-
-  const handleRegister = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (!usernameValid) {
-      setAlertContent({
-        title: 'Invalid username.',
-        description:
-          'Please ensure your username is valid. It should contain 4 to 20 alphanumeric characters.',
-        severity: 'error',
-      });
-      setOpenAlert(true);
-      return;
-    }
-
-    const status = await register({
-      username: username,
-      password: password,
-      repeatPassword: repeatPassword,
-      email: email,
-    });
-
+  const handleRegister = async (formData: {
+    username: string;
+    password: string;
+    repeatPassword: string;
+    email: string;
+  }) => {
+    const status = await registerUserAccount(formData);
     let alertContent: AlertProps;
 
     switch (status) {
@@ -117,14 +91,15 @@ export const SignUpPage = () => {
         <div className='login__title'>Sign up</div>
         <div className='section__subtitle'>Create an account to access all features.</div>
 
-        <form className='login__fields' onSubmit={handleRegister}>
+        <form className='login__fields' onSubmit={handleSubmit(handleRegister)}>
           <Stack direction='column' spacing={4}>
             <FormControl id='username'>
               <TextField
                 type='text'
                 label='Username'
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                error={Boolean(errors.username)}
+                helperText={errors.username?.message}
+                {...register('username')}
                 required
               />
             </FormControl>
@@ -132,8 +107,9 @@ export const SignUpPage = () => {
               <TextField
                 type='email'
                 label='Email Address'
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                error={Boolean(errors.email)}
+                helperText={errors.email?.message}
+                {...register('email')}
                 required
               />
             </FormControl>
@@ -141,8 +117,9 @@ export const SignUpPage = () => {
               <TextField
                 type='password'
                 label='Password'
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                error={Boolean(errors.password)}
+                helperText={errors.password?.message}
+                {...register('password')}
                 required
               />
             </FormControl>
@@ -150,17 +127,15 @@ export const SignUpPage = () => {
               <TextField
                 type='password'
                 label='Repeat Password'
-                value={repeatPassword}
-                onChange={(e) => setRepeatPassword(e.target.value)}
+                error={Boolean(errors.repeatPassword)}
+                helperText={errors.repeatPassword?.message}
+                {...register('repeatPassword')}
                 required
               />
             </FormControl>
             <PasswordValidationBox
-              lengthValid={lengthValid}
-              specialCharValid={specialCharValid}
-              capitalLetterValid={capitalLetterValid}
-              repeatPasswordValid={repeatPasswordValid}
-              allCriteriaMet={allCriteriaMet}
+              password={watch('password')}
+              repeatPassword={watch('repeatPassword')}
             />
 
             <Button type='submit' variant='contained' fullWidth>
