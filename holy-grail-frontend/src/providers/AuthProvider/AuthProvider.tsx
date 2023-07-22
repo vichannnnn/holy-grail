@@ -1,35 +1,8 @@
-import { createContext, useEffect, useState, ReactNode } from 'react';
+import { createContext, useEffect, useState } from 'react';
+import { AxiosError, AxiosResponse } from 'axios';
 import { apiClient } from '@apiClient';
 import { AccountDetails, registerAccount } from '@api/auth';
-import { AxiosError, AxiosResponse } from 'axios';
-
-export interface User {
-  user_id: number;
-  username: string;
-  email: string;
-  role: number;
-  verified: boolean;
-}
-
-export interface CurrentUserWithJWT {
-  data: User;
-  access_token: string;
-  token_type: string;
-  exp: number;
-}
-
-interface AuthContextType {
-  user: User | null;
-  isLoading: boolean;
-  login: (username: string, password: string) => Promise<void>;
-  logout: () => void;
-  updateUser: (updatedUser: User) => void;
-  register: (accountDetails: AccountDetails) => Promise<number>;
-}
-
-interface AuthProviderProps {
-  children: ReactNode;
-}
+import { AuthContextType, AuthProviderProps, User, CurrentUserWithJWT } from '@providers';
 
 export const AuthContext = createContext<AuthContextType>({
   user: null,
