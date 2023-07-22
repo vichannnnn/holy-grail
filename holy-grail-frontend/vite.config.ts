@@ -15,7 +15,7 @@ export default ({ mode }) => {
         '@features': path.resolve(__dirname, 'src/features/'),
         '@providers': path.resolve(__dirname, 'src/providers/'),
         '@utils': path.resolve(__dirname, 'src/utils/'),
-        '@forms': path.resolve(__dirname, 'src/utils/forms/'),
+        '@forms/validation': path.resolve(__dirname, 'src/utils/forms/validation/'),
       },
     },
   });

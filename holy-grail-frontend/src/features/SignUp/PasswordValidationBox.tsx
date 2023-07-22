@@ -15,7 +15,7 @@ export const PasswordValidationBox = ({ password, repeatPassword }: PasswordVali
     setLengthValid(password?.length <= 30 && password?.length >= 8);
     setSpecialCharValid(/[!@#$%^&*]/.test(password || ''));
     setCapitalLetterValid(/[A-Z]/.test(password || ''));
-    setRepeatPasswordValid(password === repeatPassword && password !== '');
+    setRepeatPasswordValid(!!(password && repeatPassword && password === repeatPassword));
   }, [password, repeatPassword]);
 
   const renderValidationMessage = (valid: boolean, message: string) => (

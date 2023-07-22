@@ -26,7 +26,6 @@ export const SignUpPage = () => {
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
 
   const handleRegister = async (formData: AccountDetails) => {
-    console.log('handleRegister called');
     const status = await registerUserAccount(formData);
     let alertContent: AlertProps;
 

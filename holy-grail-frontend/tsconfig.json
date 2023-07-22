@@ -25,7 +25,7 @@
       "@features": ["src/features/"],
       "@providers": ["src/providers/"],
       "@utils": ["src/utils/"],
-      "@forms/*": ["src/utils/forms/*"]
+      "@forms/validation": ["src/utils/forms/validation/"]
     }
   },
   "include": ["src"],

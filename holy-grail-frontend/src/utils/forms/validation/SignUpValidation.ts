@@ -18,9 +18,6 @@ export const SignUpValidation = Yup.object().shape({
     .required('Password is required'),
 
   repeatPassword: Yup.string()
-    .test('repeatPassword-log', 'Invalid repeatPassword', (value, context) => {
-      console.log('Testing repeatPassword:', value);
-      return value === context.parent.password;
-    })
+    .oneOf([Yup.ref('password'), undefined], 'Passwords must match')
     .required('Repeat password is required'),
 });
