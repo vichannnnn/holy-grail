@@ -2,10 +2,20 @@ import { FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { sendResetPasswordEmail } from '@api/auth';
 import { AccountForm, AlertToast, AlertProps } from '@components';
-import { Box, Button, FormControl, FormLabel, Input, Link, VStack } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  FormControl,
+  TextField,
+  Link,
+  Stack,
+  createTheme,
+  ThemeProvider,
+} from '@mui/material';
 import '../SignIn/login.css';
 
 export const ForgotPasswordPage = () => {
+  const muiTheme = createTheme();
   const [email, setEmail] = useState('');
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
   const [openAlert, setOpenAlert] = useState<boolean>(false);
@@ -24,43 +34,45 @@ export const ForgotPasswordPage = () => {
   };
 
   return (
-    <section className='forgotPw section container'>
-      <AccountForm>
-        <div className='login__title'>Forgot Password</div>
-        <div className='section__subtitle'>
-          Please enter the email you registered with to reset your password.
-        </div>
-
-        <form className='login__fields' onSubmit={handleResetPassword}>
-          <VStack spacing='6'>
-            <FormControl id='email'>
-              <FormLabel>Email address</FormLabel>
-              <Input
-                type='email'
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </FormControl>
-            <Button type='submit' colorScheme='blue' w='100%'>
-              Reset Password
-            </Button>
-          </VStack>
-        </form>
-        <Box>
-          <div className='login__footer'>
-            Already a member?{' '}
-            <Link as='button' onClick={() => navigate('/login')} textDecoration='underline'>
-              Log in here.
-            </Link>
+    <ThemeProvider theme={muiTheme}>
+      <section className='forgotPw section container'>
+        <AccountForm>
+          <div className='login__title'>Forgot Password</div>
+          <div className='section__subtitle'>
+            Please enter the email you registered with to reset your password.
           </div>
-        </Box>
-      </AccountForm>
-      <AlertToast
-        openAlert={openAlert}
-        onClose={() => setOpenAlert(false)}
-        alertContent={alertContent}
-      />
-    </section>
+
+          <form className='login__fields' onSubmit={handleResetPassword}>
+            <Stack direction='column' spacing={6}>
+              <FormControl id='email'>
+                <TextField
+                  type='email'
+                  label='Email Address'
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </FormControl>
+              <Button type='submit' variant='contained' fullWidth>
+                Reset Password
+              </Button>
+            </Stack>
+          </form>
+          <Box>
+            <div className='login__footer'>
+              Already a member?{' '}
+              <Link component='button' onClick={() => navigate('/login')} underline='always'>
+                Log in here.
+              </Link>
+            </div>
+          </Box>
+        </AccountForm>
+        <AlertToast
+          openAlert={openAlert}
+          onClose={() => setOpenAlert(false)}
+          alertContent={alertContent}
+        />
+      </section>
+    </ThemeProvider>
   );
 };
