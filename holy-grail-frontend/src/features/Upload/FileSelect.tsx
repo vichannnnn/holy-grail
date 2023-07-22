@@ -1,10 +1,7 @@
 import { useEffect, useRef, useContext } from 'react';
 import { Button, Typography } from '@mui/material';
+import { FileSelectProps } from '@features';
 import { MediaQueryContext } from '@providers';
-
-interface FileSelectProps {
-  handleAddNotes: (files: FileList) => void;
-}
 
 export const FileSelect = ({ handleAddNotes }: FileSelectProps) => {
   const dragDropRef = useRef<HTMLDivElement | null>(null);
