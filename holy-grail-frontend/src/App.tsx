@@ -1,7 +1,6 @@
 import './App.css';
 import { useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
-import { ChakraProvider } from '@chakra-ui/react';
 import { AlertToast, AlertProps } from '@components';
 import {
   AccountVerifyPage,
@@ -36,29 +35,27 @@ export function App() {
   return (
     <MediaQueryProvider>
       <AuthProvider>
-        <ChakraProvider>
-          <Header />
-          <Routes>
-            <Route path='/' element={<LandingPage />} />
-            <Route path='/login' element={<LoginPage />} />
-            <Route path='/register' element={<SignUpPage />} />
-            <Route path='/upload' element={<UploadPage />} />
-            <Route path='/admin' element={<ApprovalPage />} />
-            <Route path='/developer' element={<DeveloperPage />} />
-            <Route path='/forgot-password' element={<ForgotPasswordPage />} />
-            <Route path='/update-password' element={<ChangePasswordPage />} />
-            <Route path='/reset-password' element={<ResetPasswordPage />} />
-            <Route path='/verify-account' element={<AccountVerifyPage />} />
-            <Route path='*' element={<NotFound />} />
-          </Routes>
-          <Footer />
+        <Header />
+        <Routes>
+          <Route path='/' element={<LandingPage />} />
+          <Route path='/login' element={<LoginPage />} />
+          <Route path='/register' element={<SignUpPage />} />
+          <Route path='/upload' element={<UploadPage />} />
+          <Route path='/admin' element={<ApprovalPage />} />
+          <Route path='/developer' element={<DeveloperPage />} />
+          <Route path='/forgot-password' element={<ForgotPasswordPage />} />
+          <Route path='/update-password' element={<ChangePasswordPage />} />
+          <Route path='/reset-password' element={<ResetPasswordPage />} />
+          <Route path='/verify-account' element={<AccountVerifyPage />} />
+          <Route path='*' element={<NotFound />} />
+        </Routes>
+        <Footer />
 
-          <AlertToast
-            openAlert={openAlert}
-            onClose={() => setOpenAlert(false)}
-            alertContent={alertContent}
-          />
-        </ChakraProvider>
+        <AlertToast
+          openAlert={openAlert}
+          onClose={() => setOpenAlert(false)}
+          alertContent={alertContent}
+        />
       </AuthProvider>
     </MediaQueryProvider>
   );
