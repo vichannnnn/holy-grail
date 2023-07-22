@@ -6,8 +6,6 @@ import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import DescriptionIcon from '@mui/icons-material/Description';
 
 import './account.css';
-import { render } from '@headlessui/react/dist/utils/render';
-
 export const AccountPage = () => {
   const muiTheme = createTheme();
   const [title, setTitle] = useState('Account details');
@@ -37,11 +35,13 @@ export const AccountPage = () => {
   return (
     <ThemeProvider theme={muiTheme}>
       <section className='section container account__page'>
-        <div className='section__title'>{title}</div>
-        <div className='section__subtitle'>{subtitle}</div>
         <VerticalNav props={navProps} />
+        <div className='account__main'>
+          <div className='section__title'>{title}</div>
+          <div className='section__subtitle'>{subtitle}</div>
 
-        <div className='account__details'>{renderMenuType}</div>
+          {renderMenuType}
+        </div>
       </section>
     </ThemeProvider>
   );
