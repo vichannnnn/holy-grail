@@ -2,21 +2,11 @@ import { FormEvent, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AccountForm, AlertToast, AlertProps } from '@components';
 import { AuthContext } from '@providers';
-import {
-  Box,
-  Button,
-  FormControl,
-  TextField,
-  Link,
-  Stack,
-  createTheme,
-  ThemeProvider,
-} from '@mui/material';
+import { Box, Button, FormControl, TextField, Link, Stack } from '@mui/material';
 import { PasswordValidationBox } from './PasswordValidationBox';
 import '../SignIn/login.css';
 
 export const SignUpPage = () => {
-  const muiTheme = createTheme();
   const [username, setUsername] = useState('');
   const [usernameValid, setUsernameValid] = useState(true);
   const [password, setPassword] = useState('');
@@ -122,78 +112,76 @@ export const SignUpPage = () => {
   };
 
   return (
-    <ThemeProvider theme={muiTheme}>
-      <section className='signup section container' id='signup'>
-        <AccountForm>
-          <div className='login__title'>Sign up</div>
-          <div className='section__subtitle'>Create an account to access all features.</div>
+    <section className='signup section container' id='signup'>
+      <AccountForm>
+        <div className='login__title'>Sign up</div>
+        <div className='section__subtitle'>Create an account to access all features.</div>
 
-          <form className='login__fields' onSubmit={handleRegister}>
-            <Stack direction='column' spacing={4}>
-              <FormControl id='username'>
-                <TextField
-                  type='text'
-                  label='Username'
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  required
-                />
-              </FormControl>
-              <FormControl id='email'>
-                <TextField
-                  type='email'
-                  label='Email Address'
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-              </FormControl>
-              <FormControl id='password'>
-                <TextField
-                  type='password'
-                  label='Password'
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-              </FormControl>
-              <FormControl id='repeat-password'>
-                <TextField
-                  type='password'
-                  label='Repeat Password'
-                  value={repeatPassword}
-                  onChange={(e) => setRepeatPassword(e.target.value)}
-                  required
-                />
-              </FormControl>
-              <PasswordValidationBox
-                lengthValid={lengthValid}
-                specialCharValid={specialCharValid}
-                capitalLetterValid={capitalLetterValid}
-                repeatPasswordValid={repeatPasswordValid}
-                allCriteriaMet={allCriteriaMet}
+        <form className='login__fields' onSubmit={handleRegister}>
+          <Stack direction='column' spacing={4}>
+            <FormControl id='username'>
+              <TextField
+                type='text'
+                label='Username'
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
               />
+            </FormControl>
+            <FormControl id='email'>
+              <TextField
+                type='email'
+                label='Email Address'
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </FormControl>
+            <FormControl id='password'>
+              <TextField
+                type='password'
+                label='Password'
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </FormControl>
+            <FormControl id='repeat-password'>
+              <TextField
+                type='password'
+                label='Repeat Password'
+                value={repeatPassword}
+                onChange={(e) => setRepeatPassword(e.target.value)}
+                required
+              />
+            </FormControl>
+            <PasswordValidationBox
+              lengthValid={lengthValid}
+              specialCharValid={specialCharValid}
+              capitalLetterValid={capitalLetterValid}
+              repeatPasswordValid={repeatPasswordValid}
+              allCriteriaMet={allCriteriaMet}
+            />
 
-              <Button type='submit' variant='contained' fullWidth>
-                Sign Up
-              </Button>
-            </Stack>
-          </form>
-          <Box>
-            <div className='login__footer'>
-              Already a member?{' '}
-              <Link component='button' onClick={() => navigate('/login')} underline='always'>
-                Log in here.
-              </Link>
-            </div>
-          </Box>
-        </AccountForm>
-        <AlertToast
-          openAlert={openAlert}
-          onClose={() => setOpenAlert(false)}
-          alertContent={alertContent}
-        />
-      </section>
-    </ThemeProvider>
+            <Button type='submit' variant='contained' fullWidth>
+              Sign Up
+            </Button>
+          </Stack>
+        </form>
+        <Box>
+          <div className='login__footer'>
+            Already a member?{' '}
+            <Link component='button' onClick={() => navigate('/login')} underline='always'>
+              Log in here.
+            </Link>
+          </div>
+        </Box>
+      </AccountForm>
+      <AlertToast
+        openAlert={openAlert}
+        onClose={() => setOpenAlert(false)}
+        alertContent={alertContent}
+      />
+    </section>
   );
 };

@@ -4,12 +4,16 @@ import { AxiosResponse } from 'axios';
 import { fetchData } from '@api/library';
 import { createNote } from '@api/actions';
 import { AlertToast, AlertProps } from '@components';
-import { DeleteAlert, OptionsProps, SelectedFilesProps, NotesProps } from '@features';
+import {
+  DeleteAlert,
+  OptionsProps,
+  SelectedFilesProps,
+  NotesProps,
+  UploadNote,
+  FileSelect,
+} from '@features';
 import { AuthContext } from '@providers';
-import { ThemeProvider, createTheme } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-import { UploadNote } from './UploadNote';
-import { FileSelect } from './FileSelect';
 import './upload.css';
 
 export const UploadPage = () => {
@@ -33,8 +37,6 @@ export const UploadPage = () => {
   > | null>(null);
 
   const [submitLoading, setSubmitLoading] = useState<boolean>(false);
-
-  const muiTheme = createTheme();
 
   useEffect(() => {
     fetchData().then((options) => {
@@ -216,61 +218,60 @@ export const UploadPage = () => {
         Upload your materials here! All submitted materials will be reviewed before being published
         to the Holy Grail.
       </div>
-      <ThemeProvider theme={muiTheme}>
-        <div className='upload__multiContainer'>
-          {notes
-            ? Object.keys(notes).map((key) => (
-                <UploadNote
-                  fileName={selectedFiles ? selectedFiles[key][1] : ''}
-                  key={key}
-                  options={options}
-                  saveNoteUpdates={(note) => setNotes({ ...notes, [key]: note })}
-                  deleteNote={() => {
-                    setOpenDeleteAlert(true);
-                    setDeleteAlertKey(key);
-                  }}
-                  errors={serverValidationErrors ? serverValidationErrors[key] : undefined}
-                />
-              ))
-            : null}
-          <FileSelect handleAddNotes={handleAddNotes} />
 
-          <LoadingButton
-            loading={submitLoading}
-            loadingIndicator='Submitting...'
-            sx={{
-              borderColor: 'transparent',
-              backgroundColor: 'rgb(237, 242, 247)',
-              textTransform: 'capitalize',
-              color: 'black',
-              fontWeight: 'bold',
-              width: '10%',
-              aspectRatio: 1.618,
-              borderRadius: '10%',
-            }}
-            onClick={handleSubmit}
-            disabled={handleDisableSumbit()}
-          >
-            Submit
-          </LoadingButton>
-        </div>
-        <DeleteAlert
-          isOpen={openDeleteAlert}
-          onClose={() => {
-            setOpenDeleteAlert(false);
-            setDeleteAlertKey(null);
-          }}
-          onConfirm={() => {
-            handleDeleteNote(deleteAlertKey);
-          }}
-        />
+      <div className='upload__multiContainer'>
+        {notes
+          ? Object.keys(notes).map((key) => (
+              <UploadNote
+                fileName={selectedFiles ? selectedFiles[key][1] : ''}
+                key={key}
+                options={options}
+                saveNoteUpdates={(note) => setNotes({ ...notes, [key]: note })}
+                deleteNote={() => {
+                  setOpenDeleteAlert(true);
+                  setDeleteAlertKey(key);
+                }}
+                errors={serverValidationErrors ? serverValidationErrors[key] : undefined}
+              />
+            ))
+          : null}
+        <FileSelect handleAddNotes={handleAddNotes} />
 
-        <AlertToast
-          openAlert={openAlert}
-          onClose={() => setOpenAlert(false)}
-          alertContent={alertContent}
-        />
-      </ThemeProvider>
+        <LoadingButton
+          loading={submitLoading}
+          loadingIndicator='Submitting...'
+          sx={{
+            borderColor: 'transparent',
+            backgroundColor: 'rgb(237, 242, 247)',
+            textTransform: 'capitalize',
+            color: 'black',
+            fontWeight: 'bold',
+            width: '10%',
+            aspectRatio: 1.618,
+            borderRadius: '10%',
+          }}
+          onClick={handleSubmit}
+          disabled={handleDisableSumbit()}
+        >
+          Submit
+        </LoadingButton>
+      </div>
+      <DeleteAlert
+        isOpen={openDeleteAlert}
+        onClose={() => {
+          setOpenDeleteAlert(false);
+          setDeleteAlertKey(null);
+        }}
+        onConfirm={() => {
+          handleDeleteNote(deleteAlertKey);
+        }}
+      />
+
+      <AlertToast
+        openAlert={openAlert}
+        onClose={() => setOpenAlert(false)}
+        alertContent={alertContent}
+      />
     </section>
   );
 };

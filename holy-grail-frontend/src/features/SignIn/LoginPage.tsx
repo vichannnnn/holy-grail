@@ -2,20 +2,12 @@ import { FormEvent, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AccountForm, AlertToast, AlertProps } from '@components';
 import { AuthContext } from '@providers';
-import {
-  Box,
-  Button,
-  FormControl,
-  Stack,
-  createTheme,
-  TextField,
-  Link,
-  ThemeProvider,
-} from '@mui/material';
+import { useNavigation } from '../../utils/navigate';
+import { Box, Button, FormControl, Stack, TextField, Link } from '@mui/material';
 import './login.css';
 
 export const LoginPage = () => {
-  const muiTheme = createTheme();
+  const { goToHome, goToRegister, goToForgotPassword } = useNavigation();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [openAlert, setOpenAlert] = useState<boolean>(false);
@@ -49,66 +41,64 @@ export const LoginPage = () => {
     }
   };
 
-  const handleRegister = () => {
-    navigate('/register');
-  };
-
-  const handleForgotPassword = () => {
-    navigate('/forgot-password');
-  };
+  // const handleRegister = () => {
+  //   navigate('/register');
+  // };
+  //
+  // const handleForgotPassword = () => {
+  //   navigate('/forgot-password');
+  // };
 
   return (
-    <ThemeProvider theme={muiTheme}>
-      <section className='login section container' id='login'>
-        <AccountForm>
-          <div className='login__title'>Log in</div>
-          <div className='section__subtitle'>Enter your credentials to access your account.</div>
-          <form className='login__fields' onSubmit={handleLogin}>
-            <Stack direction='column' spacing={6}>
-              <FormControl id='username'>
-                <TextField
-                  id='username'
-                  label='Username'
-                  type='text'
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                />
-              </FormControl>
-              <FormControl id='password'>
-                <TextField
-                  id='password'
-                  label='Password'
-                  type='password'
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </FormControl>
-              <Button type='submit' variant='contained' fullWidth>
-                Log In
-              </Button>
-            </Stack>
-          </form>
-          <Box>
-            <div className='login__footer'>
-              Forgot your password?{' '}
-              <Link component='button' onClick={handleForgotPassword} underline='always'>
-                Click here.
-              </Link>
-            </div>
-            <div className='login__footer'>
-              Not a member?{' '}
-              <Link component='button' onClick={handleRegister} underline='always'>
-                Register now.
-              </Link>
-            </div>
-          </Box>
-        </AccountForm>
-        <AlertToast
-          openAlert={openAlert}
-          onClose={() => setOpenAlert(false)}
-          alertContent={alertContent}
-        />
-      </section>
-    </ThemeProvider>
+    <section className='login section container' id='login'>
+      <AccountForm>
+        <div className='login__title'>Log in</div>
+        <div className='section__subtitle'>Enter your credentials to access your account.</div>
+        <form className='login__fields' onSubmit={handleLogin}>
+          <Stack direction='column' spacing={6}>
+            <FormControl id='username'>
+              <TextField
+                id='username'
+                label='Username'
+                type='text'
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </FormControl>
+            <FormControl id='password'>
+              <TextField
+                id='password'
+                label='Password'
+                type='password'
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </FormControl>
+            <Button type='submit' variant='contained' fullWidth>
+              Log In
+            </Button>
+          </Stack>
+        </form>
+        <Box>
+          <div className='login__footer'>
+            Forgot your password?{' '}
+            <Link component='button' onClick={goToForgotPassword} underline='always'>
+              Click here.
+            </Link>
+          </div>
+          <div className='login__footer'>
+            Not a member?{' '}
+            <Link component='button' onClick={goToRegister} underline='always'>
+              Register now.
+            </Link>
+          </div>
+        </Box>
+      </AccountForm>
+      <AlertToast
+        openAlert={openAlert}
+        onClose={() => setOpenAlert(false)}
+        alertContent={alertContent}
+      />
+    </section>
   );
 };

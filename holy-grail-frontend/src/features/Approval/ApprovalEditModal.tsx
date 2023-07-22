@@ -2,16 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import { Combobox } from '@components';
 import { EditModalProps, ValidationResult } from '@features';
-import {
-  Box,
-  Button,
-  createTheme,
-  Modal,
-  TextField,
-  ThemeProvider,
-  Tooltip,
-  Typography,
-} from '@mui/material';
+import { Box, Button, Modal, createTheme, TextField, Tooltip, Typography } from '@mui/material';
 
 export const ApprovalEditModal = ({
   isOpen,
@@ -26,7 +17,7 @@ export const ApprovalEditModal = ({
   documentName,
 }: EditModalProps) => {
   const cancelRef = useRef<HTMLButtonElement | null>(null);
-
+  const muiTheme = createTheme();
   const [newCategory, setNewCategory] = useState<number | ''>('');
   const [newSubject, setNewSubject] = useState<number | ''>('');
   const [newType, setNewType] = useState<number | ''>('');
@@ -49,7 +40,6 @@ export const ApprovalEditModal = ({
     };
   };
 
-  const muiTheme = createTheme();
   const modalStyle = {
     position: 'absolute' as 'absolute',
     top: '50%',
@@ -64,93 +54,91 @@ export const ApprovalEditModal = ({
   };
 
   return (
-    <ThemeProvider theme={muiTheme}>
-      <Modal open={isOpen} onClose={onClose}>
-        <Box sx={modalStyle}>
-          <Typography sx={{ marginBottom: '8%', fontWeight: 'bold', fontSize: '130%' }}>
-            Edit Note Properties
-          </Typography>
+    <Modal open={isOpen} onClose={onClose}>
+      <Box sx={modalStyle}>
+        <Typography sx={{ marginBottom: '8%', fontWeight: 'bold', fontSize: '130%' }}>
+          Edit Note Properties
+        </Typography>
 
-          <TextField
-            variant={'outlined'}
-            label={'Title'}
-            value={newDocName}
-            onChange={(e) => {
-              setNewDocName(e.target.value);
-            }}
-            sx={{ marginBottom: '4%', width: '100%' }}
-          />
+        <TextField
+          variant={'outlined'}
+          label={'Title'}
+          value={newDocName}
+          onChange={(e) => {
+            setNewDocName(e.target.value);
+          }}
+          sx={{ marginBottom: '4%', width: '100%' }}
+        />
 
-          <Combobox
-            label='Category'
-            value={newCategory}
-            options={categories}
-            onChange={(newValue) => setNewCategory(newValue)}
-            disablePortal={true}
-            style={{ marginBottom: '4%' }}
-          />
-          <Combobox
-            label='Subject'
-            value={newSubject}
-            options={subjects}
-            onChange={(newValue) => setNewSubject(newValue)}
-            disablePortal={true}
-            style={{ marginBottom: '4%' }}
-          />
-          <Combobox
-            label='Type'
-            value={newType}
-            options={types}
-            onChange={(newValue) => setNewType(newValue)}
-            disablePortal={true}
-            style={{ marginBottom: '4%' }}
-          />
+        <Combobox
+          label='Category'
+          value={newCategory}
+          options={categories}
+          onChange={(newValue) => setNewCategory(newValue)}
+          disablePortal={true}
+          style={{ marginBottom: '4%' }}
+        />
+        <Combobox
+          label='Subject'
+          value={newSubject}
+          options={subjects}
+          onChange={(newValue) => setNewSubject(newValue)}
+          disablePortal={true}
+          style={{ marginBottom: '4%' }}
+        />
+        <Combobox
+          label='Type'
+          value={newType}
+          options={types}
+          onChange={(newValue) => setNewType(newValue)}
+          disablePortal={true}
+          style={{ marginBottom: '4%' }}
+        />
 
-          <Button ref={cancelRef} onClick={onClose} variant='contained' sx={{ margin: '1%' }}>
-            Cancel
-          </Button>
-          <Tooltip
-            title={
-              <Box>
-                {Object.entries(validityChecks()).map(([text, value], idx) => (
-                  <Typography
-                    key={idx}
-                    sx={{
-                      color: value ? muiTheme.palette.success.light : muiTheme.palette.error.light,
-                      fontSize: '0.8rem',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    {text}
-                  </Typography>
-                ))}
-              </Box>
-            }
-            placement='bottom'
-            arrow
-            leaveDelay={1300}
-          >
-            <span>
-              <Button
-                sx={{ margin: '1%' }}
-                disabled={Object.values(validityChecks()).some((elem) => !elem)}
-                variant='contained'
-                color='success'
-                onClick={() => {
-                  setNewCategory('');
-                  setNewSubject('');
-                  setNewDocName('');
-                  setNewType('');
-                  onConfirm(newCategory, newSubject, newType, newDocName);
-                  onClose();
-                }}
-              >
-                Save Changes
-              </Button>
-            </span>
-          </Tooltip>
-        </Box>
-      </Modal>
-    </ThemeProvider>
+        <Button ref={cancelRef} onClick={onClose} variant='contained' sx={{ margin: '1%' }}>
+          Cancel
+        </Button>
+        <Tooltip
+          title={
+            <Box>
+              {Object.entries(validityChecks()).map(([text, value], idx) => (
+                <Typography
+                  key={idx}
+                  sx={{
+                    color: value ? muiTheme.palette.success.light : muiTheme.palette.error.light,
+                    fontSize: '0.8rem',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {text}
+                </Typography>
+              ))}
+            </Box>
+          }
+          placement='bottom'
+          arrow
+          leaveDelay={1300}
+        >
+          <span>
+            <Button
+              sx={{ margin: '1%' }}
+              disabled={Object.values(validityChecks()).some((elem) => !elem)}
+              variant='contained'
+              color='success'
+              onClick={() => {
+                setNewCategory('');
+                setNewSubject('');
+                setNewDocName('');
+                setNewType('');
+                onConfirm(newCategory, newSubject, newType, newDocName);
+                onClose();
+              }}
+            >
+              Save Changes
+            </Button>
+          </span>
+        </Tooltip>
+      </Box>
+    </Modal>
   );
 };

@@ -1,6 +1,5 @@
 import { useContext } from 'react';
 import { Button, Stack, Typography } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { MediaQueryContext } from '@providers';
 import debounce from 'lodash/debounce';
 
@@ -12,7 +11,6 @@ interface PaginationProps {
 
 export const Pagination = ({ pageInfo, handlePageChange, styles }: PaginationProps) => {
   const debouncedHandlePageChange = debounce(handlePageChange, 100);
-  const muiTheme = createTheme();
   const buttonStyles = {
     borderColor: 'transparent',
     backgroundColor: 'rgb(237, 242, 247)',
@@ -27,36 +25,34 @@ export const Pagination = ({ pageInfo, handlePageChange, styles }: PaginationPro
   const responsiveMt = isDesktop ? '4%' : '20%';
 
   return (
-    <ThemeProvider theme={muiTheme}>
-      <Stack
-        spacing={2}
-        direction='row'
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          marginTop: styles?.mt ? styles.mt : responsiveMt,
-        }}
+    <Stack
+      spacing={2}
+      direction='row'
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        marginTop: styles?.mt ? styles.mt : responsiveMt,
+      }}
+    >
+      <Button
+        onClick={() => debouncedHandlePageChange(pageInfo.page - 1)}
+        disabled={pageInfo.page === 1}
+        variant='outlined'
+        sx={buttonStyles}
       >
-        <Button
-          onClick={() => debouncedHandlePageChange(pageInfo.page - 1)}
-          disabled={pageInfo.page === 1}
-          variant='outlined'
-          sx={buttonStyles}
-        >
-          Prev
-        </Button>
-        <Typography display='flex' alignItems='center'>
-          Page {pageInfo.page} of {pageInfo.pages > 0 ? pageInfo.pages : 1}
-        </Typography>
-        <Button
-          onClick={() => debouncedHandlePageChange(pageInfo.page + 1)}
-          disabled={pageInfo.page === pageInfo.pages || pageInfo.pages === 0}
-          variant='outlined'
-          sx={buttonStyles}
-        >
-          Next
-        </Button>
-      </Stack>
-    </ThemeProvider>
+        Prev
+      </Button>
+      <Typography display='flex' alignItems='center'>
+        Page {pageInfo.page} of {pageInfo.pages > 0 ? pageInfo.pages : 1}
+      </Typography>
+      <Button
+        onClick={() => debouncedHandlePageChange(pageInfo.page + 1)}
+        disabled={pageInfo.page === pageInfo.pages || pageInfo.pages === 0}
+        variant='outlined'
+        sx={buttonStyles}
+      >
+        Next
+      </Button>
+    </Stack>
   );
 };
