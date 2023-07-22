@@ -1,11 +1,12 @@
 import { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { AccountDetails } from '@api/auth';
 import { AccountForm, AlertToast, AlertProps } from '@components';
-import { AuthContext } from '@providers';
 import { PasswordValidationBox } from '@features';
-import { useNavigation } from '@utils';
 import { SignUpValidation } from '@forms/validation';
+import { AuthContext } from '@providers';
+import { useNavigation } from '@utils';
 import { Box, Button, FormControl, TextField, Link, Stack } from '@mui/material';
 import '../SignIn/login.css';
 
@@ -24,12 +25,7 @@ export const SignUpPage = () => {
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
 
-  const handleRegister = async (formData: {
-    username: string;
-    password: string;
-    repeatPassword: string;
-    email: string;
-  }) => {
+  const handleRegister = async (formData: AccountDetails) => {
     const status = await registerUserAccount(formData);
     let alertContent: AlertProps;
 
