@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { Combobox, ComboboxProps } from '@components';
+import { Combobox } from '@components';
+import { EditModalProps, ValidationResult } from '@features';
 import {
   Box,
   Button,
@@ -11,26 +12,6 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-
-interface EditModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onConfirm: (
-    newCategory: number | '',
-    newSubject: number | '',
-    newType: number | '',
-    newDocName: string | '',
-  ) => void;
-  categories: ComboboxProps['options'];
-  subjects: ComboboxProps['options'];
-  types: ComboboxProps['options'];
-  category: ComboboxProps['value'];
-  subject: ComboboxProps['value'];
-  type: ComboboxProps['value'];
-  documentName: string;
-}
-
-type ValidationResult = Record<string, boolean>;
 
 export const ApprovalEditModal = ({
   isOpen,
