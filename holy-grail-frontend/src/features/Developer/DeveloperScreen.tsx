@@ -1,5 +1,4 @@
 import { SyntheticEvent, useEffect, useState } from 'react';
-import { Box, Tab, Tabs } from '@mui/material';
 import { CategoryType, CommonType, DocumentType, fetchData, SubjectType } from '@api/library';
 import {
   createCategory,
@@ -11,13 +10,17 @@ import {
   fetchAllUsers,
   updateUserRole,
 } from '@api/actions';
-import { DeveloperEditModal } from './DeveloperEditModal';
-import { DeveloperEditUserModal } from './DeveloperEditUserModal';
-import { AddModal } from './AddModal';
-import { TabContent } from './TabContent';
-import { RoleEnum, TabContentUsers, User } from './TabContentUsers';
-
-type DataTypeKey = 'categories' | 'subjects' | 'types';
+import {
+  AddModal,
+  DataTypeKey,
+  DeveloperEditModal,
+  DeveloperEditUserModal,
+  RoleEnum,
+  User,
+  TabContent,
+  TabContentUsers,
+} from '@features';
+import { Box, Tab, Tabs } from '@mui/material';
 
 export const DeveloperScreen = () => {
   const [value, setValue] = useState(0);

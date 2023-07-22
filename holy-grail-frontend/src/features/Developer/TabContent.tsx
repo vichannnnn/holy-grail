@@ -1,5 +1,7 @@
 import { ChangeEvent, useState } from 'react';
 import { CategoryType, SubjectType, DocumentType } from '@api/library';
+import { Pagination } from '@components';
+import { TabContentProps } from '@features';
 import {
   Button,
   OutlinedInput,
@@ -12,18 +14,6 @@ import {
   TableRow,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
-import { ChakraProvider } from '@chakra-ui/react';
-import { Pagination } from '@components';
-
-type DataTypeKey = 'categories' | 'subjects' | 'types';
-
-interface TabContentProps {
-  title: string;
-  data: Array<CategoryType | SubjectType | DocumentType>;
-  handleEdit: (id: number, type: DataTypeKey) => void;
-  handleAdd: () => void;
-  type: DataTypeKey;
-}
 
 export const TabContent = ({ title, data, handleEdit, handleAdd, type }: TabContentProps) => {
   const [query, setQuery] = useState<string>('');
@@ -83,28 +73,23 @@ export const TabContent = ({ title, data, handleEdit, handleAdd, type }: TabCont
                 <Button onClick={() => handleEditClick(item.id)}>
                   <EditIcon />
                 </Button>
-                {/*<Button onClick={() => handleDelete(item.id)}>*/}
-                {/*  <DeleteIcon />*/}
-                {/*</Button>*/}
               </TableCell>
             </TableRow>
           ))}
           <TableRow>
             <TableCell colSpan={2}>
-              <ChakraProvider>
-                <Pagination
-                  pageInfo={{
-                    page: page + 1,
-                    size: chunkSize,
-                    total: handleFilterContent().length,
-                    pages: handlePaging().length,
-                  }}
-                  handlePageChange={(newPage: number) => {
-                    setPage(newPage - 1);
-                  }}
-                  styles={{ mt: '0%' }}
-                />
-              </ChakraProvider>
+              <Pagination
+                pageInfo={{
+                  page: page + 1,
+                  size: chunkSize,
+                  total: handleFilterContent().length,
+                  pages: handlePaging().length,
+                }}
+                handlePageChange={(newPage: number) => {
+                  setPage(newPage - 1);
+                }}
+                styles={{ mt: '0%' }}
+              />
             </TableCell>
           </TableRow>
         </TableBody>
