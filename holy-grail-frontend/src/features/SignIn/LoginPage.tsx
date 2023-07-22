@@ -1,8 +1,7 @@
 import { FormEvent, useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { AccountForm, AlertToast, AlertProps } from '@components';
 import { AuthContext } from '@providers';
-import { useNavigation } from '../../utils/navigate';
+import { useNavigation } from '@utils';
 import { Box, Button, FormControl, Stack, TextField, Link } from '@mui/material';
 import './login.css';
 
@@ -13,10 +12,9 @@ export const LoginPage = () => {
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
   const { user, login } = useContext(AuthContext);
-  const navigate = useNavigate();
 
   if (user) {
-    navigate('/');
+    goToHome();
   }
 
   const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
@@ -30,7 +28,7 @@ export const LoginPage = () => {
         severity: 'success',
       };
 
-      navigate('/', { state: { alertContent: alertContentRedirect } });
+      goToHome({ state: { alertContent: alertContentRedirect } });
     } catch (error) {
       setAlertContent({
         title: 'Login failed.',
@@ -40,14 +38,6 @@ export const LoginPage = () => {
       setOpenAlert(true);
     }
   };
-
-  // const handleRegister = () => {
-  //   navigate('/register');
-  // };
-  //
-  // const handleForgotPassword = () => {
-  //   navigate('/forgot-password');
-  // };
 
   return (
     <section className='login section container' id='login'>

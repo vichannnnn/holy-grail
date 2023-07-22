@@ -1,15 +1,15 @@
 import { FormEvent, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigation } from '@utils';
 import { sendResetPasswordEmail } from '@api/auth';
 import { AccountForm, AlertToast, AlertProps } from '@components';
 import { Box, Button, FormControl, TextField, Link, Stack } from '@mui/material';
 import '../SignIn/login.css';
 
 export const ForgotPasswordPage = () => {
+  const { goToLoginPage } = useNavigation();
   const [email, setEmail] = useState('');
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
   const [openAlert, setOpenAlert] = useState<boolean>(false);
-  const navigate = useNavigate();
 
   const handleResetPassword = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -50,7 +50,7 @@ export const ForgotPasswordPage = () => {
         <Box>
           <div className='login__footer'>
             Already a member?{' '}
-            <Link onClick={() => navigate('/login')} underline='always'>
+            <Link onClick={goToLoginPage} underline='always'>
               Log in here.
             </Link>
           </div>

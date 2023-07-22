@@ -1,8 +1,8 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigation } from '@utils';
 import { NotesApplication } from './NotesApplication';
 
 export const Library = () => {
-  const navigate = useNavigate();
+  const { goToUploadPage } = useNavigation();
 
   return (
     <section className='library section container' id='library'>
@@ -10,7 +10,7 @@ export const Library = () => {
         <div className='sub-section__title'>Library</div>
         <div className='section__subtitle'>
           View materials or contribute{' '}
-          <a onClick={() => navigate('/upload')} className='text__link'>
+          <a onClick={goToUploadPage} className='text__link'>
             here
           </a>{' '}
           after you have logged in (subjected to approval of administrators).

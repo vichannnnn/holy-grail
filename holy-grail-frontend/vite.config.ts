@@ -14,6 +14,7 @@ export default ({ mode }) => {
         '@components': path.resolve(__dirname, 'src/components/index.ts'),
         '@features': path.resolve(__dirname, 'src/features/index.ts'),
         '@providers': path.resolve(__dirname, 'src/providers/index.ts'),
+        '@utils': path.resolve(__dirname, 'src/utils/index.ts'),
       },
     },
   });

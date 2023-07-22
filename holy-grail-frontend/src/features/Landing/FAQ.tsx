@@ -1,17 +1,18 @@
 import { useContext } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import { AuthContext } from '@providers';
+import { useNavigation } from '@utils';
 import './landing.css';
 
 export const FAQ = () => {
-  const navigate = useNavigate();
+  const { goToUploadPage, goToLoginPage } = useNavigation();
   const { user } = useContext(AuthContext);
 
   const handleUploadButtonClick = () => {
     if (user) {
-      navigate('/upload');
+      goToUploadPage();
     } else {
-      navigate('/login');
+      goToLoginPage();
     }
   };
 
