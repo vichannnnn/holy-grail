@@ -1,13 +1,7 @@
 import { useRef } from 'react';
-import { Box, Button, Modal, Typography } from '@mui/material';
+import { DeleteAlertProps } from '@features';
+import { Box, Button, Modal, Typography, createTheme, ThemeProvider } from '@mui/material';
 
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-
-interface DeleteAlertProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onConfirm: () => void;
-}
 const modalStyle = {
   position: 'absolute' as 'absolute',
   top: '50%',

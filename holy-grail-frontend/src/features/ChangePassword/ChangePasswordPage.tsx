@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { updatePassword } from '@api/auth';
 import { AccountForm, AlertToast, AlertProps } from '@components';
 import { Button, FormControl, TextField, createTheme, ThemeProvider, Stack } from '@mui/material';
-import { PasswordValidationBox } from '../SignUp';
+import { PasswordValidationBox } from '@features';
 import '../SignIn/login.css';
 
 export const ChangePasswordPage = () => {

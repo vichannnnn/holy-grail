@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Link } from '@mui/material';
 import { resendVerificationEmail, verifyAccount } from '@api/auth';
 import { AlertToast, AlertProps } from '@components';
+import { Link } from '@mui/material';
 import '../SignIn/login.css';
 import './verifyAccountPageContainer.css';
 

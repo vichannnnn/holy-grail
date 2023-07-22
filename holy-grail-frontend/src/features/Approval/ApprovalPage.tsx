@@ -1,5 +1,4 @@
-import { ApprovalTable } from './ApprovalTable';
-import { ApprovalScreen } from './ApprovalScreen';
+import { ApprovalTable, ApprovalScreen } from '@features';
 
 export const ApprovalPage = () => {
   return (

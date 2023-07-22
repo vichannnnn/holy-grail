@@ -10,10 +10,9 @@ import {
 } from '@api/library';
 import { approveNote, deleteNote, updateNote } from '@api/actions';
 import { AdminApproveIcon, AdminDeleteIcon, AdminEditIcon, NotesTable } from '@components';
+import { ApprovalEditModal, DeleteAlert } from '@features';
 import { AuthContext } from '@providers';
 import { Box } from '@mui/material';
-import { DeleteAlert } from './DeleteAlert';
-import { ApprovalEditModal } from './ApprovalEditModal';
 
 export const ApprovalTable = () => {
   const [notes, setNotes] = useState<PaginatedNotes>({
