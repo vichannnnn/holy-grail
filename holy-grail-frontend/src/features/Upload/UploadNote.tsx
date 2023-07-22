@@ -58,6 +58,17 @@ export const UploadNote = ({
           disableRipple: true,
         },
       },
+      MuiLink: {
+        styleOverrides: {
+          root: {
+            textDecoration: 'none',
+            cursor: 'pointer',
+            ':hover': {
+              textDecoration: 'underline',
+            },
+          },
+        },
+      },
     },
   });
   useEffect(() => {
