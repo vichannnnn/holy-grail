@@ -91,8 +91,6 @@ export const Header = () => {
       <nav className='nav container grid'>
         <RouterLink className='nav__logo' to='/'>
           <img className='nav__logoImg' src={Logo} alt='' />
-          {/*<span className="nav__divider"></span>*/}
-          {/*<span className="nav__logoText">HG</span>*/}
         </RouterLink>
         {isDesktop ? (
           <div className='nav__menu'>
@@ -134,11 +132,6 @@ export const Header = () => {
           </div>
         ) : null}
         <div className='right-section' style={{ display: 'flex', gap: '30px' }}>
-          {/*{isDesktop ? (*/}
-          {/*  <HeaderRightButton onClick={() => navigate('/upload')}>*/}
-          {/*    Contribute Notes*/}
-          {/*  </HeaderRightButton>*/}
-          {/*) : null}*/}
           <UserButton children={UserButtonChildren} />
         </div>
       </nav>
