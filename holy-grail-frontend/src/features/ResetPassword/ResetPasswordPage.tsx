@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { resetPassword } from '@api/auth';
-import { Link } from '@chakra-ui/react';
+import { Link } from '@mui/material';
 import '../SignIn/login.css';
 
 export const ResetPasswordPage = () => {
@@ -49,7 +49,7 @@ export const ResetPasswordPage = () => {
         ) : isFailed ? (
           <div className='section__subtitle '>
             The password reset link is invalid or has expired. Please click{' '}
-            <Link as='button' onClick={handleForgotPassword} textDecoration='underline'>
+            <Link component='button' onClick={handleForgotPassword} underline='always'>
               here
             </Link>{' '}
             to reset your password again.
