@@ -1,14 +1,23 @@
+import { useState, useEffect } from 'react';
 import { PasswordValidationBoxProps } from '@features';
 import { Box, Icon, Stack } from '@mui/material';
 import { Check, Close } from '@mui/icons-material';
 
-export const PasswordValidationBox = ({
-  lengthValid,
-  specialCharValid,
-  capitalLetterValid,
-  repeatPasswordValid,
-  allCriteriaMet,
-}: PasswordValidationBoxProps) => {
+export const PasswordValidationBox = ({ password, repeatPassword }: PasswordValidationBoxProps) => {
+  const [lengthValid, setLengthValid] = useState(false);
+  const [specialCharValid, setSpecialCharValid] = useState(false);
+  const [capitalLetterValid, setCapitalLetterValid] = useState(false);
+  const [repeatPasswordValid, setRepeatPasswordValid] = useState(false);
+  const allCriteriaMet =
+    lengthValid && specialCharValid && capitalLetterValid && repeatPasswordValid;
+
+  useEffect(() => {
+    setLengthValid(password?.length <= 30 && password?.length >= 8);
+    setSpecialCharValid(/[!@#$%^&*]/.test(password || ''));
+    setCapitalLetterValid(/[A-Z]/.test(password || ''));
+    setRepeatPasswordValid(password === repeatPassword && password !== '');
+  }, [password, repeatPassword]);
+
   const renderValidationMessage = (valid: boolean, message: string) => (
     <Stack direction='row' spacing={2} textAlign='left'>
       <Icon component={valid ? Check : Close} color={valid ? 'success' : 'error'} sx={{ mr: 2 }} />

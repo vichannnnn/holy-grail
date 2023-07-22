@@ -20,7 +20,7 @@ export interface AddModalProps {
   onSubmit: (newName: string) => void;
 }
 
-export interface EditModalProps {
+export interface DeveloperEditModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (newValue: string) => Promise<void>;

@@ -7,14 +7,15 @@ export default ({ mode }) => {
     plugins: [react()],
     resolve: {
       alias: {
-        '@api/auth': path.resolve(__dirname, 'src/api/auth/index.ts'),
-        '@api/actions': path.resolve(__dirname, 'src/api/actions/index.ts'),
-        '@api/library': path.resolve(__dirname, 'src/api/library/index.ts'),
+        '@api/auth': path.resolve(__dirname, 'src/api/auth/'),
+        '@api/actions': path.resolve(__dirname, 'src/api/actions/'),
+        '@api/library': path.resolve(__dirname, 'src/api/library/'),
         '@apiClient': path.resolve(__dirname, 'src/api/apiClient.ts'),
-        '@components': path.resolve(__dirname, 'src/components/index.ts'),
-        '@features': path.resolve(__dirname, 'src/features/index.ts'),
-        '@providers': path.resolve(__dirname, 'src/providers/index.ts'),
-        '@utils': path.resolve(__dirname, 'src/utils/index.ts'),
+        '@components': path.resolve(__dirname, 'src/components/'),
+        '@features': path.resolve(__dirname, 'src/features/'),
+        '@providers': path.resolve(__dirname, 'src/providers/'),
+        '@utils': path.resolve(__dirname, 'src/utils/'),
+        '@forms': path.resolve(__dirname, 'src/utils/forms/'),
       },
     },
   });

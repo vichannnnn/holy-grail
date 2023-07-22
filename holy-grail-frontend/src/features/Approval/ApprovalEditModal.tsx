@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { Combobox } from '@components';
-import { EditModalProps, ValidationResult } from '@features';
+import { ApprovalEditModalProps, ValidationResult } from '@features';
 import { Box, Button, Modal, createTheme, TextField, Tooltip, Typography } from '@mui/material';
 
 export const ApprovalEditModal = ({
@@ -15,7 +15,7 @@ export const ApprovalEditModal = ({
   subject,
   type,
   documentName,
-}: EditModalProps) => {
+}: ApprovalEditModalProps) => {
   const cancelRef = useRef<HTMLButtonElement | null>(null);
   const muiTheme = createTheme();
   const [newCategory, setNewCategory] = useState<number | ''>('');

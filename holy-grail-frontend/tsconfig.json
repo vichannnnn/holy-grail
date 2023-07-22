@@ -24,7 +24,8 @@
       "@components": ["src/components/"],
       "@features": ["src/features/"],
       "@providers": ["src/providers/"],
-      "@utils": ["src/utils/"]
+      "@utils": ["src/utils/"],
+      "@forms/*": ["src/utils/forms/*"]
     }
   },
   "include": ["src"],

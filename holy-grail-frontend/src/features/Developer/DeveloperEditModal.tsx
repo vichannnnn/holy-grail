@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { EditModalProps } from './types';
+import { DeveloperEditModalProps } from '@features';
 import {
   Button,
   Dialog,
@@ -11,7 +11,12 @@ import {
 } from '@mui/material';
 import './developer.css';
 
-export const DeveloperEditModal = ({ isOpen, onClose, onSubmit, initialName }: EditModalProps) => {
+export const DeveloperEditModal = ({
+  isOpen,
+  onClose,
+  onSubmit,
+  initialName,
+}: DeveloperEditModalProps) => {
   const [name, setName] = useState(initialName);
 
   const handleSubmit = async () => {

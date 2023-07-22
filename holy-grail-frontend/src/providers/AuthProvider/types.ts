@@ -7,7 +7,7 @@ export interface AuthContextType {
   login: (username: string, password: string) => Promise<void>;
   logout: () => void;
   updateUser: (updatedUser: User) => void;
-  register: (accountDetails: AccountDetails) => Promise<number>;
+  registerUserAccount: (accountDetails: AccountDetails) => Promise<number>;
 }
 
 export interface AuthProviderProps {
