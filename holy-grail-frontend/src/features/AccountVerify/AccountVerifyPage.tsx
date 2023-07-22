@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Link } from '@chakra-ui/react';
+import { Link } from '@mui/material';
 import { resendVerificationEmail, verifyAccount } from '@api/auth';
 import { AlertToast, AlertProps } from '@components';
 import '../SignIn/login.css';
@@ -67,7 +67,7 @@ export const AccountVerifyPage = () => {
         ) : isFailed ? (
           <div className='section__subtitle'>
             The account verification link is invalid or has expired. Please click{' '}
-            <Link as='button' onClick={handleResendVerificationEmail} textDecoration='underline'>
+            <Link component='button' onClick={handleResendVerificationEmail} underline='always'>
               here
             </Link>{' '}
             to send another verification email.

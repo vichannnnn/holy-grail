@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState, ReactNode } from 'react';
 import { apiClient } from '@apiClient';
-import { isTokenExpired, AccountDetails, registerAccount } from '@api/auth';
+import { AccountDetails, registerAccount } from '@api/auth';
 import { AxiosError, AxiosResponse } from 'axios';
 
 export interface User {

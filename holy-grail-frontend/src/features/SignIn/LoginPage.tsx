@@ -1,11 +1,23 @@
 import { FormEvent, useContext, useState } from 'react';
-import { Box, Button, FormControl, FormLabel, Input, Link, VStack } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  Stack,
+  createTheme,
+  TextField,
+  Link,
+  ThemeProvider,
+} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { AccountForm, AlertToast, AlertProps } from '@components';
 import { AuthContext } from '@providers';
 import './login.css';
 
 export const LoginPage = () => {
+  const muiTheme = createTheme();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [openAlert, setOpenAlert] = useState<boolean>(false);
@@ -48,56 +60,57 @@ export const LoginPage = () => {
   };
 
   return (
-    <section className='login section container' id='login'>
-      <AccountForm>
-        <div className='login__title'>Log in</div>
-        <div className='section__subtitle'>Enter your credentials to access your account.</div>
-
-        <form className='login__fields' onSubmit={handleLogin}>
-          <VStack spacing='6'>
-            <FormControl id='username'>
-              <FormLabel>Username</FormLabel>
-              <Input
-                type='username'
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-              />
-            </FormControl>
-            <FormControl id='password'>
-              <FormLabel>Password</FormLabel>
-              <Input
-                type='password'
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </FormControl>
-            <Button type='submit' colorScheme='blue' w='100%'>
-              Log In
-            </Button>
-          </VStack>
-        </form>
-        <Box>
-          <div className='login__footer'>
-            Forgot your password?{' '}
-            <Link as='button' onClick={handleForgotPassword} textDecoration='underline'>
-              Click here.
-            </Link>
-          </div>
-          <div className='login__footer'>
-            Not a member?{' '}
-            <Link as='button' onClick={handleRegister} textDecoration='underline'>
-              Register now.
-            </Link>
-          </div>
-        </Box>
-      </AccountForm>
-      <AlertToast
-        openAlert={openAlert}
-        onClose={() => setOpenAlert(false)}
-        alertContent={alertContent}
-      />
-    </section>
+    <ThemeProvider theme={muiTheme}>
+      <section className='login section container' id='login'>
+        <AccountForm>
+          <div className='login__title'>Log in</div>
+          <div className='section__subtitle'>Enter your credentials to access your account.</div>
+          <form className='login__fields' onSubmit={handleLogin}>
+            <Stack direction='column' spacing={6}>
+              <FormControl id='username'>
+                <TextField
+                  id='username'
+                  label='Username'
+                  type='text'
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+              </FormControl>
+              <FormControl id='password'>
+                <TextField
+                  id='password'
+                  label='Password'
+                  type='password'
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </FormControl>
+              <Button type='submit' variant='contained' fullWidth>
+                Log In
+              </Button>
+            </Stack>
+          </form>
+          <Box>
+            <div className='login__footer'>
+              Forgot your password?{' '}
+              <Link component='button' onClick={handleForgotPassword} underline='always'>
+                Click here.
+              </Link>
+            </div>
+            <div className='login__footer'>
+              Not a member?{' '}
+              <Link component='button' onClick={handleRegister} underline='always'>
+                Register now.
+              </Link>
+            </div>
+          </Box>
+        </AccountForm>
+        <AlertToast
+          openAlert={openAlert}
+          onClose={() => setOpenAlert(false)}
+          alertContent={alertContent}
+        />
+      </section>
+    </ThemeProvider>
   );
 };

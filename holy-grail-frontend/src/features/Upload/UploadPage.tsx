@@ -12,20 +12,18 @@ import { FileSelect } from './FileSelect';
 import { AxiosResponse } from 'axios';
 import './upload.css';
 
-interface OptionsProps {
+export interface OptionsProps {
   categories: CategoryType[];
   subjects: SubjectType[];
   types: DocumentType[];
 }
 
-export type { OptionsProps, SelectedFilesProps };
+export interface SelectedFilesProps {
+  [key: string]: [File, string];
+}
 
 interface NotesProps {
   [key: string]: NoteInfoProps;
-}
-
-interface SelectedFilesProps {
-  [key: string]: [File, string];
 }
 
 export const UploadPage = () => {
