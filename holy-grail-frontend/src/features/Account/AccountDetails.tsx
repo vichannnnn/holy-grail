@@ -5,11 +5,31 @@ import { AlertProps } from '@components';
 import { Typography, TextField, Grid, IconButton, Button, Collapse } from '@mui/material';
 import { AuthContext } from '@providers';
 import EditIcon from '@mui/icons-material/Edit';
-import DoneIcon from '@mui/icons-material/Done';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { ChangeEmailValidation, ChangePasswordValidation } from '@forms/validation';
+import { updatePassword } from '@api/auth';
 import * as Yup from 'yup';
+import { set } from 'lodash';
 
 export const AccountDetails = () => {
   const { user, isLoading } = useContext(AuthContext);
+
+  const initialiseValidator = (schema: Yup.AnyObjectSchema, defaultValues: Object) => {
+    const {
+      register,
+      watch,
+      handleSubmit,
+      formState: { errors },
+    } = useForm({
+      resolver: yupResolver(schema),
+      defaultValues: { ...defaultValues },
+    });
+    return { register, watch, handleSubmit, errors };
+  };
+
+  const emailValidator = initialiseValidator(ChangeEmailValidation, { email: user?.email || '' });
+  const passwordValidator = initialiseValidator(ChangePasswordValidation, {});
 
   const [isEditingEmail, setIsEditingEmail] = useState<boolean>(false);
   const [isEditingPassword, setIsEditingPassword] = useState<boolean>(false);
@@ -32,6 +52,18 @@ export const AccountDetails = () => {
       }
     }
   }, [isLoading, user]);
+
+  useEffect(() => {
+    console.log(emailValidator);
+  });
+
+  const handleUpdatePassword = async () => {
+    null;
+  };
+
+  const handleUpdateEmail = async () => {
+    setIsEditingEmail(false);
+  };
 
   const gridStyles = {
     display: 'flex',
@@ -63,20 +95,29 @@ export const AccountDetails = () => {
           <Grid item sx={{ ...gridStyles }}>
             <Typography variant='h6'>Email:</Typography>
             {isEditingEmail ? (
-              <div
-                style={{ display: 'flex', flexDirection: 'row', gap: '2vw', alignItems: 'center' }}
-              >
-                <TextField
-                  label='New email'
-                  variant='outlined'
-                  size='medium'
-                  value={newEmail}
-                  onChange={(e) => setNewEmail(e.target.value)}
-                />
-                <IconButton onClick={() => setIsEditingEmail(false)}>
-                  <DoneIcon color='success' />
-                </IconButton>
-              </div>
+              <form onSubmit={emailValidator.handleSubmit(handleUpdateEmail)}>
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    gap: '2vw',
+                    alignItems: 'center',
+                  }}
+                >
+                  <TextField
+                    label='New email'
+                    variant='outlined'
+                    size='medium'
+                    required
+                    {...emailValidator.register('email')}
+                    error={Boolean(emailValidator.errors.email)}
+                    helperText={emailValidator.errors.email?.message as String}
+                  />
+                  <Button type='submit' variant='contained' color='success'>
+                    Save
+                  </Button>
+                </div>
+              </form>
             ) : (
               <div
                 style={{ display: 'flex', flexDirection: 'row', gap: '2vw', alignItems: 'center' }}
