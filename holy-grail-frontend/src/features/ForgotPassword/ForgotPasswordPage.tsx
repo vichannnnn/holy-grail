@@ -1,19 +1,27 @@
-import { FormEvent, useState } from 'react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigation } from '@utils';
-import { sendResetPasswordEmail } from '@api/auth';
+import { sendResetPasswordEmail, ForgotPasswordDetails } from '@api/auth';
 import { AccountForm, AlertToast, AlertProps } from '@components';
+import { ResetPasswordValidation } from '@forms/validation';
 import { Box, Button, FormControl, TextField, Link, Stack } from '@mui/material';
 import '../SignIn/login.css';
 
 export const ForgotPasswordPage = () => {
   const { goToLoginPage } = useNavigation();
-  const [email, setEmail] = useState('');
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
   const [openAlert, setOpenAlert] = useState<boolean>(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(ResetPasswordValidation),
+  });
 
-  const handleResetPassword = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const result = await sendResetPasswordEmail(email);
+  const handleResetPassword = async (formData: ForgotPasswordDetails) => {
+    const result = await sendResetPasswordEmail(formData);
 
     setAlertContent({
       title: result.success ? 'Password reset email successfully sent.' : 'Reset Password failed.',
@@ -31,14 +39,15 @@ export const ForgotPasswordPage = () => {
           Please enter the email you registered with to reset your password.
         </div>
 
-        <form className='login__fields' onSubmit={handleResetPassword}>
+        <form className='login__fields' onSubmit={handleSubmit(handleResetPassword)}>
           <Stack direction='column' spacing={6}>
             <FormControl id='email'>
               <TextField
                 type='email'
                 label='Email Address'
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                error={Boolean(errors.email)}
+                helperText={errors.email?.message}
+                {...register('email')}
                 required
               />
             </FormControl>

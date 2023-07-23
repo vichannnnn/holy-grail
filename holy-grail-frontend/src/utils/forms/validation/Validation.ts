@@ -23,3 +23,7 @@ export const SignInValidation = Yup.object().shape({
   username: Yup.string().required('Username is required'),
   password: Yup.string().required('Password is required'),
 });
+
+export const ResetPasswordValidation = Yup.object().shape({
+  email: Yup.string().email('Invalid email provided').required('Email is required'),
+});

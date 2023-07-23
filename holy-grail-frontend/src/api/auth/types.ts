@@ -9,3 +9,7 @@ export interface AccountDetails {
   repeatPassword: string;
   email: string;
 }
+
+export interface ForgotPasswordDetails {
+  email: string;
+}
