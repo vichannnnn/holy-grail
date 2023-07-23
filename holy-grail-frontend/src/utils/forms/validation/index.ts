@@ -1,1 +1,1 @@
-export * from './SignUpValidation';
+export * from './Validation';
