@@ -1,27 +1,33 @@
-import { FormEvent, useContext, useState } from 'react';
+import { useContext, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { AccountForm, AlertToast, AlertProps } from '@components';
-import { AuthContext } from '@providers';
+import { AuthContext, LogInDetails } from '@providers';
+import { SignInValidation } from '@forms/validation';
 import { useNavigation } from '@utils';
 import { Box, Button, FormControl, Stack, TextField, Link } from '@mui/material';
 import './login.css';
 
 export const LoginPage = () => {
   const { goToHome, goToRegister, goToForgotPassword } = useNavigation();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
   const { user, login } = useContext(AuthContext);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(SignInValidation),
+  });
 
   if (user) {
     goToHome();
   }
 
-  const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
+  const handleLogin = async (formData: LogInDetails) => {
     try {
-      await login(username, password);
+      await login(formData);
       const alertContentRedirect: AlertProps = {
         title: 'Logged in successfully.',
         description: 'Welcome back!',
@@ -44,24 +50,26 @@ export const LoginPage = () => {
       <AccountForm>
         <div className='login__title'>Log in</div>
         <div className='section__subtitle'>Enter your credentials to access your account.</div>
-        <form className='login__fields' onSubmit={handleLogin}>
+        <form className='login__fields' onSubmit={handleSubmit(handleLogin)}>
           <Stack direction='column' spacing={6}>
             <FormControl id='username'>
               <TextField
-                id='username'
                 label='Username'
                 type='text'
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                error={Boolean(errors.username)}
+                helperText={errors.username?.message}
+                {...register('username')}
+                required
               />
             </FormControl>
             <FormControl id='password'>
               <TextField
-                id='password'
                 label='Password'
                 type='password'
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                error={Boolean(errors.password)}
+                helperText={errors.password?.message}
+                {...register('password')}
+                required
               />
             </FormControl>
             <Button type='submit' variant='contained' fullWidth>

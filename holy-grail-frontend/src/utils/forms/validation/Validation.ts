@@ -2,10 +2,7 @@ import * as Yup from 'yup';
 
 export const SignUpValidation = Yup.object().shape({
   username: Yup.string()
-    .matches(
-      /^[a-zA-Z0-9]{4,20}$/,
-      'Invalid username. It should contain 4 to 20 alphanumeric characters',
-    )
+    .matches(/^[a-zA-Z0-9]{4,20}$/, 'Username should contain 4 to 20 alphanumeric characters')
     .required('Username is required'),
 
   email: Yup.string().email('Invalid email provided').required('Email is required'),
@@ -20,4 +17,9 @@ export const SignUpValidation = Yup.object().shape({
   repeatPassword: Yup.string()
     .oneOf([Yup.ref('password'), undefined], 'Passwords must match')
     .required('Repeat password is required'),
+});
+
+export const SignInValidation = Yup.object().shape({
+  username: Yup.string().required('Username is required'),
+  password: Yup.string().required('Password is required'),
 });
