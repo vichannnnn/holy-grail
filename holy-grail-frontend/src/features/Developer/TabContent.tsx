@@ -1,11 +1,11 @@
-import { ChangeEvent, useState } from 'react';
+import { useContext, useState } from 'react';
 import { CategoryType, SubjectType, DocumentType } from '@api/library';
 import { Pagination } from '@components';
-import { TabContentProps } from '@features';
+import { TabContentProps, User } from '@features';
 import {
+  Box,
   Button,
-  OutlinedInput,
-  Paper,
+  Grid,
   Table,
   TableBody,
   TableCell,
@@ -14,26 +14,53 @@ import {
   TableRow,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
+import '../Library/library.css';
+import { MediaQueryContext } from '@providers';
 
 export const TabContent = ({ title, data, handleEdit, handleAdd, type }: TabContentProps) => {
   const [query, setQuery] = useState<string>('');
   const [page, setPage] = useState<number>(0);
   const [chunkSize, setChunkSize] = useState<number>(10);
+  const { isDesktop } = useContext(MediaQueryContext);
 
   const handleEditClick = (id: number) => {
     handleEdit(id, type);
   };
 
+  const isUser = (option: CategoryType | SubjectType | DocumentType | User): option is User => {
+    return (option as User).username !== undefined;
+  };
+
+  const isSubject = (
+    option: CategoryType | SubjectType | DocumentType | User,
+  ): option is SubjectType => {
+    return (option as SubjectType).name !== undefined;
+  };
+
+  const hasName = (
+    option: CategoryType | SubjectType | DocumentType | User,
+  ): option is CategoryType | SubjectType | DocumentType => {
+    return (option as CategoryType).name !== undefined;
+  };
+
   const handleFilterContent = () => {
-    const validData: Array<CategoryType | SubjectType | DocumentType> = data.filter((option) => {
-      return option.name.toLowerCase().includes(query.toLowerCase());
-    });
+    const validData: Array<CategoryType | SubjectType | DocumentType | User> = data.filter(
+      (option: CategoryType | SubjectType | DocumentType | User) => {
+        if (hasName(option)) {
+          return option.name.toLowerCase().includes(query.toLowerCase());
+        } else if (isUser(option)) {
+          return option.username.toLowerCase().includes(query.toLowerCase());
+        }
+        return false;
+      },
+    );
     return validData;
   };
 
   const handlePaging = () => {
-    const pagedData: Array<Array<CategoryType | SubjectType | DocumentType>> = [];
-    const validData: Array<CategoryType | SubjectType | DocumentType> = handleFilterContent();
+    const pagedData: Array<Array<CategoryType | SubjectType | DocumentType | User>> = [];
+    const validData: Array<CategoryType | SubjectType | DocumentType | User> =
+      handleFilterContent();
     for (let i = 0; i < validData.length; i += chunkSize) {
       pagedData.push(validData.slice(i, i + chunkSize));
     }
@@ -41,59 +68,69 @@ export const TabContent = ({ title, data, handleEdit, handleAdd, type }: TabCont
   };
 
   return (
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>
-              <OutlinedInput
-                sx={{ width: '120%' }}
-                placeholder={`Search for ${title}`}
-                onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                  setQuery(event.target.value);
-                  //go back to first page to prevent overflow
-                  setPage(0);
-                  handleFilterContent();
-                }}
-              />
-            </TableCell>
+    <section className='materials container'>
+      <Grid container alignItems='center' sx={{ paddingTop: '3%', paddingBottom: '3%' }}>
+        <Grid item xs={12} sm={4}></Grid>
+        <Grid item xs={12} sm={4}>
+          <Box display='flex' justifyContent='center'>
+            <h2>{title}</h2>
+          </Box>
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <Box display='flex' justifyContent='flex-end'>
+            <Button variant='contained' onClick={handleAdd}>
+              + Add
+            </Button>
+          </Box>
+        </Grid>
+      </Grid>
 
-            <TableCell align='right'>
-              <Button onClick={handleAdd}>+ {title}</Button>
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {(handlePaging()[page] || []).map((item) => (
-            <TableRow key={item.id}>
-              <TableCell component='th' scope='row'>
-                {item.name}
-              </TableCell>
-              <TableCell align='right'>
-                <Button onClick={() => handleEditClick(item.id)}>
-                  <EditIcon />
-                </Button>
-              </TableCell>
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell className='table__header'>ID</TableCell>
+              <TableCell className='table__header'>Name</TableCell>
+              <TableCell className='table__header'>Category</TableCell>
+              <TableCell className='table__header'>Actions</TableCell>
             </TableRow>
-          ))}
-          <TableRow>
-            <TableCell colSpan={2}>
-              <Pagination
-                pageInfo={{
-                  page: page + 1,
-                  size: chunkSize,
-                  total: handleFilterContent().length,
-                  pages: handlePaging().length,
-                }}
-                handlePageChange={(newPage: number) => {
-                  setPage(newPage - 1);
-                }}
-                styles={{ mt: '0%' }}
-              />
-            </TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {(handlePaging()[page] || []).map((item) => (
+              <TableRow key={isUser(item) ? item.user_id : item.id}>
+                <TableCell className='table__content' component='th' scope='row'>
+                  {isUser(item) ? item.user_id : item.id}
+                </TableCell>
+                <TableCell className='table__content' component='th' scope='row'>
+                  {isUser(item) ? item.username : item.name}
+                </TableCell>
+                {isSubject(item) && (
+                  <TableCell className='table__content' component='th' scope='row'>
+                    {item.category.name}
+                  </TableCell>
+                )}
+                <TableCell className='table__content' component='th' scope='row'>
+                  <Button onClick={() => handleEditClick(isUser(item) ? item.user_id : item.id)}>
+                    <EditIcon />
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+
+      <Pagination
+        pageInfo={{
+          page: page + 1,
+          size: chunkSize,
+          total: handleFilterContent().length,
+          pages: handlePaging().length,
+        }}
+        handlePageChange={(newPage: number) => {
+          setPage(newPage - 1);
+        }}
+      />
+    </section>
   );
 };

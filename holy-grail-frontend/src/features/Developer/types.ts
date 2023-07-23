@@ -1,7 +1,13 @@
 import { CategoryType, DocumentType, SubjectType } from '@api/library';
 
-export type DataTypeKey = 'categories' | 'subjects' | 'types';
+export type DataTypeKey = 'categories' | 'subjects' | 'types' | 'users';
 
+export const singularDataType: Record<DataTypeKey, string> = {
+  categories: 'category',
+  subjects: 'subject',
+  types: 'type',
+  users: 'user',
+};
 export interface User {
   user_id: number;
   username: string;
@@ -14,17 +20,20 @@ export enum RoleEnum {
   DEVELOPER = 3,
 }
 
-export interface AddModalProps {
+export interface DeveloperAddModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (newName: string) => void;
+  onSuccessfulAdd: () => Promise<void>;
+  type: DataTypeKey | null;
 }
 
 export interface DeveloperEditModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (newValue: string) => Promise<void>;
+  onSuccessfulUpdate: () => Promise<void>;
   initialName: string;
+  type: DataTypeKey | null;
+  id: number;
 }
 
 export interface EditUserModalProps {
@@ -38,8 +47,16 @@ export interface EditUserModalProps {
 
 export interface TabContentProps {
   title: string;
-  data: Array<CategoryType | SubjectType | DocumentType>;
+  data: Array<CategoryType | SubjectType | DocumentType | User>;
   handleEdit: (id: number, type: DataTypeKey) => void;
   handleAdd: () => void;
   type: DataTypeKey;
+}
+
+export interface AddTypeDetails {
+  name: string;
+}
+
+export interface UpdateTypeDetails {
+  name: string;
 }

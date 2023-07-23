@@ -1,8 +1,8 @@
-from typing import TypeVar, Generic, Optional, Sequence, Type, Dict, Any
+from typing import TypeVar, Generic, Optional, Sequence, Type, Dict, Any, List
 from fastapi import Response as FastAPIResponse
 from sqlalchemy import update, delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import declared_attr
+from sqlalchemy.orm import declared_attr, Load
 from sqlalchemy import exc as SQLAlchemyExceptions, and_
 
 from app.db.base_class import Base
@@ -84,10 +84,16 @@ class CRUD(Generic[ModelType]):
         cls: Type[ModelType],
         session: AsyncSession,
         filter_: Optional[Dict[str, Any]] = None,
+        options: List[Load] = None,
     ) -> Sequence[ModelType]:
+
         stmt = select(cls)
         if filter_:
             conditions = [getattr(cls, key) == value for key, value in filter_.items()]
             stmt = stmt.where(and_(*conditions))
+
+        if options:
+            stmt = stmt.options(*options)
+
         result = await session.execute(stmt)
         return result.scalars().all()

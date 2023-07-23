@@ -55,9 +55,17 @@ export interface CommonType {
   name: string;
 }
 
-export type CategoryType = CommonType;
+export interface CategoryType {
+  id: number;
+  name: string;
+}
 
-export type DocumentType = CommonType;
-export interface SubjectType extends CommonType {
-  category_id: number;
+export interface DocumentType {
+  id: number;
+  name: string;
+}
+export interface SubjectType {
+  id: number;
+  name: string;
+  category: CategoryType;
 }
