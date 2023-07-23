@@ -114,4 +114,7 @@ jobs:
               docker compose pull
               docker compose up -d
               make migrate
+              docker cp holy-grail-frontend:/usr/share/caddy/holy-grail-dev /tmp/artifacts
+              docker cp /tmp/artifacts/. caddy:/usr/share/caddy/holy-grail-dev
+              docker restart caddy
             fi
