@@ -2,7 +2,13 @@ import { createContext, useEffect, useState } from 'react';
 import { AxiosError, AxiosResponse } from 'axios';
 import { apiClient } from '@apiClient';
 import { AccountDetails, registerAccount } from '@api/auth';
-import { AuthContextType, AuthProviderProps, User, CurrentUserWithJWT } from '@providers';
+import {
+  AuthContextType,
+  AuthProviderProps,
+  User,
+  CurrentUserWithJWT,
+  LogInDetails,
+} from '@providers';
 
 export const AuthContext = createContext<AuthContextType>({
   user: null,
@@ -28,11 +34,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setIsLoading(false);
   }, []);
 
-  const login = async (username: string, password: string) => {
-    const response = await apiClient.post('/auth/login', {
-      username,
-      password,
-    });
+  const login = async (formData: LogInDetails) => {
+    const response = await apiClient.post('/auth/login', formData);
     const { data, access_token } = response.data;
     setUser(data);
     localStorage.setItem('user', JSON.stringify(data));
