@@ -1,11 +1,15 @@
 import { Typography } from '@mui/material';
 import { VerticalNavProps } from './types';
+import { useState, useContext } from 'react';
+import { MediaQueryContext } from '@providers';
 
 interface VerticalNavListProps {
   props: VerticalNavProps[];
 }
 
 export const VerticalNav = ({ props }: VerticalNavListProps) => {
+  const [selected, setSelected] = useState<number>(0);
+  const { isDesktop } = useContext(MediaQueryContext);
   return (
     <div
       style={{
@@ -14,15 +18,27 @@ export const VerticalNav = ({ props }: VerticalNavListProps) => {
         borderRadius: '10px',
         flexDirection: 'column',
         gap: '2vh',
-        padding: '4%',
+        padding: '3%',
+        marginTop: '10vh',
+        width: '20vw',
       }}
     >
-      {props.map((child) => {
+      {props.map((child, idx) => {
         return (
           <>
-            <div onClick={child.onClick} style={{ display: 'flex', cursor: 'pointer', gap: '2vw' }}>
-              <child.icon sx={{ transform: 'scale(2.0)' }} />
-              <Typography>{child.label}</Typography>
+            <div
+              onClick={() => {
+                setSelected(idx);
+                child.onClick();
+              }}
+              style={{ display: 'flex', cursor: 'pointer', gap: '2vw' }}
+            >
+              <child.icon sx={{ transform: 'scale(2.0)', flexGrow: 1 }} />
+              {isDesktop ? (
+                <Typography sx={{ fontWeight: idx === selected ? 'bold' : null, flexGrow: 1 }}>
+                  {child.label}
+                </Typography>
+              ) : null}
             </div>
             <hr />
           </>
