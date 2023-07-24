@@ -157,7 +157,6 @@ class Account(Base, CRUD["Account"]):
     async def update_password(
         cls, session: AsyncSession, user_id: int, data: AccountUpdatePasswordSchema
     ) -> FastAPIResponse:
-
         curr = await Account.get(session, id=user_id)
 
         if not curr:

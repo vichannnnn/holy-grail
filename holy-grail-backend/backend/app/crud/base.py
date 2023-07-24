@@ -86,7 +86,6 @@ class CRUD(Generic[ModelType]):
         filter_: Optional[Dict[str, Any]] = None,
         options: List[Load] = None,
     ) -> Sequence[ModelType]:
-
         stmt = select(cls)
         if filter_:
             conditions = [getattr(cls, key) == value for key, value in filter_.items()]
