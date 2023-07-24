@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
-import { PasswordValidationBox } from '@features';
+import { PasswordValidationBox, ChangePasswordDetails } from '@features';
 import { useNavigate } from 'react-router-dom';
-import { AlertProps } from '@components';
+import { AlertProps, AlertToast } from '@components';
 import { Typography, TextField, Grid, IconButton, Button, Collapse } from '@mui/material';
 import { AuthContext } from '@providers';
 import EditIcon from '@mui/icons-material/Edit';
@@ -10,7 +10,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { ChangeEmailValidation, ChangePasswordValidation } from '@forms/validation';
 import { updatePassword } from '@api/auth';
 import * as Yup from 'yup';
-import { set } from 'lodash';
 
 export const AccountDetails = () => {
   const { user, isLoading } = useContext(AuthContext);
@@ -33,10 +32,8 @@ export const AccountDetails = () => {
 
   const [isEditingEmail, setIsEditingEmail] = useState<boolean>(false);
   const [isEditingPassword, setIsEditingPassword] = useState<boolean>(false);
-  const [newEmail, setNewEmail] = useState<string>(user?.email || '');
-  const [currentPassword, setCurrentPassword] = useState<string>('');
-  const [newPassword, setNewPassword] = useState<string>('');
-  const [repeatPassword, setRepeatPassword] = useState<string>('');
+  const [openAlert, setOpenAlert] = useState<boolean>(false);
+  const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
 
   const navigate = useNavigate();
 
@@ -57,12 +54,36 @@ export const AccountDetails = () => {
     console.log(emailValidator);
   });
 
-  const handleUpdatePassword = async () => {
-    null;
+  const handleUpdatePassword = async (formData: ChangePasswordDetails) => {
+    setIsEditingPassword(false);
+    const { success, message } = await updatePassword(
+      formData.currentPassword,
+      formData.newPassword,
+      formData.repeatPassword,
+    );
+
+    if (success) {
+      const alertContent: AlertProps = {
+        title: 'Password successfully updated.',
+        description: message,
+        severity: 'success',
+      };
+      setAlertContent(alertContent);
+      setOpenAlert(true);
+    } else {
+      const alertContent: AlertProps = {
+        title: 'Password update failed.',
+        description: message,
+        severity: 'error',
+      };
+      setAlertContent(alertContent);
+      setOpenAlert(true);
+    }
   };
 
   const handleUpdateEmail = async () => {
     setIsEditingEmail(false);
+    //TODO: implement endpoint
   };
 
   const gridStyles = {
@@ -113,7 +134,12 @@ export const AccountDetails = () => {
                     error={Boolean(emailValidator.errors.email)}
                     helperText={emailValidator.errors.email?.message as String}
                   />
-                  <Button type='submit' variant='contained' color='success'>
+                  <Button
+                    type='submit'
+                    variant='contained'
+                    color='success'
+                    disabled={Object.keys(emailValidator.errors).length !== 0}
+                  >
                     Save
                   </Button>
                 </div>
@@ -138,35 +164,61 @@ export const AccountDetails = () => {
             </Grid>
 
             <Collapse in={isEditingPassword} unmountOnExit timeout='auto'>
-              <div style={{ ...(gridStyles as React.CSSProperties), flexDirection: 'column' }}>
-                <TextField
-                  label='Current Password'
-                  sx={{ width: '100%' }}
-                  onChange={(e) => setCurrentPassword(e.target.value)}
-                />
-                <TextField
-                  label='New Password'
-                  sx={{ width: '100%' }}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                />
-                <TextField
-                  label='Repeat New Password'
-                  sx={{ width: '100%' }}
-                  onChange={(e) => setRepeatPassword(e.target.value)}
-                />
-                <PasswordValidationBox password={newPassword} repeatPassword={repeatPassword} />
-                <Button
-                  variant='contained'
-                  color='success'
-                  onClick={() => setIsEditingPassword(false)}
+              <form onSubmit={passwordValidator.handleSubmit(handleUpdatePassword)}>
+                <div
+                  style={{
+                    ...(gridStyles as React.CSSProperties),
+                    flexDirection: 'column',
+                    gap: '2vh',
+                  }}
                 >
-                  Save
-                </Button>
-              </div>
+                  <TextField
+                    label='Current Password'
+                    sx={{ width: '100%' }}
+                    {...passwordValidator.register('currentPassword')}
+                    error={Boolean(passwordValidator.errors.currentPassword)}
+                    helperText={passwordValidator.errors.currentPassword?.message as String}
+                    required
+                  />
+                  <TextField
+                    label='New Password'
+                    sx={{ width: '100%' }}
+                    {...passwordValidator.register('newPassword')}
+                    error={Boolean(passwordValidator.errors.newPassword)}
+                    helperText={passwordValidator.errors.newPassword?.message as String}
+                    required
+                  />
+                  <TextField
+                    label='Repeat New Password'
+                    sx={{ width: '100%' }}
+                    {...passwordValidator.register('repeatPassword')}
+                    error={Boolean(passwordValidator.errors.repeatPassword)}
+                    helperText={passwordValidator.errors.repeatPassword?.message as String}
+                    required
+                  />
+                  <PasswordValidationBox
+                    password={passwordValidator.watch('newPassword')}
+                    repeatPassword={passwordValidator.watch('repeatPassword')}
+                  />
+                  <Button
+                    variant='contained'
+                    color='success'
+                    type='submit'
+                    disabled={Object.keys(passwordValidator.errors).length !== 0}
+                  >
+                    Save
+                  </Button>
+                </div>
+              </form>
             </Collapse>
           </Grid>
         </Grid>
       </div>
+      <AlertToast
+        openAlert={openAlert}
+        onClose={() => setOpenAlert(false)}
+        alertContent={alertContent}
+      />
     </div>
   );
 };

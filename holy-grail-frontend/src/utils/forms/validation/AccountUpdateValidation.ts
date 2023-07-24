@@ -5,7 +5,7 @@ export const ChangeEmailValidation = Yup.object().shape({
 });
 
 export const ChangePasswordValidation = Yup.object().shape({
-  password: Yup.string().required('Password is required'),
+  currentPassword: Yup.string().required('Password is required'),
 
   newPassword: Yup.string()
     .matches(/[!@#$%^&*]/, 'Password must contain a special character.')
@@ -15,9 +15,8 @@ export const ChangePasswordValidation = Yup.object().shape({
     .required('Password is required'),
 
   repeatPassword: Yup.string()
-    .test('repeatPassword-log', 'Invalid repeatPassword', (value, context) => {
-      console.log('Testing repeatPassword:', value);
-      return value === context.parent.password;
+    .test('repeatPassword-log', 'Repeat password does not match new password', (value, context) => {
+      return value === context.parent.newPassword;
     })
     .required('Repeat password is required'),
 });
