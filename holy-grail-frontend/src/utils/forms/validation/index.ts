@@ -1,2 +1,1 @@
-export * from './SignUpValidation';
-export * from './AccountUpdateValidation';
+export * from './Validation';
