@@ -4,10 +4,12 @@ import {
   DeveloperAddModal,
   DataTypeKey,
   DeveloperEditModal,
+  DeveloperEditUserModal,
   RoleEnum,
   User,
   TabContent,
   Hero,
+  TabContentUsers,
 } from '@features';
 import { Tab, Tabs } from '@mui/material';
 
@@ -119,8 +121,7 @@ export const DeveloperPage = () => {
           />
         )}
         {value === 3 && (
-          <TabContent
-            title='Users'
+          <TabContentUsers
             data={data.users}
             handleEdit={(userId: number) => {
               const user = data.users.find((u) => u.user_id === userId);
@@ -128,8 +129,6 @@ export const DeveloperPage = () => {
                 openEditUserModal(user.user_id, user.username, user.role);
               }
             }}
-            handleAdd={() => {}}
-            type='users'
           />
         )}
         {editUserModalState.isOpen && editUserModalState.data && (
@@ -165,6 +164,8 @@ export const DeveloperPage = () => {
               }
               return name;
             }, '')}
+            type={editModalState.data.type}
+            id={editModalState.data.id}
           />
         )}
       </section>

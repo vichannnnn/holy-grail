@@ -106,7 +106,7 @@ export const TabContent = ({ title, data, handleEdit, handleAdd, type }: TabCont
                 </TableCell>
                 {isSubject(item) && (
                   <TableCell className='table__content' component='th' scope='row'>
-                    {item.category.name}
+                    {item.category?.name}
                   </TableCell>
                 )}
                 <TableCell className='table__content' component='th' scope='row'>
