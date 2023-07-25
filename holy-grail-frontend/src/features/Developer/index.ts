@@ -5,4 +5,5 @@ export * from './DeveloperEditModal';
 export * from './DeveloperEditUserModal';
 export * from './TabContent';
 export * from './TabContentUsers';
+export * from './TabContentSubjects';
 export * from './types';

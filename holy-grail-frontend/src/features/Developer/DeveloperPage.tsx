@@ -8,6 +8,7 @@ import {
   RoleEnum,
   User,
   TabContent,
+  TabContentSubjects,
   Hero,
   TabContentUsers,
 } from '@features';
@@ -103,12 +104,11 @@ export const DeveloperPage = () => {
           />
         )}
         {value === 1 && (
-          <TabContent
+          <TabContentSubjects
             title='Subjects'
             data={data.subjects}
             handleEdit={openEditModal}
             handleAdd={() => addModalState.openModal('subjects')}
-            type='subjects'
           />
         )}
         {value === 2 && (
