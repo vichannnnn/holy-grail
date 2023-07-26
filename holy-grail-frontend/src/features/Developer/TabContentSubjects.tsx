@@ -29,8 +29,8 @@ export const TabContentSubjects = ({
   const { isDesktop } = useContext(MediaQueryContext);
 
   const handleFilterContent = () => {
-    const validData: Array<SubjectType> = (data as Array<SubjectType>).filter(
-      (option: SubjectType) => option.name.toLowerCase().includes(query.toLowerCase()),
+    const validData = (data as Array<SubjectType>).filter((option: SubjectType) =>
+      option.name.toLowerCase().includes(query.toLowerCase()),
     );
     return validData;
   };
