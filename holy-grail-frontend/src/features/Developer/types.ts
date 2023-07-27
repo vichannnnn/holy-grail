@@ -57,6 +57,10 @@ export interface AddTypeDetails {
   name: string;
 }
 
+export interface AddSubjectDetails extends AddTypeDetails {
+  category_id: number;
+}
+
 export interface UpdateTypeDetails {
   name: string;
 }

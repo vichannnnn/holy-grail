@@ -5,6 +5,7 @@ import {
   DataTypeKey,
   DeveloperEditModal,
   DeveloperEditUserModal,
+  DeveloperAddSubjectModal,
   RoleEnum,
   User,
   TabContent,
@@ -13,6 +14,7 @@ import {
   TabContentUsers,
 } from '@features';
 import { Tab, Tabs } from '@mui/material';
+import { add } from 'lodash';
 
 const useModalState = <T,>(initialState: T) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -66,6 +68,10 @@ export const DeveloperPage = () => {
   };
 
   useEffect(() => {
+    console.log(addModalState);
+  }, [addModalState.isOpen]);
+
+  useEffect(() => {
     fetchData().then(setData);
   }, []);
 
@@ -80,12 +86,18 @@ export const DeveloperPage = () => {
             Additionally, you can update the user's permissions here as well.
           </div>
         </div>
-        {addModalState.isOpen && (
+        {addModalState.isOpen && addModalState.data !== 'subjects' ? (
           <DeveloperAddModal
             isOpen={addModalState.isOpen}
             onClose={addModalState.closeModal}
             onSuccessfulAdd={refreshData}
             type={addModalState.data}
+          />
+        ) : (
+          <DeveloperAddSubjectModal
+            isOpen={addModalState.isOpen}
+            onClose={addModalState.closeModal}
+            onSuccessfulAdd={refreshData}
           />
         )}
         <Tabs value={value} onChange={handleChange} aria-label='basic tabs example'>
@@ -143,31 +155,35 @@ export const DeveloperPage = () => {
             userId={editUserModalState.data.userId}
           />
         )}
-        {editModalState.isOpen && editModalState.data && (
-          <DeveloperEditModal
-            isOpen={editModalState.isOpen}
-            onClose={editModalState.closeModal}
-            onSuccessfulUpdate={refreshData}
-            initialName={(
-              data[editModalState.data.type] as Array<
-                CategoryType | SubjectType | DocumentType | User
-              >
-            ).reduce((name: string, item: CategoryType | SubjectType | DocumentType | User) => {
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
-              if ('id' in item && item.id === editModalState.data.id) {
-                return item.name;
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-              } else if ('user_id' in item && item.user_id === editModalState.data.id) {
-                return item.username;
-              }
-              return name;
-            }, '')}
-            type={editModalState.data.type}
-            id={editModalState.data.id}
-          />
-        )}
+        {editModalState.isOpen && editModalState.data
+          ? editModalState.data?.type !== 'subjects' && (
+              <DeveloperEditModal
+                isOpen={editModalState.isOpen}
+                onClose={editModalState.closeModal}
+                onSuccessfulUpdate={refreshData}
+                initialName={(
+                  data[editModalState.data.type as DataTypeKey] as Array<
+                    CategoryType | SubjectType | DocumentType | User
+                  >
+                ).reduce((name: string, item: CategoryType | SubjectType | DocumentType | User) => {
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-ignore
+                  if ('id' in item && item.id === editModalState.data.id) {
+                    return item.name;
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                  } else if ('user_id' in item && item.user_id === editModalState.data.id) {
+                    return item.username;
+                  }
+                  return name;
+                }, '')}
+                type={editModalState.data.type}
+                id={editModalState.data.id}
+              />
+            )
+          : editModalState.data?.type === 'subjects' &&
+            //todo: add this
+            null}
       </section>
     </>
   );

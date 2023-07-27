@@ -7,3 +7,4 @@ export * from './TabContent';
 export * from './TabContentUsers';
 export * from './TabContentSubjects';
 export * from './types';
+export * from './DeveloperAddSubjectModal';
