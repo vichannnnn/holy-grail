@@ -1,11 +1,13 @@
-import { AccountDetails } from '@features';
+import { AccountDetails, ChangePassword } from '@features';
 import { useState } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { VerticalNav, VerticalNavProps } from '@components';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import DescriptionIcon from '@mui/icons-material/Description';
+import PasswordIcon from '@mui/icons-material/Password';
 
 import './account.css';
+
 export const AccountPage = () => {
   const muiTheme = createTheme();
   const [title, setTitle] = useState('Account details');
@@ -20,6 +22,16 @@ export const AccountPage = () => {
       onClick: () => {
         setTitle('Account details');
         setSubtitle('Change and update your account details here!');
+        setRenderMenuType(<AccountDetails />);
+      },
+    },
+    {
+      icon: PasswordIcon,
+      label: 'Change password',
+      onClick: () => {
+        setTitle('Change password');
+        setSubtitle('Change your password here!');
+        setRenderMenuType(<ChangePassword />);
       },
     },
     {
@@ -39,6 +51,7 @@ export const AccountPage = () => {
         <div className='account__main'>
           <div className='section__title'>{title}</div>
           <div className='section__subtitle'>{subtitle}</div>
+          <hr className='account__divider' />
 
           {renderMenuType}
         </div>

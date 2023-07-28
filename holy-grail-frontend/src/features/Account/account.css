@@ -15,3 +15,10 @@
     margin: 2rem;
     flex-grow: 1;
 }
+
+.account__divider {
+    width: 100%;
+    border-top: 2px solid black;
+    background-color: var(--color-grey-light);
+    margin: 1vh 0;
+}
