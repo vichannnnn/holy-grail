@@ -14,13 +14,12 @@ export const VerticalNav = ({ props }: VerticalNavListProps) => {
     <div
       style={{
         display: 'flex',
-        border: '1px solid black',
-        borderRadius: '10px',
         flexDirection: 'column',
         gap: '2vh',
         padding: '3%',
         marginTop: '10vh',
         width: '20vw',
+        justifyContent: 'space-around',
       }}
     >
       {props.map((child, idx) => {
@@ -31,9 +30,14 @@ export const VerticalNav = ({ props }: VerticalNavListProps) => {
                 setSelected(idx);
                 child.onClick();
               }}
-              style={{ display: 'flex', cursor: 'pointer', gap: '2vw' }}
+              style={{
+                display: 'flex',
+                cursor: 'pointer',
+                gap: '2vw',
+                justifyContent: 'flex-start',
+              }}
             >
-              <child.icon sx={{ transform: 'scale(2.0)', flexGrow: 1 }} />
+              <child.icon sx={{ transform: 'scale(1.2)', display: 'absolute' }} />
               {isDesktop ? (
                 <Typography sx={{ fontWeight: idx === selected ? 'bold' : null, flexGrow: 1 }}>
                   {child.label}
