@@ -3,3 +3,8 @@ export interface ChangePasswordDetails {
   newPassword: string;
   repeatPassword: string;
 }
+
+export interface ChangeEmailDetails {
+  currentEmail: string;
+  newEmail: string;
+}

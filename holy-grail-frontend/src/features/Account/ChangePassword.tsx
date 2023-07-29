@@ -1,8 +1,7 @@
-import { useContext, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { PasswordValidationBox, ChangePasswordDetails } from '@features';
 import { AlertProps, AlertToast } from '@components';
 import { Typography, TextField, Button } from '@mui/material';
-import { AuthContext } from '@providers';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ChangePasswordValidation } from '@forms/validation';

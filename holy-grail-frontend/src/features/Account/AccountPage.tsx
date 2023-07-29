@@ -1,10 +1,11 @@
-import { AccountDetails, ChangePassword } from '@features';
+import { AccountDetails, ChangePassword, UpdateEmail } from '@features';
 import { useState } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { VerticalNav, VerticalNavProps } from '@components';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import DescriptionIcon from '@mui/icons-material/Description';
 import PasswordIcon from '@mui/icons-material/Password';
+import Email from '@mui/icons-material/Email';
 
 import './account.css';
 
@@ -32,6 +33,15 @@ export const AccountPage = () => {
         setTitle('Change password');
         setSubtitle('Change your password here!');
         setRenderMenuType(<ChangePassword />);
+      },
+    },
+    {
+      icon: Email,
+      label: 'Update email',
+      onClick: () => {
+        setTitle('Update email');
+        setSubtitle('Update your email here!');
+        setRenderMenuType(<UpdateEmail />);
       },
     },
     {
