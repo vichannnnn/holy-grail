@@ -39,7 +39,9 @@ export const VerticalNav = ({ props }: VerticalNavListProps) => {
             >
               <child.icon sx={{ transform: 'scale(1.2)', display: 'absolute' }} />
               {isDesktop ? (
-                <Typography sx={{ fontWeight: idx === selected ? 'bold' : null, flexGrow: 1 }}>
+                <Typography
+                  sx={{ textDecoration: idx === selected ? 'underline' : null, flexGrow: 1 }}
+                >
                   {child.label}
                 </Typography>
               ) : null}
