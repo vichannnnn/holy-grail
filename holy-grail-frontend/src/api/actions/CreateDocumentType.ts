@@ -1,10 +1,6 @@
 import { apiClient } from '@apiClient';
 import { AddTypeDetails } from '@features';
 export const createDocumentType = async (data: AddTypeDetails) => {
-  try {
-    const response = await apiClient.post('/document_type', data);
-    return response.data;
-  } catch (error) {
-    console.error(error);
-  }
+  const response = await apiClient.post('/document_type', data);
+  return response.data;
 };

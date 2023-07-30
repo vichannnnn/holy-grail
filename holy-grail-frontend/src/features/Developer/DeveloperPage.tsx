@@ -67,9 +67,7 @@ export const DeveloperPage = () => {
     editUserModalState.openModal({ userId, role, username });
   };
 
-  useEffect(() => {
-    console.log(addModalState);
-  }, [addModalState.isOpen]);
+  useEffect(() => {}, [addModalState.isOpen]);
 
   useEffect(() => {
     fetchData().then(setData);

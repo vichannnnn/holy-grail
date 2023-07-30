@@ -85,22 +85,14 @@ export const ApprovalTable = () => {
   };
 
   const handleApprove = async (id: number) => {
-    try {
-      await approveNote(id);
-      filterNotes();
-    } catch (error) {
-      console.error(error);
-    }
+    await approveNote(id);
+    filterNotes();
   };
 
   const handleDelete = async (id: number) => {
-    try {
-      await deleteNote(id);
-      setIsAlertOpen(false);
-      filterNotes();
-    } catch (error) {
-      console.error(error);
-    }
+    await deleteNote(id);
+    setIsAlertOpen(false);
+    filterNotes();
   };
 
   return (
@@ -146,11 +138,7 @@ export const ApprovalTable = () => {
         onClose={() => setIsAlertOpen(false)}
         onConfirm={() => {
           if (noteId !== null) {
-            handleDelete(noteId)
-              .then(() => null)
-              .catch((err) => {
-                console.log(err);
-              });
+            handleDelete(noteId).then(() => null);
           }
         }}
       />
@@ -171,11 +159,7 @@ export const ApprovalTable = () => {
             newSubject,
             newType,
             newDocName,
-          )
-            .then(() => filterNotes())
-            .catch((err) => {
-              console.log(err);
-            });
+          ).then(() => filterNotes());
         }}
         categories={categories.map((c) => ({ id: c.id, name: c.name }))}
         subjects={subjects.map((s) => ({ id: s.id, name: s.name }))}
