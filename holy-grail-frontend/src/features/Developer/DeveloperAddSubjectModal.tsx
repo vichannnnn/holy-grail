@@ -1,6 +1,9 @@
-import { useForm } from 'react-hook-form';
-import { DeveloperAddModalProps, singularDataType, AddSubjectDetails } from '@features';
+import { useEffect, useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import { createSubject } from '@api/actions';
+import { fetchData, CategoryType } from '@api/library';
 import { AlertToast, AlertProps, Combobox } from '@components';
+import { DeveloperAddModalProps, singularDataType, AddSubjectDetails } from '@features';
 import {
   Button,
   Dialog,
@@ -11,9 +14,6 @@ import {
   TextField,
   Stack,
 } from '@mui/material';
-import { createSubject } from '@api/actions';
-import { useEffect, useState } from 'react';
-import { fetchData, CategoryType } from '@api/library';
 
 export const DeveloperAddSubjectModal = ({
   isOpen,
@@ -21,7 +21,7 @@ export const DeveloperAddSubjectModal = ({
   onSuccessfulAdd,
 }: Omit<DeveloperAddModalProps, 'type'>) => {
   const singularType = singularDataType['subjects'];
-  const { register, handleSubmit } = useForm<AddSubjectDetails>();
+  const { register, handleSubmit, control } = useForm<AddSubjectDetails>();
 
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
@@ -37,12 +37,15 @@ export const DeveloperAddSubjectModal = ({
   const handleAdd = async (formData: AddSubjectDetails) => {
     try {
       await createSubject(formData);
-
       await onSuccessfulAdd();
-    } catch (err) {
-      console.error(err);
-    } finally {
       onClose();
+    } catch (err) {
+      setAlertContent({
+        severity: 'error',
+        title: 'Failed to add subject',
+        description: 'A subject with the category and name already exists.',
+      });
+      setOpenAlert(true);
     }
   };
 
@@ -62,11 +65,17 @@ export const DeveloperAddSubjectModal = ({
                 type='text'
                 fullWidth
               />
-              <Combobox
-                label='Select a category'
-                options={categoryData}
-                onChange={() => {}}
-                value=''
+              <Controller
+                name='category_id'
+                control={control}
+                render={({ field }) => (
+                  <Combobox
+                    label='Select a category'
+                    options={categoryData}
+                    onChange={(newValue) => field.onChange(newValue)}
+                    value={field.value}
+                  />
+                )}
               />
             </Stack>
           </DialogContent>

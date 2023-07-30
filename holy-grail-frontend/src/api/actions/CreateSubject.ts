@@ -7,5 +7,6 @@ export const createSubject = async (data: AddTypeDetails) => {
     return response.data;
   } catch (error) {
     console.error(error);
+    throw error;
   }
 };

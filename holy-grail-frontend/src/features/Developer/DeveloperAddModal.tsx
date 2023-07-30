@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form';
+import { createCategory, createDocumentType, createSubject } from '@api/actions';
 import { DeveloperAddModalProps, singularDataType, AddTypeDetails } from '@features';
 import {
   Button,
@@ -10,7 +11,6 @@ import {
   TextField,
   Stack,
 } from '@mui/material';
-import { createCategory, createDocumentType, createSubject } from '@api/actions';
 
 export const DeveloperAddModal = ({
   isOpen,
