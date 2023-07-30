@@ -17,7 +17,13 @@ export const fetchData = async (searchParams: CategorySearchParams | null = null
     subjects = await apiClient.get('/all_subjects');
   }
 
-  const users = await fetchAllUsers();
+  let users: User[];
+
+  try {
+    users = await fetchAllUsers();
+  } catch (error) {
+    users = [];
+  }
 
   return {
     categories: categories.data.map((category: CategoryType) => ({
