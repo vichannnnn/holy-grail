@@ -247,8 +247,7 @@ export const UploadPage = () => {
             color: 'black',
             fontWeight: 'bold',
             width: '10%',
-            aspectRatio: 1.618,
-            borderRadius: '10%',
+            borderRadius: '4px',
           }}
           onClick={handleSubmit}
           disabled={handleDisableSumbit()}
