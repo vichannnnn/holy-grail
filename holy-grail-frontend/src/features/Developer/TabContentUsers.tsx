@@ -1,28 +1,26 @@
+import { useState } from 'react';
+import { FreeTextCombobox } from '@components';
+import { RoleEnum, User } from '@features';
 import {
+  Box,
   Button,
-  Paper,
+  Grid,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Box,
-  Grid,
 } from '@mui/material';
-import { FreeTextCombobox } from '@components';
-import { RoleEnum, User } from '@features';
 import EditIcon from '@mui/icons-material/Edit';
 import '../Library/library.css';
-import { useState } from 'react';
 
 export const TabContentUsers = ({ data }: { data: User[] }) => {
   const [query, setQuery] = useState<string>('');
   const handleFilterContent = () => {
-    const validData = (data as Array<User>).filter((option: User) =>
+    return (data as Array<User>).filter((option: User) =>
       option.username.toLowerCase().includes(query.toLowerCase()),
     );
-    return validData;
   };
 
   const handlePaging = () => {

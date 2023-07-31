@@ -1,7 +1,7 @@
 import { apiClient } from '@apiClient';
 import { CategoryType, SubjectType, DocumentType, CategorySearchParams } from './types';
 import { fetchAllUsers } from '@api/actions';
-import { User, RoleEnum } from '@features';
+import { User } from '@features';
 export const fetchData = async (searchParams: CategorySearchParams | null = null) => {
   const [categories, types] = await Promise.all([
     apiClient.get('/all_category_level'),

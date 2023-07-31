@@ -1,7 +1,7 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { SubjectType } from '@api/library';
-import { Pagination, FreeTextCombobox } from '@components';
-import { TabContentProps } from '@features';
+import { FreeTextCombobox, Pagination } from '@components';
+import { DeveloperEditModal, TabContentSubjectProps } from '@features';
 import {
   Box,
   Button,
@@ -15,24 +15,35 @@ import {
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import '../Library/library.css';
-import { MediaQueryContext } from '@providers';
+import { DeveloperEditSubjectModal } from './DeveloperEditSubjectModal';
 
 export const TabContentSubjects = ({
   title,
   data,
-  handleEdit,
-  handleAdd,
-}: Omit<TabContentProps, 'type'>) => {
+  fetchData,
+}: Omit<TabContentSubjectProps, 'type'>) => {
   const [query, setQuery] = useState<string>('');
   const [page, setPage] = useState<number>(0);
   const [chunkSize, setChunkSize] = useState<number>(10);
-  const { isDesktop } = useContext(MediaQueryContext);
+
+  const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
+  const [editedItem, setEditedItem] = useState<SubjectType | null>(null);
+
+  const handleEdit = (item: SubjectType) => {
+    setEditedItem(item);
+    setIsEditModalOpen(true);
+  };
+
+  const handleAdd = () => {
+    setEditedItem(null);
+    setIsAddModalOpen(true);
+  };
 
   const handleFilterContent = () => {
-    const validData = (data as Array<SubjectType>).filter((option: SubjectType) =>
+    return (data as Array<SubjectType>).filter((option: SubjectType) =>
       option.name.toLowerCase().includes(query.toLowerCase()),
     );
-    return validData;
   };
 
   const handlePaging = () => {
@@ -92,7 +103,7 @@ export const TabContentSubjects = ({
                 </TableCell>
 
                 <TableCell className='table__content' component='th' scope='row'>
-                  <Button onClick={() => handleEdit(item.id, 'subjects')}>
+                  <Button onClick={() => handleEdit(item)}>
                     <EditIcon />
                   </Button>
                 </TableCell>
@@ -101,7 +112,14 @@ export const TabContentSubjects = ({
           </TableBody>
         </Table>
       </TableContainer>
-
+      {isEditModalOpen && editedItem && (
+        <DeveloperEditSubjectModal
+          isOpen={isEditModalOpen}
+          onClose={() => setIsEditModalOpen(false)}
+          initialData={editedItem}
+          onSuccessfulUpdate={fetchData}
+        />
+      )}
       <Pagination
         pageInfo={{
           page: page + 1,

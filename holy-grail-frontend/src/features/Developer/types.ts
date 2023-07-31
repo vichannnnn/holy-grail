@@ -38,6 +38,17 @@ export interface DeveloperEditModalProps {
   onSuccessfulUpdate: () => void;
 }
 
+export interface DeveloperEditSubjectModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  initialData: {
+    id: number;
+    name: string;
+    category: CategoryType;
+  };
+  onSuccessfulUpdate: () => void;
+}
+
 export interface EditUserModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -51,6 +62,12 @@ export interface TabContentProps {
   title: string;
   data: CategoryType[] | DocumentType[];
   type: DataTypeKey;
+  fetchData: () => void;
+}
+
+export interface TabContentSubjectProps {
+  title: string;
+  data: SubjectType[];
   fetchData: () => void;
 }
 
