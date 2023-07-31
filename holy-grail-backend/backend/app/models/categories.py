@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING, List
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import Integer, ForeignKey, select, UniqueConstraint
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import exc as SQLAlchemyExceptions
 
 from app.crud.base import CRUD
 from app.db.base_class import Base
@@ -19,7 +20,7 @@ class CategoryLevel(Base, CRUD["category_level"]):
         primary_key=True,
         index=True,
     )
-    name: Mapped[str] = mapped_column(nullable=False)
+    name: Mapped[str] = mapped_column(nullable=False, unique=True)
     documents: Mapped["Library"] = relationship(
         back_populates="doc_category", uselist=True
     )
@@ -61,47 +62,35 @@ class Subjects(Base, CRUD["subjects"]):
 
     @classmethod
     async def create(cls, session: AsyncSession, data: dict) -> "Subjects":
-        stmt = select(CategoryLevel).where(CategoryLevel.id == data["category_id"])
-        result = await session.execute(stmt)
-        category = result.scalar()
+        try:
+            res = await super().create(session, data)
+            await session.refresh(res, ["category"])
+            return res
 
-        if not category:
-            raise AppError.RESOURCES_NOT_FOUND_ERROR
-
-        stmt = select(cls).where(
-            (cls.name == data["name"]) & (cls.category_id == data["category_id"])
-        )
-        result = await session.execute(stmt)
-        existing_subject = result.scalar()
-
-        if existing_subject:
-            raise AppError.RESOURCES_ALREADY_EXISTS_ERROR
-
-        return await super().create(session, data)
+        except SQLAlchemyExceptions.IntegrityError as exc:
+            await session.rollback()
+            if str(exc).find("ForeignKeyViolationError") != -1:
+                raise AppError.RESOURCES_NOT_FOUND_ERROR
+            elif str(exc).find("UniqueViolationError") != -1:
+                raise AppError.RESOURCES_ALREADY_EXISTS_ERROR from exc
+            raise AppError.RESOURCES_ALREADY_EXISTS_ERROR from exc
 
     @classmethod
     async def update(
         cls, session: AsyncSession, id: int, data: dict  # pylint: disable=W0622, C0103
     ) -> "Subjects":
-        stmt = select(CategoryLevel).where(CategoryLevel.id == data["category_id"])
-        result = await session.execute(stmt)
-        category = result.scalar()
+        try:
+            res = await super().update(session, id, data)
+            await session.refresh(res, ["category"])
+            return res
 
-        if not category:
-            raise AppError.RESOURCES_NOT_FOUND_ERROR
-
-        stmt = select(cls).where(
-            (cls.name == data["name"])
-            & (cls.category_id == data["category_id"])
-            & (cls.id != id)
-        )
-        result = await session.execute(stmt)
-        existing_subject = result.scalar()
-
-        if existing_subject:
-            raise AppError.RESOURCES_ALREADY_EXISTS_ERROR
-
-        return await super().update(session, id, data)
+        except SQLAlchemyExceptions.IntegrityError as exc:
+            await session.rollback()
+            if str(exc).find("ForeignKeyViolationError") != -1:
+                raise AppError.RESOURCES_NOT_FOUND_ERROR
+            elif str(exc).find("UniqueViolationError") != -1:
+                raise AppError.RESOURCES_ALREADY_EXISTS_ERROR from exc
+            raise AppError.RESOURCES_ALREADY_EXISTS_ERROR from exc
 
 
 class DocumentTypes(Base, CRUD["documents"]):

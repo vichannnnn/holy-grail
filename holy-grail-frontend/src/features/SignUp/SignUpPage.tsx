@@ -21,10 +21,10 @@ export const SignUpPage = () => {
     resolver: yupResolver(SignUpValidation),
   });
 
-  const { user, registerUserAccount } = useContext(AuthContext);
+  const { registerUserAccount } = useContext(AuthContext);
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
-  console.log(SignUpValidation);
+
   const handleRegister = async (formData: AccountDetails) => {
     const status = await registerUserAccount(formData);
     let alertContent: AlertProps;
@@ -123,15 +123,15 @@ export const SignUpPage = () => {
               <TextField
                 type='password'
                 label='Repeat Password'
-                error={Boolean(errors.repeatPassword)}
-                helperText={errors.repeatPassword?.message}
-                {...register('repeatPassword')}
+                error={Boolean(errors.repeat_password)}
+                helperText={errors.repeat_password?.message}
+                {...register('repeat_password')}
                 required
               />
             </FormControl>
             <PasswordValidationBox
               password={watch('password')}
-              repeatPassword={watch('repeatPassword')}
+              repeatPassword={watch('repeat_password')}
             />
 
             <Button type='submit' variant='contained' fullWidth>

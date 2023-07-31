@@ -1,10 +1,12 @@
 import { apiClient } from '@apiClient';
 import { AxiosError } from 'axios';
-import { ResponseData } from './types';
+import { ForgotPasswordDetails, ResponseData } from './types';
 
-export const sendResetPasswordEmail = async (email: string): Promise<ResponseData> => {
+export const sendResetPasswordEmail = async (
+  data: ForgotPasswordDetails,
+): Promise<ResponseData> => {
   try {
-    await apiClient.post('/auth/send_reset_password_mail', { email });
+    await apiClient.post('/auth/send_reset_password_mail', data);
 
     return { success: true, message: 'Password reset email successfully sent.' };
   } catch (error) {

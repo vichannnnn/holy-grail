@@ -1,10 +1,7 @@
 import { apiClient } from '@apiClient';
+import { AddTypeDetails } from '@features';
 
-export const createCategory = async (name: string) => {
-  try {
-    const response = await apiClient.post('/category', { name });
-    return response.data;
-  } catch (error) {
-    console.error(error);
-  }
+export const createCategory = async (data: AddTypeDetails) => {
+  const response = await apiClient.post('/category', data);
+  return response.data;
 };

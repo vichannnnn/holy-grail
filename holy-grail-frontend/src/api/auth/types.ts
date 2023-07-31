@@ -6,6 +6,16 @@ export interface ResponseData {
 export interface AccountDetails {
   username: string;
   password: string;
-  repeatPassword: string;
+  repeat_password: string;
   email: string;
+}
+
+export interface ForgotPasswordDetails {
+  email: string;
+}
+
+export interface UpdatePasswordDetails {
+  before_password: string;
+  password: string;
+  repeat_password: string;
 }

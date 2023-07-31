@@ -1,49 +1,43 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { updateCategory, updateDocumentType } from '@api/actions';
+import { createCategory, createDocumentType } from '@api/actions';
 import { AlertProps, AlertToast } from '@components';
-import { DeveloperEditModalProps, singularDataType, UpdateTypeDetails } from '@features';
+import { DeveloperAddModalProps, singularDataType, AddTypeDetails } from '@features';
 import { Box, Button, Modal, Stack, TextField, Typography } from '@mui/material';
 import './developer.css';
 
-export const DeveloperEditModal = ({
+export const DeveloperAddModal = ({
   isOpen,
   onClose,
+  onSuccessfulAdd,
   type,
-  initialData,
-  onSuccessfulUpdate,
-}: DeveloperEditModalProps) => {
-  const singularType = singularDataType[type];
+}: DeveloperAddModalProps) => {
+  const singularType = type && singularDataType[type];
+  const { register, handleSubmit } = useForm<AddTypeDetails>();
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
-  const { register, handleSubmit, setValue } = useForm<UpdateTypeDetails>({
-    defaultValues: {
-      name: initialData.name,
-    },
-  });
 
-  const handleUpdate = async (formData: UpdateTypeDetails) => {
-    try {
-      if (type === 'categories') {
-        await updateCategory(initialData.id, formData);
-      } else if (type === 'types') {
-        await updateDocumentType(initialData.id, formData);
+  const handleAdd = async (formData: AddTypeDetails) => {
+    if (type !== null) {
+      try {
+        if (type === 'categories') {
+          await createCategory(formData);
+        } else if (type === 'types') {
+          await createDocumentType(formData);
+        }
+
+        await onSuccessfulAdd();
+        onClose();
+      } catch (err) {
+        setAlertContent({
+          severity: 'error',
+          title: `Failed to add ${singularType}`,
+          description: `The name of the ${singularType} already exists.`,
+        });
+        setOpenAlert(true);
       }
-      onClose();
-      onSuccessfulUpdate();
-    } catch (err) {
-      setAlertContent({
-        severity: 'error',
-        title: `Failed to update ${singularType}`,
-        description: `The name of the ${singularType} already exists.`,
-      });
-      setOpenAlert(true);
     }
   };
-
-  useEffect(() => {
-    setValue('name', initialData.name);
-  }, [initialData.name, setValue]);
 
   const modalStyle = {
     position: 'absolute',
@@ -62,11 +56,11 @@ export const DeveloperEditModal = ({
       <Modal open={isOpen} onClose={onClose}>
         <Box sx={modalStyle}>
           <Typography id='modal-modal-title' variant='h6' component='h2'>
-            Update {singularType}
+            Add {singularType}
           </Typography>
-          <form onSubmit={handleSubmit(handleUpdate)}>
+          <form onSubmit={handleSubmit(handleAdd)}>
             <Typography marginTop='3%' marginBottom='5%'>
-              Please enter the new name of the {singularType}.
+              Please enter the name of the {singularType}.
             </Typography>
             <Stack direction='column' spacing={2}>
               <TextField
@@ -80,10 +74,7 @@ export const DeveloperEditModal = ({
             </Stack>
             <Stack direction='row' spacing={2} justifyContent='center' marginTop='5%'>
               <Button variant='contained' type='submit' color='primary'>
-                Update
-              </Button>
-              <Button variant='contained' onClick={onClose} color='primary'>
-                Cancel
+                Add
               </Button>
             </Stack>
           </form>

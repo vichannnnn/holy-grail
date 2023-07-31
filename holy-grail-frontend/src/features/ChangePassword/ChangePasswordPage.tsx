@@ -1,37 +1,29 @@
-import { useEffect, useState, FormEvent } from 'react';
-import { updatePassword } from '@api/auth';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { updatePassword, UpdatePasswordDetails } from '@api/auth';
 import { AccountForm, AlertToast, AlertProps } from '@components';
 import { PasswordValidationBox } from '@features';
+import { UpdatePasswordValidation } from '@forms/validation';
 import { useNavigation } from '@utils';
 import { Button, FormControl, TextField, Stack } from '@mui/material';
 import '../SignIn/login.css';
 
 export const ChangePasswordPage = () => {
   const { goToHome } = useNavigation();
-
-  const [beforePassword, setBeforePassword] = useState('');
-  const [password, setPassword] = useState('');
-  const [repeatPassword, setRepeatPassword] = useState('');
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(UpdatePasswordValidation),
+  });
 
-  const [lengthValid, setLengthValid] = useState(false);
-  const [specialCharValid, setSpecialCharValid] = useState(false);
-  const [capitalLetterValid, setCapitalLetterValid] = useState(false);
-  const [repeatPasswordValid, setRepeatPasswordValid] = useState(false);
-  const allCriteriaMet =
-    lengthValid && specialCharValid && capitalLetterValid && repeatPasswordValid;
-
-  useEffect(() => {
-    setLengthValid(password.length <= 30 && password.length >= 8);
-    setSpecialCharValid(/[!@#$%^&*]/.test(password));
-    setCapitalLetterValid(/[A-Z]/.test(password));
-    setRepeatPasswordValid(password === repeatPassword && password !== '');
-  }, [password, repeatPassword]);
-
-  const handleUpdatePassword = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const { success, message } = await updatePassword(beforePassword, password, repeatPassword);
+  const handleUpdatePassword = async (formData: UpdatePasswordDetails) => {
+    const { success, message } = await updatePassword(formData);
     if (success) {
       const alertContentRedirect: AlertProps = {
         title: 'Password successfully updated.',
@@ -56,14 +48,15 @@ export const ChangePasswordPage = () => {
         <div className='login__title'>Update Password</div>
         <div className='section__subtitle'>You can change your password here.</div>
 
-        <form className='login__fields' onSubmit={handleUpdatePassword}>
+        <form className='login__fields' onSubmit={handleSubmit(handleUpdatePassword)}>
           <Stack direction='column' spacing={4}>
             <FormControl id='before-password'>
               <TextField
                 type='password'
                 label='Current Password'
-                value={beforePassword}
-                onChange={(e) => setBeforePassword(e.target.value)}
+                error={Boolean(errors.before_password)}
+                helperText={errors.before_password?.message}
+                {...register('before_password')}
                 required
               />
             </FormControl>
@@ -71,8 +64,9 @@ export const ChangePasswordPage = () => {
               <TextField
                 type='password'
                 label='New Password'
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                error={Boolean(errors.password)}
+                helperText={errors.password?.message}
+                {...register('password')}
                 required
               />
             </FormControl>
@@ -80,17 +74,15 @@ export const ChangePasswordPage = () => {
               <TextField
                 type='password'
                 label='Repeat Password'
-                value={repeatPassword}
-                onChange={(e) => setRepeatPassword(e.target.value)}
+                error={Boolean(errors.repeat_password)}
+                helperText={errors.repeat_password?.message}
+                {...register('repeat_password')}
                 required
               />
             </FormControl>
             <PasswordValidationBox
-              lengthValid={lengthValid}
-              specialCharValid={specialCharValid}
-              capitalLetterValid={capitalLetterValid}
-              repeatPasswordValid={repeatPasswordValid}
-              allCriteriaMet={allCriteriaMet}
+              password={watch('password')}
+              repeatPassword={watch('repeat_password')}
             />
             <Button type='submit' variant='contained' fullWidth>
               Update Password

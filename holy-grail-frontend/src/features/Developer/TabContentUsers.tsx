@@ -1,6 +1,9 @@
+import { useState } from 'react';
+import { DeveloperEditUserModal, RoleEnum, TabContentUsersProps, User } from '@features';
 import {
+  Box,
   Button,
-  Paper,
+  Grid,
   Table,
   TableBody,
   TableCell,
@@ -8,47 +11,66 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import { RoleEnum, User } from '@features';
 import EditIcon from '@mui/icons-material/Edit';
+import '../Library/library.css';
 
-export const TabContentUsers = ({
-  data,
-  handleEdit,
-}: {
-  data: User[];
-  handleEdit: (id: number) => void;
-}) => {
+export const TabContentUsers = ({ data, fetchData }: TabContentUsersProps) => {
+  const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
+  const [editedItem, setEditedItem] = useState<User | null>(null);
+
+  const handleEdit = (item: User) => {
+    setEditedItem(item);
+    setIsEditModalOpen(true);
+  };
+
   return (
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>UserId</TableCell>
-            <TableCell>Username</TableCell>
-            <TableCell>Role</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data.map((item) => (
-            <TableRow key={item.user_id}>
-              <TableCell component='th' scope='row'>
-                {item.user_id}
-              </TableCell>
-              <TableCell component='th' scope='row'>
-                {item.username}
-              </TableCell>
-              <TableCell component='th' scope='row'>
-                {RoleEnum[item.role]}
-              </TableCell>
-              <TableCell align='right'>
-                <Button onClick={() => handleEdit(item.user_id)}>
-                  <EditIcon />
-                </Button>
-              </TableCell>
+    <section className='materials container'>
+      <Box alignItems='center' sx={{ paddingTop: '3%', paddingBottom: '3%' }}>
+        <Grid item xs={12} sm={4}>
+          <Box display='flex' justifyContent='center'>
+            <h2>Users</h2>
+          </Box>
+        </Grid>
+      </Box>
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell className='table__header'>User Id</TableCell>
+              <TableCell className='table__header'>Username</TableCell>
+              <TableCell className='table__header'>Role</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {data.map((item) => (
+              <TableRow key={item.user_id}>
+                <TableCell className='table__content' component='th' scope='row'>
+                  {item.user_id}
+                </TableCell>
+                <TableCell className='table__content' component='th' scope='row'>
+                  {item.username}
+                </TableCell>
+                <TableCell className='table__content' component='th' scope='row'>
+                  {RoleEnum[item.role]}
+                </TableCell>
+                <TableCell align='right'>
+                  <Button onClick={() => handleEdit(item)}>
+                    <EditIcon />
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      {isEditModalOpen && editedItem && (
+        <DeveloperEditUserModal
+          isOpen={isEditModalOpen}
+          onClose={() => setIsEditModalOpen(false)}
+          initialData={editedItem}
+          onSuccessfulUpdate={fetchData}
+        />
+      )}
+    </section>
   );
 };

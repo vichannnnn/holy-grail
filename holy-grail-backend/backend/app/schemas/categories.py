@@ -16,12 +16,14 @@ class DocumentTypeCreateSchema(BaseModel):
     name: str
 
 
-class SubjectSchema(SubjectCreateSchema):
-    id: int
-
-
 class CategorySchema(CategoryCreateSchema):
     id: int
+
+
+class SubjectSchema(BaseModel):
+    id: int
+    name: str
+    category: CategorySchema
 
 
 class DocumentTypeSchema(DocumentTypeCreateSchema):

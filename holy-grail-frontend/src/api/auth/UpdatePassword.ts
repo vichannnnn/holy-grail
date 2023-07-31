@@ -1,18 +1,10 @@
 import { apiClient } from '@apiClient';
 import { AxiosError } from 'axios';
-import { ResponseData } from './types';
+import { ResponseData, UpdatePasswordDetails } from './types';
 
-export const updatePassword = async (
-  beforePassword: string,
-  password: string,
-  repeatPassword: string,
-): Promise<ResponseData> => {
+export const updatePassword = async (formData: UpdatePasswordDetails): Promise<ResponseData> => {
   try {
-    await apiClient.post('/auth/update_password', {
-      before_password: beforePassword,
-      password: password,
-      repeat_password: repeatPassword,
-    });
+    await apiClient.post('/auth/update_password', formData);
 
     return { success: true, message: 'Password successfully updated.' };
   } catch (error) {
@@ -21,15 +13,18 @@ export const updatePassword = async (
     let errorDescription = 'Unable to update password. Please check your input and try again.';
     if (axiosError.response) {
       switch (axiosError.response.status) {
-        case 401:
-          errorDescription = "The password you've entered is invalid.";
-          break;
         case 400:
           errorDescription =
             'Your password does not match. Please check your password and try again.';
           break;
+        case 401:
+          errorDescription = 'You are not authorized to perform this action.';
+          break;
+        case 403:
+          errorDescription = "The current password you've entered is invalid.";
+          break;
         case 422:
-          errorDescription = 'Please ensure your new password format is valid';
+          errorDescription = 'Please ensure your new password format is valid.';
           break;
       }
     }

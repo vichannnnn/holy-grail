@@ -1,45 +1,50 @@
 import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { updateCategory, updateDocumentType } from '@api/actions';
+import { useForm, Controller } from 'react-hook-form';
+import { updateSubject } from '@api/actions';
+import { CategoryType, fetchAllCategories } from '@api/library';
 import { AlertProps, AlertToast } from '@components';
-import { DeveloperEditModalProps, singularDataType, UpdateTypeDetails } from '@features';
-import { Box, Button, Modal, Stack, TextField, Typography } from '@mui/material';
+import { DeveloperEditSubjectModalProps, UpdateSubjectDetails } from '@features';
+import { Box, Button, Modal, Stack, TextField, Typography, MenuItem } from '@mui/material';
 import './developer.css';
 
-export const DeveloperEditModal = ({
+export const DeveloperEditSubjectModal = ({
   isOpen,
   onClose,
-  type,
-  initialData,
   onSuccessfulUpdate,
-}: DeveloperEditModalProps) => {
-  const singularType = singularDataType[type];
+  initialData,
+}: DeveloperEditSubjectModalProps) => {
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
-  const { register, handleSubmit, setValue } = useForm<UpdateTypeDetails>({
+  const [categories, setCategories] = useState<CategoryType[]>([]);
+  const { register, handleSubmit, setValue, control } = useForm<UpdateSubjectDetails>({
     defaultValues: {
       name: initialData.name,
+      category_id: initialData.category.id,
     },
   });
 
-  const handleUpdate = async (formData: UpdateTypeDetails) => {
+  const handleUpdate = async (formData: UpdateSubjectDetails) => {
     try {
-      if (type === 'categories') {
-        await updateCategory(initialData.id, formData);
-      } else if (type === 'types') {
-        await updateDocumentType(initialData.id, formData);
-      }
+      await updateSubject(initialData.id, formData);
+      await onSuccessfulUpdate();
       onClose();
-      onSuccessfulUpdate();
     } catch (err) {
       setAlertContent({
         severity: 'error',
-        title: `Failed to update ${singularType}`,
-        description: `The name of the ${singularType} already exists.`,
+        title: `Failed to update subject`,
+        description: `The name and category of the subject already exists.`,
       });
       setOpenAlert(true);
     }
   };
+
+  useEffect(() => {
+    const getAllCategories = async () => {
+      const fetchedCategories = await fetchAllCategories();
+      setCategories(fetchedCategories);
+    };
+    getAllCategories();
+  }, []);
 
   useEffect(() => {
     setValue('name', initialData.name);
@@ -62,20 +67,40 @@ export const DeveloperEditModal = ({
       <Modal open={isOpen} onClose={onClose}>
         <Box sx={modalStyle}>
           <Typography id='modal-modal-title' variant='h6' component='h2'>
-            Update {singularType}
+            Update Subject
           </Typography>
           <form onSubmit={handleSubmit(handleUpdate)}>
             <Typography marginTop='3%' marginBottom='5%'>
-              Please enter the new name of the {singularType}.
+              Please enter the new name of the subject.
             </Typography>
             <Stack direction='column' spacing={2}>
               <TextField
                 {...register('name', { required: true })}
                 autoFocus
                 margin='dense'
-                label={<span style={{ textTransform: 'capitalize' }}>{singularType}</span>}
+                label={<span style={{ textTransform: 'capitalize' }}>subject</span>}
                 type='text'
                 fullWidth
+              />
+              <Controller
+                name='category_id'
+                control={control}
+                defaultValue={initialData.category.id}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    select
+                    margin='dense'
+                    label={<span style={{ textTransform: 'capitalize' }}>category</span>}
+                    fullWidth
+                  >
+                    {categories.map((category) => (
+                      <MenuItem key={category.id} value={category.id}>
+                        {category.name}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                )}
               />
             </Stack>
             <Stack direction='row' spacing={2} justifyContent='center' marginTop='5%'>

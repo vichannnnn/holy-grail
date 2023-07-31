@@ -157,15 +157,13 @@ class Account(Base, CRUD["Account"]):
     async def update_password(
         cls, session: AsyncSession, user_id: int, data: AccountUpdatePasswordSchema
     ) -> FastAPIResponse:
-        if data.before_password is None or data.password is None:
-            raise AppError.BAD_REQUEST_ERROR
-
         curr = await Account.get(session, id=user_id)
-        if (
-            not Authenticator.pwd_context.verify(data.before_password, curr.password)
-            or not curr
-        ):
+
+        if not curr:
             raise AppError.INVALID_CREDENTIALS_ERROR
+
+        if not Authenticator.pwd_context.verify(data.before_password, curr.password):
+            raise AppError.PERMISSION_DENIED_ERROR
 
         if data.password != data.repeat_password:
             raise AppError.BAD_REQUEST_ERROR

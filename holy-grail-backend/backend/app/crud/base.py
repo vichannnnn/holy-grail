@@ -1,8 +1,8 @@
-from typing import TypeVar, Generic, Optional, Sequence, Type, Dict, Any
+from typing import TypeVar, Generic, Optional, Sequence, Type, Dict, Any, List
 from fastapi import Response as FastAPIResponse
-from sqlalchemy import update, delete, select
+from sqlalchemy import update, delete, select, asc
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import declared_attr
+from sqlalchemy.orm import declared_attr, Load
 from sqlalchemy import exc as SQLAlchemyExceptions, and_
 
 from app.db.base_class import Base
@@ -56,7 +56,17 @@ class CRUD(Generic[ModelType]):
         data: Dict[str, Any],
     ) -> ModelType:
         stmt = update(cls).returning(cls).where(cls.id == id).values(**data)
-        res = await session.execute(stmt)
+        try:
+            res = await session.execute(stmt)
+
+        except SQLAlchemyExceptions.IntegrityError as exc:
+            await session.rollback()
+            if str(exc).find("ForeignKeyViolationError") != -1:
+                raise AppError.RESOURCES_NOT_FOUND_ERROR
+            elif str(exc).find("UniqueViolationError") != -1:
+                raise AppError.RESOURCES_ALREADY_EXISTS_ERROR from exc
+            raise AppError.RESOURCES_ALREADY_EXISTS_ERROR from exc
+
         updated_instance = res.scalar()
 
         if updated_instance is None:
@@ -84,10 +94,17 @@ class CRUD(Generic[ModelType]):
         cls: Type[ModelType],
         session: AsyncSession,
         filter_: Optional[Dict[str, Any]] = None,
+        options: List[Load] = None,
     ) -> Sequence[ModelType]:
         stmt = select(cls)
         if filter_:
             conditions = [getattr(cls, key) == value for key, value in filter_.items()]
             stmt = stmt.where(and_(*conditions))
+
+        if options:
+            stmt = stmt.options(*options)
+
+        stmt = stmt.order_by(asc(cls.id))
+
         result = await session.execute(stmt)
         return result.scalars().all()
