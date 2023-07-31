@@ -16,7 +16,7 @@ import {
 import EditIcon from '@mui/icons-material/Edit';
 import '../Library/library.css';
 
-export const TabContent = ({ title, data, type }: TabContentProps) => {
+export const TabContent = ({ title, data, type, fetchData }: TabContentProps) => {
   const [query, setQuery] = useState<string>('');
   const [page, setPage] = useState<number>(0);
   const [chunkSize, setChunkSize] = useState<number>(10);
@@ -108,6 +108,7 @@ export const TabContent = ({ title, data, type }: TabContentProps) => {
           onClose={() => setIsEditModalOpen(false)}
           initialData={editedItem}
           type={type}
+          onSuccessfulUpdate={fetchData}
         />
       )}
       <Pagination

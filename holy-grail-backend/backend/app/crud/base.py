@@ -1,6 +1,6 @@
 from typing import TypeVar, Generic, Optional, Sequence, Type, Dict, Any, List
 from fastapi import Response as FastAPIResponse
-from sqlalchemy import update, delete, select
+from sqlalchemy import update, delete, select, asc
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import declared_attr, Load
 from sqlalchemy import exc as SQLAlchemyExceptions, and_
@@ -56,7 +56,13 @@ class CRUD(Generic[ModelType]):
         data: Dict[str, Any],
     ) -> ModelType:
         stmt = update(cls).returning(cls).where(cls.id == id).values(**data)
-        res = await session.execute(stmt)
+        try:
+            res = await session.execute(stmt)
+
+        except SQLAlchemyExceptions.IntegrityError:
+            await session.rollback()
+            raise AppError.RESOURCES_ALREADY_EXISTS_ERROR
+
         updated_instance = res.scalar()
 
         if updated_instance is None:
@@ -93,6 +99,8 @@ class CRUD(Generic[ModelType]):
 
         if options:
             stmt = stmt.options(*options)
+
+        stmt = stmt.order_by(asc(cls.id))
 
         result = await session.execute(stmt)
         return result.scalars().all()

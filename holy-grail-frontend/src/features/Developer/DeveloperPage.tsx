@@ -16,6 +16,11 @@ export const DeveloperPage = () => {
     setValue(newValue);
   };
 
+  const fetchDataAndUpdateState = async () => {
+    const newData = await fetchData();
+    setData(newData);
+  };
+
   useEffect(() => {
     fetchData().then(setData);
   }, []);
@@ -38,10 +43,30 @@ export const DeveloperPage = () => {
           <Tab label='Types' />
           <Tab label='Users' />
         </Tabs>
-        {value === 0 && <TabContent title='Categories' type='categories' data={data.categories} />}
-        {value === 1 && <TabContentSubjects title='Subjects' data={data.subjects} />}
-        {value === 2 && <TabContent title='Types' type='types' data={data.types} />}
-        {value === 3 && <TabContentUsers data={data.users} />}
+        {value === 0 && (
+          <TabContent
+            title='Categories'
+            type='categories'
+            data={data.categories}
+            fetchData={fetchDataAndUpdateState}
+          />
+        )}
+        {value === 1 && (
+          <TabContentSubjects
+            title='Subjects'
+            data={data.subjects}
+            fetchData={fetchDataAndUpdateState}
+          />
+        )}
+        {value === 2 && (
+          <TabContent
+            title='Types'
+            type='types'
+            data={data.types}
+            fetchData={fetchDataAndUpdateState}
+          />
+        )}
+        {value === 3 && <TabContentUsers data={data.users} fetchData={fetchDataAndUpdateState} />}
       </section>
     </>
   );

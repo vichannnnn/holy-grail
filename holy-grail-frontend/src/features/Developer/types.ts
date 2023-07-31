@@ -35,6 +35,7 @@ export interface DeveloperEditModalProps {
     id: number;
     name: string;
   };
+  onSuccessfulUpdate: () => void;
 }
 
 export interface EditUserModalProps {
@@ -50,6 +51,7 @@ export interface TabContentProps {
   title: string;
   data: CategoryType[] | DocumentType[];
   type: DataTypeKey;
+  fetchData: () => void;
 }
 
 export interface AddTypeDetails {

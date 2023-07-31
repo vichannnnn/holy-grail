@@ -20,7 +20,7 @@ class CategoryLevel(Base, CRUD["category_level"]):
         primary_key=True,
         index=True,
     )
-    name: Mapped[str] = mapped_column(nullable=False)
+    name: Mapped[str] = mapped_column(nullable=False, unique=True)
     documents: Mapped["Library"] = relationship(
         back_populates="doc_category", uselist=True
     )

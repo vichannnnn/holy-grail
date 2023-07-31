@@ -11,6 +11,7 @@ export const DeveloperEditModal = ({
   onClose,
   type,
   initialData,
+  onSuccessfulUpdate,
 }: DeveloperEditModalProps) => {
   const singularType = singularDataType[type];
   const [openAlert, setOpenAlert] = useState<boolean>(false);
@@ -28,8 +29,8 @@ export const DeveloperEditModal = ({
       } else if (type === 'types') {
         await updateDocumentType(initialData.id, formData);
       }
-
       onClose();
+      onSuccessfulUpdate();
     } catch (err) {
       setAlertContent({
         severity: 'error',
