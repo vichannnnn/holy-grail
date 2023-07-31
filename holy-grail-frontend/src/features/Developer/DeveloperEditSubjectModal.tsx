@@ -15,14 +15,13 @@ import {
 } from '@mui/material';
 import './developer.css';
 
-export const DeveloperEditModal = ({
+export const DeveloperEditSubjectModal = ({
   isOpen,
   onClose,
   onSuccessfulUpdate,
-  type,
   initialData,
 }: DeveloperEditModalProps) => {
-  const singularType = singularDataType[type];
+  const singularType = singularDataType[initialData.type];
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
   const { register, handleSubmit, setValue } = useForm<UpdateTypeDetails>({
@@ -33,9 +32,9 @@ export const DeveloperEditModal = ({
 
   const handleUpdate = async (formData: UpdateTypeDetails) => {
     try {
-      if (type === 'categories') {
+      if (initialData.type === 'categories') {
         await updateCategory(initialData.id, formData);
-      } else if (type === 'types') {
+      } else if (initialData.type === 'types') {
         await updateDocumentType(initialData.id, formData);
       }
 

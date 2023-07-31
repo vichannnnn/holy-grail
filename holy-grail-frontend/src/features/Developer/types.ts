@@ -31,9 +31,11 @@ export interface DeveloperEditModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccessfulUpdate: () => Promise<void>;
-  initialName: string;
-  type: DataTypeKey | null;
-  id: number;
+  type: DataTypeKey;
+  initialData: {
+    id: number;
+    name: string;
+  };
 }
 
 export interface EditUserModalProps {
@@ -47,9 +49,7 @@ export interface EditUserModalProps {
 
 export interface TabContentProps {
   title: string;
-  data: Array<CategoryType | SubjectType | DocumentType | User>;
-  handleEdit: (id: number, type: DataTypeKey) => void;
-  handleAdd: () => void;
+  data: CategoryType[] | DocumentType[];
   type: DataTypeKey;
 }
 
@@ -63,4 +63,8 @@ export interface AddSubjectDetails extends AddTypeDetails {
 
 export interface UpdateTypeDetails {
   name: string;
+}
+
+export interface UpdateSubjectDetails extends UpdateTypeDetails {
+  category_id: number;
 }

@@ -16,13 +16,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import '../Library/library.css';
 import { useState } from 'react';
 
-export const TabContentUsers = ({
-  data,
-  handleEdit,
-}: {
-  data: User[];
-  handleEdit: (id: number) => void;
-}) => {
+export const TabContentUsers = ({ data }: { data: User[] }) => {
   const [query, setQuery] = useState<string>('');
   const handleFilterContent = () => {
     const validData = (data as Array<User>).filter((option: User) =>

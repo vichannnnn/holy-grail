@@ -1,6 +1,6 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { CategoryType, DocumentType } from '@api/library';
-import { Pagination, FreeTextCombobox } from '@components';
+import { FreeTextCombobox, Pagination } from '@components';
 import { TabContentProps } from '@features';
 import {
   Box,
@@ -15,20 +15,17 @@ import {
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import '../Library/library.css';
-import { MediaQueryContext } from '@providers';
 
 export const TabContent = ({ title, data, handleEdit, handleAdd, type }: TabContentProps) => {
   const [query, setQuery] = useState<string>('');
   const [page, setPage] = useState<number>(0);
   const [chunkSize, setChunkSize] = useState<number>(10);
-  const { isDesktop } = useContext(MediaQueryContext);
 
   const handleFilterContent = () => {
-    const validData = (data as Array<CategoryType | DocumentType>).filter(
+    return (data as Array<CategoryType | DocumentType>).filter(
       (option: CategoryType | DocumentType) =>
         option.name.toLowerCase().includes(query.toLowerCase()),
     );
-    return validData;
   };
 
   const handlePaging = () => {
@@ -82,7 +79,7 @@ export const TabContent = ({ title, data, handleEdit, handleAdd, type }: TabCont
                   {item.name}
                 </TableCell>
                 <TableCell className='table__content' component='th' scope='row'>
-                  <Button onClick={() => handleEdit(item.id, 'subjects')}>
+                  <Button onClick={() => handleEdit(type, item)}>
                     <EditIcon />
                   </Button>
                 </TableCell>
