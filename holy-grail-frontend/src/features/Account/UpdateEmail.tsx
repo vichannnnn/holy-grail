@@ -40,7 +40,7 @@ export const UpdateEmail = () => {
         style={{
           display: 'grid',
           gridTemplateColumns: '0.2fr auto',
-          gap: '2vh',
+          gridRowGap: '3vh',
           alignItems: 'center',
           marginTop: '2vh',
           width: '100%',
