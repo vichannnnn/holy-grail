@@ -23,7 +23,7 @@ export enum RoleEnum {
 export interface DeveloperAddModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSuccessfulAdd: () => Promise<void>;
+  onSuccessfulAdd: () => void;
   type: DataTypeKey | null;
 }
 
@@ -70,7 +70,6 @@ export interface TabContentSubjectProps {
 }
 
 export interface TabContentUsersProps {
-  title: string;
   data: User[];
   fetchData: () => void;
 }

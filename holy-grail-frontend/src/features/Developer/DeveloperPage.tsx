@@ -66,9 +66,7 @@ export const DeveloperPage = () => {
             fetchData={fetchDataAndUpdateState}
           />
         )}
-        {value === 3 && (
-          <TabContentUsers title='Users' data={data.users} fetchData={fetchDataAndUpdateState} />
-        )}
+        {value === 3 && <TabContentUsers data={data.users} fetchData={fetchDataAndUpdateState} />}
       </section>
     </>
   );

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { SubjectType } from '@api/library';
 import { FreeTextCombobox, Pagination } from '@components';
-import { DeveloperEditModal, TabContentSubjectProps } from '@features';
+import { DeveloperAddSubjectModal, TabContentSubjectProps } from '@features';
 import {
   Box,
   Button,
@@ -112,6 +112,13 @@ export const TabContentSubjects = ({
           </TableBody>
         </Table>
       </TableContainer>
+      {isAddModalOpen && (
+        <DeveloperAddSubjectModal
+          isOpen={isAddModalOpen}
+          onClose={() => setIsAddModalOpen(false)}
+          onSuccessfulAdd={fetchData}
+        />
+      )}
       {isEditModalOpen && editedItem && (
         <DeveloperEditSubjectModal
           isOpen={isEditModalOpen}

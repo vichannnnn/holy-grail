@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { CategoryType, DocumentType } from '@api/library';
 import { FreeTextCombobox, Pagination } from '@components';
-import { DeveloperEditModal, TabContentProps } from '@features';
+import { DeveloperAddModal, DeveloperEditModal, TabContentProps } from '@features';
 import {
   Box,
   Button,
@@ -109,6 +109,14 @@ export const TabContent = ({ title, data, type, fetchData }: TabContentProps) =>
           initialData={editedItem}
           type={type}
           onSuccessfulUpdate={fetchData}
+        />
+      )}
+      {isAddModalOpen && (
+        <DeveloperAddModal
+          isOpen={isAddModalOpen}
+          onClose={() => setIsAddModalOpen(false)}
+          type={type}
+          onSuccessfulAdd={fetchData}
         />
       )}
       <Pagination

@@ -60,7 +60,7 @@ export const DeveloperAddModal = ({
           </Typography>
           <form onSubmit={handleSubmit(handleAdd)}>
             <Typography marginTop='3%' marginBottom='5%'>
-              Please enter the new name of the {singularType}.
+              Please enter the name of the {singularType}.
             </Typography>
             <Stack direction='column' spacing={2}>
               <TextField

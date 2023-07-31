@@ -3,24 +3,14 @@ import { useForm, Controller } from 'react-hook-form';
 import { createSubject } from '@api/actions';
 import { fetchData, CategoryType } from '@api/library';
 import { AlertToast, AlertProps, Combobox } from '@components';
-import { DeveloperAddModalProps, singularDataType, AddSubjectDetails } from '@features';
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  TextField,
-  Stack,
-} from '@mui/material';
+import { DeveloperAddModalProps, AddSubjectDetails } from '@features';
+import { Box, Button, Modal, TextField, Stack, Typography } from '@mui/material';
 
 export const DeveloperAddSubjectModal = ({
   isOpen,
   onClose,
   onSuccessfulAdd,
 }: Omit<DeveloperAddModalProps, 'type'>) => {
-  const singularType = singularDataType['subjects'];
   const { register, handleSubmit, control } = useForm<AddSubjectDetails>();
 
   const [openAlert, setOpenAlert] = useState<boolean>(false);
@@ -49,19 +39,35 @@ export const DeveloperAddSubjectModal = ({
     }
   };
 
+  const modalStyle = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    backgroundColor: 'white',
+    padding: '1em',
+    outline: 'none',
+    width: '500px',
+    borderRadius: '4px',
+  };
+
   return (
     <>
-      <Dialog open={isOpen} onClose={onClose}>
-        <DialogTitle>Add {singularType}</DialogTitle>
-        <form onSubmit={handleSubmit(handleAdd)}>
-          <DialogContent>
-            <DialogContentText marginBottom='10%'>Create new {singularType}.</DialogContentText>
+      <Modal open={isOpen} onClose={onClose}>
+        <Box sx={modalStyle}>
+          <Typography id='modal-modal-title' variant='h6' component='h2'>
+            Add Subject
+          </Typography>
+          <form onSubmit={handleSubmit(handleAdd)}>
+            <Typography marginTop='3%' marginBottom='5%'>
+              Please select the type and enter the name of the new subject.
+            </Typography>
             <Stack direction='column' spacing={2}>
               <TextField
                 {...register('name', { required: true })}
                 autoFocus
                 margin='dense'
-                label={<span style={{ textTransform: 'capitalize' }}>{singularType}</span>}
+                label={<span style={{ textTransform: 'capitalize' }}>Subjects</span>}
                 type='text'
                 fullWidth
               />
@@ -78,16 +84,14 @@ export const DeveloperAddSubjectModal = ({
                 )}
               />
             </Stack>
-          </DialogContent>
-          <DialogActions sx={{ justifyContent: 'center', paddingBottom: 3 }}>
-            <Stack direction='row' spacing={2} justifyContent='center'>
+            <Stack direction='row' spacing={2} justifyContent='center' marginTop='5%'>
               <Button variant='contained' type='submit' color='primary'>
                 Add
               </Button>
             </Stack>
-          </DialogActions>
-        </form>
-      </Dialog>
+          </form>
+        </Box>
+      </Modal>
       <AlertToast
         openAlert={openAlert}
         onClose={() => setOpenAlert(false)}
