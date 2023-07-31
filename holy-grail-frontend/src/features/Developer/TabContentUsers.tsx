@@ -1,6 +1,12 @@
 import { useState } from 'react';
 import { FreeTextCombobox } from '@components';
-import { RoleEnum, User } from '@features';
+import {
+  DeveloperEditModal,
+  DeveloperEditUserModal,
+  RoleEnum,
+  TabContentUsersProps,
+  User,
+} from '@features';
 import {
   Box,
   Button,
@@ -15,8 +21,19 @@ import {
 import EditIcon from '@mui/icons-material/Edit';
 import '../Library/library.css';
 
-export const TabContentUsers = ({ data }: { data: User[] }) => {
+export const TabContentUsers = ({ title, data, fetchData }: TabContentUsersProps) => {
   const [query, setQuery] = useState<string>('');
+  const [page, setPage] = useState<number>(0);
+  const [chunkSize, setChunkSize] = useState<number>(50);
+
+  const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
+  const [editedItem, setEditedItem] = useState<User | null>(null);
+
+  const handleEdit = (item: User) => {
+    setEditedItem(item);
+    setIsEditModalOpen(true);
+  };
+
   const handleFilterContent = () => {
     return (data as Array<User>).filter((option: User) =>
       option.username.toLowerCase().includes(query.toLowerCase()),
@@ -26,11 +43,12 @@ export const TabContentUsers = ({ data }: { data: User[] }) => {
   const handlePaging = () => {
     const pagedData: Array<Array<User>> = [];
     const validData: Array<User> = handleFilterContent();
-    for (let i = 0; i < validData.length; i += 10) {
-      pagedData.push(validData.slice(i, i + 10));
+    for (let i = 0; i < validData.length; i += 50) {
+      pagedData.push(validData.slice(i, i + 50));
     }
     return pagedData;
   };
+
   return (
     <section className='materials container'>
       <Box alignItems='center' sx={{ paddingTop: '3%', paddingBottom: '3%' }}>
@@ -73,7 +91,7 @@ export const TabContentUsers = ({ data }: { data: User[] }) => {
                   {RoleEnum[item.role]}
                 </TableCell>
                 <TableCell align='right'>
-                  <Button onClick={() => handleEdit(item.user_id)}>
+                  <Button onClick={() => handleEdit(item)}>
                     <EditIcon />
                   </Button>
                 </TableCell>
@@ -82,6 +100,14 @@ export const TabContentUsers = ({ data }: { data: User[] }) => {
           </TableBody>
         </Table>
       </TableContainer>
+      {isEditModalOpen && editedItem && (
+        <DeveloperEditUserModal
+          isOpen={isEditModalOpen}
+          onClose={() => setIsEditModalOpen(false)}
+          initialData={editedItem}
+          onSuccessfulUpdate={fetchData}
+        />
+      )}
     </section>
   );
 };

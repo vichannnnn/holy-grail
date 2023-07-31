@@ -52,10 +52,8 @@ export interface DeveloperEditSubjectModalProps {
 export interface EditUserModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (newRole: RoleEnum) => Promise<void>;
-  initialRole: RoleEnum;
-  userName: string;
-  userId: number;
+  initialData: User;
+  onSuccessfulUpdate: () => void;
 }
 
 export interface TabContentProps {
@@ -68,6 +66,12 @@ export interface TabContentProps {
 export interface TabContentSubjectProps {
   title: string;
   data: SubjectType[];
+  fetchData: () => void;
+}
+
+export interface TabContentUsersProps {
+  title: string;
+  data: User[];
   fetchData: () => void;
 }
 
@@ -85,4 +89,8 @@ export interface UpdateTypeDetails {
 
 export interface UpdateSubjectDetails extends UpdateTypeDetails {
   category_id: number;
+}
+
+export interface UpdateUserDetails {
+  role: RoleEnum;
 }

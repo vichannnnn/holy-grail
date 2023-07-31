@@ -1,7 +1,7 @@
 import { apiClient } from '@apiClient';
-import { RoleEnum } from '@features';
+import { UpdateUserDetails } from '@features';
 
-export const updateUserRole = async (userId: number, role: RoleEnum): Promise<void> => {
-  const response = await apiClient.put(`/admin/user/${userId}`, { role });
+export const updateUserRole = async (userId: number, data: UpdateUserDetails): Promise<void> => {
+  const response = await apiClient.put(`/admin/user/${userId}`, data);
   return response.data;
 };
