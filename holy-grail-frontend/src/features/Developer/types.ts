@@ -30,7 +30,6 @@ export interface DeveloperAddModalProps {
 export interface DeveloperEditModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSuccessfulUpdate: () => Promise<void>;
   type: DataTypeKey;
   initialData: {
     id: number;

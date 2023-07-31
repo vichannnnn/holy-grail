@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { CategoryType, DocumentType } from '@api/library';
 import { FreeTextCombobox, Pagination } from '@components';
-import { TabContentProps } from '@features';
+import { DeveloperEditModal, TabContentProps } from '@features';
 import {
   Box,
   Button,
@@ -16,10 +16,24 @@ import {
 import EditIcon from '@mui/icons-material/Edit';
 import '../Library/library.css';
 
-export const TabContent = ({ title, data, handleEdit, handleAdd, type }: TabContentProps) => {
+export const TabContent = ({ title, data, type }: TabContentProps) => {
   const [query, setQuery] = useState<string>('');
   const [page, setPage] = useState<number>(0);
   const [chunkSize, setChunkSize] = useState<number>(10);
+
+  const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
+  const [editedItem, setEditedItem] = useState<CategoryType | DocumentType | null>(null);
+
+  const handleEdit = (item: CategoryType | DocumentType) => {
+    setEditedItem(item);
+    setIsEditModalOpen(true);
+  };
+
+  const handleAdd = () => {
+    setEditedItem(null);
+    setIsAddModalOpen(true);
+  };
 
   const handleFilterContent = () => {
     return (data as Array<CategoryType | DocumentType>).filter(
@@ -79,7 +93,7 @@ export const TabContent = ({ title, data, handleEdit, handleAdd, type }: TabCont
                   {item.name}
                 </TableCell>
                 <TableCell className='table__content' component='th' scope='row'>
-                  <Button onClick={() => handleEdit(type, item)}>
+                  <Button onClick={() => handleEdit(item)}>
                     <EditIcon />
                   </Button>
                 </TableCell>
@@ -88,7 +102,14 @@ export const TabContent = ({ title, data, handleEdit, handleAdd, type }: TabCont
           </TableBody>
         </Table>
       </TableContainer>
-
+      {isEditModalOpen && editedItem && (
+        <DeveloperEditModal
+          isOpen={isEditModalOpen}
+          onClose={() => setIsEditModalOpen(false)}
+          initialData={editedItem}
+          type={type}
+        />
+      )}
       <Pagination
         pageInfo={{
           page: page + 1,
