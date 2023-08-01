@@ -6,7 +6,7 @@ from pydantic import constr, EmailStr
 from app.schemas.base import CustomBaseModel as BaseModel
 
 password_validator = constr(  # pylint: disable=C0103
-    regex="^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&^])[^\s]{8,20}$"  # pylint: disable= W1401
+    regex="^(?=.*[A-Z])(?=.*\W)[^\s]{8,30}$"  # pylint: disable= W1401
 )  # pylint: disable=C0103
 username_validator = constr(regex="^[a-zA-Z0-9]{4,20}$")  # pylint: disable=C0103, W1401
 
