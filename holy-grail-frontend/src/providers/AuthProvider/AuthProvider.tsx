@@ -1,43 +1,25 @@
-import { createContext, useEffect, useState, ReactNode } from 'react';
-import { apiClient } from '@apiClient';
-import { isTokenExpired, AccountDetails, registerAccount } from '@api/auth';
+import { createContext, useEffect, useState } from 'react';
 import { AxiosError, AxiosResponse } from 'axios';
-
-export interface User {
-  user_id: number;
-  username: string;
-  email: string;
-  role: number;
-  verified: boolean;
-}
-
-export interface CurrentUserWithJWT {
-  data: User;
-  access_token: string;
-  token_type: string;
-  exp: number;
-}
-
-interface AuthContextType {
-  user: User | null;
-  isLoading: boolean;
-  login: (username: string, password: string) => Promise<void>;
-  logout: () => void;
-  updateUser: (updatedUser: User) => void;
-  register: (accountDetails: AccountDetails) => Promise<number>;
-}
-
-interface AuthProviderProps {
-  children: ReactNode;
-}
+import { apiClient } from '@apiClient';
+import { AccountDetails, registerAccount } from '@api/auth';
+import {
+  AuthContextType,
+  AuthProviderProps,
+  User,
+  CurrentUserWithJWT,
+  LogInDetails,
+} from '@providers';
 
 export const AuthContext = createContext<AuthContextType>({
   user: null,
   isLoading: true,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   login: async () => {},
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   logout: () => {},
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   updateUser: () => {},
-  register: async () => 0,
+  registerUserAccount: async () => 0,
 });
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
@@ -52,23 +34,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setIsLoading(false);
   }, []);
 
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      if (user && isTokenExpired()) {
-        logout();
-      }
-    }, 60);
-
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, [user]);
-
-  const login = async (username: string, password: string) => {
-    const response = await apiClient.post('/auth/login', {
-      username,
-      password,
-    });
+  const login = async (formData: LogInDetails) => {
+    const response = await apiClient.post('/auth/login', formData);
     const { data, access_token } = response.data;
     setUser(data);
     localStorage.setItem('user', JSON.stringify(data));
@@ -86,7 +53,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     localStorage.setItem('user', JSON.stringify(updatedUser));
   };
 
-  const register = async (accountDetails: AccountDetails): Promise<number> => {
+  const registerUserAccount = async (accountDetails: AccountDetails): Promise<number> => {
     try {
       const response: AxiosResponse = await registerAccount(accountDetails);
       const user: CurrentUserWithJWT = response.data;
@@ -111,7 +78,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         login,
         logout,
         updateUser,
-        register,
+        registerUserAccount,
       }}
     >
       {!isLoading ? children : 'Loading...'}

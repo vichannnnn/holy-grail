@@ -1,10 +1,7 @@
 import { useEffect, useRef, useContext } from 'react';
-import { Button, Typography } from '@mui/material';
+import { FileSelectProps } from '@features';
 import { MediaQueryContext } from '@providers';
-
-interface FileSelectProps {
-  handleAddNotes: (files: FileList) => void;
-}
+import { Button, Typography } from '@mui/material';
 
 export const FileSelect = ({ handleAddNotes }: FileSelectProps) => {
   const dragDropRef = useRef<HTMLDivElement | null>(null);
@@ -71,12 +68,10 @@ export const FileSelect = ({ handleAddNotes }: FileSelectProps) => {
           textTransform: 'capitalize',
           color: 'white',
           fontWeight: 'bold',
-          aspectRatio: 1.618,
-          borderRadius: '5px',
+          borderRadius: '4px',
           '&:hover': {
             backgroundColor: 'rgba(49, 130, 206, 0.75)',
           },
-          whiteSpace: 'nowrap',
         }}
       >
         Upload Files

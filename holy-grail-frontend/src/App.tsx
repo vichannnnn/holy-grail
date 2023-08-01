@@ -1,7 +1,6 @@
 import './App.css';
 import { useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
-import { ChakraProvider } from '@chakra-ui/react';
 import { AlertToast, AlertProps } from '@components';
 import {
   AccountVerifyPage,
@@ -19,8 +18,26 @@ import {
   UploadPage,
 } from '@features';
 import { AuthProvider, MediaQueryProvider } from '@providers';
+import { createTheme, ThemeProvider } from '@mui/material';
+
+const customMuiTheme = {
+  components: {
+    MuiLink: {
+      styleOverrides: {
+        root: {
+          textDecoration: 'none',
+          cursor: 'pointer',
+          ':hover': {
+            textDecoration: 'underline',
+          },
+        },
+      },
+    },
+  },
+};
 
 export function App() {
+  const muiTheme = createTheme(customMuiTheme);
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
   const [openAlert, setOpenAlert] = useState<boolean>(false);
 
@@ -34,9 +51,9 @@ export function App() {
   }, [location.state]);
 
   return (
-    <MediaQueryProvider>
-      <AuthProvider>
-        <ChakraProvider>
+    <ThemeProvider theme={muiTheme}>
+      <MediaQueryProvider>
+        <AuthProvider>
           <Header />
           <Routes>
             <Route path='/' element={<LandingPage />} />
@@ -58,8 +75,8 @@ export function App() {
             onClose={() => setOpenAlert(false)}
             alertContent={alertContent}
           />
-        </ChakraProvider>
-      </AuthProvider>
-    </MediaQueryProvider>
+        </AuthProvider>
+      </MediaQueryProvider>
+    </ThemeProvider>
   );
 }

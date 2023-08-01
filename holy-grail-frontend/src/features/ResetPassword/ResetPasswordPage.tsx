@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { resetPassword } from '@api/auth';
-import { Link } from '@chakra-ui/react';
+import { useNavigation } from '@utils';
+import { Link } from '@mui/material';
 import '../SignIn/login.css';
 
 export const ResetPasswordPage = () => {
+  const { goToForgotPassword } = useNavigation();
   const [token, setToken] = useState<string | null>(null);
   const [resetStatus, setResetStatus] = useState<string | null>(null);
   const [isFailed, setFailed] = useState<boolean>(false);
   const location = useLocation();
-  const navigate = useNavigate();
 
   const parseQuery = (query: string): URLSearchParams => {
     return new URLSearchParams(query);
@@ -35,10 +36,6 @@ export const ResetPasswordPage = () => {
     }
   }, [location.search]);
 
-  const handleForgotPassword = () => {
-    navigate('/forgot-password');
-  };
-
   return (
     <section className='resetPw section container'>
       <div>
@@ -49,7 +46,7 @@ export const ResetPasswordPage = () => {
         ) : isFailed ? (
           <div className='section__subtitle '>
             The password reset link is invalid or has expired. Please click{' '}
-            <Link as='button' onClick={handleForgotPassword} textDecoration='underline'>
+            <Link onClick={goToForgotPassword} underline='always'>
               here
             </Link>{' '}
             to reset your password again.

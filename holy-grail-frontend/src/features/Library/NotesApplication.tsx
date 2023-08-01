@@ -1,4 +1,3 @@
-import { Box } from '@mui/material';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import {
   CategoryType,
@@ -12,6 +11,7 @@ import {
 import { deleteNote, updateNote } from '@api/actions';
 import { AdminDeleteIcon, AdminEditIcon, NotesTable } from '@components';
 import { AuthContext } from '@providers';
+import { Box } from '@mui/material';
 import { DeleteAlert, ApprovalEditModal } from '../Approval';
 import './library.css';
 
@@ -84,13 +84,9 @@ export const NotesApplication = () => {
   };
 
   const handleDelete = async (id: number) => {
-    try {
-      await deleteNote(id);
-      setIsAlertOpen(false);
-      filterNotes();
-    } catch (error) {
-      console.error(error);
-    }
+    await deleteNote(id);
+    setIsAlertOpen(false);
+    filterNotes();
   };
 
   const handleCategoryChange = (newValue: number | '') => {
@@ -155,9 +151,7 @@ export const NotesApplication = () => {
         onClose={() => setIsAlertOpen(false)}
         onConfirm={() => {
           if (noteId !== null) {
-            handleDelete(noteId)
-              .then(() => null)
-              .catch((err) => console.error(err));
+            handleDelete(noteId).then(() => null);
           }
         }}
       />
@@ -177,9 +171,7 @@ export const NotesApplication = () => {
             newSubject,
             newType,
             newDocName,
-          )
-            .then(() => filterNotes())
-            .catch((err) => console.error(err));
+          ).then(() => filterNotes());
         }}
         categories={categories.map((c) => ({ id: c.id, name: c.name }))}
         subjects={subjects.map((s) => ({ id: s.id, name: s.name }))}

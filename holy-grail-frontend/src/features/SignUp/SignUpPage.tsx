@@ -1,64 +1,34 @@
-import { FormEvent, useContext, useEffect, useState } from 'react';
-import { Box, Button, FormControl, FormLabel, Input, Link, VStack } from '@chakra-ui/react';
+import { useContext, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { AccountDetails } from '@api/auth';
 import { AccountForm, AlertToast, AlertProps } from '@components';
-import { useNavigate } from 'react-router-dom';
-import { PasswordValidationBox } from './PasswordValidationBox';
-import '../SignIn/login.css';
+import { PasswordValidationBox } from '@features';
+import { SignUpValidation } from '@forms/validation';
 import { AuthContext } from '@providers';
+import { useNavigation } from '@utils';
+import { Box, Button, FormControl, TextField, Link, Stack } from '@mui/material';
+import '../SignIn/login.css';
 
 export const SignUpPage = () => {
-  const [username, setUsername] = useState('');
-  const [usernameValid, setUsernameValid] = useState(true);
-  const [password, setPassword] = useState('');
-  const [repeatPassword, setRepeatPassword] = useState('');
-  const [email, setEmail] = useState('');
-  const { user, register } = useContext(AuthContext);
+  const { goToLoginPage } = useNavigation();
+  const {
+    register,
+    watch,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(SignUpValidation),
+  });
+
+  const { registerUserAccount } = useContext(AuthContext);
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
-  const navigate = useNavigate();
 
-  const [lengthValid, setLengthValid] = useState(false);
-  const [specialCharValid, setSpecialCharValid] = useState(false);
-  const [capitalLetterValid, setCapitalLetterValid] = useState(false);
-  const [repeatPasswordValid, setRepeatPasswordValid] = useState(false);
-  const allCriteriaMet =
-    lengthValid && specialCharValid && capitalLetterValid && repeatPasswordValid;
-
-  useEffect(() => {
-    const usernameRegex = /^[a-zA-Z0-9]{4,20}$/;
-    setUsernameValid(usernameRegex.test(username));
-  }, [username]);
-
-  useEffect(() => {
-    setLengthValid(password.length <= 30 && password.length >= 8);
-    setSpecialCharValid(/[!@#$%^&*]/.test(password));
-    setCapitalLetterValid(/[A-Z]/.test(password));
-    setRepeatPasswordValid(password === repeatPassword && password !== '');
-  }, [password, repeatPassword]);
-
-  const handleRegister = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (!usernameValid) {
-      setAlertContent({
-        title: 'Invalid username.',
-        description:
-          'Please ensure your username is valid. It should contain 4 to 20 alphanumeric characters.',
-        severity: 'error',
-      });
-      setOpenAlert(true);
-      return;
-    }
-
-    const status = await register({
-      username: username,
-      password: password,
-      repeatPassword: repeatPassword,
-      email: email,
-    });
-
+  const handleRegister = async (formData: AccountDetails) => {
+    const status = await registerUserAccount(formData);
     let alertContent: AlertProps;
-    console.log(status);
+
     switch (status) {
       case 200:
         alertContent = {
@@ -67,7 +37,7 @@ export const SignUpPage = () => {
           severity: 'success',
         };
 
-        navigate('/', { state: { alertContent: alertContent } });
+        goToLoginPage({ state: { alertContent: alertContent } });
         break;
       case 409:
         alertContent = {
@@ -117,61 +87,62 @@ export const SignUpPage = () => {
         <div className='login__title'>Sign up</div>
         <div className='section__subtitle'>Create an account to access all features.</div>
 
-        <form className='login__fields' onSubmit={handleRegister}>
-          <VStack spacing='4'>
+        <form className='login__fields' onSubmit={handleSubmit(handleRegister)}>
+          <Stack direction='column' spacing={4}>
             <FormControl id='username'>
-              <FormLabel>Username</FormLabel>
-              <Input
+              <TextField
                 type='text'
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                label='Username'
+                error={Boolean(errors.username)}
+                helperText={errors.username?.message}
+                {...register('username')}
                 required
               />
             </FormControl>
             <FormControl id='email'>
-              <FormLabel>Email address</FormLabel>
-              <Input
+              <TextField
                 type='email'
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                label='Email Address'
+                error={Boolean(errors.email)}
+                helperText={errors.email?.message}
+                {...register('email')}
                 required
               />
             </FormControl>
             <FormControl id='password'>
-              <FormLabel>Password</FormLabel>
-              <Input
+              <TextField
                 type='password'
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                label='Password'
+                error={Boolean(errors.password)}
+                helperText={errors.password?.message}
+                {...register('password')}
                 required
               />
             </FormControl>
             <FormControl id='repeat-password'>
-              <FormLabel>Repeat Password</FormLabel>
-              <Input
+              <TextField
                 type='password'
-                value={repeatPassword}
-                onChange={(e) => setRepeatPassword(e.target.value)}
+                label='Repeat Password'
+                error={Boolean(errors.repeat_password)}
+                helperText={errors.repeat_password?.message}
+                {...register('repeat_password')}
                 required
               />
             </FormControl>
             <PasswordValidationBox
-              lengthValid={lengthValid}
-              specialCharValid={specialCharValid}
-              capitalLetterValid={capitalLetterValid}
-              repeatPasswordValid={repeatPasswordValid}
-              allCriteriaMet={allCriteriaMet}
+              password={watch('password')}
+              repeatPassword={watch('repeat_password')}
             />
 
-            <Button type='submit' colorScheme='blue' w='100%'>
+            <Button type='submit' variant='contained' fullWidth>
               Sign Up
             </Button>
-          </VStack>
+          </Stack>
         </form>
         <Box>
           <div className='login__footer'>
             Already a member?{' '}
-            <Link as='button' onClick={() => navigate('/login')} textDecoration='underline'>
+            <Link onClick={goToLoginPage} underline='always'>
               Log in here.
             </Link>
           </div>

@@ -2,11 +2,13 @@ from fastapi import status
 from fastapi.testclient import TestClient
 from fastapi.encoders import jsonable_encoder
 from app import schemas
+from app.models import CategoryLevel
 from app.tests.conftest import (
     override_get_admin,
     override_get_current_user,
     override_get_developer,
 )
+from typing import Tuple
 import pytest
 
 SUBJECT_URL = "/subject"
@@ -15,6 +17,7 @@ CATEGORY_LEVEL_URL = "/category"
 GET_ALL_SUBJECT_URL = "/all_subjects"
 GET_ALL_CATEGORY_LEVEL_URL = "/all_category_level"
 GET_ALL_DOCUMENT_TYPE_URL = "/all_document_type"
+
 
 # ----------------- INSERT TESTS -----------------
 
@@ -60,7 +63,10 @@ def test_add_subjects(
         assert res == {
             "name": test_add_subject.name,
             "id": res["id"],
-            "category_id": res["category_id"],
+            "category": {
+                "id": create_education_level.id,
+                "name": create_education_level.name,
+            },
         }
         response = test_client.get(GET_ALL_SUBJECT_URL)
         resp = response.json()
@@ -166,7 +172,7 @@ def test_add_category_level(
 
 
 def test_add_repeat_subject_twice(
-    create_education_level,
+    create_education_level: CategoryLevel,
     test_client_developer: TestClient,
     test_subject_insert_physics_category_1: schemas.categories.SubjectCreateSchema,
 ):
@@ -178,7 +184,10 @@ def test_add_repeat_subject_twice(
     assert res == {
         "name": test_subject_insert_physics_category_1.name,
         "id": res["id"],
-        "category_id": res["category_id"],
+        "category": {
+            "id": create_education_level.id,
+            "name": create_education_level.name,
+        },
     }
 
     response = test_client_developer.post(SUBJECT_URL, json=payload)
@@ -228,7 +237,10 @@ def test_add_subject_math(
     assert res == {
         "name": test_subject_insert_mathematics_category_1.name,
         "id": res["id"],
-        "category_id": res["category_id"],
+        "category": {
+            "id": create_education_level.id,
+            "name": create_education_level.name,
+        },
     }
 
 
@@ -259,18 +271,21 @@ def test_get_subjects_from_category(
     assert response.status_code == status.HTTP_200_OK
     first_sub_cat_1 = response.json()
     assert first_sub_cat_1["name"] == test_subject_insert_biology_category_1.name
+    assert first_sub_cat_1["category"] == first_category
 
     payload = jsonable_encoder(test_subject_insert_chemistry_category_1)
     response = test_client_developer.post(SUBJECT_URL, json=payload)
     assert response.status_code == status.HTTP_200_OK
     second_sub_cat_1 = response.json()
     assert second_sub_cat_1["name"] == test_subject_insert_chemistry_category_1.name
+    assert second_sub_cat_1["category"] == first_category
 
     payload = jsonable_encoder(test_subject_insert_chemistry_category_2)
     response = test_client_developer.post(SUBJECT_URL, json=payload)
     assert response.status_code == status.HTTP_200_OK
     first_sub_cat_2 = response.json()
     assert first_sub_cat_2["name"] == test_subject_insert_chemistry_category_2.name
+    assert first_sub_cat_2["category"] == second_category
 
     response = test_client_developer.get(
         GET_ALL_SUBJECT_URL, params={"category_id": first_category["id"]}
@@ -325,7 +340,7 @@ def test_get_subjects_from_category(
     indirect=["test_client", "test_add_subject", "test_update_subject"],
 )
 def test_add_and_update_two_subjects(
-    create_two_education_level,
+    create_two_education_level: Tuple[CategoryLevel],
     test_client: TestClient,
     user_type: schemas.auth.CurrentUserSchema,
     test_add_subject: schemas.categories.SubjectCreateSchema,
@@ -340,21 +355,27 @@ def test_add_and_update_two_subjects(
         assert res == {
             "name": test_add_subject.name,
             "id": res["id"],
-            "category_id": res["category_id"],
+            "category": {
+                "id": create_two_education_level[0].id,
+                "name": create_two_education_level[0].name,
+            },
         }
 
         payload = jsonable_encoder(test_update_subject)
         response = test_client.put(
             SUBJECT_URL,
             json=payload,
-            params={"id": res["id"], "category_id": res["category_id"]},
+            params={"id": res["id"]},
         )
         assert response.status_code == status.HTTP_200_OK
         res = response.json()
         assert res == {
             "name": test_update_subject.name,
             "id": res["id"],
-            "category_id": res["category_id"],
+            "category": {
+                "id": create_two_education_level[1].id,
+                "name": create_two_education_level[1].name,
+            },
         }
     else:
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
@@ -391,7 +412,7 @@ def test_add_and_update_two_subjects(
     indirect=["test_client", "test_add_subject", "test_update_subject"],
 )
 def test_add_and_update_subjects_to_category_that_does_not_exist(
-    create_education_level,
+    create_education_level: CategoryLevel,
     test_client: TestClient,
     user_type: schemas.auth.CurrentUserSchema,
     test_add_subject: schemas.categories.SubjectCreateSchema,
@@ -406,7 +427,10 @@ def test_add_and_update_subjects_to_category_that_does_not_exist(
         assert res == {
             "name": test_add_subject.name,
             "id": res["id"],
-            "category_id": res["id"],
+            "category": {
+                "id": create_education_level.id,
+                "name": create_education_level.name,
+            },
         }
 
         payload = jsonable_encoder(test_update_subject)

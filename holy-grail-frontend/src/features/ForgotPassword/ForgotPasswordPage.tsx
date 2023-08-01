@@ -1,19 +1,27 @@
-import { FormEvent, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { sendResetPasswordEmail } from '@api/auth';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useNavigation } from '@utils';
+import { sendResetPasswordEmail, ForgotPasswordDetails } from '@api/auth';
 import { AccountForm, AlertToast, AlertProps } from '@components';
-import { Box, Button, FormControl, FormLabel, Input, Link, VStack } from '@chakra-ui/react';
+import { ResetPasswordValidation } from '@forms/validation';
+import { Box, Button, FormControl, TextField, Link, Stack } from '@mui/material';
 import '../SignIn/login.css';
 
 export const ForgotPasswordPage = () => {
-  const [email, setEmail] = useState('');
+  const { goToLoginPage } = useNavigation();
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
   const [openAlert, setOpenAlert] = useState<boolean>(false);
-  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(ResetPasswordValidation),
+  });
 
-  const handleResetPassword = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const result = await sendResetPasswordEmail(email);
+  const handleResetPassword = async (formData: ForgotPasswordDetails) => {
+    const result = await sendResetPasswordEmail(formData);
 
     setAlertContent({
       title: result.success ? 'Password reset email successfully sent.' : 'Reset Password failed.',
@@ -31,26 +39,27 @@ export const ForgotPasswordPage = () => {
           Please enter the email you registered with to reset your password.
         </div>
 
-        <form className='login__fields' onSubmit={handleResetPassword}>
-          <VStack spacing='6'>
+        <form className='login__fields' onSubmit={handleSubmit(handleResetPassword)}>
+          <Stack direction='column' spacing={6}>
             <FormControl id='email'>
-              <FormLabel>Email address</FormLabel>
-              <Input
+              <TextField
                 type='email'
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                label='Email Address'
+                error={Boolean(errors.email)}
+                helperText={errors.email?.message}
+                {...register('email')}
                 required
               />
             </FormControl>
-            <Button type='submit' colorScheme='blue' w='100%'>
+            <Button type='submit' variant='contained' fullWidth>
               Reset Password
             </Button>
-          </VStack>
+          </Stack>
         </form>
         <Box>
           <div className='login__footer'>
             Already a member?{' '}
-            <Link as='button' onClick={() => navigate('/login')} textDecoration='underline'>
+            <Link onClick={goToLoginPage} underline='always'>
               Log in here.
             </Link>
           </div>

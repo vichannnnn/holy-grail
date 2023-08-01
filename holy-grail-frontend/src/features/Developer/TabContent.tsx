@@ -1,9 +1,11 @@
-import { ChangeEvent, useState } from 'react';
-import { CategoryType, SubjectType, DocumentType } from '@api/library';
+import { useState } from 'react';
+import { CategoryType, DocumentType } from '@api/library';
+import { FreeTextCombobox, Pagination } from '@components';
+import { DeveloperAddModal, DeveloperEditModal, TabContentProps } from '@features';
 import {
+  Box,
   Button,
-  OutlinedInput,
-  Paper,
+  Grid,
   Table,
   TableBody,
   TableCell,
@@ -12,38 +14,37 @@ import {
   TableRow,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
-import { ChakraProvider } from '@chakra-ui/react';
-import { Pagination } from '@components';
+import '../Library/library.css';
 
-type DataTypeKey = 'categories' | 'subjects' | 'types';
-
-interface TabContentProps {
-  title: string;
-  data: Array<CategoryType | SubjectType | DocumentType>;
-  handleEdit: (id: number, type: DataTypeKey) => void;
-  handleAdd: () => void;
-  type: DataTypeKey;
-}
-
-export const TabContent = ({ title, data, handleEdit, handleAdd, type }: TabContentProps) => {
+export const TabContent = ({ title, data, type, fetchData }: TabContentProps) => {
   const [query, setQuery] = useState<string>('');
   const [page, setPage] = useState<number>(0);
   const [chunkSize, setChunkSize] = useState<number>(10);
 
-  const handleEditClick = (id: number) => {
-    handleEdit(id, type);
+  const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
+  const [editedItem, setEditedItem] = useState<CategoryType | DocumentType | null>(null);
+
+  const handleEdit = (item: CategoryType | DocumentType) => {
+    setEditedItem(item);
+    setIsEditModalOpen(true);
+  };
+
+  const handleAdd = () => {
+    setEditedItem(null);
+    setIsAddModalOpen(true);
   };
 
   const handleFilterContent = () => {
-    const validData: Array<CategoryType | SubjectType | DocumentType> = data.filter((option) => {
-      return option.name.toLowerCase().includes(query.toLowerCase());
-    });
-    return validData;
+    return (data as Array<CategoryType | DocumentType>).filter(
+      (option: CategoryType | DocumentType) =>
+        option.name.toLowerCase().includes(query.toLowerCase()),
+    );
   };
 
   const handlePaging = () => {
-    const pagedData: Array<Array<CategoryType | SubjectType | DocumentType>> = [];
-    const validData: Array<CategoryType | SubjectType | DocumentType> = handleFilterContent();
+    const pagedData: Array<Array<CategoryType | DocumentType>> = [];
+    const validData: Array<CategoryType | DocumentType> = handleFilterContent();
     for (let i = 0; i < validData.length; i += chunkSize) {
       pagedData.push(validData.slice(i, i + chunkSize));
     }
@@ -51,64 +52,84 @@ export const TabContent = ({ title, data, handleEdit, handleAdd, type }: TabCont
   };
 
   return (
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>
-              <OutlinedInput
-                sx={{ width: '120%' }}
-                placeholder={`Search for ${title}`}
-                onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                  setQuery(event.target.value);
-                  //go back to first page to prevent overflow
-                  setPage(0);
-                  handleFilterContent();
-                }}
-              />
-            </TableCell>
+    <section className='materials container'>
+      <Box alignItems='center' sx={{ paddingTop: '3%', paddingBottom: '3%' }}>
+        <Grid item xs={12} sm={4}>
+          <Box display='flex' justifyContent='center'>
+            <h2>{title}</h2>
+          </Box>
+        </Grid>
+      </Box>
+      <Grid item xs={12} sm={4}>
+        <Box display='flex' justifyContent='space-between' gap='10%'>
+          <FreeTextCombobox
+            label={`Search for ${type}`}
+            value={query}
+            onChange={(newValue: string) => setQuery(newValue)}
+            sx={{ flexGrow: 1 }}
+          />
+          <Button variant='contained' onClick={handleAdd}>
+            + Add
+          </Button>
+        </Box>
+      </Grid>
 
-            <TableCell align='right'>
-              <Button onClick={handleAdd}>+ {title}</Button>
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {(handlePaging()[page] || []).map((item) => (
-            <TableRow key={item.id}>
-              <TableCell component='th' scope='row'>
-                {item.name}
-              </TableCell>
-              <TableCell align='right'>
-                <Button onClick={() => handleEditClick(item.id)}>
-                  <EditIcon />
-                </Button>
-                {/*<Button onClick={() => handleDelete(item.id)}>*/}
-                {/*  <DeleteIcon />*/}
-                {/*</Button>*/}
-              </TableCell>
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell className='table__header'>ID</TableCell>
+              <TableCell className='table__header'>Name</TableCell>
+              <TableCell className='table__header'>Actions</TableCell>
             </TableRow>
-          ))}
-          <TableRow>
-            <TableCell colSpan={2}>
-              <ChakraProvider>
-                <Pagination
-                  pageInfo={{
-                    page: page + 1,
-                    size: chunkSize,
-                    total: handleFilterContent().length,
-                    pages: handlePaging().length,
-                  }}
-                  handlePageChange={(newPage: number) => {
-                    setPage(newPage - 1);
-                  }}
-                  styles={{ mt: '0%' }}
-                />
-              </ChakraProvider>
-            </TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {(handlePaging()[page] || []).map((item) => (
+              <TableRow key={item.id}>
+                <TableCell className='table__content' component='th' scope='row'>
+                  {item.id}
+                </TableCell>
+                <TableCell className='table__content' component='th' scope='row'>
+                  {item.name}
+                </TableCell>
+                <TableCell className='table__content' component='th' scope='row'>
+                  <Button onClick={() => handleEdit(item)}>
+                    <EditIcon />
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      {isEditModalOpen && editedItem && (
+        <DeveloperEditModal
+          isOpen={isEditModalOpen}
+          onClose={() => setIsEditModalOpen(false)}
+          initialData={editedItem}
+          type={type}
+          onSuccessfulUpdate={fetchData}
+        />
+      )}
+      {isAddModalOpen && (
+        <DeveloperAddModal
+          isOpen={isAddModalOpen}
+          onClose={() => setIsAddModalOpen(false)}
+          type={type}
+          onSuccessfulAdd={fetchData}
+        />
+      )}
+      <Pagination
+        pageInfo={{
+          page: page + 1,
+          size: chunkSize,
+          total: handleFilterContent().length,
+          pages: handlePaging().length,
+        }}
+        handlePageChange={(newPage: number) => {
+          setPage(newPage - 1);
+        }}
+      />
+    </section>
   );
 };

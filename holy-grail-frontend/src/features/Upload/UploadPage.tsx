@@ -1,39 +1,27 @@
 import { useState, useEffect, useContext, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { fetchData, CategoryType, SubjectType, DocumentType } from '@api/library';
+import { AxiosResponse } from 'axios';
+import { fetchData } from '@api/library';
 import { createNote } from '@api/actions';
 import { AlertToast, AlertProps } from '@components';
-import { DeleteAlert } from '@features';
+import {
+  DeleteAlert,
+  OptionsProps,
+  SelectedFilesProps,
+  NotesProps,
+  UploadNote,
+  FileSelect,
+} from '@features';
+import { useNavigation } from '@utils';
 import { AuthContext } from '@providers';
-import { ThemeProvider, createTheme } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-import { UploadNote, NoteInfoProps } from './UploadNote';
-import { FileSelect } from './FileSelect';
-import { AxiosResponse } from 'axios';
 import './upload.css';
 
-interface OptionsProps {
-  categories: CategoryType[];
-  subjects: SubjectType[];
-  types: DocumentType[];
-}
-
-export type { OptionsProps, SelectedFilesProps };
-
-interface NotesProps {
-  [key: string]: NoteInfoProps;
-}
-
-interface SelectedFilesProps {
-  [key: string]: [File, string];
-}
-
 export const UploadPage = () => {
+  const { goToHome, goToLoginPage } = useNavigation();
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
 
   const { user, isLoading } = useContext(AuthContext);
-  const navigate = useNavigate();
   const [options, setOptions] = useState<OptionsProps | null>(null);
 
   const key = useRef<number>(0);
@@ -50,8 +38,6 @@ export const UploadPage = () => {
 
   const [submitLoading, setSubmitLoading] = useState<boolean>(false);
 
-  const muiTheme = createTheme();
-
   useEffect(() => {
     fetchData().then((options) => {
       setOptions(options as OptionsProps);
@@ -63,14 +49,14 @@ export const UploadPage = () => {
           description: 'You need to be logged in to upload documents.',
           severity: 'error',
         };
-        navigate('/login', { state: { alertContent: alertContentRedirect } });
+        goToLoginPage({ state: { alertContent: alertContentRedirect } });
       } else if (!user.verified) {
         const alertContentNotVerified: AlertProps = {
           title: 'Verification Required',
           description: 'You need to be verified to upload documents.',
           severity: 'error',
         };
-        navigate('/', { state: { alertContent: alertContentNotVerified } });
+        goToHome({ state: { alertContent: alertContentNotVerified } });
       }
     }
   }, [isLoading, user]);
@@ -155,10 +141,10 @@ export const UploadPage = () => {
     };
     setSubmitLoading(false);
     if (response?.status === 200) {
-      navigate('/', { state: { alertContent: statusAlertContent() } });
+      goToHome({ state: { alertContent: statusAlertContent() } });
     }
     if (response?.status === 401) {
-      navigate('/login', { state: { alertContent: statusAlertContent() } });
+      goToLoginPage({ state: { alertContent: statusAlertContent() } });
     }
     setAlertContent(statusAlertContent());
     setOpenAlert(true);
@@ -232,61 +218,59 @@ export const UploadPage = () => {
         Upload your materials here! All submitted materials will be reviewed before being published
         to the Holy Grail.
       </div>
-      <ThemeProvider theme={muiTheme}>
-        <div className='upload__multiContainer'>
-          {notes
-            ? Object.keys(notes).map((key) => (
-                <UploadNote
-                  fileName={selectedFiles ? selectedFiles[key][1] : ''}
-                  key={key}
-                  options={options}
-                  saveNoteUpdates={(note) => setNotes({ ...notes, [key]: note })}
-                  deleteNote={() => {
-                    setOpenDeleteAlert(true);
-                    setDeleteAlertKey(key);
-                  }}
-                  errors={serverValidationErrors ? serverValidationErrors[key] : undefined}
-                />
-              ))
-            : null}
-          <FileSelect handleAddNotes={handleAddNotes} />
 
-          <LoadingButton
-            loading={submitLoading}
-            loadingIndicator='Submitting...'
-            sx={{
-              borderColor: 'transparent',
-              backgroundColor: 'rgb(237, 242, 247)',
-              textTransform: 'capitalize',
-              color: 'black',
-              fontWeight: 'bold',
-              width: '10%',
-              aspectRatio: 1.618,
-              borderRadius: '10%',
-            }}
-            onClick={handleSubmit}
-            disabled={handleDisableSumbit()}
-          >
-            Submit
-          </LoadingButton>
-        </div>
-        <DeleteAlert
-          isOpen={openDeleteAlert}
-          onClose={() => {
-            setOpenDeleteAlert(false);
-            setDeleteAlertKey(null);
-          }}
-          onConfirm={() => {
-            handleDeleteNote(deleteAlertKey);
-          }}
-        />
+      <div className='upload__multiContainer'>
+        {notes
+          ? Object.keys(notes).map((key) => (
+              <UploadNote
+                fileName={selectedFiles ? selectedFiles[key][1] : ''}
+                key={key}
+                options={options}
+                saveNoteUpdates={(note) => setNotes({ ...notes, [key]: note })}
+                deleteNote={() => {
+                  setOpenDeleteAlert(true);
+                  setDeleteAlertKey(key);
+                }}
+                errors={serverValidationErrors ? serverValidationErrors[key] : undefined}
+              />
+            ))
+          : null}
+        <FileSelect handleAddNotes={handleAddNotes} />
 
-        <AlertToast
-          openAlert={openAlert}
-          onClose={() => setOpenAlert(false)}
-          alertContent={alertContent}
-        />
-      </ThemeProvider>
+        <LoadingButton
+          loading={submitLoading}
+          loadingIndicator='Submitting...'
+          sx={{
+            borderColor: 'transparent',
+            backgroundColor: 'rgb(237, 242, 247)',
+            textTransform: 'capitalize',
+            color: 'black',
+            fontWeight: 'bold',
+            width: '10%',
+            borderRadius: '4px',
+          }}
+          onClick={handleSubmit}
+          disabled={handleDisableSumbit()}
+        >
+          Submit
+        </LoadingButton>
+      </div>
+      <DeleteAlert
+        isOpen={openDeleteAlert}
+        onClose={() => {
+          setOpenDeleteAlert(false);
+          setDeleteAlertKey(null);
+        }}
+        onConfirm={() => {
+          handleDeleteNote(deleteAlertKey);
+        }}
+      />
+
+      <AlertToast
+        openAlert={openAlert}
+        onClose={() => setOpenAlert(false)}
+        alertContent={alertContent}
+      />
     </section>
   );
 };

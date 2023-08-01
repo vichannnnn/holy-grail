@@ -10,7 +10,13 @@ class AppError:
 
     INVALID_CREDENTIALS_ERROR = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
+        detail="Could not authenticate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+
+    PERMISSION_DENIED_ERROR = HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN,
+        detail="Could not authorize the action",
         headers={"WWW-Authenticate": "Bearer"},
     )
 

@@ -9,7 +9,9 @@ export const Footer = () => {
   return (
     <footer className='footer'>
       <div className='footer__container container'>
-        <img className='footer__logoImg' src={Logo} alt='' />
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <img className='footer__logoImg' src={Logo} alt='' />
+        </div>
         <div className='footer__sectionContainer container grid'>
           <div className='footer__section'>
             <div className='footer__title'>Information</div>

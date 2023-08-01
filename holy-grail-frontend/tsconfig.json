@@ -18,12 +18,14 @@
     "baseUrl": ".",
     "paths": {
       "@apiClient": ["src/api/apiClient.ts"],
-      "@api/auth": ["src/api/utils/auth/index.ts"],
-      "@api/actions": ["src/api/utils/actions/index.ts"],
-      "@api/library": ["src/api/utils/library/index.ts"],
+      "@api/auth": ["src/api/auth/"],
+      "@api/actions": ["src/api/actions/"],
+      "@api/library": ["src/api/library/"],
       "@components": ["src/components/"],
       "@features": ["src/features/"],
-      "@providers": ["src/providers/"]
+      "@providers": ["src/providers/"],
+      "@utils": ["src/utils/"],
+      "@forms/*": ["src/utils/forms/*"]
     }
   },
   "include": ["src"],

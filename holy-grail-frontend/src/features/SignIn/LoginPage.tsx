@@ -1,34 +1,40 @@
-import { FormEvent, useContext, useState } from 'react';
-import { Box, Button, FormControl, FormLabel, Input, Link, VStack } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
+import { useContext, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { AccountForm, AlertToast, AlertProps } from '@components';
-import { AuthContext } from '@providers';
+import { AuthContext, LogInDetails } from '@providers';
+import { SignInValidation } from '@forms/validation';
+import { useNavigation } from '@utils';
+import { Box, Button, FormControl, Stack, TextField, Link } from '@mui/material';
 import './login.css';
 
 export const LoginPage = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const { goToHome, goToRegister, goToForgotPassword } = useNavigation();
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
   const { user, login } = useContext(AuthContext);
-  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(SignInValidation),
+  });
 
   if (user) {
-    navigate('/');
+    goToHome();
   }
 
-  const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
+  const handleLogin = async (formData: LogInDetails) => {
     try {
-      await login(username, password);
+      await login(formData);
       const alertContentRedirect: AlertProps = {
         title: 'Logged in successfully.',
         description: 'Welcome back!',
         severity: 'success',
       };
 
-      navigate('/', { state: { alertContent: alertContentRedirect } });
+      goToHome({ state: { alertContent: alertContentRedirect } });
     } catch (error) {
       setAlertContent({
         title: 'Login failed.',
@@ -39,55 +45,48 @@ export const LoginPage = () => {
     }
   };
 
-  const handleRegister = () => {
-    navigate('/register');
-  };
-
-  const handleForgotPassword = () => {
-    navigate('/forgot-password');
-  };
-
   return (
     <section className='login section container' id='login'>
       <AccountForm>
         <div className='login__title'>Log in</div>
         <div className='section__subtitle'>Enter your credentials to access your account.</div>
-
-        <form className='login__fields' onSubmit={handleLogin}>
-          <VStack spacing='6'>
+        <form className='login__fields' onSubmit={handleSubmit(handleLogin)}>
+          <Stack direction='column' spacing={6}>
             <FormControl id='username'>
-              <FormLabel>Username</FormLabel>
-              <Input
-                type='username'
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+              <TextField
+                label='Username'
+                type='text'
+                error={Boolean(errors.username)}
+                helperText={errors.username?.message}
+                {...register('username')}
                 required
               />
             </FormControl>
             <FormControl id='password'>
-              <FormLabel>Password</FormLabel>
-              <Input
+              <TextField
+                label='Password'
                 type='password'
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                error={Boolean(errors.password)}
+                helperText={errors.password?.message}
+                {...register('password')}
                 required
               />
             </FormControl>
-            <Button type='submit' colorScheme='blue' w='100%'>
+            <Button type='submit' variant='contained' fullWidth>
               Log In
             </Button>
-          </VStack>
+          </Stack>
         </form>
         <Box>
           <div className='login__footer'>
             Forgot your password?{' '}
-            <Link as='button' onClick={handleForgotPassword} textDecoration='underline'>
+            <Link onClick={goToForgotPassword} underline='always'>
               Click here.
             </Link>
           </div>
           <div className='login__footer'>
             Not a member?{' '}
-            <Link as='button' onClick={handleRegister} textDecoration='underline'>
+            <Link onClick={goToRegister} underline='always'>
               Register now.
             </Link>
           </div>

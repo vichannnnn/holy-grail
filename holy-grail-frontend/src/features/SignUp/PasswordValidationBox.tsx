@@ -1,46 +1,50 @@
-import { Box, HStack, Icon, VStack } from '@chakra-ui/react';
-import { CheckIcon, CloseIcon } from '@chakra-ui/icons';
+import { useState, useEffect } from 'react';
+import { PasswordValidationBoxProps } from '@features';
+import { Box, Icon, Stack } from '@mui/material';
+import { Check, Close } from '@mui/icons-material';
 
-interface PasswordValidationBoxProps {
-  lengthValid: boolean;
-  specialCharValid: boolean;
-  capitalLetterValid: boolean;
-  repeatPasswordValid: boolean;
-  allCriteriaMet: boolean;
-}
+export const PasswordValidationBox = ({ password, repeatPassword }: PasswordValidationBoxProps) => {
+  const [lengthValid, setLengthValid] = useState(false);
+  const [specialCharValid, setSpecialCharValid] = useState(false);
+  const [capitalLetterValid, setCapitalLetterValid] = useState(false);
+  const [repeatPasswordValid, setRepeatPasswordValid] = useState(false);
+  const allCriteriaMet =
+    lengthValid && specialCharValid && capitalLetterValid && repeatPasswordValid;
 
-export const PasswordValidationBox = ({
-  lengthValid,
-  specialCharValid,
-  capitalLetterValid,
-  repeatPasswordValid,
-  allCriteriaMet,
-}: PasswordValidationBoxProps) => {
+  useEffect(() => {
+    setLengthValid(password?.length <= 30 && password?.length >= 8);
+    setSpecialCharValid(/[!@#$%^&*]/.test(password || ''));
+    setCapitalLetterValid(/[A-Z]/.test(password || ''));
+    setRepeatPasswordValid(!!(password && repeatPassword && password === repeatPassword));
+  }, [password, repeatPassword]);
+
   const renderValidationMessage = (valid: boolean, message: string) => (
-    <HStack spacing={2} textAlign='left'>
-      <Icon as={valid ? CheckIcon : CloseIcon} color={valid ? 'green.500' : 'red.500'} mr={2} />
+    <Stack direction='row' spacing={2} textAlign='left'>
+      <Icon component={valid ? Check : Close} color={valid ? 'success' : 'error'} sx={{ mr: 2 }} />
       <div className='signup__validation'>{message}</div>
-    </HStack>
+    </Stack>
   );
 
   return (
     <Box
-      mt={4}
-      borderWidth={1}
-      borderRadius='md'
-      p={4}
-      borderColor={allCriteriaMet ? 'green.500' : 'red.500'}
-      width='100%'
-      maxWidth='400px'
-      margin='0 auto'
+      sx={{
+        mt: 4,
+        border: 1,
+        borderRadius: 'md',
+        p: 4,
+        borderColor: allCriteriaMet ? 'success.main' : 'error.main',
+        width: '100%',
+        maxWidth: '400px',
+        m: '0 auto',
+      }}
     >
       <div className='password__validation'>Password check:</div>
-      <VStack align='start' spacing={1}>
+      <Stack direction='column' alignItems='flex-start' spacing={1}>
         {renderValidationMessage(lengthValid, 'Between 8 and 30 characters.')}
         {renderValidationMessage(specialCharValid, 'Contains at least one special character.')}
         {renderValidationMessage(capitalLetterValid, 'Contains at least one capital letter.')}
         {renderValidationMessage(repeatPasswordValid, 'Passwords match.')}
-      </VStack>
+      </Stack>
     </Box>
   );
 };
