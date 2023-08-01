@@ -31,7 +31,7 @@ export const ResetPasswordValidation = Yup.object().shape({
 export const UpdatePasswordValidation = Yup.object().shape({
   before_password: Yup.string().required('Password is required'),
   password: Yup.string()
-    .matches(/[!@#$%^&*]/, 'Password must contain a special character')
+    .matches(/\W/, 'Password must contain a special character')
     .matches(/[A-Z]/, 'Password must contain an uppercase letter')
     .min(8, 'Password must be at least 8 characters long')
     .max(30, 'Password cannot exceed 30 characters')
