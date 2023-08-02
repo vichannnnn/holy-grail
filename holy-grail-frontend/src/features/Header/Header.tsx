@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
+import { HashLink } from 'react-router-hash-link';
 import { Link as RouterLink } from 'react-router-dom';
 import { resendVerificationEmail } from '@api/auth';
 import { AlertToast, AlertProps } from '@components';
@@ -36,10 +37,51 @@ export const Header = () => {
 
     if (!isDesktop) {
       children.push(
-        { label: 'Home', callback: () => goToHome() },
-        { label: 'Library', callback: () => goToLibrary() },
-        { label: 'FAQ', callback: () => goToFAQ() },
-        { label: 'Contribute', callback: () => goToUploadPage() },
+        {
+          label: 'Home',
+          callback: () => {
+            const homeElement = document.querySelector('#home');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            if (homeElement) {
+              homeElement.scrollIntoView({ behavior: 'smooth' });
+            } else {
+              goToHome();
+            }
+          },
+        },
+        {
+          label: 'Library',
+          callback: () => {
+            const libraryElement = document.querySelector('#library');
+            if (libraryElement) {
+              libraryElement.scrollIntoView({ behavior: 'smooth' });
+            } else {
+              goToLibrary();
+            }
+          },
+        },
+        {
+          label: 'FAQ',
+          callback: () => {
+            const faqElement = document.querySelector('#faq');
+            if (faqElement) {
+              faqElement.scrollIntoView({ behavior: 'smooth' });
+            } else {
+              goToFAQ();
+            }
+          },
+        },
+        {
+          label: 'Contribute',
+          callback: () => {
+            const contributeElement = document.querySelector('#contribute');
+            if (contributeElement) {
+              contributeElement.scrollIntoView({ behavior: 'smooth' });
+            } else {
+              goToUploadPage();
+            }
+          },
+        },
       );
     }
 
@@ -107,25 +149,40 @@ export const Header = () => {
           <div className='nav__menu'>
             <ul className='nav__list grid'>
               <li className='nav__item'>
-                <RouterLink to='/' onClick={() => setActiveNav('#home')}>
+                <HashLink
+                  to='/'
+                  scroll={(el: HTMLElement) => el.scrollIntoView({ behavior: 'smooth' })}
+                  onClick={() => {
+                    setActiveNav('#home');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                >
                   <a className={activeNav === '#home' ? 'nav__link active-link' : 'nav__link'}>
                     Home
                   </a>
-                </RouterLink>
+                </HashLink>
               </li>
               <li className='nav__item'>
-                <RouterLink to='/#library' onClick={() => setActiveNav('#library')}>
+                <HashLink
+                  to='/#library'
+                  scroll={(el: HTMLElement) => el.scrollIntoView({ behavior: 'smooth' })}
+                  onClick={() => setActiveNav('#library')}
+                >
                   <a className={activeNav === '#library' ? 'nav__link active-link' : 'nav__link'}>
                     Library
                   </a>
-                </RouterLink>
+                </HashLink>
               </li>
               <li className='nav__item'>
-                <RouterLink to='/#faq' onClick={() => setActiveNav('#faq')}>
+                <HashLink
+                  to='/#faq'
+                  scroll={(el: HTMLElement) => el.scrollIntoView({ behavior: 'smooth' })}
+                  onClick={() => setActiveNav('#faq')}
+                >
                   <a className={activeNav === '#faq' ? 'nav__link active-link' : 'nav__link'}>
                     FAQ
                   </a>
-                </RouterLink>
+                </HashLink>
               </li>
               <li className='nav__item'>
                 <RouterLink
