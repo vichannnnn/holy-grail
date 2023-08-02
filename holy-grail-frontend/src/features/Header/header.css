@@ -29,7 +29,6 @@
     font-size: var(--normal-font-size);
     color: var(--alt-color);
     font-weight: var(--font-medium);
-    transition: .3s;
 }
 
 .nav__logo {
