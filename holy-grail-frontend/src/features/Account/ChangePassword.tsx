@@ -63,6 +63,7 @@ export const ChangePassword = () => {
           style={{
             display: 'grid',
             gridTemplateColumns: '0.2fr auto',
+            gridColumnGap: '10%',
             gridRowGap: '3vh',
             alignItems: 'center',
             marginTop: '2vh',

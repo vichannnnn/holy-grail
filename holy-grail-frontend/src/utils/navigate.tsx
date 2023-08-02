@@ -13,6 +13,7 @@ export const useNavigation = () => {
   const goToForgotPassword = (options = {}) => navigate('/forgot-password', options);
   const goToAdminPanel = (options = {}) => navigate('/admin', options);
   const goToDeveloperPanel = (options = {}) => navigate('/developer', options);
+  const goToAccountPage = (options = {}) => navigate('/account', options);
 
   return {
     goToHome,
@@ -25,5 +26,6 @@ export const useNavigation = () => {
     goToForgotPassword,
     goToAdminPanel,
     goToDeveloperPanel,
+    goToAccountPage,
   };
 };

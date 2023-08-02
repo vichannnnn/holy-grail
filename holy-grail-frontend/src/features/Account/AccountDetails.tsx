@@ -1,15 +1,17 @@
 import { useContext } from 'react';
 import { Typography, Button } from '@mui/material';
-import { AuthContext } from '@providers';
+import { AuthContext, MediaQueryContext } from '@providers';
 
-export const AccountDetails = () => {
+export const AccountDetails = ({ changeEmailClick }: { changeEmailClick?: () => void }) => {
   const { user } = useContext(AuthContext);
+  const { isDesktop } = useContext(MediaQueryContext);
 
   return (
     <div
       style={{
         display: 'grid',
         gridTemplateColumns: '0.2fr auto',
+        gridColumnGap: '10%',
         gridRowGap: '2vh',
         alignItems: 'center',
         marginTop: '2vh',
@@ -24,9 +26,16 @@ export const AccountDetails = () => {
       <Typography sx={{ fontWeight: 'bold' }}>Email</Typography>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Typography>{user?.email}</Typography>
-        <Button variant='contained' color='primary' sx={{ textTransform: 'capitalize' }}>
-          Change Email
-        </Button>
+        {isDesktop ? (
+          <Button
+            variant='contained'
+            color='primary'
+            sx={{ textTransform: 'capitalize' }}
+            onClick={changeEmailClick}
+          >
+            Change Email
+          </Button>
+        ) : null}
       </div>
 
       <hr style={{ borderTop: '1px solid grey', gridColumn: '1/ span 2' }} />
