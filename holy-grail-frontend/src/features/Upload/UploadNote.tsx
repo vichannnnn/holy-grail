@@ -1,11 +1,12 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect, ElementType } from 'react';
 import { fetchData, fetchCategory, SubjectType } from '@api/library';
 import { Combobox } from '@components';
 import { UploadNoteProps } from '@features';
 import { MediaQueryContext, AuthContext } from '@providers';
-import { Typography, TextField, Grid, Collapse, IconButton, Box } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Typography, TextField, Grid, Collapse, Box } from '@mui/material';
+import { ExpandMore, ExpandLess } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import './UploadNote.css';
 
 export const UploadNote = ({
   fileName,
@@ -35,6 +36,17 @@ export const UploadNote = ({
   const { user } = useContext(AuthContext);
   const { isDesktop } = useContext(MediaQueryContext);
 
+  const renderExpandIcon = () => {
+    const IconComponent: ElementType = expanded ? ExpandLess : ExpandMore;
+    return (
+      <IconComponent
+        style={{ marginLeft: 'auto', cursor: 'pointer' }}
+        sx={{ marginLeft: 'auto', display: isDesktop ? null : 'none' }}
+        onClick={() => setExpanded(!expanded)}
+      />
+    );
+  };
+
   useEffect(() => {
     if (errors) {
       setServerValidationError(true);
@@ -54,22 +66,8 @@ export const UploadNote = ({
     setServerValidationError(false);
   }, [category, subject, type, documentName]);
 
-  const gridStyles = {
-    display: 'flex',
-
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingRight: '0 !important',
-  };
-
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'row',
-      }}
-    >
+    <div className='upload-note-div'>
       <div style={{ width: isDesktop ? '60vw' : '90vw' }}>
         <Grid
           container
@@ -82,31 +80,15 @@ export const UploadNote = ({
             borderRadius: '10px',
           }}
         >
-          <Grid
-            container
-            item
-            wrap='nowrap'
-            sx={{
-              ...gridStyles,
-              gap: '2%',
-              justifyContent: 'space-between',
-              margin: '1%',
-            }}
-          >
-            <Typography noWrap sx={{ marginLeft: '4%' }}>
+          <Grid container item className={expanded ? 'grid-container' : 'grid-container-collapsed'}>
+            <Typography className={expanded ? 'file-name-expanded' : 'file-name-collapsed'}>
               {fileName}
             </Typography>
+
             {isDesktop ? (
-              <IconButton
-                sx={{ marginLeft: 'auto', display: isDesktop ? null : 'none' }}
-                onClick={() => setExpanded(!expanded)}
-              >
-                <ExpandMoreIcon />
-              </IconButton>
+              renderExpandIcon()
             ) : (
-              <IconButton onClick={deleteNote} sx={{ flexGrow: 0 }}>
-                <DeleteIcon color='error' />
-              </IconButton>
+              <DeleteIcon color='error' onClick={deleteNote} sx={{ flexGrow: 0 }} />
             )}
           </Grid>
 
@@ -114,13 +96,13 @@ export const UploadNote = ({
             in={isDesktop ? expanded : true}
             timeout='auto'
             unmountOnExit
-            sx={{ padding: '0 1% 1% 1%', flexGrow: 1, display: 'flex', flexDirection: 'row' }}
+            className='collapsible-grid'
           >
-            <Box sx={{ display: 'flex', flexDirection: 'row', margin: '2% 0 2% 2%' }}>
-              <Box sx={{ display: 'flex', flexDirection: 'column', gap: '3vh', flexGrow: 1 }}>
-                <Grid container item sx={gridStyles}>
+            <Box className='outer-note-box'>
+              <Box className='inner-note-box'>
+                <Grid container item className='document-name-grid-container'>
                   <TextField
-                    sx={{ flexGrow: 1 }}
+                    className='document-name-text-field'
                     label='Document Name'
                     placeholder={`Enter document name (eg. ${
                       user?.username || 'anonymous'
@@ -132,23 +114,17 @@ export const UploadNote = ({
                     }}
                     error={!validChecks.name || errors ? errors?.length !== 0 : false}
                     helperText={errors?.map((error) => (
-                      <Typography sx={{ fontSize: '100%' }}>{error}</Typography>
+                      <Typography className='error-text'>{error}</Typography>
                     ))}
                   />
                 </Grid>
                 <Grid
                   container
                   item
-                  sx={{
-                    ...gridStyles,
-
-                    gap: '1vh',
-                    justifyContent: 'space-evenly',
-                    flexDirection: isDesktop ? 'row' : 'column',
-                  }}
+                  className={isDesktop ? 'combobox-container-desktop' : 'combobox-container-mobile'}
                 >
                   <Combobox
-                    style={{ flex: '1 1 0', width: '100%' }}
+                    className='note-combobox'
                     label='Category'
                     value={category || 0}
                     onChange={async (newValue) => {
@@ -171,9 +147,8 @@ export const UploadNote = ({
                     }
                     error={!validChecks.category}
                   />
-
                   <Combobox
-                    style={{ flex: '1 1 0', width: '100%' }}
+                    className='note-combobox'
                     label='Subject'
                     value={subject || 0}
                     onChange={(newValue) => {
@@ -190,9 +165,8 @@ export const UploadNote = ({
                     error={category !== 0 && !validChecks.subject}
                     disabled={category === 0}
                   />
-
                   <Combobox
-                    style={{ flex: '1 1 0', width: '100%' }}
+                    className='note-combobox'
                     label='Type'
                     value={type || 0}
                     onChange={(newValue) => {
@@ -203,13 +177,13 @@ export const UploadNote = ({
                   />
                 </Grid>
               </Box>
-              <Box sx={{ marginLeft: '2%' }}>
-                <IconButton
+              <Box className='note-form-box'>
+                <DeleteIcon
+                  color='error'
+                  style={{ cursor: 'pointer' }}
+                  className={isDesktop ? 'delete-icon-desktop' : 'delete-icon-mobile'}
                   onClick={deleteNote}
-                  sx={{ flexGrow: 0, display: isDesktop ? null : 'none' }}
-                >
-                  <DeleteIcon color='error' />
-                </IconButton>
+                />
               </Box>
             </Box>
           </Collapse>

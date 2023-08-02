@@ -9,10 +9,9 @@ import {
   SubjectType,
 } from '@api/library';
 import { approveNote, deleteNote, updateNote } from '@api/actions';
-import { AdminApproveIcon, AdminDeleteIcon, AdminEditIcon, NotesTable } from '@components';
+import { AdminActions, NotesTable } from '@components';
 import { ApprovalEditModal, DeleteAlert } from '@features';
 import { AuthContext } from '@providers';
-import { Box } from '@mui/material';
 
 export const ApprovalTable = () => {
   const [notes, setNotes] = useState<PaginatedNotes>({
@@ -115,21 +114,15 @@ export const ApprovalTable = () => {
         isAdmin={Boolean(user?.role && user.role >= 2)}
         renderAdminActions={(note) =>
           user && user.role >= 2 ? (
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-              <AdminApproveIcon handleApprove={handleApprove} noteId={note.id} />
-              <AdminDeleteIcon
-                setIsAlertOpen={setIsAlertOpen}
-                setNoteId={setNoteId}
-                noteId={note.id}
-              />
-              <AdminEditIcon
-                setIsEditOpen={setIsEditOpen}
-                setNoteId={setNoteId}
-                noteId={note.id}
-                noteProperties={note}
-                setNoteProperties={setNoteInitialProperties}
-              />
-            </Box>
+            <AdminActions
+              handleApprove={handleApprove}
+              setIsAlertOpen={setIsAlertOpen}
+              setNoteId={setNoteId}
+              setIsEditOpen={setIsEditOpen}
+              noteProperties={note}
+              setNoteProperties={setNoteInitialProperties}
+              noteId={note.id}
+            />
           ) : null
         }
       />

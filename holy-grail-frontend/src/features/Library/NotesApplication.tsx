@@ -9,9 +9,8 @@ import {
   SubjectType,
 } from '@api/library';
 import { deleteNote, updateNote } from '@api/actions';
-import { AdminDeleteIcon, AdminEditIcon, NotesTable } from '@components';
+import { AdminActions, NotesTable } from '@components';
 import { AuthContext } from '@providers';
-import { Box } from '@mui/material';
 import { DeleteAlert, ApprovalEditModal } from '../Approval';
 import './library.css';
 
@@ -129,20 +128,15 @@ export const NotesApplication = () => {
         isAdmin={Boolean(user?.role && user.role >= 2)}
         renderAdminActions={(note) =>
           user && user.role >= 2 ? (
-            <Box sx={{ display: 'flex' }}>
-              <AdminDeleteIcon
-                setIsAlertOpen={setIsAlertOpen}
-                setNoteId={setNoteId}
-                noteId={note.id}
-              />
-              <AdminEditIcon
-                noteId={note.id}
-                setIsEditOpen={setIsEditOpen}
-                setNoteId={setNoteId}
-                noteProperties={note}
-                setNoteProperties={setNoteInitialProperties}
-              />
-            </Box>
+            <AdminActions
+              displayApprove={false}
+              setIsAlertOpen={setIsAlertOpen}
+              setNoteId={setNoteId}
+              setIsEditOpen={setIsEditOpen}
+              noteProperties={note}
+              setNoteProperties={setNoteInitialProperties}
+              noteId={note.id}
+            />
           ) : null
         }
       />
