@@ -20,6 +20,12 @@ jobs:
       - name: Copy .env.example to .env
         run: cp .env.example .env
 
+      - name: SonarQube Scan
+        uses: sonarsource/sonarqube-scan-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
       - name: Run tests with coverage
         run: make coverage version="dev"
 
@@ -60,13 +66,13 @@ jobs:
 
       - name: Define tag suffix and Dockerfile
         run: |
-            if [[ "${{ github.ref }}" == 'refs/heads/master' ]]; then
-              echo "TAG_SUFFIX=" >> $GITHUB_ENV
-              echo "DOCKERFILE=Dockerfile.prod" >> $GITHUB_ENV
-            else
-              echo "TAG_SUFFIX=-dev" >> $GITHUB_ENV
-              echo "DOCKERFILE=Dockerfile.dev" >> $GITHUB_ENV
-            fi
+          if [[ "${{ github.ref }}" == 'refs/heads/master' ]]; then
+            echo "TAG_SUFFIX=" >> $GITHUB_ENV
+            echo "DOCKERFILE=Dockerfile.prod" >> $GITHUB_ENV
+          else
+            echo "TAG_SUFFIX=-dev" >> $GITHUB_ENV
+            echo "DOCKERFILE=Dockerfile.dev" >> $GITHUB_ENV
+          fi
 
       - name: Build and push Backend Docker image
         uses: docker/build-push-action@v2
