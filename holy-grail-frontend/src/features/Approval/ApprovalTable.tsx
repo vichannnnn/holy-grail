@@ -115,7 +115,7 @@ export const ApprovalTable = () => {
         isAdmin={Boolean(user?.role && user.role >= 2)}
         renderAdminActions={(note) =>
           user && user.role >= 2 ? (
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Box sx={{ display: 'flex', gap: '3%' }}>
               <AdminApproveIcon handleApprove={handleApprove} noteId={note.id} />
               <AdminDeleteIcon
                 setIsAlertOpen={setIsAlertOpen}
