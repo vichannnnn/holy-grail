@@ -1,0 +1,5 @@
+.admin-icon {
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+}
