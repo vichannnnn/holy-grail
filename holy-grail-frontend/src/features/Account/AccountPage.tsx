@@ -1,18 +1,12 @@
-import { AccountDetails, ChangePassword, UpdateEmail } from '@features';
 import { useState, useContext, useEffect } from 'react';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { VerticalNav, VerticalNavProps } from '@components';
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
-import PasswordIcon from '@mui/icons-material/Password';
-import Email from '@mui/icons-material/Email';
 import { useNavigate } from 'react-router-dom';
-import { AlertProps } from '@components';
+import { VerticalNav, VerticalNavProps, AlertProps } from '@components';
+import { AccountDetails, ChangePassword, UpdateEmail } from '@features';
 import { AuthContext, MediaQueryContext } from '@providers';
-
+import { AccountBox as AccountBoxIcon, Password as PasswordIcon, Email } from '@mui/icons-material';
 import './account.css';
 
 export const AccountPage = () => {
-  const muiTheme = createTheme();
   const [title, setTitle] = useState('Account details');
   const [subtitle, setSubtitle] = useState('Change and update your account details here!');
   const [activeElem, setActiveElem] = useState<Array<boolean>>([true, false, false]);
@@ -58,9 +52,9 @@ export const AccountPage = () => {
   const navProps: VerticalNavProps[] = [
     {
       icon: AccountBoxIcon,
-      label: 'Account details',
+      label: 'Account Details',
       onClick: () => {
-        setTitle('Account details');
+        setTitle('Account Details');
         setSubtitle('View your account details here!');
         setRenderMenuType(<AccountDetails changeEmailClick={changeEmailClick} />);
         setActiveElem([true, false, false]);
@@ -69,9 +63,9 @@ export const AccountPage = () => {
     },
     {
       icon: PasswordIcon,
-      label: 'Change password',
+      label: 'Change Password',
       onClick: () => {
-        setTitle('Change password');
+        setTitle('Change Password');
         setSubtitle('Change your password here!');
         setRenderMenuType(<ChangePassword />);
         setActiveElem([false, true, false]);
@@ -80,9 +74,9 @@ export const AccountPage = () => {
     },
     {
       icon: Email,
-      label: 'Update email',
+      label: 'Update Email',
       onClick: () => {
-        setTitle('Update email');
+        setTitle('Update Email');
         setSubtitle('Update your email here!');
         setRenderMenuType(<UpdateEmail />);
         setActiveElem([false, false, true]);
@@ -92,28 +86,26 @@ export const AccountPage = () => {
   ];
 
   return (
-    <ThemeProvider theme={muiTheme}>
-      <section className='section container account__page'>
-        {isDesktop ? <VerticalNav props={navProps} /> : null}
+    <section className='section container account__page'>
+      {isDesktop ? <VerticalNav props={navProps} /> : null}
 
-        <div className='account__main'>
-          <div className='section__title'>{title}</div>
-          <div className='section__subtitle'>{subtitle}</div>
-          <hr className='account__divider' />
+      <div className='account__main'>
+        <div className='section__title'>{title}</div>
+        <div className='section__subtitle'>{subtitle}</div>
+        <hr className='account__divider' />
 
-          {isDesktop ? (
-            <>{renderMenuType}</>
-          ) : (
-            <>
-              <AccountDetails />
-              <hr className='account__divider' />
-              <ChangePassword />
-              <hr className='account__divider' />
-              <UpdateEmail />
-            </>
-          )}
-        </div>
-      </section>
-    </ThemeProvider>
+        {isDesktop ? (
+          <>{renderMenuType}</>
+        ) : (
+          <>
+            <AccountDetails />
+            <hr className='account__divider' />
+            <ChangePassword />
+            <hr className='account__divider' />
+            <UpdateEmail />
+          </>
+        )}
+      </div>
+    </section>
   );
 };
