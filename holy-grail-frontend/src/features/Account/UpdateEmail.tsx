@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { AlertProps, AlertToast } from '@components';
 import { ChangeEmailDetails } from '@features';
 import { ChangeEmailValidation } from '@forms/validation';
-import { AuthContext } from '@providers';
+import { AuthContext, MediaQueryContext } from '@providers';
 import { Typography, TextField, Button } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -11,6 +11,7 @@ export const UpdateEmail = () => {
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
   const { user } = useContext(AuthContext);
+  const { isDesktop } = useContext(MediaQueryContext);
   const {
     register,
     handleSubmit,
@@ -37,17 +38,20 @@ export const UpdateEmail = () => {
           width: '100%',
         }}
       >
-        <Typography sx={{ fontWeight: 'bold' }}>Account Status</Typography>
-        <Typography
-          sx={{
-            color: user?.verified ? 'green' : 'red',
-          }}
-        >
-          {user?.verified ? 'Verified' : 'Unverified'}
-        </Typography>
-
-        <Typography sx={{ fontWeight: 'bold' }}>Current Email</Typography>
-        <Typography>{user?.email}</Typography>
+        {isDesktop ? (
+          <>
+            <Typography sx={{ fontWeight: 'bold' }}>Account Status</Typography>
+            <Typography
+              sx={{
+                color: user?.verified ? 'green' : 'red',
+              }}
+            >
+              {user?.verified ? 'Verified' : 'Unverified'}
+            </Typography>
+            <Typography sx={{ fontWeight: 'bold' }}>Current Email</Typography>
+            <Typography>{user?.email}</Typography>
+          </>
+        ) : null}
 
         <Typography sx={{ fontWeight: 'bold' }}>New Email</Typography>
         <form onSubmit={handleSubmit(handleUpdateEmail)} style={{ width: '100%' }} id='emailForm'>
