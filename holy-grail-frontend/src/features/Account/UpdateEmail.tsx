@@ -71,7 +71,7 @@ export const UpdateEmail = () => {
           flexDirection: 'column',
           gap: '2vw',
           justifyContent: 'center',
-          marginTop: '2vh',
+          marginTop: '5vh',
         }}
       >
         <Button
