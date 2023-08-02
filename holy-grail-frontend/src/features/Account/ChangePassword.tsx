@@ -100,9 +100,9 @@ export const ChangePassword = () => {
           style={{
             display: 'flex',
             flexDirection: 'column',
-            gap: '2vw',
+            gap: '5vw',
             alignItems: 'center',
-            marginTop: '2vh',
+            marginTop: '5vh',
           }}
         >
           <PasswordValidationBox

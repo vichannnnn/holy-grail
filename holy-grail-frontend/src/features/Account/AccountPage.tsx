@@ -5,6 +5,7 @@ import { AccountDetails, ChangePassword, UpdateEmail } from '@features';
 import { AuthContext, MediaQueryContext } from '@providers';
 import { AccountBox as AccountBoxIcon, Password as PasswordIcon, Email } from '@mui/icons-material';
 import './account.css';
+import { Divider } from '@mui/material';
 
 export const AccountPage = () => {
   const [title, setTitle] = useState('Account details');
@@ -99,10 +100,9 @@ export const AccountPage = () => {
         ) : (
           <>
             <AccountDetails />
+            <UpdateEmail />
             <hr className='account__divider' />
             <ChangePassword />
-            <hr className='account__divider' />
-            <UpdateEmail />
           </>
         )}
       </div>
