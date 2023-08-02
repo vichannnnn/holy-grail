@@ -150,9 +150,6 @@ export const NotesTable = ({
                   <TableCell className='table__header'>Type</TableCell>
                   <TableCell className='table__header'>Uploaded By</TableCell>
                   <TableCell className='table__header'>Uploaded On</TableCell>
-                  {/*<TableCell className='table__header' align='center'>*/}
-                  {/*  Download*/}
-                  {/*</TableCell>*/}
                   {isAdmin && renderAdminActions && (
                     <TableCell className='table__header'>Actions</TableCell>
                   )}
