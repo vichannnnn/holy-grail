@@ -1,0 +1,111 @@
+.upload-note-div {
+    display: flex;
+    flex-direction: row;
+}
+
+.grid-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-right: 0 !important;
+    gap: 2%;
+    justify-content: space-between;
+    margin: 1%;
+}
+
+.grid-container-collapsed {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-right: 0 !important;
+    gap: 2%;
+    justify-content: space-between;
+    margin: 1%;
+    padding: 10px 0;
+}
+
+.document-name-grid-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding-right: 0 !important;
+}
+
+.document-name-text-field {
+    flex-grow: 1
+}
+
+.combobox-container-desktop {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-right: 0 !important;
+    gap: 1vh;
+    justify-content: space-evenly;
+}
+
+.combobox-container-mobile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-right: 0 !important;
+    gap: 1vh;
+    justify-content: space-evenly;
+}
+
+.note-combobox {
+    flex: 1 1 0;
+    width: 100%;
+}
+
+
+.upload-note-div  .file-name-expanded {
+    font-weight: 500;
+    margin-left: 3%;
+    margin-top: 2%;
+}
+
+.upload-note-div  .file-name-collapsed {
+    font-weight: 500;
+    margin-left: 3%;
+}
+
+
+.upload-note-div .error-text {
+    font-size: 100%;
+}
+
+
+.collapsible-grid {
+    padding: 0 1% 1% 1%;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: row;
+}
+
+.outer-note-box {
+    display: flex;
+    flex-direction: row;
+    margin: 2% 0 2% 2%;
+}
+
+.inner-note-box {
+    display: flex;
+    flex-direction: column;
+    gap: 3vh;
+    flex-grow: 1
+}
+
+.note-form-box {
+    margin-left: 2%;
+}
+
+.delete-icon-desktop {
+    display: inline-block;
+}
+
+.delete-icon-mobile {
+    flex-grow: 0;
+    display: none;
+}
