@@ -13,11 +13,8 @@ import {
 export const AuthContext = createContext<AuthContextType>({
   user: null,
   isLoading: true,
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   login: async () => {},
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   logout: () => {},
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   updateUser: () => {},
   registerUserAccount: async () => 0,
 });

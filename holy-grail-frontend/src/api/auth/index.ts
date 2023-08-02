@@ -1,4 +1,5 @@
 export * from './CheckToken';
+export * from './GetUser';
 export * from './RegisterAccount';
 export * from './ResendVerificationEmail';
 export * from './ResetPassword';

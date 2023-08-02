@@ -1,12 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { resendVerificationEmail, verifyAccount } from '@api/auth';
+import { getUser, resendVerificationEmail, verifyAccount } from '@api/auth';
 import { AlertToast, AlertProps } from '@components';
 import { Link } from '@mui/material';
 import '../SignIn/login.css';
 import './verifyAccountPageContainer.css';
+import { AuthContext } from '@providers';
 
 export const AccountVerifyPage = () => {
+  const { user, updateUser } = useContext(AuthContext);
   const [token, setToken] = useState<string | null>(null);
   const [resetStatus, setResetStatus] = useState<string | null>(null);
   const [isFailed, setFailed] = useState<boolean>(false);
@@ -23,12 +25,14 @@ export const AccountVerifyPage = () => {
     const token = query.get('token');
     setToken(token);
 
-    if (token) {
+    if (token && user) {
       verifyAccount(token)
         .then(() => {
           setResetStatus(
             'Your account has been successfully verified. You can now upload resources.',
           );
+          const updatedUser = { ...user, verified: true };
+          updateUser(updatedUser);
         })
         .catch(() => {
           setFailed(true);
