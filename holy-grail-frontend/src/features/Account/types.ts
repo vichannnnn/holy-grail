@@ -5,6 +5,5 @@ export interface ChangePasswordDetails {
 }
 
 export interface ChangeEmailDetails {
-  currentEmail: string;
-  newEmail: string;
+  email: string;
 }

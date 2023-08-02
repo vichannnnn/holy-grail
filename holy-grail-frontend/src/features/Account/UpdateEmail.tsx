@@ -1,33 +1,23 @@
 import { useContext, useState } from 'react';
-import { ChangeEmailDetails } from '@features';
-import { AlertProps, AlertToast } from '@components';
-import { Typography, TextField, Button } from '@mui/material';
 import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { AlertProps, AlertToast } from '@components';
+import { ChangeEmailDetails } from '@features';
 import { ChangeEmailValidation } from '@forms/validation';
 import { AuthContext } from '@providers';
-
-import * as Yup from 'yup';
+import { Typography, TextField, Button } from '@mui/material';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 export const UpdateEmail = () => {
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
   const { user } = useContext(AuthContext);
-
-  const initialiseValidator = (schema: Yup.AnyObjectSchema, defaultValues: Object) => {
-    const {
-      register,
-      watch,
-      handleSubmit,
-      formState: { errors },
-    } = useForm({
-      resolver: yupResolver(schema),
-      defaultValues: { ...defaultValues },
-    });
-    return { register, watch, handleSubmit, errors };
-  };
-
-  const emailValidator = initialiseValidator(ChangeEmailValidation, { email: user?.email || '' });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(ChangeEmailValidation),
+  });
 
   const handleUpdateEmail = async (formData: ChangeEmailDetails) => {
     console.log(formData);
@@ -60,17 +50,13 @@ export const UpdateEmail = () => {
         <Typography>{user?.email}</Typography>
 
         <Typography sx={{ fontWeight: 'bold' }}>New Email</Typography>
-        <form
-          onSubmit={emailValidator.handleSubmit(handleUpdateEmail)}
-          style={{ width: '100%' }}
-          id='emailForm'
-        >
+        <form onSubmit={handleSubmit(handleUpdateEmail)} style={{ width: '100%' }} id='emailForm'>
           <TextField
             sx={{ width: '100%' }}
             label='Email'
-            {...emailValidator.register('email')}
-            error={Boolean(emailValidator.errors.email)}
-            helperText={emailValidator.errors.email?.message as String}
+            error={Boolean(errors.email)}
+            helperText={errors.email?.message}
+            {...register('email')}
             required
           />
         </form>
@@ -89,7 +75,7 @@ export const UpdateEmail = () => {
           color='info'
           type='submit'
           form='emailForm'
-          disabled={Object.keys(emailValidator.errors).length !== 0}
+          disabled={Object.keys(errors).length !== 0}
           sx={{ textTransform: 'capitalize', width: '7vw' }}
         >
           Save

@@ -1,6 +1,5 @@
 import { Typography } from '@mui/material';
 import { VerticalNavProps } from './types';
-import { useState } from 'react';
 
 export const VerticalNav = ({ props }: { props: VerticalNavProps[] }) => {
   return (
@@ -11,7 +10,7 @@ export const VerticalNav = ({ props }: { props: VerticalNavProps[] }) => {
         gap: '2vh',
         padding: '3%',
         marginTop: '10vh',
-        width: '20vw',
+        width: '15vw',
         justifyContent: 'space-around',
       }}
     >
@@ -31,7 +30,13 @@ export const VerticalNav = ({ props }: { props: VerticalNavProps[] }) => {
             >
               <child.icon sx={{ transform: 'scale(1.2)', display: 'absolute' }} />
               {
-                <Typography sx={{ textDecoration: child.active ? 'underline' : null, flexGrow: 1 }}>
+                <Typography
+                  sx={{
+                    fontWeight: 'bold',
+                    textDecoration: child.active ? 'underline' : null,
+                    flexGrow: 1,
+                  }}
+                >
                   {child.label}
                 </Typography>
               }
