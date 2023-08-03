@@ -30,14 +30,13 @@ jobs:
 
       - name: Override Coverage Source Path for Sonar
         run: |
+          pytest_coverage_xml_file_name="holy-grail-backend/backend/coverage.xml"
           echo "GITHUB_WORKSPACE=$GITHUB_WORKSPACE"
-          echo "ls $GITHUB_WORKSPACE"
-          echo "ls $GITHUB_WORKSPACE/holy-grail-backend/"
           echo 'coverage.xml before:'
-          head $GITHUB_WORKSPACE/holy-grail-backend/coverage.xml
-          sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace/@g' $GITHUB_WORKSPACE/holy-grail-backend/coverage.xml
+          head $GITHUB_WORKSPACE/$pytest_coverage_xml_file_name
+          sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace/@g' $GITHUB_WORKSPACE/$pytest_coverage_xml_file_name
           echo 'coverage.xml after:'
-          head $GITHUB_WORKSPACE/holy-grail-backend/coverage.xml
+          head $GITHUB_WORKSPACE/$pytest_coverage_xml_file_name
 
       - name: SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@master
