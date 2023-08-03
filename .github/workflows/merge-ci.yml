@@ -29,8 +29,6 @@ jobs:
         run: make generate_xml version="dev"
 
       - name: SonarQube Scan
-        run: |
-          ls -la ./holy-grail-backend/backend
         uses: sonarsource/sonarqube-scan-action@master
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
