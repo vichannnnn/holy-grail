@@ -31,11 +31,13 @@ jobs:
       - name: Override Coverage Source Path for Sonar
         run: |
           echo "GITHUB_WORKSPACE=$GITHUB_WORKSPACE"
+          echo "ls $GITHUB_WORKSPACE"
+          echo "ls $GITHUB_WORKSPACE/holy-grail-backend/"
           echo 'coverage.xml before:'
-          head $GITHUB_WORKSPACE/coverage.xml
-          sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace/@g' $GITHUB_WORKSPACE/coverage.xml
+          head $GITHUB_WORKSPACE/holy-grail-backend/coverage.xml
+          sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace/@g' $GITHUB_WORKSPACE/holy-grail-backend/coverage.xml
           echo 'coverage.xml after:'
-          head $GITHUB_WORKSPACE/coverage.xml
+          head $GITHUB_WORKSPACE/holy-grail-backend/coverage.xml
 
       - name: SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@master
