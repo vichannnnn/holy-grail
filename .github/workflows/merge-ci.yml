@@ -31,11 +31,8 @@ jobs:
       - name: Copy coverage.xml to workspace root
         run: cp ./holy-grail-backend/backend/coverage.xml ./coverage.xml
 
-      - name: List files in workspace
-        run: ls -al
-
       - name: Adjust paths in coverage.xml for CI
-        run: sed -i 's|/app/|./holy-grail-backend/backend/|g' coverage.xml
+        run: sed -i 's|app/|./holy-grail-backend/backend/|g' coverage.xml
 
       - name: SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@master
