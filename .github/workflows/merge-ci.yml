@@ -32,7 +32,10 @@ jobs:
         run: cp ./holy-grail-backend/backend/coverage.xml ./coverage.xml
 
       - name: Adjust paths in coverage.xml for CI
-        run: sed -i 's|app/|./holy-grail-backend/backend/app/|g' coverage.xml
+        run: |
+          sed -i 's|app/|./holy-grail-backend/backend/app/|g' coverage.xml
+          sed -i 's|<source>/app</source>|<source>/holy-grail-backend/backend/app</source>|g' coverage.xml
+
 
       - name: SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@master
