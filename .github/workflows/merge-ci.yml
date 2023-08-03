@@ -28,10 +28,9 @@ jobs:
       - name: Generate xml
         run: make generate_xml version="dev"
 
-      - name: List files in backend directory
-        run: ls -la ./holy-grail-backend/backend
-
       - name: SonarQube Scan
+        run: |
+          ls -la ./holy-grail-backend/backend
         uses: sonarsource/sonarqube-scan-action@master
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

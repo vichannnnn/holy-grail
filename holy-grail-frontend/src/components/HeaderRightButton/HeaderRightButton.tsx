@@ -1,4 +1,4 @@
-import { Button, ButtonProps, createTheme, SxProps } from '@mui/material';
+import { Button, ButtonProps, SxProps, Theme } from '@mui/material';
 import { forwardRef, MouseEvent } from 'react';
 
 interface HeaderRightButtonProps extends ButtonProps {
