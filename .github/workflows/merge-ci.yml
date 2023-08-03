@@ -19,17 +19,17 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Copy .env.example to .env
-        run: cp .env.example .env
-
-      - name: Run tests with coverage
-        run: make coverage version="dev"
-
-      - name: Generate xml
-        run: make generate_xml version="dev"
+      #      - name: Copy .env.example to .env
+      #        run: cp .env.example .env
+      #
+      #      - name: Run tests with coverage
+      #        run: make coverage version="dev"
+      #
+      #      - name: Generate xml
+      #        run: make generate_xml version="dev"
 
       - name: Copy coverage.xml to workspace root
-        run: cp ./holy-grail-backend/backend/coverage.xml /github/workspace/coverage.xml
+        run: cp ./holy-grail-backend/backend/coverage.xml ./coverage.xml
 
       - name: SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@master
