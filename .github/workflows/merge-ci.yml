@@ -34,6 +34,9 @@ jobs:
       - name: List files in workspace
         run: ls -al
 
+      - name: Adjust paths in coverage.xml for CI
+        run: sed -i 's|/app/|./holy-grail-backend/backend/|g' coverage.xml
+
       - name: SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@master
         env:
