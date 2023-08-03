@@ -29,7 +29,7 @@ jobs:
         run: make generate_xml version="dev"
 
       - name: Copy coverage.xml to workspace root
-        run: cp ./holy-grail-backend/backend/coverage.xml ./coverage.xml
+        run: cp ./holy-grail-backend/backend/coverage.xml /github/workspace/coverage.xml
 
       - name: SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@master
