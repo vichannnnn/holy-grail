@@ -20,17 +20,18 @@ jobs:
       - name: Copy .env.example to .env
         run: cp .env.example .env
 
-      - name: SonarQube Scan
-        uses: sonarsource/sonarqube-scan-action@master
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-
       - name: Run tests with coverage
         run: make coverage version="dev"
 
       - name: Generate xml
         run: make generate_xml version="dev"
+
+      - name: SonarQube Scan
+        uses: sonarsource/sonarqube-scan-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+          EXTRA_ARGS: -Dsonar.python.coverage.reportPaths=coverage.xml
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
