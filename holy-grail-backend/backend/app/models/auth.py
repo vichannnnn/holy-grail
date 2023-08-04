@@ -22,6 +22,7 @@ from app.schemas.auth import (
     CurrentUserSchema,
     AuthSchema,
     CurrentUserWithJWTSchema,
+    AccountUpdateEmailSchema,
 )
 from app.tasks.new_password_email import send_new_password_email_task
 from app.tasks.reset_password_email import send_reset_password_email_task
@@ -179,6 +180,31 @@ class Account(Base, CRUD["Account"]):
             .values({"password": hashed_updated_password})
         )
         await session.execute(stmt)
+        await session.commit()
+        return FastAPIResponse(status_code=204)
+
+    @classmethod
+    async def update_email(
+        cls, session: AsyncSession, user_id: int, data: AccountUpdateEmailSchema
+    ) -> FastAPIResponse:
+        curr = await Account.get(session, id=user_id)
+
+        if not curr:
+            raise AppError.INVALID_CREDENTIALS_ERROR
+
+        if curr.email != data.before_email:
+            raise AppError.PERMISSION_DENIED_ERROR
+
+        stmt = (
+            update(Account)
+            .returning(Account)
+            .where(Account.user_id == user_id)
+            .values({"email": data.email, "verified": False})
+        )
+        try:
+            await session.execute(stmt)
+        except SQLAlchemyExceptions.IntegrityError:
+            raise AppError.RESOURCES_ALREADY_EXISTS_ERROR
         await session.commit()
         return FastAPIResponse(status_code=204)
 

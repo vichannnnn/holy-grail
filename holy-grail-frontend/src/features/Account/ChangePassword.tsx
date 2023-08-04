@@ -28,11 +28,11 @@ export const ChangePassword = () => {
   const passwordValidator = initialiseValidator(ChangePasswordValidation, {});
 
   const handleUpdatePassword = async (formData: ChangePasswordDetails) => {
-    const { success, message } = await updatePassword(
-      formData.currentPassword,
-      formData.newPassword,
-      formData.repeatPassword,
-    );
+    const { success, message } = await updatePassword({
+      before_password: formData.currentPassword,
+      password: formData.newPassword,
+      repeat_password: formData.repeatPassword,
+    });
 
     if (success) {
       const alertContent: AlertProps = {

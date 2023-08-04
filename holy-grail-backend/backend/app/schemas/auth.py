@@ -36,6 +36,11 @@ class AccountUpdatePasswordSchema(BaseModel):
     repeat_password: password_validator  # type: ignore
 
 
+class AccountUpdateEmailSchema(BaseModel):
+    before_email: EmailStr  # type: ignore
+    email: EmailStr  # type: ignore
+
+
 class AccountSchema(AccountRegisterSchema):
     user_id: Optional[int]
     repeat_password: Optional[str]
