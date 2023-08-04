@@ -50,15 +50,7 @@ export const UpdateEmail = () => {
         <div className='update-grid'>
           {isDesktop ? (
             <>
-              <Typography sx={{ fontWeight: 'bold' }}>Account Status</Typography>
-              <Typography
-                sx={{
-                  color: user?.verified ? 'green' : 'red',
-                }}
-              >
-                {user?.verified ? 'Verified' : 'Unverified'}
-              </Typography>
-              <Typography sx={{ fontWeight: 'bold' }}>Current Email</Typography>
+              <Typography sx={{ fontWeight: 'bold' }}>Email</Typography>
               <Typography>{user?.email}</Typography>
             </>
           ) : null}
@@ -72,6 +64,14 @@ export const UpdateEmail = () => {
               required
             />
           </FormControl>
+          <Typography sx={{ fontWeight: 'bold' }}>Status</Typography>
+          <Typography
+            sx={{
+              color: user?.verified ? 'green' : 'red',
+            }}
+          >
+            {user?.verified ? 'Verified' : 'Unverified'}
+          </Typography>
         </div>
         <div className='submit-button-container'>
           <Button

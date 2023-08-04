@@ -1,28 +1,14 @@
-import { useState, useContext, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { VerticalNav, VerticalNavProps, AlertProps } from '@components';
-import { AccountDetails, UpdatePassword, UpdateEmail } from '@features';
+import { AlertProps } from '@components';
 import { AuthContext, MediaQueryContext } from '@providers';
-import { AccountBox as AccountBoxIcon, Password as PasswordIcon, Email } from '@mui/icons-material';
+import { DesktopAccountPage } from './DesktopAccountPage';
+import { MobileAccountPage } from './MobileAccountPage';
 import './account.css';
 
 export const AccountPage = () => {
-  const [title, setTitle] = useState('Account details');
-  const [subtitle, setSubtitle] = useState('Change and update your account details here!');
-  const [activeElem, setActiveElem] = useState<Array<boolean>>([true, false, false]);
-  const changeEmailClick = () => {
-    setActiveElem([false, false, true]);
-    setTitle('Update email');
-    setSubtitle('Update your email here!');
-    setRenderMenuType(<UpdateEmail />);
-  };
-
-  const [renderMenuType, setRenderMenuType] = useState<JSX.Element>(
-    <AccountDetails changeEmailClick={changeEmailClick} />,
-  );
-
-  const { user, isLoading } = useContext(AuthContext);
   const { isDesktop } = useContext(MediaQueryContext);
+  const { user, isLoading } = useContext(AuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -38,73 +24,5 @@ export const AccountPage = () => {
     }
   }, [isLoading, user]);
 
-  useEffect(() => {
-    if (!isDesktop) {
-      setTitle('Edit Account');
-      setSubtitle('View, edit and update your account here!');
-    } else {
-      setTitle('Account details');
-      setSubtitle('View your account details here!');
-      setRenderMenuType(<AccountDetails changeEmailClick={changeEmailClick} />);
-    }
-  }, [isDesktop]);
-
-  const navProps: VerticalNavProps[] = [
-    {
-      icon: AccountBoxIcon,
-      label: 'Account Details',
-      onClick: () => {
-        setTitle('Account Details');
-        setSubtitle('View your account details here!');
-        setRenderMenuType(<AccountDetails changeEmailClick={changeEmailClick} />);
-        setActiveElem([true, false, false]);
-      },
-      active: activeElem[0],
-    },
-    {
-      icon: PasswordIcon,
-      label: 'Change Password',
-      onClick: () => {
-        setTitle('Change Password');
-        setSubtitle('Change your password here!');
-        setRenderMenuType(<UpdatePassword />);
-        setActiveElem([false, true, false]);
-      },
-      active: activeElem[1],
-    },
-    {
-      icon: Email,
-      label: 'Update Email',
-      onClick: () => {
-        setTitle('Update Email');
-        setSubtitle('Update your email here!');
-        setRenderMenuType(<UpdateEmail />);
-        setActiveElem([false, false, true]);
-      },
-      active: activeElem[2],
-    },
-  ];
-
-  return (
-    <section className='section container account__page'>
-      {isDesktop ? <VerticalNav props={navProps} /> : null}
-
-      <div className='account__main'>
-        <div className='section__title'>{title}</div>
-        <div className='section__subtitle'>{subtitle}</div>
-        <hr className='account__divider' />
-
-        {isDesktop ? (
-          <>{renderMenuType}</>
-        ) : (
-          <>
-            <AccountDetails />
-            <UpdateEmail />
-            <hr className='account__divider' />
-            <UpdatePassword />
-          </>
-        )}
-      </div>
-    </section>
-  );
+  return isDesktop ? <DesktopAccountPage /> : <MobileAccountPage />;
 };
