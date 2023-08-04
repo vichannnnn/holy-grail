@@ -7,6 +7,7 @@ import { Typography, TextField, Button, FormControl } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { UpdatePasswordValidation } from '@forms/validation';
 import { useNavigation } from '@utils';
+import './account.css';
 
 export const UpdatePassword = () => {
   const { goToHome } = useNavigation();
@@ -43,17 +44,8 @@ export const UpdatePassword = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit(handleUpdatePassword)} style={{ width: '100%' }}>
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '0.2fr auto',
-            gridColumnGap: '10%',
-            gridRowGap: '3vh',
-            alignItems: 'center',
-            marginTop: '2vh',
-          }}
-        >
+      <form onSubmit={handleSubmit(handleUpdatePassword)} className='update-outer-div'>
+        <div className='update-grid'>
           <Typography sx={{ fontWeight: 'bold' }}>Current Password</Typography>
           <FormControl id='before-password'>
             <TextField
@@ -90,15 +82,7 @@ export const UpdatePassword = () => {
             />
           </FormControl>
         </div>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '5vw',
-            alignItems: 'center',
-            marginTop: '5vh',
-          }}
-        >
+        <div className='submit-button-container'>
           <PasswordValidationBox
             password={watch('password')}
             repeatPassword={watch('repeat_password')}

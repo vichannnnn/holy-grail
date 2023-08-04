@@ -20,9 +20,6 @@ export const AccountDetails = ({ changeEmailClick }: { changeEmailClick?: () => 
     >
       <Typography sx={{ fontWeight: 'bold' }}>Username</Typography>
       <Typography>{user?.username}</Typography>
-
-      <hr style={{ borderTop: '1px solid grey', gridColumn: '1/ span 2' }} />
-
       <Typography sx={{ fontWeight: 'bold' }}>Email</Typography>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Typography>{user?.email}</Typography>
@@ -37,9 +34,6 @@ export const AccountDetails = ({ changeEmailClick }: { changeEmailClick?: () => 
           </Button>
         ) : null}
       </div>
-
-      <hr style={{ borderTop: '1px solid grey', gridColumn: '1/ span 2' }} />
-
       <Typography sx={{ fontWeight: 'bold' }}>Account Status</Typography>
       <Typography sx={{ color: user?.verified ? 'green' : 'red' }}>
         {user?.verified ? 'Verified' : 'Unverified'}

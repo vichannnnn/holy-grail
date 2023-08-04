@@ -17,9 +17,29 @@
 }
 
 .account__divider {
-
     width: 100%;
     border-top: 2px solid black;
-    background-color: var(--color-grey-light);
-    margin: 5vh 0;
+    margin: 1vh 0;
+}
+
+.update-grid {
+    display: grid;
+    grid-template-columns: 0.2fr auto;
+    grid-column-gap: 5%;
+    grid-row-gap: 2vh;
+    align-items: center;
+    margin-top: 2vh;
+    width: 90%;
+}
+
+.update-outer-div {
+    width: 90%;
+}
+
+.submit-button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2vw;
+    align-items: center;
+    margin-top: 5vh;
 }
