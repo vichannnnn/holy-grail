@@ -25,7 +25,7 @@
 .account__divider__mobile {
     width: 100%;
     border-top: 2px solid black;
-    margin: 3vh 0;
+    margin: 5vh 0;
 }
 
 .update-grid {
@@ -52,10 +52,29 @@
     width: 90%;
 }
 
-.submit-button-container {
+.change-password-button-container {
     display: flex;
     flex-direction: column;
-    gap: 2vw;
+    gap: 5vw;
     align-items: center;
     margin-top: 5vh;
+}
+
+.change-email-button-container {
+    grid-area: span 2 / span 2;
+    display: flex;
+    justify-content: center;
+    margin-top: 5vw;
+
+}
+
+@media screen and (min-width: 600px) {
+    .change-password-button-container {
+        gap: 2vw;
+        margin-top: 2vw;
+    }
+
+    .change-email-button-container {
+        margin-top: 2vw;
+    }
 }

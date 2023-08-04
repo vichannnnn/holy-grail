@@ -46,52 +46,55 @@ export const UpdateEmail = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit(handleUpdateEmail)} id='emailForm' className='update-outer-div'>
-        <div className='update-grid'>
-          {isDesktop ? (
-            <>
+      {isDesktop ? (
+        <>
+          <form
+            onSubmit={handleSubmit(handleUpdateEmail)}
+            id='emailForm'
+            className='update-outer-div'
+          >
+            <div className='update-grid'>
               <Typography sx={{ fontWeight: 'bold' }}>Email</Typography>
               <Typography>{user?.email}</Typography>
-            </>
-          ) : null}
-          <Typography sx={{ fontWeight: 'bold' }}>New Email</Typography>
-          <FormControl id='new_email'>
-            <TextField
-              label='Email'
-              error={Boolean(errors.new_email)}
-              helperText={errors.new_email?.message}
-              {...register('new_email')}
-              required
-            />
-          </FormControl>
-          <Typography sx={{ fontWeight: 'bold' }}>Status</Typography>
-          <Typography
-            sx={{
-              color: user?.verified ? 'green' : 'red',
-            }}
-          >
-            {user?.verified ? 'Verified' : 'Unverified'}
-          </Typography>
-        </div>
-        <div className='submit-button-container'>
-          <Button
-            variant='contained'
-            color='info'
-            type='submit'
-            form='emailForm'
-            disabled={Object.keys(errors).length !== 0}
-            sx={{ textTransform: 'capitalize', width: '7vw' }}
-          >
-            Save
-          </Button>
-        </div>
-      </form>
-
-      <AlertToast
-        openAlert={openAlert}
-        onClose={() => setOpenAlert(false)}
-        alertContent={alertContent}
-      />
+              <Typography sx={{ fontWeight: 'bold' }}>New Email</Typography>
+              <FormControl id='new_email'>
+                <TextField
+                  label='Email'
+                  error={Boolean(errors.new_email)}
+                  helperText={errors.new_email?.message}
+                  {...register('new_email')}
+                  required
+                />
+              </FormControl>
+              <Typography sx={{ fontWeight: 'bold' }}>Status</Typography>
+              <Typography
+                sx={{
+                  color: user?.verified ? 'green' : 'red',
+                }}
+              >
+                {user?.verified ? 'Verified' : 'Unverified'}
+              </Typography>
+              <div className='change-email-button-container'>
+                <Button
+                  variant='contained'
+                  color='info'
+                  type='submit'
+                  form='emailForm'
+                  disabled={Object.keys(errors).length !== 0}
+                  sx={{ textTransform: 'capitalize', width: '7vw' }}
+                >
+                  Save
+                </Button>
+              </div>
+            </div>
+          </form>
+          <AlertToast
+            openAlert={openAlert}
+            onClose={() => setOpenAlert(false)}
+            alertContent={alertContent}
+          />
+        </>
+      ) : null}
     </>
   );
 };

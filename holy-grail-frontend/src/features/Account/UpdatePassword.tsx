@@ -84,7 +84,7 @@ export const UpdatePassword = () => {
             />
           </FormControl>
         </div>
-        <div className='submit-button-container'>
+        <div className='change-password-button-container'>
           <PasswordValidationBox
             password={watch('password')}
             repeatPassword={watch('repeat_password')}
