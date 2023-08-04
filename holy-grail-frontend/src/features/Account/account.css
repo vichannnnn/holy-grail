@@ -19,7 +19,13 @@
 .account__divider {
     width: 100%;
     border-top: 2px solid black;
-    margin: 1vh 0;
+    margin: 2vh 0;
+}
+
+.account__divider__mobile {
+    width: 100%;
+    border-top: 2px solid black;
+    margin: 3vh 0;
 }
 
 .update-grid {
@@ -31,6 +37,16 @@
     margin-top: 2vh;
     width: 90%;
 }
+
+.update-grid-mobile {
+    display: grid;
+    grid-template-columns: 0.2fr auto;
+    grid-column-gap: 5%;
+    grid-row-gap: 2vh;
+    align-items: center;
+    margin-top: 3vh;
+}
+
 
 .update-outer-div {
     width: 90%;

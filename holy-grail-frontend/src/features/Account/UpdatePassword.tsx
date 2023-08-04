@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { updatePassword, UpdatePasswordDetails } from '@api/auth';
 import { AlertProps, AlertToast } from '@components';
@@ -8,11 +8,13 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { UpdatePasswordValidation } from '@forms/validation';
 import { useNavigation } from '@utils';
 import './account.css';
+import { MediaQueryContext } from '@providers';
 
 export const UpdatePassword = () => {
   const { goToHome } = useNavigation();
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
+  const { isDesktop } = useContext(MediaQueryContext);
   const {
     register,
     handleSubmit,
@@ -45,7 +47,7 @@ export const UpdatePassword = () => {
   return (
     <>
       <form onSubmit={handleSubmit(handleUpdatePassword)} className='update-outer-div'>
-        <div className='update-grid'>
+        <div className={isDesktop ? 'update-grid' : 'update-grid-mobile'}>
           <Typography sx={{ fontWeight: 'bold' }}>Current Password</Typography>
           <FormControl id='before-password'>
             <TextField
