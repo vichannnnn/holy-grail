@@ -8,6 +8,7 @@ export const singularDataType: Record<DataTypeKey, string> = {
   types: 'type',
   users: 'user',
 };
+
 export interface User {
   user_id: number;
   username: string;

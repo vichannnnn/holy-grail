@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { updateEmail, UpdateEmailDetails } from '@api/auth';
+import { getUser, updateEmail, UpdateEmailDetails } from '@api/auth';
 import { AlertProps, AlertToast } from '@components';
 import { ChangeEmailValidation } from '@forms/validation';
 import { AuthContext, MediaQueryContext } from '@providers';
@@ -10,7 +10,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 export const UpdateEmail = () => {
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
-  const { user } = useContext(AuthContext);
+  const { user, updateUser } = useContext(AuthContext);
   const { isDesktop } = useContext(MediaQueryContext);
   const {
     register,
@@ -31,6 +31,8 @@ export const UpdateEmail = () => {
 
       setAlertContent(alertContent);
       setOpenAlert(true);
+      const updatedUser = await getUser();
+      updateUser(updatedUser);
     } else {
       setAlertContent({
         title: 'Email update failed.',
