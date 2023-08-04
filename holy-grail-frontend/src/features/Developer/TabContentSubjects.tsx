@@ -41,7 +41,7 @@ export const TabContentSubjects = ({
   };
 
   const handleFilterContent = () => {
-    return (data as Array<SubjectType>).filter((option: SubjectType) =>
+    return data.filter((option: SubjectType) =>
       option.name.toLowerCase().includes(query.toLowerCase()),
     );
   };

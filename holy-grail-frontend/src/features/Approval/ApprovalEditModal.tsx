@@ -21,7 +21,7 @@ export const ApprovalEditModal = ({
   const [newCategory, setNewCategory] = useState<number | ''>('');
   const [newSubject, setNewSubject] = useState<number | ''>('');
   const [newType, setNewType] = useState<number | ''>('');
-  const [newDocName, setNewDocName] = useState<string | ''>('');
+  const [newDocName, setNewDocName] = useState<string>('');
 
   useEffect(() => {
     setNewCategory(category);
@@ -41,7 +41,7 @@ export const ApprovalEditModal = ({
   };
 
   const modalStyle = {
-    position: 'absolute' as 'absolute',
+    position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',

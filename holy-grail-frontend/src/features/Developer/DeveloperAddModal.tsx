@@ -26,7 +26,7 @@ export const DeveloperAddModal = ({
           await createDocumentType(formData);
         }
 
-        await onSuccessfulAdd();
+        onSuccessfulAdd();
         onClose();
       } catch (err) {
         setAlertContent({
