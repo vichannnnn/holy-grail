@@ -21,6 +21,5 @@ export interface UpdatePasswordDetails {
 }
 
 export interface UpdateEmailDetails {
-  before_email: string;
-  email: string;
+  new_email: string;
 }

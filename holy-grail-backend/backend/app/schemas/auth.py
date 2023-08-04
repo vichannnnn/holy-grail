@@ -39,6 +39,7 @@ class AccountUpdatePasswordSchema(BaseModel):
 class AccountUpdateEmailSchema(BaseModel):
     before_email: EmailStr  # type: ignore
     email: EmailStr  # type: ignore
+    new_email: EmailStr
 
 
 class AccountSchema(AccountRegisterSchema):

@@ -42,7 +42,7 @@ export const UpdatePasswordValidation = Yup.object().shape({
 });
 
 export const ChangeEmailValidation = Yup.object().shape({
-  email: Yup.string().email('Invalid email').required('Email is required'),
+  new_email: Yup.string().email('Invalid email').required('Email is required'),
 });
 
 export const ChangePasswordValidation = Yup.object().shape({

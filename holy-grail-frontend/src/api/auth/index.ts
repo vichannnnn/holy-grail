@@ -5,6 +5,7 @@ export * from './ResendVerificationEmail';
 export * from './ResetPassword';
 export * from './SendResetPasswordMail';
 export * from './types';
+export * from './UpdateEmail';
 export * from './UpdatePassword';
 export * from './VerifyAccount';
 export * from './UpdateEmail';
