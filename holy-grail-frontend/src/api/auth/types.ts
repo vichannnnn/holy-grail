@@ -19,3 +19,8 @@ export interface UpdatePasswordDetails {
   password: string;
   repeat_password: string;
 }
+
+export interface UpdateEmailDetails {
+  before_email: string;
+  email: string;
+}

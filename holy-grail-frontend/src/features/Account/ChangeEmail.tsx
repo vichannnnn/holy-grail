@@ -6,11 +6,13 @@ import { ChangeEmailValidation } from '@forms/validation';
 import { AuthContext, MediaQueryContext } from '@providers';
 import { Typography, TextField, Button } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { updateEmail } from '@api/auth';
+import { User } from '@providers';
 
-export const UpdateEmail = () => {
+export const ChangeEmail = () => {
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
-  const { user } = useContext(AuthContext);
+  const { user, updateUser } = useContext(AuthContext);
   const { isDesktop } = useContext(MediaQueryContext);
   const {
     register,
@@ -21,8 +23,23 @@ export const UpdateEmail = () => {
   });
 
   const handleUpdateEmail = async (formData: ChangeEmailDetails) => {
-    console.log(formData);
-    //TODO: implement endpoint
+    const res = await updateEmail({ before_email: user?.email || '', email: formData.email });
+    if (res.success) {
+      await updateUser({ ...(user as User), email: formData.email, verified: false });
+      setAlertContent({
+        title: 'Success',
+        description: res.message,
+        severity: 'success',
+      });
+      setOpenAlert(true);
+    } else {
+      setAlertContent({
+        title: 'Error',
+        description: res.message,
+        severity: 'error',
+      });
+      setOpenAlert(true);
+    }
   };
 
   return (

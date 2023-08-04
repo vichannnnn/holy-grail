@@ -7,3 +7,4 @@ export * from './SendResetPasswordMail';
 export * from './types';
 export * from './UpdatePassword';
 export * from './VerifyAccount';
+export * from './UpdateEmail';

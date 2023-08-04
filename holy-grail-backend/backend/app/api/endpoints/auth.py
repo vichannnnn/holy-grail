@@ -11,6 +11,7 @@ from app.schemas.auth import (
     SendNewPasswordSchema,
     VerifyEmailSchema,
     CurrentUserWithJWTSchema,
+    AccountUpdateEmailSchema,
 )
 import os
 
@@ -48,6 +49,16 @@ async def user_update_password(
     data: AccountUpdatePasswordSchema,
 ):
     credentials = await Account.update_password(session, authenticated.user_id, data)
+    return credentials
+
+
+@router.post("/update_email")
+async def user_update_email(
+    session: CurrentSession,
+    authenticated: SessionUser,
+    data: AccountUpdateEmailSchema,
+):
+    credentials = await Account.update_email(session, authenticated.user_id, data)
     return credentials
 
 
