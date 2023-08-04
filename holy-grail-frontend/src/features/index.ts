@@ -1,6 +1,5 @@
 export * from './AccountVerify';
 export * from './Approval';
-export * from './ChangePassword';
 export * from './Common';
 export * from './Developer';
 export * from './Footer';

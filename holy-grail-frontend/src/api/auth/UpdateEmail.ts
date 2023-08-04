@@ -4,7 +4,7 @@ import { ResponseData, UpdateEmailDetails } from './types';
 
 export const updateEmail = async (formData: UpdateEmailDetails): Promise<ResponseData> => {
   try {
-    await apiClient.put('/auth/update_email', formData);
+    await apiClient.post('/auth/update_email', formData);
 
     return { success: true, message: 'Email successfully updated.' };
   } catch (error) {
@@ -13,11 +13,11 @@ export const updateEmail = async (formData: UpdateEmailDetails): Promise<Respons
     let errorDescription = 'Unable to update email. Please check your input and try again.';
     if (axiosError.response) {
       switch (axiosError.response.status) {
+        case 400:
+          errorDescription = "You cannot update a new email with the email you're currently using.";
+          break;
         case 401:
           errorDescription = 'You are not authorized to perform this action.';
-          break;
-        case 403:
-          errorDescription = "You cannot update a new email with the email you're currently using.";
           break;
         case 422:
           errorDescription = 'Please ensure your new email format is valid.';

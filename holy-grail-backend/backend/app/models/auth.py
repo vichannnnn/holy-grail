@@ -187,13 +187,16 @@ class Account(Base, CRUD["Account"]):
     async def update_email(
         cls, session: AsyncSession, user_id: int, data: AccountUpdateEmailSchema
     ) -> FastAPIResponse:
-        curr = await Account.get(session, id=user_id)
 
-        if not curr:
+        stmt = select(cls).where(cls.user_id == user_id)
+        result = await session.execute(stmt)
+        account = result.scalar()
+
+        if not account:
             raise AppError.INVALID_CREDENTIALS_ERROR
 
-        if curr.email == data.new_email:
-            raise AppError.PERMISSION_DENIED_ERROR
+        if account.email == data.new_email:
+            raise AppError.BAD_REQUEST_ERROR
 
         stmt = (
             update(Account)
@@ -203,10 +206,10 @@ class Account(Base, CRUD["Account"]):
         )
         res = await session.execute(stmt)
         updated_account = res.scalars().first()
-        await cls.send_verification_email(
-            session, updated_account.email, updated_account.username
-        )
         await session.commit()
+        await cls.send_verification_email(
+            session, user_id, updated_account.email, updated_account.username
+        )
         return FastAPIResponse(status_code=204)
 
     @classmethod
@@ -255,7 +258,7 @@ class Account(Base, CRUD["Account"]):
 
     @classmethod
     async def send_verification_email(
-        cls, session: AsyncSession, email: EmailStr, username: str
+        cls, session: AsyncSession, user_id: int, email: EmailStr, username: str
     ):
         email_verification_token = uuid4().hex
         confirm_url = f"{FRONTEND_URL}/verify-account?token={email_verification_token}"
@@ -264,7 +267,7 @@ class Account(Base, CRUD["Account"]):
         stmt = (
             update(Account)
             .returning(Account)
-            .where(Account.user_id == cls.user_id)
+            .where(Account.user_id == user_id)
             .values({"email_verification_token": email_verification_token})
         )
         await session.execute(stmt)
