@@ -15,7 +15,7 @@ export const Header = () => {
     goToHome,
     goToLibrary,
     goToFAQ,
-    goToUpdatePassword,
+    goToAccountPage,
     goToUploadPage,
     goToAdminPanel,
     goToDeveloperPanel,
@@ -86,7 +86,7 @@ export const Header = () => {
     }
 
     if (user) {
-      children.push({ label: 'Change Password', callback: () => goToUpdatePassword() });
+      children.push({ label: 'My Account', callback: () => goToAccountPage() });
       if (!user.verified) {
         children.push({
           label: 'Resend Verification Email',

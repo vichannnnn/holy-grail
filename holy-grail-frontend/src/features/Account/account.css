@@ -1,0 +1,80 @@
+.account__page {
+    padding-top: calc(var(--header-height) + 3rem);
+    min-height: calc(80vh - var(--header-height));
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.account__main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    margin: 2rem;
+    flex-grow: 1;
+}
+
+.account__divider {
+    width: 100%;
+    border-top: 2px solid black;
+    margin: 2vh 0;
+}
+
+.account__divider__mobile {
+    width: 100%;
+    border-top: 2px solid black;
+    margin: 5vh 0;
+}
+
+.update-grid {
+    display: grid;
+    grid-template-columns: 0.2fr auto;
+    grid-column-gap: 5%;
+    grid-row-gap: 2vh;
+    align-items: center;
+    margin-top: 2vh;
+    width: 90%;
+}
+
+.update-grid-mobile {
+    display: grid;
+    grid-template-columns: 0.2fr auto;
+    grid-column-gap: 5%;
+    grid-row-gap: 2vh;
+    align-items: center;
+    margin-top: 3vh;
+}
+
+
+.update-outer-div {
+    width: 90%;
+}
+
+.change-password-button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5vw;
+    align-items: center;
+    margin-top: 5vh;
+}
+
+.change-email-button-container {
+    grid-area: span 2 / span 2;
+    display: flex;
+    justify-content: center;
+    margin-top: 5vw;
+
+}
+
+@media screen and (min-width: 600px) {
+    .change-password-button-container {
+        gap: 2vw;
+        margin-top: 2vw;
+    }
+
+    .change-email-button-container {
+        margin-top: 2vw;
+    }
+}
