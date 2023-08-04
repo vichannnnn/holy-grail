@@ -27,7 +27,7 @@ export const DeveloperAddSubjectModal = ({
   const handleAdd = async (formData: AddSubjectDetails) => {
     try {
       await createSubject(formData);
-      await onSuccessfulAdd();
+      onSuccessfulAdd();
       onClose();
     } catch (err) {
       setAlertContent({

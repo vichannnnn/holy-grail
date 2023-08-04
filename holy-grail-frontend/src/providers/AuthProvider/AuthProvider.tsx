@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useEffect, useMemo, useState } from 'react';
 import { AxiosError, AxiosResponse } from 'axios';
 import { apiClient } from '@apiClient';
 import { AccountDetails, registerAccount } from '@api/auth';
@@ -67,17 +67,20 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
+  const providerValue = useMemo(
+    () => ({
+      user,
+      isLoading,
+      login,
+      logout,
+      updateUser,
+      registerUserAccount,
+    }),
+    [user, isLoading, login, logout, updateUser, registerUserAccount],
+  );
+
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        isLoading,
-        login,
-        logout,
-        updateUser,
-        registerUserAccount,
-      }}
-    >
+    <AuthContext.Provider value={providerValue}>
       {!isLoading ? children : 'Loading...'}
     </AuthContext.Provider>
   );

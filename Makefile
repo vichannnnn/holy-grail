@@ -24,7 +24,7 @@ coverage:
 	$(DC_COMMAND) run -e TESTING=true --rm $(backend_container) coverage run --source=app -m pytest -x
 
 generate_xml:
-	$(DC_COMMAND) run -e TESTING=true --rm $(backend_container) coverage xml
+	$(DC_COMMAND) run -e TESTING=true --rm $(backend_container) coverage xml -i
 
 build:
 	$(DC_COMMAND) stop && $(DC_COMMAND) build --no-cache && $(DC_COMMAND) up -d

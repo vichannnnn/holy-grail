@@ -40,7 +40,7 @@ export const ApprovalTable = () => {
   const [category, setCategory] = useState<number | ''>(0);
   const [subject, setSubject] = useState<number | ''>(0);
   const [type, setType] = useState<number | ''>(0);
-  const [keyword, setKeyword] = useState<string | ''>('');
+  const [keyword, setKeyword] = useState<string>('');
 
   useEffect(() => {
     fetchData().then(({ categories, subjects, types }) => {
