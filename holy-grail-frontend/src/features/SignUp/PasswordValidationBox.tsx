@@ -30,7 +30,7 @@ export const PasswordValidationBox = ({ password, repeatPassword }: PasswordVali
       sx={{
         mt: 4,
         border: 1,
-        borderRadius: 'md',
+        borderRadius: '4px',
         p: 4,
         borderColor: allCriteriaMet ? 'success.main' : 'error.main',
         width: '100%',

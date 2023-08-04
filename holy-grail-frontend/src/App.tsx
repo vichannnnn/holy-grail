@@ -5,7 +5,6 @@ import { AlertToast, AlertProps } from '@components';
 import {
   AccountVerifyPage,
   ApprovalPage,
-  ChangePasswordPage,
   DeveloperPage,
   ForgotPasswordPage,
   Footer,
@@ -64,7 +63,6 @@ export function App() {
             <Route path='/admin' element={<ApprovalPage />} />
             <Route path='/developer' element={<DeveloperPage />} />
             <Route path='/forgot-password' element={<ForgotPasswordPage />} />
-            <Route path='/update-password' element={<ChangePasswordPage />} />
             <Route path='/reset-password' element={<ResetPasswordPage />} />
             <Route path='/verify-account' element={<AccountVerifyPage />} />
             <Route path='/account' element={<AccountPage />} />
