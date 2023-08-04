@@ -14,7 +14,7 @@ export interface NoteInfoProps {
   category: number;
   subject: number;
   type: number;
-  name: string | '';
+  name: string;
   valid: boolean;
 }
 

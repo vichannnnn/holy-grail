@@ -2,6 +2,7 @@ from typing import List
 
 from fastapi import APIRouter
 from sqlalchemy.orm import joinedload
+
 from app.api.deps import CurrentSession, SessionDeveloper
 from app.models.categories import Subjects, CategoryLevel, DocumentTypes
 from app.schemas.categories import (
@@ -117,34 +118,3 @@ async def update_notes_type(
 ):
     data = await DocumentTypes.update(session, id, dict(data))
     return data
-
-
-#
-# @router.delete("/subject", response_model=SubjectSchema)
-# async def delete_subject(
-#     id: int,
-#     session: CurrentSession,
-#     is_admin: SessionDeveloper,
-# ):
-#     data = await Subjects.delete(session, id)
-#     return data
-#
-#
-# @router.delete("/category", response_model=CategorySchema)
-# async def delete_category(
-#     id: int,
-#     session: CurrentSession,
-#     is_admin: SessionDeveloper,
-# ):
-#     data = await CategoryLevel.delete(session, id)
-#     return data
-#
-#
-# @router.delete("/document_type", response_model=DocumentTypeSchema)
-# async def delete_notes_type(
-#     id: int,
-#     session: CurrentSession,
-#     is_admin: SessionDeveloper,
-# ):
-#     data = await DocumentTypes.delete(session, id)
-#     return data

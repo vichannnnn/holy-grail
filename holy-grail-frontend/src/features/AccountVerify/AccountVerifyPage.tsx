@@ -1,11 +1,11 @@
 import { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { getUser, resendVerificationEmail, verifyAccount } from '@api/auth';
+import { resendVerificationEmail, verifyAccount } from '@api/auth';
 import { AlertToast, AlertProps } from '@components';
-import { Link } from '@mui/material';
 import '../SignIn/login.css';
 import './verifyAccountPageContainer.css';
 import { AuthContext } from '@providers';
+import { VerificationMessage } from './VerificationMessage';
 
 export const AccountVerifyPage = () => {
   const { user, updateUser } = useContext(AuthContext);
@@ -65,18 +65,11 @@ export const AccountVerifyPage = () => {
     <section className='resetPw section container verifyAccountPageContainer'>
       <div>
         <div className='login__title'>Account Verification</div>
-
-        {resetStatus ? (
-          <div className='section__subtitle'>{resetStatus}</div>
-        ) : isFailed ? (
-          <div className='section__subtitle'>
-            The account verification link is invalid or has expired. Please click{' '}
-            <Link onClick={handleResendVerificationEmail} underline='always'>
-              here
-            </Link>{' '}
-            to send another verification email.
-          </div>
-        ) : null}
+        <VerificationMessage
+          resetStatus={resetStatus}
+          isFailed={isFailed}
+          handleResendVerificationEmail={handleResendVerificationEmail}
+        />
         <AlertToast
           openAlert={openAlert}
           onClose={() => setOpenAlert(false)}
