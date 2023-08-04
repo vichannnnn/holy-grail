@@ -1,8 +1,7 @@
 import { apiClient } from '@apiClient';
-import { User } from '@features';
-import { AccountDetails } from './types';
+import { User } from '@providers';
 
-export async function getUser(accountDetails: AccountDetails): Promise<User> {
+export async function getUser(): Promise<User> {
   const response = await apiClient.get('/auth/get');
   return response.data;
 }

@@ -13,14 +13,11 @@ export const updateEmail = async (formData: UpdateEmailDetails): Promise<Respons
     let errorDescription = 'Unable to update email. Please check your input and try again.';
     if (axiosError.response) {
       switch (axiosError.response.status) {
-        case 400:
-          errorDescription = 'Your email does not match. Please check your email and try again.';
-          break;
         case 401:
           errorDescription = 'You are not authorized to perform this action.';
           break;
         case 403:
-          errorDescription = "The current email you've entered is invalid.";
+          errorDescription = "You cannot update a new email with the email you're currently using.";
           break;
         case 422:
           errorDescription = 'Please ensure your new email format is valid.';
