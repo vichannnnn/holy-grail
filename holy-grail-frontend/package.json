@@ -9,7 +9,7 @@
     "build": "vite build --mode production",
     "test": "react-scripts test",
     "lint": "eslint .",
-    "format": "prettier --write \"src/**/*.{ts,tsx}\"",
+    "format": "prettier --write \"src/**/*.{ts,tsx}\" \"../holy-grail-backend/backend/app/email_templates/*.html\"",
     "serve": "vite preview"
   },
   "dependencies": {
