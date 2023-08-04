@@ -1,11 +1,10 @@
 import { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { VerticalNav, VerticalNavProps, AlertProps } from '@components';
-import { AccountDetails, ChangePassword, ChangeEmail } from '@features';
+import { AccountDetails, UpdatePassword, UpdateEmail } from '@features';
 import { AuthContext, MediaQueryContext } from '@providers';
 import { AccountBox as AccountBoxIcon, Password as PasswordIcon, Email } from '@mui/icons-material';
 import './account.css';
-import { Divider } from '@mui/material';
 
 export const AccountPage = () => {
   const [title, setTitle] = useState('Account details');
@@ -15,7 +14,7 @@ export const AccountPage = () => {
     setActiveElem([false, false, true]);
     setTitle('Update email');
     setSubtitle('Update your email here!');
-    setRenderMenuType(<ChangeEmail />);
+    setRenderMenuType(<UpdateEmail />);
   };
 
   const [renderMenuType, setRenderMenuType] = useState<JSX.Element>(
@@ -68,7 +67,7 @@ export const AccountPage = () => {
       onClick: () => {
         setTitle('Change Password');
         setSubtitle('Change your password here!');
-        setRenderMenuType(<ChangePassword />);
+        setRenderMenuType(<UpdatePassword />);
         setActiveElem([false, true, false]);
       },
       active: activeElem[1],
@@ -79,7 +78,7 @@ export const AccountPage = () => {
       onClick: () => {
         setTitle('Update Email');
         setSubtitle('Update your email here!');
-        setRenderMenuType(<ChangeEmail />);
+        setRenderMenuType(<UpdateEmail />);
         setActiveElem([false, false, true]);
       },
       active: activeElem[2],
@@ -100,9 +99,9 @@ export const AccountPage = () => {
         ) : (
           <>
             <AccountDetails />
-            <ChangeEmail />
+            <UpdateEmail />
             <hr className='account__divider' />
-            <ChangePassword />
+            <UpdatePassword />
           </>
         )}
       </div>
