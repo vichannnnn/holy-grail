@@ -1,6 +1,7 @@
 from os import environ  # pylint: disable=E0611
 from typing import TYPE_CHECKING
 from uuid import uuid4
+
 import jwt
 from fastapi import Response as FastAPIResponse
 from pydantic import EmailStr
@@ -10,10 +11,9 @@ from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import relationship, Mapped, mapped_column, synonym
 from sqlalchemy.sql.expression import text
+
 from app.crud.base import CRUD
 from app.db.base_class import Base
-from app.utils.exceptions import AppError
-from app.utils.auth import Authenticator, generate_password
 from app.schemas.admin import UpdateRoleSchema
 from app.schemas.auth import (
     AccountRegisterSchema,
@@ -23,9 +23,11 @@ from app.schemas.auth import (
     AuthSchema,
     CurrentUserWithJWTSchema,
 )
-from app.tasks.verify_email import send_verification_email_task
-from app.tasks.reset_password_email import send_reset_password_email_task
 from app.tasks.new_password_email import send_new_password_email_task
+from app.tasks.reset_password_email import send_reset_password_email_task
+from app.tasks.verify_email import send_verification_email_task
+from app.utils.auth import Authenticator, generate_password
+from app.utils.exceptions import AppError
 
 if TYPE_CHECKING:
     from app.models.library import Library
@@ -276,6 +278,7 @@ class Account(Base, CRUD["Account"]):
         try:
             send_reset_password_email_task.delay(email, account.username, confirm_url)
         except Exception as e:  # pylint: disable=C0103, W0612, W0703
+            print(str(e))
             return FastAPIResponse(status_code=200)
 
         stmt = (

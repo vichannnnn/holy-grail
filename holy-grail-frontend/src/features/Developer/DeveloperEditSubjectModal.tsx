@@ -26,7 +26,7 @@ export const DeveloperEditSubjectModal = ({
   const handleUpdate = async (formData: UpdateSubjectDetails) => {
     try {
       await updateSubject(initialData.id, formData);
-      await onSuccessfulUpdate();
+      onSuccessfulUpdate();
       onClose();
     } catch (err) {
       setAlertContent({

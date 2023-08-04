@@ -66,17 +66,22 @@ export const UploadNote = ({
     setServerValidationError(false);
   }, [category, subject, type, documentName]);
 
+  let borderColor;
+  if (serverValidationError) {
+    borderColor = '1px solid red';
+  } else if (validInput) {
+    borderColor = '1px solid green';
+  } else {
+    borderColor = '1px solid black';
+  }
+
   return (
     <div className='upload-note-div'>
       <div style={{ width: isDesktop ? '60vw' : '90vw' }}>
         <Grid
           container
           sx={{
-            border: serverValidationError
-              ? '1px solid red'
-              : validInput
-              ? '1px solid green'
-              : '1px solid black',
+            border: borderColor,
             borderRadius: '10px',
           }}
         >
@@ -143,7 +148,7 @@ export const UploadNote = ({
                       options?.categories.map((category) => ({
                         id: category.id,
                         name: category.name,
-                      })) || []
+                      })) ?? []
                     }
                     error={!validChecks.category}
                   />
@@ -172,7 +177,7 @@ export const UploadNote = ({
                     onChange={(newValue) => {
                       setType(newValue || 0);
                     }}
-                    options={options?.types.map((type) => ({ id: type.id, name: type.name })) || []}
+                    options={options?.types.map((type) => ({ id: type.id, name: type.name })) ?? []}
                     error={!validChecks.type}
                   />
                 </Grid>

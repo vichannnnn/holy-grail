@@ -2,10 +2,10 @@ import os
 
 from fastapi import FastAPI
 from fastapi.middleware import cors
+from prometheus_fastapi_instrumentator import Instrumentator
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from starlette_validation_uploadfile import ValidateUploadFileMiddleware
-from prometheus_fastapi_instrumentator import Instrumentator
 
 from app.api.api import api_router
 from app.utils.limiter import limiter
@@ -29,13 +29,3 @@ app.add_middleware(
 
 app.include_router(api_router)
 Instrumentator().instrument(app)
-
-
-@app.on_event("startup")
-async def on_startup() -> None:
-    pass
-
-
-@app.on_event("shutdown")
-async def shutdown_event() -> None:
-    pass

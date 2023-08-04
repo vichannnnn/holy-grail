@@ -24,7 +24,7 @@ export const DeveloperEditUserModal = ({
   const handleUpdate = async (formData: UpdateUserDetails) => {
     try {
       await updateUserRole(initialData.user_id, formData);
-      await onSuccessfulUpdate();
+      onSuccessfulUpdate();
       onClose();
     } catch (err) {
       setAlertContent({

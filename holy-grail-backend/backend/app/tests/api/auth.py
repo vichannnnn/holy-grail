@@ -32,7 +32,7 @@ def test_create_valid_user_and_login(
 
 def test_create_account(test_not_logged_in_client, test_user_registration_data):
     response = test_not_logged_in_client.post(
-        "/auth/create", json=jsonable_encoder(test_user_registration_data)
+        CREATE_URL, json=jsonable_encoder(test_user_registration_data)
     )
     assert response.status_code == 200
     assert "username" in response.json()["data"]
@@ -43,7 +43,7 @@ def test_create_account_password_mismatch(
 ):
     test_user_registration_data.repeat_password = "mismatch_password"
     response = test_not_logged_in_client.post(
-        "/auth/create", json=jsonable_encoder(test_user_registration_data)
+        CREATE_URL, json=jsonable_encoder(test_user_registration_data)
     )
     assert response.status_code == 422
 
@@ -55,13 +55,13 @@ def test_update_password(
     test_user_registration_data,
 ):
     response = test_not_logged_in_client.post(
-        "/auth/create", json=jsonable_encoder(test_user_registration_data)
+        CREATE_URL, json=jsonable_encoder(test_user_registration_data)
     )
     assert response.status_code == 200
     assert "username" in response.json()["data"]
 
     login_response = test_not_logged_in_client.post(
-        "/auth/login", json=jsonable_encoder(test_user)
+        LOGIN_URL, json=jsonable_encoder(test_user)
     )
     token = login_response.json()["access_token"]
     headers = {"Authorization": f"Bearer {token}"}
@@ -78,13 +78,13 @@ def test_get_account_name(
     test_not_logged_in_client, test_user, test_user_registration_data
 ):
     response = test_not_logged_in_client.post(
-        "/auth/create", json=jsonable_encoder(test_user_registration_data)
+        CREATE_URL, json=jsonable_encoder(test_user_registration_data)
     )
     assert response.status_code == 200
     assert "username" in response.json()["data"]
     # first login to get the auth token
     login_response = test_not_logged_in_client.post(
-        "/auth/login", json=jsonable_encoder(test_user)
+        LOGIN_URL, json=jsonable_encoder(test_user)
     )
     token = login_response.json()["access_token"]
     headers = {"Authorization": f"Bearer {token}"}
@@ -97,6 +97,6 @@ def test_get_account_name(
 def test_login_invalid_credentials(test_not_logged_in_client, test_user):
     test_user.password = "invalid_password"
     response = test_not_logged_in_client.post(
-        "/auth/login", json=jsonable_encoder(test_user)
+        LOGIN_URL, json=jsonable_encoder(test_user)
     )
     assert response.status_code == 422

@@ -1,14 +1,12 @@
 import asyncio
 from typing import AsyncGenerator
+
+import pytest
+import sqlalchemy.exc as SQLAlchemyExceptions
 from fastapi.testclient import TestClient
 from sqlalchemy import text
-import sqlalchemy.exc as SQLAlchemyExceptions
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from app.schemas.auth import (
-    AccountRegisterSchema,
-    AccountUpdatePasswordSchema,
-    AuthSchema,
-)
+
 from app import schemas
 from app.api.deps import (
     get_session,
@@ -26,7 +24,14 @@ from app.db.database import (
 from app.main import app
 from app.models.auth import Account
 from app.models.categories import DocumentTypes, Subjects, CategoryLevel
-import pytest
+from app.schemas.auth import (
+    AccountRegisterSchema,
+    AccountUpdatePasswordSchema,
+    AuthSchema,
+)
+
+GCE_A_LEVEL_SUBJECT = "GCE 'A' Levels"
+GCE_O_LEVEL_SUBJECT = "GCE 'O' Levels"
 
 
 @pytest.fixture(scope="session")
@@ -43,6 +48,7 @@ async def create_test_database():
         try:
             await conn.execute(text("CREATE DATABASE test;"))
         except SQLAlchemyExceptions.ProgrammingError as exc:
+            print(str(exc))
             pass
 
     yield
@@ -245,17 +251,17 @@ def test_doc_type_insert_extra_notes():
 
 @pytest.fixture(name="test_category_insert_gce_a_level")
 def test_category_insert_gce_a_level():
-    yield schemas.categories.CategoryCreateSchema(name="GCE 'A' Levels")
+    yield schemas.categories.CategoryCreateSchema(name=GCE_A_LEVEL_SUBJECT)
 
 
 @pytest.fixture(name="test_category_insert_gce_o_level")
 def test_category_insert_gce_o_level():
-    yield schemas.categories.CategoryCreateSchema(name="GCE 'O' Levels")
+    yield schemas.categories.CategoryCreateSchema(name=GCE_O_LEVEL_SUBJECT)
 
 
 @pytest.fixture(name="test_category_update_gce_o_level")
 def test_category_update_gce_o_level():
-    yield schemas.categories.CategoryUpdateSchema(name="GCE 'O' Levels")
+    yield schemas.categories.CategoryUpdateSchema(name=GCE_O_LEVEL_SUBJECT)
 
 
 @pytest.fixture(name="test_category_insert_gce_n_level")
@@ -305,7 +311,7 @@ def test_note_update_2():
 
 @pytest.fixture
 async def create_education_level(event_loop):
-    new_category = CategoryLevel(name="GCE 'A' Levels")
+    new_category = CategoryLevel(name=GCE_A_LEVEL_SUBJECT)
     session = TestingSessionLocal()
     session.add(new_category)
     await session.commit()
@@ -314,8 +320,8 @@ async def create_education_level(event_loop):
 
 @pytest.fixture
 async def create_two_education_level(event_loop):
-    new_category_1 = CategoryLevel(name="GCE 'A' Levels")
-    new_category_2 = CategoryLevel(name="GCE 'O' Levels")
+    new_category_1 = CategoryLevel(name=GCE_A_LEVEL_SUBJECT)
+    new_category_2 = CategoryLevel(name=GCE_O_LEVEL_SUBJECT)
     session = TestingSessionLocal()
     session.add(new_category_1)
     session.add(new_category_2)
@@ -327,7 +333,7 @@ async def create_two_education_level(event_loop):
 async def create_doc_type_subject_education_level(event_loop):
     new_doc_type = DocumentTypes(name="Notes")
     new_subject = Subjects(name="Mathematics", category_id=1)
-    new_category = CategoryLevel(name="GCE 'A' Levels")
+    new_category = CategoryLevel(name=GCE_A_LEVEL_SUBJECT)
     new_valid_user = Account(
         username="testuser",
         password="123456",
