@@ -12,7 +12,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    margin: 2rem;
     flex-grow: 1;
 }
 
@@ -69,6 +68,10 @@
 }
 
 @media screen and (min-width: 600px) {
+    .account__main {
+        margin: 2rem;
+    }
+
     .change-password-button-container {
         gap: 2vw;
         margin-top: 2vw;
