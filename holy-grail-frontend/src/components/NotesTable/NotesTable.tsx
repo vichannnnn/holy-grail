@@ -1,11 +1,28 @@
-import { useState, useContext } from 'react';
-import { Box, Card, CardContent, Grid, Typography, Link } from '@mui/material';
+import { useState, useContext, useRef, SyntheticEvent, KeyboardEvent } from 'react';
+import {
+  Box,
+  Card,
+  CardContent,
+  Grid,
+  Typography,
+  Link,
+  Popper,
+  Grow,
+  Paper,
+  ClickAwayListener,
+  MenuList,
+  Button,
+} from '@mui/material';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { Note, fetchData, fetchCategory, SubjectType } from '@api/library';
 import { Combobox, ComboboxProps, FreeTextCombobox, FreeTextComboboxProps } from '@components';
 import { Pagination } from '../Pagination';
 import { NotesIcon } from './NotesIcon';
 import { MediaQueryContext } from '@providers';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import { ExpandMore } from '@mui/icons-material';
 import '../../features/Library/library.css';
 
 interface NotesTableProps {
@@ -60,6 +77,30 @@ export const NotesTable = ({
   const { isDesktop } = useContext(MediaQueryContext);
   const [isCategorySelected, setIsCategorySelected] = useState(false);
   const [subjectsData, setSubjectsData] = useState([]);
+  const [sortOrder, setSortOrder] = useState('desc');
+  const [open, setOpen] = useState(false);
+  const anchorRef = useRef<HTMLButtonElement>(null);
+
+  const handleToggle = () => {
+    setOpen((prevOpen) => !prevOpen);
+  };
+
+  const handleClose = (event: Event | SyntheticEvent) => {
+    if (anchorRef.current && anchorRef.current.contains(event.target as HTMLElement)) {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  function handleListKeyDown(event: KeyboardEvent) {
+    if (event.key === 'Tab') {
+      event.preventDefault();
+      setOpen(false);
+    } else if (event.key === 'Escape') {
+      setOpen(false);
+    }
+  }
 
   return (
     <Box>
@@ -149,7 +190,53 @@ export const NotesTable = ({
                   <TableCell className='table__header'>Subject</TableCell>
                   <TableCell className='table__header'>Type</TableCell>
                   <TableCell className='table__header'>Uploaded By</TableCell>
-                  <TableCell className='table__header'>Uploaded On</TableCell>
+                  <TableCell className='table__header'>
+                    <Box display='flex' alignItems='center'>
+                      Uploaded On
+                      <Box
+                        display='flex'
+                        alignItems='center'
+                        ref={anchorRef}
+                        sx={{ cursor: 'pointer', marginLeft: '10px' }}
+                        onClick={handleToggle}
+                      >
+                        <ExpandMore />
+                      </Box>
+                    </Box>
+                    <Popper
+                      open={open}
+                      anchorEl={anchorRef.current}
+                      role={undefined}
+                      placement='bottom-end'
+                      transition
+                      disablePortal
+                    >
+                      {({ TransitionProps, placement }) => (
+                        <Grow
+                          {...TransitionProps}
+                          style={{
+                            transformOrigin:
+                              placement === 'bottom-end' ? 'center top' : 'center bottom',
+                          }}
+                        >
+                          <Paper>
+                            <ClickAwayListener onClickAway={handleClose}>
+                              <MenuList
+                                autoFocusItem={open}
+                                id='composition-menu'
+                                aria-labelledby='composition-button'
+                                onKeyDown={handleListKeyDown}
+                              >
+                                <MenuItem disabled>Sort By</MenuItem>
+                                <MenuItem onClick={handleClose}>Ascending</MenuItem>
+                                <MenuItem onClick={handleClose}>Descending</MenuItem>
+                              </MenuList>
+                            </ClickAwayListener>
+                          </Paper>
+                        </Grow>
+                      )}
+                    </Popper>
+                  </TableCell>
                   {isAdmin && renderAdminActions && (
                     <TableCell className='table__header'>Actions</TableCell>
                   )}
