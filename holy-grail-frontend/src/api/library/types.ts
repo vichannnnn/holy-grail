@@ -7,6 +7,7 @@ export interface NotesSearchParams {
   keyword?: string;
   page?: number;
   size?: number;
+  year?: number;
   sorted_by_upload_date?: string;
 }
 
@@ -29,6 +30,7 @@ export type Note = {
   category: number;
   subject: number;
   type: number;
+  year: number;
   document_name: string;
   file_name: string;
   uploaded_by: number;

@@ -1,6 +1,8 @@
 from datetime import datetime
-from typing import Optional, Any, List
+from typing import Optional, Any
+
 from pydantic import constr
+
 from app.schemas.auth import UploaderSchema
 from app.schemas.base import CustomBaseModel as BaseModel
 from app.schemas.categories import DocumentTypeSchema, CategorySchema, SubjectSchema
@@ -13,6 +15,7 @@ class NoteCreateSchema(BaseModel):
     category: int
     subject: int
     type: int
+    year: Optional[int]
     document_name: DocumentNameStr
 
 
@@ -20,6 +23,7 @@ class NoteInsertSchema(BaseModel):
     category: int
     subject: int
     type: int
+    year: Optional[int]
     document_name: str
     uploaded_by: int
     file_name: str
@@ -30,6 +34,7 @@ class NoteUpdateSchema(BaseModel):
     document_name: Optional[DocumentNameStr]
     subject: Optional[int]
     type: Optional[int]
+    year: Optional[int]
     uploaded_by: Optional[int]
 
 
@@ -38,6 +43,7 @@ class NoteSchema(BaseModel):
     category: int
     subject: int
     type: int
+    year: Optional[int]
     document_name: str
     file_name: str
     uploaded_by: int

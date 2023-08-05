@@ -31,10 +31,12 @@ interface NotesTableProps {
   subject: ComboboxProps['value'];
   type: ComboboxProps['value'];
   keyword: FreeTextComboboxProps['value'];
+  year: ComboboxProps['value'];
   onCategoryChange: ComboboxProps['onChange'];
   onSubjectChange: ComboboxProps['onChange'];
   onTypeChange: ComboboxProps['onChange'];
   onKeywordChange: FreeTextComboboxProps['onChange'];
+  onYearChange: ComboboxProps['onChange'];
   onSortOrderChange: (order: 'asc' | 'desc') => void;
   pageInfo: { page: number; size: number; total: number; pages: number };
   handlePageChange: (page: number) => void;
@@ -54,6 +56,11 @@ function formatDate(dateString: string) {
   return new Date(dateString).toLocaleDateString(undefined, options);
 }
 
+const yearOptions = Array.from({ length: 2024 - 2008 + 1 }, (_, i) => 2008 + i).map((year) => ({
+  id: year,
+  name: `${year}`,
+}));
+
 export const NotesTable = ({
   notes,
   categories,
@@ -63,10 +70,12 @@ export const NotesTable = ({
   subject,
   type,
   keyword,
+  year,
   onCategoryChange,
   onSubjectChange,
   onTypeChange,
   onKeywordChange,
+  onYearChange,
   onSortOrderChange,
   pageInfo,
   handlePageChange,
@@ -176,6 +185,18 @@ export const NotesTable = ({
             }}
             style={{ width: isDesktop ? '15%' : '100%' }}
           />
+          <Combobox
+            label='Year'
+            value={year}
+            onChange={(value) => {
+              if (onYearChange) {
+                onYearChange(value);
+              }
+              handlePageChange(1);
+            }}
+            options={yearOptions}
+            style={{ width: isDesktop ? '15%' : '100%' }}
+          />
         </Box>
         {isDesktop ? (
           <TableContainer>
@@ -187,6 +208,7 @@ export const NotesTable = ({
                   <TableCell className='table__header'>Subject</TableCell>
                   <TableCell className='table__header'>Type</TableCell>
                   <TableCell className='table__header'>Uploaded By</TableCell>
+                  <TableCell className='table__header'>Year</TableCell>
                   <TableCell className='table__header'>
                     <Box display='flex' alignItems='center'>
                       Uploaded On
@@ -284,6 +306,9 @@ export const NotesTable = ({
                     <TableCell className='table__content'>{note.doc_subject?.name}</TableCell>
                     <TableCell className='table__content'>{note.doc_type?.name}</TableCell>
                     <TableCell className='table__content'>{note.account?.username}</TableCell>
+                    <TableCell className='table__content'>
+                      {note.year ? note.year : 'None'}
+                    </TableCell>
                     <TableCell className='table__content'>{formatDate(note.uploaded_on)}</TableCell>
                     {isAdmin && renderAdminActions && (
                       <TableCell className='table__content'>{renderAdminActions(note)}</TableCell>

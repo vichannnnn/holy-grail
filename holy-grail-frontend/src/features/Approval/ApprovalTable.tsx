@@ -40,6 +40,7 @@ export const ApprovalTable = () => {
   const [category, setCategory] = useState<number | ''>(0);
   const [subject, setSubject] = useState<number | ''>(0);
   const [type, setType] = useState<number | ''>(0);
+  const [year, setYear] = useState<number | ''>(0);
   const [keyword, setKeyword] = useState<string>('');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
@@ -64,6 +65,7 @@ export const ApprovalTable = () => {
       page: pageInfo.page,
       size: pageInfo.size,
       sorted_by_upload_date: sortOrder,
+      year: Number(year),
     }).then((response) => {
       setNotes(response);
       setPageInfo({
@@ -78,6 +80,7 @@ export const ApprovalTable = () => {
     subject,
     type,
     keyword,
+    year,
     pageInfo.page,
     pageInfo.size,
     sortOrder,
@@ -121,11 +124,13 @@ export const ApprovalTable = () => {
         category={category !== '' ? Number(category) : ''}
         subject={subject !== '' ? Number(subject) : ''}
         type={type !== '' ? Number(type) : ''}
+        year={year !== 0 ? Number(year) : ''}
         keyword={keyword !== '' ? String(keyword) : ''}
         onCategoryChange={(newValue) => setCategory(Number(newValue))}
         onSubjectChange={(newValue) => setSubject(Number(newValue))}
         onTypeChange={(newValue) => setType(Number(newValue))}
         onKeywordChange={(newValue) => setKeyword(String(newValue))}
+        onYearChange={(newValue) => setYear(Number(newValue))}
         onSortOrderChange={handleSortOrderChange}
         pageInfo={pageInfo}
         handlePageChange={handlePageChange}

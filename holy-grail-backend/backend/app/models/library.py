@@ -261,7 +261,7 @@ class Library(Base, CRUD["Library"]):
             stmt = stmt.where(cls.doc_type.has(name=doc_type))
 
         if year:
-            stmt = stmt.where(cls.year.has(name=year))
+            stmt = stmt.where(cls.year == year)
 
         if keyword:
             stmt = stmt.where(cls.document_name.ilike(f"%{keyword}%"))
