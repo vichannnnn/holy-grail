@@ -41,6 +41,7 @@ export const ApprovalTable = () => {
   const [subject, setSubject] = useState<number | ''>(0);
   const [type, setType] = useState<number | ''>(0);
   const [keyword, setKeyword] = useState<string>('');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
   useEffect(() => {
     fetchData().then(({ categories, subjects, types }) => {
@@ -62,6 +63,7 @@ export const ApprovalTable = () => {
       keyword: keyword !== '' ? keyword : '',
       page: pageInfo.page,
       size: pageInfo.size,
+      sorted_by_upload_date: sortOrder,
     }).then((response) => {
       setNotes(response);
       setPageInfo({
@@ -71,7 +73,18 @@ export const ApprovalTable = () => {
         total: response.total,
       });
     });
-  }, [category, subject, type, keyword, pageInfo.page, pageInfo.size, categories, subjects, types]);
+  }, [
+    category,
+    subject,
+    type,
+    keyword,
+    pageInfo.page,
+    pageInfo.size,
+    sortOrder,
+    categories,
+    subjects,
+    types,
+  ]);
 
   useEffect(() => {
     filterNotes();
@@ -94,6 +107,10 @@ export const ApprovalTable = () => {
     filterNotes();
   };
 
+  const handleSortOrderChange = (newSortOrder: 'asc' | 'desc') => {
+    setSortOrder(newSortOrder);
+  };
+
   return (
     <>
       <NotesTable
@@ -109,6 +126,7 @@ export const ApprovalTable = () => {
         onSubjectChange={(newValue) => setSubject(Number(newValue))}
         onTypeChange={(newValue) => setType(Number(newValue))}
         onKeywordChange={(newValue) => setKeyword(String(newValue))}
+        onSortOrderChange={handleSortOrderChange}
         pageInfo={pageInfo}
         handlePageChange={handlePageChange}
         isAdmin={Boolean(user?.role && user.role >= 2)}
