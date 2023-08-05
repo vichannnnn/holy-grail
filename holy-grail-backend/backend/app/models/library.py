@@ -73,7 +73,10 @@ class Library(Base, CRUD["Library"]):
     uploaded_on: Mapped[datetime.datetime] = mapped_column(
         nullable=False, server_default=func.now(), index=True  # pylint: disable=E1102
     )
-    approved: Mapped[bool] = mapped_column(nullable=False, server_default="f")
+    approved: Mapped[bool] = mapped_column(
+        index=True, nullable=False, server_default="f"
+    )
+    year: Mapped[int] = mapped_column(nullable=True, index=True)
 
     account: Mapped["Account"] = relationship(back_populates="documents")
     doc_category: Mapped["CategoryLevel"] = relationship(back_populates="documents")
@@ -243,6 +246,7 @@ class Library(Base, CRUD["Library"]):
         subject: Optional[str] = None,
         doc_type: Optional[str] = None,
         keyword: Optional[str] = None,
+        year: Optional[int] = None,
         sorted_by_upload_date: Optional[str] = "desc",
     ):
         stmt = select(cls).where(cls.approved == approved)
@@ -255,6 +259,9 @@ class Library(Base, CRUD["Library"]):
 
         if doc_type:
             stmt = stmt.where(cls.doc_type.has(name=doc_type))
+
+        if year:
+            stmt = stmt.where(cls.year.has(name=year))
 
         if keyword:
             stmt = stmt.where(cls.document_name.ilike(f"%{keyword}%"))
