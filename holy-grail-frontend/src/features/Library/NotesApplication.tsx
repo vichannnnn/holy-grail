@@ -41,6 +41,7 @@ export const NotesApplication = () => {
   const [category, setCategory] = useState<number | ''>(0);
   const [subject, setSubject] = useState<number | ''>(0);
   const [type, setType] = useState<number | ''>(0);
+  const [year, setYear] = useState<number | ''>(0);
   const [keyword, setKeyword] = useState<string>('');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
@@ -61,6 +62,7 @@ export const NotesApplication = () => {
       page: pageInfo.page,
       size: pageInfo.size,
       sorted_by_upload_date: sortOrder,
+      year: Number(year),
     }).then((response) => {
       setNotes(response);
       setPageInfo({
@@ -75,6 +77,7 @@ export const NotesApplication = () => {
     subject,
     type,
     keyword,
+    year,
     pageInfo.page,
     pageInfo.size,
     sortOrder,
@@ -121,6 +124,11 @@ export const NotesApplication = () => {
     setPageInfo({ ...pageInfo, page: 1 });
   };
 
+  const handleYearChange = (newValue: number | '') => {
+    setYear(newValue);
+    setPageInfo({ ...pageInfo, page: 1 });
+  };
+
   const handleSortOrderChange = (newSortOrder: 'asc' | 'desc') => {
     setSortOrder(newSortOrder);
   };
@@ -136,10 +144,12 @@ export const NotesApplication = () => {
         subject={subject !== '' ? Number(subject) : ''}
         type={type !== '' ? Number(type) : ''}
         keyword={keyword !== '' ? String(keyword) : ''}
+        year={year !== 0 ? Number(year) : ''}
         onCategoryChange={handleCategoryChange}
         onSubjectChange={handleSubjectChange}
         onTypeChange={handleTypeChange}
         onKeywordChange={handleKeywordChange}
+        onYearChange={handleYearChange}
         onSortOrderChange={handleSortOrderChange}
         pageInfo={pageInfo}
         handlePageChange={handlePageChange}

@@ -53,6 +53,7 @@ async def get_all_approved_notes(
     subject: Optional[str] = None,
     doc_type: Optional[str] = None,
     keyword: Optional[str] = None,
+    year: Optional[int] = None,
     sorted_by_upload_date: Optional[str] = "desc",
 ):
     notes = await Library.get_all_notes_paginated(
@@ -64,6 +65,7 @@ async def get_all_approved_notes(
         subject=subject,
         doc_type=doc_type,
         keyword=keyword,
+        year=year,
         sorted_by_upload_date=sorted_by_upload_date,
     )
     return notes
@@ -79,6 +81,7 @@ async def get_all_pending_approval_notes(
     subject: Optional[str] = None,
     doc_type: Optional[str] = None,
     keyword: Optional[str] = None,
+    year: Optional[int] = None,
     sorted_by_upload_date: Optional[str] = "desc",
 ):
     notes = await Library.get_all_notes_paginated(
@@ -90,6 +93,7 @@ async def get_all_pending_approval_notes(
         subject=subject,
         doc_type=doc_type,
         keyword=keyword,
+        year=year,
         sorted_by_upload_date=sorted_by_upload_date,
     )
     return notes
