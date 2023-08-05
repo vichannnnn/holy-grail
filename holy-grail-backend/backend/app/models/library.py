@@ -1,22 +1,24 @@
 import datetime
 import uuid
+from typing import TYPE_CHECKING, Optional, Union, Tuple, List
+
 import boto3
-from typing import TYPE_CHECKING, Optional, Union, Tuple, List, Any
-from pydantic import ValidationError
 from fastapi import UploadFile, HTTPException
+from pydantic import ValidationError
+from sqlalchemy import exc as SQLAlchemyExceptions
 from sqlalchemy import func, ForeignKey, select, update, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Mapped, mapped_column, relationship, selectinload
 from sqlalchemy.sql.expression import text
-from sqlalchemy import exc as SQLAlchemyExceptions
 from starlette.datastructures import UploadFile as StarletteUploadFile, FormData
+
 from app.crud.base import CRUD
 from app.db.base_class import Base
+from app.models.auth import Account
+from app.schemas.library import NoteCreateSchema, NoteInsertSchema
 from app.utils.exceptions import AppError
 from app.utils.file_handler import save_file, accepted_doc_type_extensions
 from app.utils.upload_errors import UploadError
-from app.models.auth import Account
-from app.schemas.library import NoteCreateSchema, NoteInsertSchema
 
 if TYPE_CHECKING:
     from app.models.categories import CategoryLevel, Subjects, DocumentTypes
@@ -241,6 +243,7 @@ class Library(Base, CRUD["Library"]):
         subject: Optional[str] = None,
         doc_type: Optional[str] = None,
         keyword: Optional[str] = None,
+        sorted_by_upload_date: Optional[str] = "desc",
     ):
         stmt = select(cls).where(cls.approved == approved)
 
@@ -255,6 +258,11 @@ class Library(Base, CRUD["Library"]):
 
         if keyword:
             stmt = stmt.where(cls.document_name.ilike(f"%{keyword}%"))
+
+        if sorted_by_upload_date == "asc":
+            stmt = stmt.order_by(cls.uploaded_on.asc())
+        else:
+            stmt = stmt.order_by(cls.uploaded_on.desc())
 
         count_stmt = select(func.count()).select_from(stmt)  # pylint: disable=E1102
         total = await session.scalar(count_stmt)
