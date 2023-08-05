@@ -42,6 +42,7 @@ export const NotesApplication = () => {
   const [subject, setSubject] = useState<number | ''>(0);
   const [type, setType] = useState<number | ''>(0);
   const [keyword, setKeyword] = useState<string>('');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
   useEffect(() => {
     fetchData().then(({ categories, subjects, types }) => {
@@ -59,6 +60,7 @@ export const NotesApplication = () => {
       keyword: keyword !== '' ? keyword : '',
       page: pageInfo.page,
       size: pageInfo.size,
+      sorted_by_upload_date: sortOrder,
     }).then((response) => {
       setNotes(response);
       setPageInfo({
@@ -68,13 +70,24 @@ export const NotesApplication = () => {
         total: response.total,
       });
     });
-  }, [category, subject, type, keyword, pageInfo.page, pageInfo.size, categories, subjects, types]);
+  }, [
+    category,
+    subject,
+    type,
+    keyword,
+    pageInfo.page,
+    pageInfo.size,
+    sortOrder,
+    categories,
+    subjects,
+    types,
+  ]);
 
   useEffect(() => {
     if (categories.length && subjects.length && types.length) {
       filterNotes();
     }
-  }, [filterNotes, category, subject, type, keyword, pageInfo.page, pageInfo.size]);
+  }, [filterNotes, category, subject, type, keyword]);
 
   const handlePageChange = (newPage: number) => {
     if (newPage >= 1 && newPage <= Math.ceil(pageInfo.total / pageInfo.size)) {
@@ -108,6 +121,10 @@ export const NotesApplication = () => {
     setPageInfo({ ...pageInfo, page: 1 });
   };
 
+  const handleSortOrderChange = (newSortOrder: 'asc' | 'desc') => {
+    setSortOrder(newSortOrder);
+  };
+
   return (
     <section className='materials container'>
       <NotesTable
@@ -123,6 +140,7 @@ export const NotesApplication = () => {
         onSubjectChange={handleSubjectChange}
         onTypeChange={handleTypeChange}
         onKeywordChange={handleKeywordChange}
+        onSortOrderChange={handleSortOrderChange}
         pageInfo={pageInfo}
         handlePageChange={handlePageChange}
         isAdmin={Boolean(user?.role && user.role >= 2)}

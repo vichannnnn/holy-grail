@@ -1,4 +1,4 @@
-import { useState, useContext, useRef, SyntheticEvent, KeyboardEvent } from 'react';
+import { useState, useContext, useRef, SyntheticEvent, KeyboardEvent, useEffect } from 'react';
 import {
   Box,
   Card,
@@ -11,7 +11,6 @@ import {
   Paper,
   ClickAwayListener,
   MenuList,
-  Button,
 } from '@mui/material';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { Note, fetchData, fetchCategory, SubjectType } from '@api/library';
@@ -19,8 +18,6 @@ import { Combobox, ComboboxProps, FreeTextCombobox, FreeTextComboboxProps } from
 import { Pagination } from '../Pagination';
 import { NotesIcon } from './NotesIcon';
 import { MediaQueryContext } from '@providers';
-import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { ExpandMore } from '@mui/icons-material';
 import '../../features/Library/library.css';
@@ -38,6 +35,7 @@ interface NotesTableProps {
   onSubjectChange: ComboboxProps['onChange'];
   onTypeChange: ComboboxProps['onChange'];
   onKeywordChange: FreeTextComboboxProps['onChange'];
+  onSortOrderChange: (order: 'asc' | 'desc') => void;
   pageInfo: { page: number; size: number; total: number; pages: number };
   handlePageChange: (page: number) => void;
   renderAdminActions?: (note: Note) => JSX.Element | null;
@@ -69,6 +67,7 @@ export const NotesTable = ({
   onSubjectChange,
   onTypeChange,
   onKeywordChange,
+  onSortOrderChange,
   pageInfo,
   handlePageChange,
   renderAdminActions,
@@ -77,7 +76,6 @@ export const NotesTable = ({
   const { isDesktop } = useContext(MediaQueryContext);
   const [isCategorySelected, setIsCategorySelected] = useState(false);
   const [subjectsData, setSubjectsData] = useState([]);
-  const [sortOrder, setSortOrder] = useState('desc');
   const [open, setOpen] = useState(false);
   const anchorRef = useRef<HTMLButtonElement>(null);
 
@@ -89,7 +87,6 @@ export const NotesTable = ({
     if (anchorRef.current && anchorRef.current.contains(event.target as HTMLElement)) {
       return;
     }
-
     setOpen(false);
   };
 
@@ -228,8 +225,22 @@ export const NotesTable = ({
                                 onKeyDown={handleListKeyDown}
                               >
                                 <MenuItem disabled>Sort By</MenuItem>
-                                <MenuItem onClick={handleClose}>Ascending</MenuItem>
-                                <MenuItem onClick={handleClose}>Descending</MenuItem>
+                                <MenuItem
+                                  onClick={(event) => {
+                                    onSortOrderChange('asc');
+                                    handleClose(event);
+                                  }}
+                                >
+                                  Ascending
+                                </MenuItem>
+                                <MenuItem
+                                  onClick={(event) => {
+                                    onSortOrderChange('desc');
+                                    handleClose(event);
+                                  }}
+                                >
+                                  Descending
+                                </MenuItem>
                               </MenuList>
                             </ClickAwayListener>
                           </Paper>

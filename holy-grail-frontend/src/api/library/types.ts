@@ -7,6 +7,7 @@ export interface NotesSearchParams {
   keyword?: string;
   page?: number;
   size?: number;
+  sorted_by_upload_date?: string;
 }
 
 export interface CategorySearchParams {
