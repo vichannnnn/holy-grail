@@ -7,17 +7,19 @@ export const updateNote = async (
   newSubject: number | '',
   newType: number | '',
   newDocName: string | '',
+  newYear: number | '' | null,
 ) => {
-  try {
-    const response = await apiClient.put(`/note/${noteId}`, {
-      category: newCategory,
-      subject: newSubject,
-      type: newType,
-      document_name: newDocName,
-      uploaded_by: uploaded_by,
-    });
-    return response.data;
-  } catch (error) {
-    throw error;
+  if (newYear === '') {
+    newYear = null;
   }
+
+  const response = await apiClient.put(`/note/${noteId}`, {
+    category: newCategory,
+    subject: newSubject,
+    type: newType,
+    year: newYear,
+    document_name: newDocName,
+    uploaded_by: uploaded_by,
+  });
+  return response.data;
 };

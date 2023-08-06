@@ -11,10 +11,12 @@ export const ApprovalEditModal = ({
   categories,
   subjects,
   types,
+  years,
   category,
   subject,
   type,
   documentName,
+  year,
 }: ApprovalEditModalProps) => {
   const cancelRef = useRef<HTMLButtonElement | null>(null);
   const muiTheme = createTheme();
@@ -22,13 +24,15 @@ export const ApprovalEditModal = ({
   const [newSubject, setNewSubject] = useState<number | ''>('');
   const [newType, setNewType] = useState<number | ''>('');
   const [newDocName, setNewDocName] = useState<string>('');
+  const [newYear, setNewYear] = useState<number | ''>('');
 
   useEffect(() => {
     setNewCategory(category);
     setNewSubject(subject);
     setNewType(type);
     setNewDocName(documentName);
-  }, [category, documentName, isOpen, subject, type]);
+    setNewYear(year);
+  }, [category, documentName, isOpen, subject, type, year]);
 
   const validityChecks = (): ValidationResult => {
     return {
@@ -94,6 +98,14 @@ export const ApprovalEditModal = ({
           disablePortal={true}
           style={{ marginBottom: '4%' }}
         />
+        <Combobox
+          label='Year'
+          value={newYear}
+          options={years}
+          onChange={(newValue) => setNewYear(newValue)}
+          disablePortal={true}
+          style={{ marginBottom: '4%' }}
+        />
 
         <Button ref={cancelRef} onClick={onClose} variant='contained' sx={{ margin: '1%' }}>
           Cancel
@@ -130,7 +142,7 @@ export const ApprovalEditModal = ({
                 setNewSubject('');
                 setNewDocName('');
                 setNewType('');
-                onConfirm(newCategory, newSubject, newType, newDocName);
+                onConfirm(newCategory, newSubject, newType, newDocName, newYear);
                 onClose();
               }}
             >

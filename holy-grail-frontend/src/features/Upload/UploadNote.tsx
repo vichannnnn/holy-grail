@@ -19,6 +19,7 @@ export const UploadNote = ({
   const [category, setCategory] = useState<number>(0);
   const [subject, setSubject] = useState<number>(0);
   const [type, setType] = useState<number>(0);
+  const [year, setYear] = useState<number>(0);
   const [subjectsData, setSubjectsData] = useState([]);
 
   const [validInput, setValidInput] = useState<boolean>(false);
@@ -60,11 +61,12 @@ export const UploadNote = ({
       category: category,
       subject: subject,
       type: type,
+      year: year,
       name: documentName,
       valid: valid,
     });
     setServerValidationError(false);
-  }, [category, subject, type, documentName]);
+  }, [category, subject, type, year, documentName]);
 
   let borderColor;
   if (serverValidationError) {
@@ -179,6 +181,15 @@ export const UploadNote = ({
                     }}
                     options={options?.types.map((type) => ({ id: type.id, name: type.name })) ?? []}
                     error={!validChecks.type}
+                  />
+                  <Combobox
+                    className='note-combobox'
+                    label='Year'
+                    value={year || 0}
+                    onChange={(newValue) => {
+                      setYear(newValue || 0);
+                    }}
+                    options={options?.years.map((year) => ({ id: year.id, name: year.name })) ?? []}
                   />
                 </Grid>
               </Box>

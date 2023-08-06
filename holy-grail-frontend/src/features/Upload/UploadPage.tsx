@@ -187,7 +187,7 @@ export const UploadPage = () => {
     files.forEach((file: File) => {
       newKey += 1;
       newSelectedFiles[newKey] = [file, file.name];
-      newNotes[newKey] = { category: 0, subject: 0, type: 0, name: '', valid: false };
+      newNotes[newKey] = { category: 0, subject: 0, type: 0, name: '', year: 0, valid: false };
     });
     key.current = newKey;
 

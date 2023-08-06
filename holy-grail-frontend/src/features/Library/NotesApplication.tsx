@@ -1,5 +1,6 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 import {
+  CommonType,
   CategoryType,
   DocumentType,
   fetchApprovedNotes,
@@ -31,6 +32,7 @@ export const NotesApplication = () => {
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [subjects, setSubjects] = useState<SubjectType[]>([]);
   const [types, setTypes] = useState<DocumentType[]>([]);
+  const [years, setYears] = useState<CommonType[]>([]);
   const [pageInfo, setPageInfo] = useState({
     page: 1,
     pages: 1,
@@ -46,10 +48,11 @@ export const NotesApplication = () => {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
   useEffect(() => {
-    fetchData().then(({ categories, subjects, types }) => {
+    fetchData().then(({ categories, subjects, types, years }) => {
       setCategories(categories);
       setSubjects(subjects);
       setTypes(types);
+      setYears(years);
     });
   }, []);
 
@@ -90,7 +93,7 @@ export const NotesApplication = () => {
     if (categories.length && subjects.length && types.length) {
       filterNotes();
     }
-  }, [filterNotes, category, subject, type, keyword]);
+  }, [filterNotes, category, subject, type, keyword, year]);
 
   const handlePageChange = (newPage: number) => {
     if (newPage >= 1 && newPage <= Math.ceil(pageInfo.total / pageInfo.size)) {
@@ -185,6 +188,7 @@ export const NotesApplication = () => {
           newSubject: number | '',
           newType: number | '',
           newDocName: string | '',
+          newYear: number | '',
         ) => {
           updateNote(
             noteId,
@@ -193,15 +197,18 @@ export const NotesApplication = () => {
             newSubject,
             newType,
             newDocName,
+            newYear,
           ).then(() => filterNotes());
         }}
         categories={categories.map((c) => ({ id: c.id, name: c.name }))}
         subjects={subjects.map((s) => ({ id: s.id, name: s.name }))}
         types={types.map((t) => ({ id: t.id, name: t.name }))}
+        years={years.map((y) => ({ id: y.id, name: y.name }))}
         category={noteInitialProperties ? noteInitialProperties.category : ''}
         subject={noteInitialProperties ? noteInitialProperties.subject : ''}
         type={noteInitialProperties ? noteInitialProperties.type : ''}
         documentName={noteInitialProperties ? noteInitialProperties.document_name : ''}
+        year={noteInitialProperties ? noteInitialProperties.year : ''}
       />
     </section>
   );

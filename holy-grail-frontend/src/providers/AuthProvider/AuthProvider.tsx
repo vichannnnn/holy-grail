@@ -1,4 +1,4 @@
-import { createContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useEffect, useMemo, useState, useCallback } from 'react';
 import { AxiosError, AxiosResponse } from 'axios';
 import { apiClient } from '@apiClient';
 import { AccountDetails, registerAccount } from '@api/auth';
@@ -31,41 +31,44 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setIsLoading(false);
   }, []);
 
-  const login = async (formData: LogInDetails) => {
+  const login = useCallback(async (formData: LogInDetails) => {
     const response = await apiClient.post('/auth/login', formData);
     const { data, access_token } = response.data;
     setUser(data);
     localStorage.setItem('user', JSON.stringify(data));
     localStorage.setItem('access_token', access_token);
-  };
+  }, []);
 
-  const logout = () => {
+  const logout = useCallback(() => {
     setUser(null);
     localStorage.removeItem('user');
     localStorage.removeItem('access_token');
-  };
+  }, []);
 
-  const updateUser = (updatedUser: User) => {
+  const updateUser = useCallback((updatedUser: User) => {
     setUser(updatedUser);
     localStorage.setItem('user', JSON.stringify(updatedUser));
-  };
+  }, []);
 
-  const registerUserAccount = async (accountDetails: AccountDetails): Promise<number> => {
-    try {
-      const response: AxiosResponse = await registerAccount(accountDetails);
-      const user: CurrentUserWithJWT = response.data;
-      setUser(user.data);
-      localStorage.setItem('user', JSON.stringify(user.data));
-      localStorage.setItem('access_token', user.access_token);
-      return response.status;
-    } catch (error) {
-      const axiosError = error as AxiosError;
-      if (axiosError.response) {
-        return axiosError.response.status;
+  const registerUserAccount = useCallback(
+    async (accountDetails: AccountDetails): Promise<number> => {
+      try {
+        const response: AxiosResponse = await registerAccount(accountDetails);
+        const user: CurrentUserWithJWT = response.data;
+        setUser(user.data);
+        localStorage.setItem('user', JSON.stringify(user.data));
+        localStorage.setItem('access_token', user.access_token);
+        return response.status;
+      } catch (error) {
+        const axiosError = error as AxiosError;
+        if (axiosError.response) {
+          return axiosError.response.status;
+        }
+        return 0;
       }
-      return 0;
-    }
-  };
+    },
+    [],
+  );
 
   const providerValue = useMemo(
     () => ({
