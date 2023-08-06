@@ -33,6 +33,9 @@ def form_data_note_parser(
             category=int(form_data[f"notes[{idx}].category"]),
             subject=int(form_data[f"notes[{idx}].subject"]),
             type=int(form_data[f"notes[{idx}].type"]),
+            year=int(form_data[f"notes[{idx}].year"])
+            if form_data[f"notes[{idx}].year"] != 0
+            else None,
             document_name=form_data[f"notes[{idx}].document_name"],
         )
 
@@ -141,7 +144,7 @@ class Library(Base, CRUD["Library"]):
 
         document_names = [
             (form_data[f"notes[{i}].document_name"], i)
-            for i in range(len(form_data) // 5)
+            for i in range(len(form_data) // 6)
         ]
 
         # First check where we verify user input
@@ -203,7 +206,6 @@ class Library(Base, CRUD["Library"]):
         files: List[Tuple[UploadFile, str]] = []
         for note, idx in valid_notes:
             extension = accepted_doc_type_extensions[note.file.content_type]
-
             file_id = uuid.uuid4().hex
             file_name = file_id + extension
             data_insert = NoteInsertSchema(

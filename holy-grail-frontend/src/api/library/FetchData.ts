@@ -44,5 +44,9 @@ export const fetchData = async (searchParams: CategorySearchParams | null = null
       username: user.username,
       role: user.role,
     })),
+    years: Array.from({ length: 2024 - 2008 + 1 }, (_, i) => 2008 + i).map((year) => ({
+      id: year,
+      name: `${year}`,
+    })),
   };
 };

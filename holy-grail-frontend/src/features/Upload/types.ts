@@ -1,9 +1,10 @@
-import { CategoryType, DocumentType, SubjectType } from '@api/library';
+import { CategoryType, DocumentType, SubjectType, CommonType } from '@api/library';
 
 export interface OptionsProps {
   categories: CategoryType[];
   subjects: SubjectType[];
   types: DocumentType[];
+  years: CommonType[];
 }
 
 export interface NotesProps {
@@ -14,6 +15,7 @@ export interface NoteInfoProps {
   category: number;
   subject: number;
   type: number;
+  year?: number;
   name: string;
   valid: boolean;
 }

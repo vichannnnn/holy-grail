@@ -1,6 +1,7 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 import {
   CategoryType,
+  CommonType,
   DocumentType,
   fetchData,
   fetchPendingApprovalNotes,
@@ -30,6 +31,7 @@ export const ApprovalTable = () => {
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [subjects, setSubjects] = useState<SubjectType[]>([]);
   const [types, setTypes] = useState<DocumentType[]>([]);
+  const [years, setYears] = useState<CommonType[]>([]);
   const [pageInfo, setPageInfo] = useState({
     page: 1,
     pages: 1,
@@ -45,10 +47,11 @@ export const ApprovalTable = () => {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
   useEffect(() => {
-    fetchData().then(({ categories, subjects, types }) => {
+    fetchData().then(({ categories, subjects, types, years }) => {
       setCategories(categories);
       setSubjects(subjects);
       setTypes(types);
+      setYears(years);
     });
 
     fetchPendingApprovalNotes({}).then((fetchPendingApprovalNotes) => {
@@ -167,6 +170,7 @@ export const ApprovalTable = () => {
           newSubject: number | '',
           newType: number | '',
           newDocName: string | '',
+          newYear: number | '',
         ) => {
           updateNote(
             noteId,
@@ -175,14 +179,17 @@ export const ApprovalTable = () => {
             newSubject,
             newType,
             newDocName,
+            newYear,
           ).then(() => filterNotes());
         }}
         categories={categories.map((c) => ({ id: c.id, name: c.name }))}
         subjects={subjects.map((s) => ({ id: s.id, name: s.name }))}
         types={types.map((t) => ({ id: t.id, name: t.name }))}
+        years={years.map((y) => ({ id: y.id, name: y.name }))}
         category={noteInitialProperties ? noteInitialProperties.category : ''}
         subject={noteInitialProperties ? noteInitialProperties.subject : ''}
         type={noteInitialProperties ? noteInitialProperties.type : ''}
+        year={noteInitialProperties ? noteInitialProperties.year : ''}
         documentName={noteInitialProperties ? noteInitialProperties.document_name : ''}
       />
     </>
