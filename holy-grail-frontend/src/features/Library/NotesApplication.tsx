@@ -1,5 +1,6 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 import {
+  CommonType,
   CategoryType,
   DocumentType,
   fetchApprovedNotes,
@@ -31,6 +32,7 @@ export const NotesApplication = () => {
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [subjects, setSubjects] = useState<SubjectType[]>([]);
   const [types, setTypes] = useState<DocumentType[]>([]);
+  const [years, setYears] = useState<CommonType[]>([]);
   const [pageInfo, setPageInfo] = useState({
     page: 1,
     pages: 1,
@@ -41,13 +43,16 @@ export const NotesApplication = () => {
   const [category, setCategory] = useState<number | ''>(0);
   const [subject, setSubject] = useState<number | ''>(0);
   const [type, setType] = useState<number | ''>(0);
+  const [year, setYear] = useState<number | ''>(0);
   const [keyword, setKeyword] = useState<string>('');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
   useEffect(() => {
-    fetchData().then(({ categories, subjects, types }) => {
+    fetchData().then(({ categories, subjects, types, years }) => {
       setCategories(categories);
       setSubjects(subjects);
       setTypes(types);
+      setYears(years);
     });
   }, []);
 
@@ -59,6 +64,8 @@ export const NotesApplication = () => {
       keyword: keyword !== '' ? keyword : '',
       page: pageInfo.page,
       size: pageInfo.size,
+      sorted_by_upload_date: sortOrder,
+      year: Number(year),
     }).then((response) => {
       setNotes(response);
       setPageInfo({
@@ -68,13 +75,25 @@ export const NotesApplication = () => {
         total: response.total,
       });
     });
-  }, [category, subject, type, keyword, pageInfo.page, pageInfo.size, categories, subjects, types]);
+  }, [
+    category,
+    subject,
+    type,
+    keyword,
+    year,
+    pageInfo.page,
+    pageInfo.size,
+    sortOrder,
+    categories,
+    subjects,
+    types,
+  ]);
 
   useEffect(() => {
     if (categories.length && subjects.length && types.length) {
       filterNotes();
     }
-  }, [filterNotes, category, subject, type, keyword, pageInfo.page, pageInfo.size]);
+  }, [filterNotes, category, subject, type, keyword, year]);
 
   const handlePageChange = (newPage: number) => {
     if (newPage >= 1 && newPage <= Math.ceil(pageInfo.total / pageInfo.size)) {
@@ -108,6 +127,15 @@ export const NotesApplication = () => {
     setPageInfo({ ...pageInfo, page: 1 });
   };
 
+  const handleYearChange = (newValue: number | '') => {
+    setYear(newValue);
+    setPageInfo({ ...pageInfo, page: 1 });
+  };
+
+  const handleSortOrderChange = (newSortOrder: 'asc' | 'desc') => {
+    setSortOrder(newSortOrder);
+  };
+
   return (
     <section className='materials container'>
       <NotesTable
@@ -119,10 +147,13 @@ export const NotesApplication = () => {
         subject={subject !== '' ? Number(subject) : ''}
         type={type !== '' ? Number(type) : ''}
         keyword={keyword !== '' ? String(keyword) : ''}
+        year={year !== 0 ? Number(year) : ''}
         onCategoryChange={handleCategoryChange}
         onSubjectChange={handleSubjectChange}
         onTypeChange={handleTypeChange}
         onKeywordChange={handleKeywordChange}
+        onYearChange={handleYearChange}
+        onSortOrderChange={handleSortOrderChange}
         pageInfo={pageInfo}
         handlePageChange={handlePageChange}
         isAdmin={Boolean(user?.role && user.role >= 2)}
@@ -157,6 +188,7 @@ export const NotesApplication = () => {
           newSubject: number | '',
           newType: number | '',
           newDocName: string | '',
+          newYear: number | '',
         ) => {
           updateNote(
             noteId,
@@ -165,15 +197,18 @@ export const NotesApplication = () => {
             newSubject,
             newType,
             newDocName,
+            newYear,
           ).then(() => filterNotes());
         }}
         categories={categories.map((c) => ({ id: c.id, name: c.name }))}
         subjects={subjects.map((s) => ({ id: s.id, name: s.name }))}
         types={types.map((t) => ({ id: t.id, name: t.name }))}
+        years={years.map((y) => ({ id: y.id, name: y.name }))}
         category={noteInitialProperties ? noteInitialProperties.category : ''}
         subject={noteInitialProperties ? noteInitialProperties.subject : ''}
         type={noteInitialProperties ? noteInitialProperties.type : ''}
         documentName={noteInitialProperties ? noteInitialProperties.document_name : ''}
+        year={noteInitialProperties ? noteInitialProperties.year : ''}
       />
     </section>
   );

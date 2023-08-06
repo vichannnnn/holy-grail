@@ -1,22 +1,24 @@
 import datetime
 import uuid
+from typing import TYPE_CHECKING, Optional, Union, Tuple, List
+
 import boto3
-from typing import TYPE_CHECKING, Optional, Union, Tuple, List, Any
-from pydantic import ValidationError
 from fastapi import UploadFile, HTTPException
+from pydantic import ValidationError
+from sqlalchemy import exc as SQLAlchemyExceptions
 from sqlalchemy import func, ForeignKey, select, update, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Mapped, mapped_column, relationship, selectinload
 from sqlalchemy.sql.expression import text
-from sqlalchemy import exc as SQLAlchemyExceptions
 from starlette.datastructures import UploadFile as StarletteUploadFile, FormData
+
 from app.crud.base import CRUD
 from app.db.base_class import Base
+from app.models.auth import Account
+from app.schemas.library import NoteCreateSchema, NoteInsertSchema
 from app.utils.exceptions import AppError
 from app.utils.file_handler import save_file, accepted_doc_type_extensions
 from app.utils.upload_errors import UploadError
-from app.models.auth import Account
-from app.schemas.library import NoteCreateSchema, NoteInsertSchema
 
 if TYPE_CHECKING:
     from app.models.categories import CategoryLevel, Subjects, DocumentTypes
@@ -31,6 +33,9 @@ def form_data_note_parser(
             category=int(form_data[f"notes[{idx}].category"]),
             subject=int(form_data[f"notes[{idx}].subject"]),
             type=int(form_data[f"notes[{idx}].type"]),
+            year=int(form_data[f"notes[{idx}].year"])
+            if form_data[f"notes[{idx}].year"] != 0
+            else None,
             document_name=form_data[f"notes[{idx}].document_name"],
         )
 
@@ -71,7 +76,10 @@ class Library(Base, CRUD["Library"]):
     uploaded_on: Mapped[datetime.datetime] = mapped_column(
         nullable=False, server_default=func.now(), index=True  # pylint: disable=E1102
     )
-    approved: Mapped[bool] = mapped_column(nullable=False, server_default="f")
+    approved: Mapped[bool] = mapped_column(
+        index=True, nullable=False, server_default="f"
+    )
+    year: Mapped[int] = mapped_column(nullable=True, index=True)
 
     account: Mapped["Account"] = relationship(back_populates="documents")
     doc_category: Mapped["CategoryLevel"] = relationship(back_populates="documents")
@@ -136,7 +144,7 @@ class Library(Base, CRUD["Library"]):
 
         document_names = [
             (form_data[f"notes[{i}].document_name"], i)
-            for i in range(len(form_data) // 5)
+            for i in range(len(form_data) // 6)
         ]
 
         # First check where we verify user input
@@ -198,7 +206,6 @@ class Library(Base, CRUD["Library"]):
         files: List[Tuple[UploadFile, str]] = []
         for note, idx in valid_notes:
             extension = accepted_doc_type_extensions[note.file.content_type]
-
             file_id = uuid.uuid4().hex
             file_name = file_id + extension
             data_insert = NoteInsertSchema(
@@ -241,6 +248,8 @@ class Library(Base, CRUD["Library"]):
         subject: Optional[str] = None,
         doc_type: Optional[str] = None,
         keyword: Optional[str] = None,
+        year: Optional[int] = None,
+        sorted_by_upload_date: Optional[str] = "desc",
     ):
         stmt = select(cls).where(cls.approved == approved)
 
@@ -253,8 +262,16 @@ class Library(Base, CRUD["Library"]):
         if doc_type:
             stmt = stmt.where(cls.doc_type.has(name=doc_type))
 
+        if year:
+            stmt = stmt.where(cls.year == year)
+
         if keyword:
             stmt = stmt.where(cls.document_name.ilike(f"%{keyword}%"))
+
+        if sorted_by_upload_date == "asc":
+            stmt = stmt.order_by(cls.uploaded_on.asc())
+        else:
+            stmt = stmt.order_by(cls.uploaded_on.desc())
 
         count_stmt = select(func.count()).select_from(stmt)  # pylint: disable=E1102
         total = await session.scalar(count_stmt)

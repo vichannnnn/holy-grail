@@ -1,16 +1,17 @@
 from typing import Optional, List
+
 from fastapi import APIRouter, Query, Request
 from fastapi_pagination import Page
+
 from app.api.deps import (
     SessionBucket,
     SessionVerifiedUser,
     SessionAdmin,
     CurrentSession,
 )
-from app.utils.limiter import conditional_rate_limit
 from app.models.library import Library
 from app.schemas.library import NoteUpdateSchema, NoteSchema
-
+from app.utils.limiter import conditional_rate_limit
 
 router = APIRouter()
 notes_router = APIRouter()
@@ -52,6 +53,8 @@ async def get_all_approved_notes(
     subject: Optional[str] = None,
     doc_type: Optional[str] = None,
     keyword: Optional[str] = None,
+    year: Optional[int] = None,
+    sorted_by_upload_date: Optional[str] = "desc",
 ):
     notes = await Library.get_all_notes_paginated(
         session,
@@ -62,6 +65,8 @@ async def get_all_approved_notes(
         subject=subject,
         doc_type=doc_type,
         keyword=keyword,
+        year=year,
+        sorted_by_upload_date=sorted_by_upload_date,
     )
     return notes
 
@@ -76,6 +81,8 @@ async def get_all_pending_approval_notes(
     subject: Optional[str] = None,
     doc_type: Optional[str] = None,
     keyword: Optional[str] = None,
+    year: Optional[int] = None,
+    sorted_by_upload_date: Optional[str] = "desc",
 ):
     notes = await Library.get_all_notes_paginated(
         session,
@@ -86,6 +93,8 @@ async def get_all_pending_approval_notes(
         subject=subject,
         doc_type=doc_type,
         keyword=keyword,
+        year=year,
+        sorted_by_upload_date=sorted_by_upload_date,
     )
     return notes
 

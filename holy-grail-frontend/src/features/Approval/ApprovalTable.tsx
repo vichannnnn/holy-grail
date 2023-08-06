@@ -1,6 +1,7 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 import {
   CategoryType,
+  CommonType,
   DocumentType,
   fetchData,
   fetchPendingApprovalNotes,
@@ -30,6 +31,7 @@ export const ApprovalTable = () => {
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [subjects, setSubjects] = useState<SubjectType[]>([]);
   const [types, setTypes] = useState<DocumentType[]>([]);
+  const [years, setYears] = useState<CommonType[]>([]);
   const [pageInfo, setPageInfo] = useState({
     page: 1,
     pages: 1,
@@ -40,13 +42,16 @@ export const ApprovalTable = () => {
   const [category, setCategory] = useState<number | ''>(0);
   const [subject, setSubject] = useState<number | ''>(0);
   const [type, setType] = useState<number | ''>(0);
+  const [year, setYear] = useState<number | ''>(0);
   const [keyword, setKeyword] = useState<string>('');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
   useEffect(() => {
-    fetchData().then(({ categories, subjects, types }) => {
+    fetchData().then(({ categories, subjects, types, years }) => {
       setCategories(categories);
       setSubjects(subjects);
       setTypes(types);
+      setYears(years);
     });
 
     fetchPendingApprovalNotes({}).then((fetchPendingApprovalNotes) => {
@@ -62,6 +67,8 @@ export const ApprovalTable = () => {
       keyword: keyword !== '' ? keyword : '',
       page: pageInfo.page,
       size: pageInfo.size,
+      sorted_by_upload_date: sortOrder,
+      year: Number(year),
     }).then((response) => {
       setNotes(response);
       setPageInfo({
@@ -71,7 +78,19 @@ export const ApprovalTable = () => {
         total: response.total,
       });
     });
-  }, [category, subject, type, keyword, pageInfo.page, pageInfo.size, categories, subjects, types]);
+  }, [
+    category,
+    subject,
+    type,
+    keyword,
+    year,
+    pageInfo.page,
+    pageInfo.size,
+    sortOrder,
+    categories,
+    subjects,
+    types,
+  ]);
 
   useEffect(() => {
     filterNotes();
@@ -94,6 +113,10 @@ export const ApprovalTable = () => {
     filterNotes();
   };
 
+  const handleSortOrderChange = (newSortOrder: 'asc' | 'desc') => {
+    setSortOrder(newSortOrder);
+  };
+
   return (
     <>
       <NotesTable
@@ -104,11 +127,14 @@ export const ApprovalTable = () => {
         category={category !== '' ? Number(category) : ''}
         subject={subject !== '' ? Number(subject) : ''}
         type={type !== '' ? Number(type) : ''}
+        year={year !== 0 ? Number(year) : ''}
         keyword={keyword !== '' ? String(keyword) : ''}
         onCategoryChange={(newValue) => setCategory(Number(newValue))}
         onSubjectChange={(newValue) => setSubject(Number(newValue))}
         onTypeChange={(newValue) => setType(Number(newValue))}
         onKeywordChange={(newValue) => setKeyword(String(newValue))}
+        onYearChange={(newValue) => setYear(Number(newValue))}
+        onSortOrderChange={handleSortOrderChange}
         pageInfo={pageInfo}
         handlePageChange={handlePageChange}
         isAdmin={Boolean(user?.role && user.role >= 2)}
@@ -144,6 +170,7 @@ export const ApprovalTable = () => {
           newSubject: number | '',
           newType: number | '',
           newDocName: string | '',
+          newYear: number | '',
         ) => {
           updateNote(
             noteId,
@@ -152,14 +179,17 @@ export const ApprovalTable = () => {
             newSubject,
             newType,
             newDocName,
+            newYear,
           ).then(() => filterNotes());
         }}
         categories={categories.map((c) => ({ id: c.id, name: c.name }))}
         subjects={subjects.map((s) => ({ id: s.id, name: s.name }))}
         types={types.map((t) => ({ id: t.id, name: t.name }))}
+        years={years.map((y) => ({ id: y.id, name: y.name }))}
         category={noteInitialProperties ? noteInitialProperties.category : ''}
         subject={noteInitialProperties ? noteInitialProperties.subject : ''}
         type={noteInitialProperties ? noteInitialProperties.type : ''}
+        year={noteInitialProperties ? noteInitialProperties.year : ''}
         documentName={noteInitialProperties ? noteInitialProperties.document_name : ''}
       />
     </>

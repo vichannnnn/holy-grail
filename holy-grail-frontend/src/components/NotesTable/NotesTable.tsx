@@ -1,11 +1,25 @@
-import { useState, useContext } from 'react';
-import { Box, Card, CardContent, Grid, Typography, Link } from '@mui/material';
+import { useState, useContext, useRef, SyntheticEvent, KeyboardEvent, useEffect } from 'react';
+import {
+  Box,
+  Card,
+  CardContent,
+  Grid,
+  Typography,
+  Link,
+  Popper,
+  Grow,
+  Paper,
+  ClickAwayListener,
+  MenuList,
+} from '@mui/material';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { Note, fetchData, fetchCategory, SubjectType } from '@api/library';
 import { Combobox, ComboboxProps, FreeTextCombobox, FreeTextComboboxProps } from '@components';
 import { Pagination } from '../Pagination';
 import { NotesIcon } from './NotesIcon';
 import { MediaQueryContext } from '@providers';
+import MenuItem from '@mui/material/MenuItem';
+import { ExpandMore } from '@mui/icons-material';
 import '../../features/Library/library.css';
 
 interface NotesTableProps {
@@ -17,10 +31,13 @@ interface NotesTableProps {
   subject: ComboboxProps['value'];
   type: ComboboxProps['value'];
   keyword: FreeTextComboboxProps['value'];
+  year: ComboboxProps['value'];
   onCategoryChange: ComboboxProps['onChange'];
   onSubjectChange: ComboboxProps['onChange'];
   onTypeChange: ComboboxProps['onChange'];
   onKeywordChange: FreeTextComboboxProps['onChange'];
+  onYearChange: ComboboxProps['onChange'];
+  onSortOrderChange: (order: 'asc' | 'desc') => void;
   pageInfo: { page: number; size: number; total: number; pages: number };
   handlePageChange: (page: number) => void;
   renderAdminActions?: (note: Note) => JSX.Element | null;
@@ -39,6 +56,11 @@ function formatDate(dateString: string) {
   return new Date(dateString).toLocaleDateString(undefined, options);
 }
 
+const yearOptions = Array.from({ length: 2024 - 2008 + 1 }, (_, i) => 2008 + i).map((year) => ({
+  id: year,
+  name: `${year}`,
+}));
+
 export const NotesTable = ({
   notes,
   categories,
@@ -48,10 +70,13 @@ export const NotesTable = ({
   subject,
   type,
   keyword,
+  year,
   onCategoryChange,
   onSubjectChange,
   onTypeChange,
   onKeywordChange,
+  onYearChange,
+  onSortOrderChange,
   pageInfo,
   handlePageChange,
   renderAdminActions,
@@ -60,6 +85,28 @@ export const NotesTable = ({
   const { isDesktop } = useContext(MediaQueryContext);
   const [isCategorySelected, setIsCategorySelected] = useState(false);
   const [subjectsData, setSubjectsData] = useState([]);
+  const [open, setOpen] = useState(false);
+  const anchorRef = useRef<HTMLButtonElement>(null);
+
+  const handleToggle = () => {
+    setOpen((prevOpen) => !prevOpen);
+  };
+
+  const handleClose = (event: Event | SyntheticEvent) => {
+    if (anchorRef.current && anchorRef.current.contains(event.target as HTMLElement)) {
+      return;
+    }
+    setOpen(false);
+  };
+
+  function handleListKeyDown(event: KeyboardEvent) {
+    if (event.key === 'Tab') {
+      event.preventDefault();
+      setOpen(false);
+    } else if (event.key === 'Escape') {
+      setOpen(false);
+    }
+  }
 
   return (
     <Box>
@@ -138,6 +185,18 @@ export const NotesTable = ({
             }}
             style={{ width: isDesktop ? '15%' : '100%' }}
           />
+          <Combobox
+            label='Year'
+            value={year}
+            onChange={(value) => {
+              if (onYearChange) {
+                onYearChange(value);
+              }
+              handlePageChange(1);
+            }}
+            options={yearOptions}
+            style={{ width: isDesktop ? '15%' : '100%' }}
+          />
         </Box>
         {isDesktop ? (
           <TableContainer>
@@ -149,7 +208,68 @@ export const NotesTable = ({
                   <TableCell className='table__header'>Subject</TableCell>
                   <TableCell className='table__header'>Type</TableCell>
                   <TableCell className='table__header'>Uploaded By</TableCell>
-                  <TableCell className='table__header'>Uploaded On</TableCell>
+                  <TableCell className='table__header'>Year</TableCell>
+                  <TableCell className='table__header'>
+                    <Box display='flex' alignItems='center'>
+                      Uploaded On
+                      <Box
+                        display='flex'
+                        alignItems='center'
+                        ref={anchorRef}
+                        sx={{ cursor: 'pointer', marginLeft: '10px' }}
+                        onClick={handleToggle}
+                      >
+                        <ExpandMore />
+                      </Box>
+                    </Box>
+                    <Popper
+                      open={open}
+                      anchorEl={anchorRef.current}
+                      role={undefined}
+                      placement='bottom-end'
+                      transition
+                      disablePortal
+                    >
+                      {({ TransitionProps, placement }) => (
+                        <Grow
+                          {...TransitionProps}
+                          style={{
+                            transformOrigin:
+                              placement === 'bottom-end' ? 'center top' : 'center bottom',
+                          }}
+                        >
+                          <Paper>
+                            <ClickAwayListener onClickAway={handleClose}>
+                              <MenuList
+                                autoFocusItem={open}
+                                id='composition-menu'
+                                aria-labelledby='composition-button'
+                                onKeyDown={handleListKeyDown}
+                              >
+                                <MenuItem disabled>Sort By</MenuItem>
+                                <MenuItem
+                                  onClick={(event) => {
+                                    onSortOrderChange('asc');
+                                    handleClose(event);
+                                  }}
+                                >
+                                  Ascending
+                                </MenuItem>
+                                <MenuItem
+                                  onClick={(event) => {
+                                    onSortOrderChange('desc');
+                                    handleClose(event);
+                                  }}
+                                >
+                                  Descending
+                                </MenuItem>
+                              </MenuList>
+                            </ClickAwayListener>
+                          </Paper>
+                        </Grow>
+                      )}
+                    </Popper>
+                  </TableCell>
                   {isAdmin && renderAdminActions && (
                     <TableCell className='table__header'>Actions</TableCell>
                   )}
@@ -186,6 +306,9 @@ export const NotesTable = ({
                     <TableCell className='table__content'>{note.doc_subject?.name}</TableCell>
                     <TableCell className='table__content'>{note.doc_type?.name}</TableCell>
                     <TableCell className='table__content'>{note.account?.username}</TableCell>
+                    <TableCell className='table__content'>
+                      {note.year ? note.year : 'None'}
+                    </TableCell>
                     <TableCell className='table__content'>{formatDate(note.uploaded_on)}</TableCell>
                     {isAdmin && renderAdminActions && (
                       <TableCell className='table__content'>{renderAdminActions(note)}</TableCell>
