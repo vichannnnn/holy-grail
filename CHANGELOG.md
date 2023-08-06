@@ -2,51 +2,7 @@
 
 ## [v1.0.2](https://github.com/vichannnnn/holy-grail/releases/tag/v1.0.2) - 2023-07-19 09:03:50
 
-## What's Changed
-* fix: verification email layout due to flexbox by @bucketfish in https://github.com/vichannnnn/holy-grail/pull/75
-
-
-
-**Full Changelog**: https://github.com/vichannnnn/holy-grail/compare/v1.0.1...v1.0.2
-
-### Feature
-
-- changelog:
-  - start automating release notes ([fc523b4](https://github.com/vichannnnn/holy-grail/commit/fc523b47136780fbe7f38cc75911240bc790614b))
-
-### Bug Fixes
-
-- ci:
-  - add CHANGELOG.md for automated changelogs ([14d6c10](https://github.com/vichannnnn/holy-grail/commit/14d6c1027cbaa715dbb14e6894a3f6e7fdce8cbc))
-
-- header:
-  - fix wrong redirect for FAQ button ([b3839cd](https://github.com/vichannnnn/holy-grail/commit/b3839cd1eb108778fbaa166353e37381bd5b72ea)) ([#78](https://github.com/vichannnnn/holy-grail/pull/78))
-
 ## [v1.0.1](https://github.com/vichannnnn/holy-grail/releases/tag/v1.0.1) - 2023-07-18 14:27:37
-
-## What's Changed
-
-* fix(auth): fix resend verification email not updating email token by @vichannnnn in https://github.com/vichannnnn/holy-grail/pull/74
-* fix: verification email layout due to flexbox
-* chore(auth): update auth to log in upon register & fix issue on vague register error
-* feat(auth): keeps user logged on after registering for an account
-* fix(auth): display account register error correctly now
-* feat(header): update contribute button to header center instead
-* fix(upload-page): update for only verified user to access upload page, refresh bug causing verified user to get kicked to homepage
-* fix(change-password): add consistent spacing for user forms
-* fix(admin-panel): get users by ascending id
-* v1.0.1 hotfixes for production by @vichannnnn in https://github.com/vichannnnn/holy-grail/pull/76
-
-**Full Changelog**: https://github.com/vichannnnn/holy-grail/compare/v1.0.0...v1.0.1
-
-### Bug Fixes
-
-- general:
-  - verification email layout due to flexbox (#75) ([0690945](https://github.com/vichannnnn/holy-grail/commit/069094514086ad9f5d27357232d86f3407291ef2)) ([#75](https://github.com/vichannnnn/holy-grail/pull/75))
-
-- auth:
-  - fix resend verification email not updating email token (#74) ([e909d46](https://github.com/vichannnnn/holy-grail/commit/e909d460558b03ab1b9df758ba3658fc149a8194)) ([#74](https://github.com/vichannnnn/holy-grail/pull/74))
-  - fix resend verification email not updating email token ([21f1c1f](https://github.com/vichannnnn/holy-grail/commit/21f1c1fc730ed40668b71bd170ca1576c731510e)) ([#74](https://github.com/vichannnnn/holy-grail/pull/74))
 
 ## [v1.0.0](https://github.com/vichannnnn/holy-grail/releases/tag/v1.0.0) - 2023-07-18 10:23:44
 
