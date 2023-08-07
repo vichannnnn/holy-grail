@@ -4,7 +4,7 @@ import {
   CategoryType,
   DocumentType,
   fetchApprovedNotes,
-  fetchData,
+  fetchLibraryTypes,
   Note,
   PaginatedNotes,
   SubjectType,
@@ -48,7 +48,7 @@ export const NotesApplication = () => {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
   useEffect(() => {
-    fetchData().then(({ categories, subjects, types, years }) => {
+    fetchLibraryTypes().then(({ categories, subjects, types, years }) => {
       setCategories(categories);
       setSubjects(subjects);
       setTypes(types);

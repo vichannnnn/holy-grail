@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { createSubject } from '@api/actions';
-import { fetchData, CategoryType } from '@api/library';
+import { fetchLibraryTypes, CategoryType } from '@api/library';
 import { AlertToast, AlertProps, Combobox } from '@components';
 import { DeveloperAddModalProps, AddSubjectDetails } from '@features';
 import { Box, Button, Modal, TextField, Stack, Typography } from '@mui/material';
@@ -19,7 +19,7 @@ export const DeveloperAddSubjectModal = ({
   const [categoryData, setCategoryData] = useState<CategoryType[]>([]);
 
   useEffect(() => {
-    fetchData().then(({ categories }) => {
+    fetchLibraryTypes().then(({ categories }) => {
       setCategoryData(categories);
     });
   }, []);

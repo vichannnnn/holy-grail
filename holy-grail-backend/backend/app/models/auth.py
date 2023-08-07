@@ -62,7 +62,7 @@ class Account(Base, CRUD["Account"]):
 
     @classmethod
     async def register_development(
-        cls, session: AsyncSession, data: AccountRegisterSchema
+            cls, session: AsyncSession, data: AccountRegisterSchema
     ) -> CurrentUserSchema:
         if data.password != data.repeat_password:
             raise AppError.BAD_REQUEST_ERROR
@@ -81,7 +81,7 @@ class Account(Base, CRUD["Account"]):
 
     @classmethod
     async def register(
-        cls, session: AsyncSession, data: AccountRegisterSchema
+            cls, session: AsyncSession, data: AccountRegisterSchema
     ) -> CurrentUserWithJWTSchema:
         if data.password != data.repeat_password:
             raise AppError.BAD_REQUEST_ERROR
@@ -136,7 +136,7 @@ class Account(Base, CRUD["Account"]):
 
     @classmethod
     async def login(
-        cls, session: AsyncSession, data: AuthSchema
+            cls, session: AsyncSession, data: AuthSchema
     ) -> CurrentUserWithJWTSchema:
         if not (credentials := await cls.select_from_username(session, data.username)):
             raise AppError.INVALID_CREDENTIALS_ERROR
@@ -158,7 +158,7 @@ class Account(Base, CRUD["Account"]):
 
     @classmethod
     async def update_password(
-        cls, session: AsyncSession, user_id: int, data: AccountUpdatePasswordSchema
+            cls, session: AsyncSession, user_id: int, data: AccountUpdatePasswordSchema
     ) -> FastAPIResponse:
         curr = await Account.get(session, id=user_id)
 
@@ -185,9 +185,8 @@ class Account(Base, CRUD["Account"]):
 
     @classmethod
     async def update_email(
-        cls, session: AsyncSession, user_id: int, data: AccountUpdateEmailSchema
+            cls, session: AsyncSession, user_id: int, data: AccountUpdateEmailSchema
     ) -> FastAPIResponse:
-
         stmt = select(cls).where(cls.user_id == user_id)
         result = await session.execute(stmt)
         account = result.scalar()
@@ -258,7 +257,7 @@ class Account(Base, CRUD["Account"]):
 
     @classmethod
     async def send_verification_email(
-        cls, session: AsyncSession, user_id: int, email: EmailStr, username: str
+            cls, session: AsyncSession, user_id: int, email: EmailStr, username: str
     ):
         email_verification_token = uuid4().hex
         confirm_url = f"{FRONTEND_URL}/verify-account?token={email_verification_token}"
