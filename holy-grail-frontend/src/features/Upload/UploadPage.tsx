@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext, useRef } from 'react';
 import { AxiosResponse } from 'axios';
-import { fetchData } from '@api/library';
+import { fetchLibraryTypes } from '@api/library';
 import { createNote } from '@api/actions';
 import { AlertToast, AlertProps } from '@components';
 import {
@@ -39,7 +39,7 @@ export const UploadPage = () => {
   const [submitLoading, setSubmitLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    fetchData().then((options) => {
+    fetchLibraryTypes().then((options) => {
       setOptions(options as OptionsProps);
     });
     if (!isLoading) {

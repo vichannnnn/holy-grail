@@ -3,7 +3,7 @@ import {
   CategoryType,
   CommonType,
   DocumentType,
-  fetchData,
+  fetchLibraryTypes,
   fetchPendingApprovalNotes,
   Note,
   PaginatedNotes,
@@ -47,7 +47,7 @@ export const ApprovalTable = () => {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
   useEffect(() => {
-    fetchData().then(({ categories, subjects, types, years }) => {
+    fetchLibraryTypes().then(({ categories, subjects, types, years }) => {
       setCategories(categories);
       setSubjects(subjects);
       setTypes(types);

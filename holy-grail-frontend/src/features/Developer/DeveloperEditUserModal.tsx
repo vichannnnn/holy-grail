@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { fetchAllUsers, updateUserRole } from '@api/actions';
+import { updateUserRole } from '@api/actions';
+import { fetchAllUsers } from '@api/library';
 import { RoleEnum, EditUserModalProps, UpdateUserDetails, User } from '@features';
 import { AlertProps, AlertToast } from '@components';
 import { Box, Button, MenuItem, Modal, Select, Stack } from '@mui/material';

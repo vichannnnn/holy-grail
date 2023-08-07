@@ -4,7 +4,6 @@ export * from './CreateDocumentType';
 export * from './CreateNote';
 export * from './CreateSubject';
 export * from './DeleteNote';
-export * from './FetchAllUsers';
 export * from './UpdateCategory';
 export * from './UpdateDocumentType';
 export * from './UpdateNote';
