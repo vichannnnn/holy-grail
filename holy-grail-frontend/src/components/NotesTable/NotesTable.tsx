@@ -1,4 +1,4 @@
-import { useState, useContext, useRef, SyntheticEvent, KeyboardEvent, useEffect } from 'react';
+import { useState, useContext, useRef, SyntheticEvent, KeyboardEvent } from 'react';
 import {
   Box,
   Card,
@@ -13,7 +13,7 @@ import {
   MenuList,
 } from '@mui/material';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import { Note, fetchData, fetchCategory, SubjectType } from '@api/library';
+import { Note, fetchCategory, SubjectType, fetchAllSubjects } from '@api/library';
 import { Combobox, ComboboxProps, FreeTextCombobox, FreeTextComboboxProps } from '@components';
 import { Pagination } from '../Pagination';
 import { NotesIcon } from './NotesIcon';
@@ -84,7 +84,7 @@ export const NotesTable = ({
 }: NotesTableProps) => {
   const { isDesktop } = useContext(MediaQueryContext);
   const [isCategorySelected, setIsCategorySelected] = useState(false);
-  const [subjectsData, setSubjectsData] = useState([]);
+  const [subjectsData, setSubjectsData] = useState<{ id: number; name: string }[]>([]);
   const [open, setOpen] = useState(false);
   const anchorRef = useRef<HTMLButtonElement>(null);
 
@@ -131,9 +131,9 @@ export const NotesTable = ({
               if (value) {
                 setIsCategorySelected(true);
                 const categoryData = await fetchCategory({ category_id: value });
-                const data = await fetchData({ category_id: categoryData.id });
+                const subjects = await fetchAllSubjects(categoryData.id);
                 setSubjectsData(
-                  data.subjects.map((subject: SubjectType) => ({
+                  subjects.map((subject: SubjectType) => ({
                     id: subject.id,
                     name: subject.name,
                   })),
@@ -155,8 +155,8 @@ export const NotesTable = ({
             onChange={(value) => {
               if (onSubjectChange) {
                 onSubjectChange(value);
-                handlePageChange(1);
               }
+              handlePageChange(1);
             }}
             options={isCategorySelected ? subjectsData : subjects}
             style={{ width: isDesktop ? '15%' : '100%', opacity: isCategorySelected ? 1 : 0.5 }}
@@ -168,8 +168,8 @@ export const NotesTable = ({
             onChange={(value) => {
               if (onTypeChange) {
                 onTypeChange(value);
-                handlePageChange(1);
               }
+              handlePageChange(1);
             }}
             options={types}
             style={{ width: isDesktop ? '15%' : '100%' }}

@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect, ElementType } from 'react';
-import { fetchData, fetchCategory, SubjectType } from '@api/library';
+import { fetchCategory, SubjectType, fetchAllSubjects } from '@api/library';
 import { Combobox } from '@components';
 import { UploadNoteProps } from '@features';
 import { MediaQueryContext, AuthContext } from '@providers';
@@ -20,7 +20,7 @@ export const UploadNote = ({
   const [subject, setSubject] = useState<number>(0);
   const [type, setType] = useState<number>(0);
   const [year, setYear] = useState<number>(0);
-  const [subjectsData, setSubjectsData] = useState([]);
+  const [subjectsData, setSubjectsData] = useState<{ id: number; name: string }[]>([]);
 
   const [validInput, setValidInput] = useState<boolean>(false);
 
@@ -138,9 +138,9 @@ export const UploadNote = ({
                       setCategory(newValue || 0);
                       if (newValue === '') return;
                       const categoryData = await fetchCategory({ category_id: Number(newValue) });
-                      const data = await fetchData({ category_id: categoryData.id });
+                      const subjects = await fetchAllSubjects(categoryData.id);
                       setSubjectsData(
-                        data.subjects.map((subject: SubjectType) => ({
+                        subjects.map((subject: SubjectType) => ({
                           id: subject.id,
                           name: subject.name,
                         })),

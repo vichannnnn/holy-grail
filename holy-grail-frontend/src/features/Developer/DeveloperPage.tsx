@@ -1,5 +1,5 @@
 import { useEffect, useState, SyntheticEvent } from 'react';
-import { CategoryType, DocumentType, fetchData, SubjectType } from '@api/library';
+import { CategoryType, DocumentType, fetchLibraryTypes, SubjectType } from '@api/library';
 import { User, TabContent, TabContentSubjects, Hero, TabContentUsers } from '@features';
 import { Tab, Tabs } from '@mui/material';
 
@@ -17,12 +17,12 @@ export const DeveloperPage = () => {
   };
 
   const fetchDataAndUpdateState = async () => {
-    const newData = await fetchData();
+    const newData = await fetchLibraryTypes(null, true);
     setData(newData);
   };
 
   useEffect(() => {
-    fetchData().then(setData);
+    fetchLibraryTypes(null, true).then(setData);
   }, []);
 
   return (

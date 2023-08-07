@@ -1,5 +1,5 @@
 import { createContext, useEffect, useMemo, useState, useCallback } from 'react';
-import { AxiosError, AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import { apiClient } from '@apiClient';
 import { AccountDetails, registerAccount } from '@api/auth';
 import {
@@ -52,20 +52,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const registerUserAccount = useCallback(
     async (accountDetails: AccountDetails): Promise<number> => {
-      try {
-        const response: AxiosResponse = await registerAccount(accountDetails);
-        const user: CurrentUserWithJWT = response.data;
-        setUser(user.data);
-        localStorage.setItem('user', JSON.stringify(user.data));
-        localStorage.setItem('access_token', user.access_token);
-        return response.status;
-      } catch (error) {
-        const axiosError = error as AxiosError;
-        if (axiosError.response) {
-          return axiosError.response.status;
-        }
-        return 0;
-      }
+      const response: AxiosResponse = await registerAccount(accountDetails);
+      const user: CurrentUserWithJWT = response.data;
+      setUser(user.data);
+      localStorage.setItem('user', JSON.stringify(user.data));
+      localStorage.setItem('access_token', user.access_token);
+      return response.status;
     },
     [],
   );
