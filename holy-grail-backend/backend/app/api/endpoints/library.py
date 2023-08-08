@@ -44,6 +44,15 @@ async def read_note_by_id(
     return note
 
 
+@router.get("/download/{id}")
+async def download_note_by_id(
+    session: CurrentSession,
+    id: int,  # pylint: disable=W0622, C0103
+):
+    note = await Library.download(session, id)
+    return note
+
+
 @notes_router.get("/approved", response_model=Page[NoteSchema])
 async def get_all_approved_notes(
     session: CurrentSession,
