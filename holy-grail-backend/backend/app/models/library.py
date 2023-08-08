@@ -3,7 +3,8 @@ import uuid
 from typing import TYPE_CHECKING, Optional, Union, Tuple, List
 
 import boto3
-from fastapi import UploadFile, HTTPException
+import httpx
+from fastapi import UploadFile, HTTPException, Response
 from pydantic import ValidationError
 from sqlalchemy import exc as SQLAlchemyExceptions
 from sqlalchemy import func, ForeignKey, select, update, delete
@@ -15,7 +16,7 @@ from starlette.datastructures import UploadFile as StarletteUploadFile, FormData
 from app.crud.base import CRUD
 from app.db.base_class import Base
 from app.models.auth import Account
-from app.schemas.library import NoteCreateSchema, NoteInsertSchema
+from app.schemas.library import NoteCreateSchema, NoteInsertSchema, NoteSchema
 from app.utils.exceptions import AppError
 from app.utils.file_handler import save_file, accepted_doc_type_extensions
 from app.utils.upload_errors import UploadError
@@ -295,7 +296,9 @@ class Library(Base, CRUD["Library"]):
         }
 
     @classmethod
-    async def get(cls, session: AsyncSession, id: int):  # pylint: disable=W0622, C0103
+    async def get(
+        cls, session: AsyncSession, id: int
+    ) -> NoteSchema:  # pylint: disable=W0622, C0103
         stmt = (
             select(cls)
             .where(cls.id == id)
@@ -312,6 +315,32 @@ class Library(Base, CRUD["Library"]):
         if not res:
             raise HTTPException(status_code=404, detail="Note not found")
         return res
+
+    @classmethod
+    async def download(
+        cls, session: AsyncSession, id: int
+    ):  # pylint: disable=W0622, C0103
+        note: NoteSchema = await cls.get(session, id)
+        # url = S3_BUCKET_URL + note.file_name
+        url = (
+            "https://holy-grail-bucket-prod.s3.ap-southeast-1.amazonaws.com/"
+            + note.file_name
+        )
+
+        async with httpx.AsyncClient() as client:
+            response = await client.get(url)
+
+            if response.status_code == 200:
+                content = response.content
+                response = Response(content=content)
+                response.headers[
+                    "Content-Disposition"
+                ] = f"attachment; filename={note.document_name}.pdf"
+                return response
+            else:
+                raise HTTPException(
+                    status_code=response.status_code, detail="File not found"
+                )
 
     @classmethod
     async def update_note(
