@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect, ElementType } from 'react';
+import { useState, useContext, useEffect, ElementType, ReactNode } from 'react';
 import { fetchCategory, SubjectType, fetchAllSubjects } from '@api/library';
 import { Combobox } from '@components';
 import { UploadNoteProps } from '@features';
@@ -36,6 +36,17 @@ export const UploadNote = ({
 
   const { user } = useContext(AuthContext);
   const { isDesktop } = useContext(MediaQueryContext);
+
+  const wrapForMobile = (component: ReactNode) => {
+    if (isDesktop) {
+      return component;
+    }
+    return (
+      <Grid item xs={12}>
+        {component}
+      </Grid>
+    );
+  };
 
   const renderExpandIcon = () => {
     const IconComponent: ElementType = expanded ? ExpandLess : ExpandMore;
@@ -95,7 +106,11 @@ export const UploadNote = ({
             {isDesktop ? (
               renderExpandIcon()
             ) : (
-              <DeleteIcon color='error' onClick={deleteNote} sx={{ flexGrow: 0 }} />
+              <DeleteIcon
+                color='error'
+                onClick={deleteNote}
+                style={{ position: 'absolute', top: '8px', right: '8px' }}
+              />
             )}
           </Grid>
 
@@ -130,77 +145,90 @@ export const UploadNote = ({
                   item
                   className={isDesktop ? 'combobox-container-desktop' : 'combobox-container-mobile'}
                 >
-                  <Combobox
-                    className='note-combobox'
-                    label='Category'
-                    value={category || 0}
-                    onChange={async (newValue) => {
-                      setCategory(newValue || 0);
-                      if (newValue === '') return;
-                      const categoryData = await fetchCategory({ category_id: Number(newValue) });
-                      const subjects = await fetchAllSubjects(categoryData.id);
-                      setSubjectsData(
-                        subjects.map((subject: SubjectType) => ({
-                          id: subject.id,
-                          name: subject.name,
-                        })),
-                      );
-                    }}
-                    options={
-                      options?.categories.map((category) => ({
-                        id: category.id,
-                        name: category.name,
-                      })) ?? []
-                    }
-                    error={!validChecks.category}
-                  />
-                  <Combobox
-                    className='note-combobox'
-                    label='Subject'
-                    value={subject || 0}
-                    onChange={(newValue) => {
-                      setSubject(newValue || 0);
-                    }}
-                    options={
-                      subjectsData ||
-                      options?.subjects.map((subject) => ({
-                        id: subject.id,
-                        name: subject.name,
-                      })) ||
-                      []
-                    }
-                    error={category !== 0 && !validChecks.subject}
-                    disabled={category === 0}
-                  />
-                  <Combobox
-                    className='note-combobox'
-                    label='Type'
-                    value={type || 0}
-                    onChange={(newValue) => {
-                      setType(newValue || 0);
-                    }}
-                    options={options?.types.map((type) => ({ id: type.id, name: type.name })) ?? []}
-                    error={!validChecks.type}
-                  />
-                  <Combobox
-                    className='note-combobox'
-                    label='Year'
-                    value={year || 0}
-                    onChange={(newValue) => {
-                      setYear(newValue || 0);
-                    }}
-                    options={options?.years.map((year) => ({ id: year.id, name: year.name })) ?? []}
-                  />
+                  {wrapForMobile(
+                    <>
+                      <Combobox
+                        className='note-combobox'
+                        label='Category'
+                        value={category || 0}
+                        onChange={async (newValue) => {
+                          setCategory(newValue || 0);
+                          if (newValue === '') return;
+                          const categoryData = await fetchCategory({
+                            category_id: Number(newValue),
+                          });
+                          const subjects = await fetchAllSubjects(categoryData.id);
+                          setSubjectsData(
+                            subjects.map((subject: SubjectType) => ({
+                              id: subject.id,
+                              name: subject.name,
+                            })),
+                          );
+                        }}
+                        options={
+                          options?.categories.map((category) => ({
+                            id: category.id,
+                            name: category.name,
+                          })) ?? []
+                        }
+                        error={!validChecks.category}
+                      />
+                      <Combobox
+                        className='note-combobox'
+                        label='Subject'
+                        value={subject || 0}
+                        onChange={(newValue) => {
+                          setSubject(newValue || 0);
+                        }}
+                        options={
+                          subjectsData ||
+                          options?.subjects.map((subject) => ({
+                            id: subject.id,
+                            name: subject.name,
+                          })) ||
+                          []
+                        }
+                        error={category !== 0 && !validChecks.subject}
+                        disabled={category === 0}
+                      />
+                      <Combobox
+                        className='note-combobox'
+                        label='Type'
+                        value={type || 0}
+                        onChange={(newValue) => {
+                          setType(newValue || 0);
+                        }}
+                        options={
+                          options?.types.map((type) => ({ id: type.id, name: type.name })) ?? []
+                        }
+                        error={!validChecks.type}
+                      />
+
+                      <Combobox
+                        className='note-combobox'
+                        label='Year'
+                        value={year || 0}
+                        onChange={(newValue) => {
+                          setYear(newValue || 0);
+                        }}
+                        options={
+                          options?.years.map((year) => ({ id: year.id, name: year.name })) ?? []
+                        }
+                      />
+                    </>,
+                  )}
                 </Grid>
               </Box>
-              <Box className='note-form-box'>
-                <DeleteIcon
-                  color='error'
-                  style={{ cursor: 'pointer' }}
-                  className={isDesktop ? 'delete-icon-desktop' : 'delete-icon-mobile'}
-                  onClick={deleteNote}
-                />
-              </Box>
+              {isDesktop ? (
+                <Box className='note-form-box'>
+                  <DeleteIcon
+                    color='error'
+                    style={{ cursor: 'pointer' }}
+                    className={isDesktop ? 'delete-icon-desktop' : 'delete-icon-mobile'}
+                    onClick={deleteNote}
+                  />
+                </Box>
+              ) : null}
             </Box>
           </Collapse>
         </Grid>

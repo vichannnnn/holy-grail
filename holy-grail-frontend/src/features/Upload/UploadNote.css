@@ -11,6 +11,7 @@
     gap: 2%;
     justify-content: space-between;
     margin: 1%;
+    position: relative;
 }
 
 .grid-container-collapsed {
@@ -56,6 +57,7 @@
 .note-combobox {
     flex: 1 1 0;
     width: 100%;
+    margin-bottom: 12px;
 }
 
 
@@ -64,6 +66,15 @@
     margin-left: 3%;
     margin-top: 2%;
 }
+
+
+@media screen and (max-width: 600px) {
+    .upload-note-div .file-name-expanded {
+        margin-bottom: 5%;
+    }
+}
+
+
 
 .upload-note-div  .file-name-collapsed {
     font-weight: 500;
