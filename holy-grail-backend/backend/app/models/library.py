@@ -18,7 +18,11 @@ from app.db.base_class import Base
 from app.models.auth import Account
 from app.schemas.library import NoteCreateSchema, NoteInsertSchema, NoteSchema
 from app.utils.exceptions import AppError
-from app.utils.file_handler import save_file, accepted_doc_type_extensions
+from app.utils.file_handler import (
+    save_file,
+    accepted_doc_type_extensions,
+    S3_BUCKET_URL,
+)
 from app.utils.upload_errors import UploadError
 
 if TYPE_CHECKING:
@@ -321,11 +325,7 @@ class Library(Base, CRUD["Library"]):
         cls, session: AsyncSession, id: int
     ):  # pylint: disable=W0622, C0103
         note: NoteSchema = await cls.get(session, id)
-        # url = S3_BUCKET_URL + note.file_name
-        url = (
-            "https://holy-grail-bucket-prod.s3.ap-southeast-1.amazonaws.com/"
-            + note.file_name
-        )
+        url = S3_BUCKET_URL + note.file_name
 
         async with httpx.AsyncClient() as client:
             response = await client.get(url)
