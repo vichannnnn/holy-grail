@@ -30,6 +30,7 @@
     justify-content: center;
     align-items: center;
     padding-right: 0 !important;
+    margin-bottom: 12px !important;
 }
 
 .document-name-text-field {
@@ -70,7 +71,7 @@
 
 @media screen and (max-width: 600px) {
     .upload-note-div .file-name-expanded {
-        margin-bottom: 5%;
+        margin-bottom: 4%;
     }
 }
 
@@ -88,7 +89,7 @@
 
 
 .collapsible-grid {
-    padding: 0 1% 1% 1%;
+    padding: 0 2% 2% 2%;
     flex-grow: 1;
     display: flex;
     flex-direction: row;
@@ -97,13 +98,11 @@
 .outer-note-box {
     display: flex;
     flex-direction: row;
-    margin: 2% 0 2% 2%;
 }
 
 .inner-note-box {
     display: flex;
     flex-direction: column;
-    gap: 3vh;
     flex-grow: 1
 }
 

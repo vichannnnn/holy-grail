@@ -122,24 +122,27 @@ export const UploadNote = ({
           >
             <Box className='outer-note-box'>
               <Box className='inner-note-box'>
-                <Grid container item className='document-name-grid-container'>
-                  <TextField
-                    className='document-name-text-field'
-                    label='Document Name'
-                    placeholder={`Enter document name (eg. ${
-                      user?.username || 'anonymous'
-                    }'s Notes)`}
-                    variant='outlined'
-                    value={documentName}
-                    onChange={(event) => {
-                      setDocumentName(event.target.value);
-                    }}
-                    error={!validChecks.name || errors ? errors?.length !== 0 : false}
-                    helperText={errors?.map((error) => (
-                      <Typography className='error-text'>{error}</Typography>
-                    ))}
-                  />
-                </Grid>
+                {isDesktop && (
+                  <Grid container item className='document-name-grid-container'>
+                    <TextField
+                      className='document-name-text-field'
+                      label='Document Name'
+                      placeholder={`Enter document name (eg. ${
+                        user?.username || 'anonymous'
+                      }'s Notes)`}
+                      variant='outlined'
+                      value={documentName}
+                      onChange={(event) => {
+                        setDocumentName(event.target.value);
+                      }}
+                      error={!validChecks.name || errors ? errors?.length !== 0 : false}
+                      helperText={errors?.map((error) => (
+                        <Typography className='error-text'>{error}</Typography>
+                      ))}
+                    />
+                  </Grid>
+                )}
+
                 <Grid
                   container
                   item
@@ -147,6 +150,26 @@ export const UploadNote = ({
                 >
                   {wrapForMobile(
                     <>
+                      {!isDesktop && (
+                        <Grid container item className='document-name-grid-container'>
+                          <TextField
+                            className='document-name-text-field'
+                            label='Document Name'
+                            placeholder={`Enter document name (eg. ${
+                              user?.username || 'anonymous'
+                            }'s Notes)`}
+                            variant='outlined'
+                            value={documentName}
+                            onChange={(event) => {
+                              setDocumentName(event.target.value);
+                            }}
+                            error={!validChecks.name || errors ? errors?.length !== 0 : false}
+                            helperText={errors?.map((error) => (
+                              <Typography className='error-text'>{error}</Typography>
+                            ))}
+                          />
+                        </Grid>
+                      )}
                       <Combobox
                         className='note-combobox'
                         label='Category'
