@@ -42,7 +42,7 @@ export const UploadPage = () => {
     fetchLibraryTypes().then((options) => {
       setOptions(options as OptionsProps);
     });
-    /* if (!isLoading) {
+    if (!isLoading) {
       if (!user) {
         const alertContentRedirect: AlertProps = {
           title: 'Please login.',
@@ -59,7 +59,6 @@ export const UploadPage = () => {
         goToHome({ state: { alertContent: alertContentNotVerified } });
       }
     }
-    */
   }, [isLoading, user]);
 
   const handleSubmit = async () => {
