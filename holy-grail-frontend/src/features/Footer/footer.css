@@ -12,9 +12,11 @@
     padding-bottom: 1.5rem;
 }
 
-.footer__container {
-
+.footer__logo__image {
+    width: 128px;
+    height: 128px;
 }
+
 
 .footer__section {
     display: flex;
@@ -26,12 +28,6 @@
 .footer__column {
     display: flex;
     align-items: flex-start;
-
-}
-
-
-.footer__logoImg {
-    width: 5%;
 }
 
 .footer__title {
@@ -54,4 +50,15 @@
     color: var(--title-color);
     text-align: center;
     font-size: var(--smaller-font-size);
+}
+
+@media screen and (max-width: 600px) {
+    .footer__section {
+        gap: 1rem;
+    }
+
+    .footer__logo__image {
+        width: 64px;
+        height: 64px;
+    }
 }
