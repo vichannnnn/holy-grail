@@ -8,7 +8,7 @@ import { AuthContext, MediaQueryContext } from '@providers';
 import { useNavigation } from '@utils';
 
 import './header.css';
-import Logo from '../../assets/grail-chan-studying.png';
+import Logo from '../../assets/grail-chan-happy.png';
 
 export const Header = () => {
   const {
@@ -143,7 +143,7 @@ export const Header = () => {
     <header className='header'>
       <nav className='nav container grid'>
         <RouterLink className='nav__logo' to='/'>
-          <img className='nav__logoImg' src={Logo} alt='' />
+          <img className='nav__logo__image' src={Logo} alt='' />
         </RouterLink>
         {isDesktop ? (
           <div className='nav__menu'>
