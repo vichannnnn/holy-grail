@@ -8,7 +8,7 @@ import { AuthContext, MediaQueryContext } from '@providers';
 import { useNavigation } from '@utils';
 
 import './header.css';
-import Logo from '../../assets/placeholder.svg';
+import Logo from '../../assets/grail-chan-studying.png';
 
 export const Header = () => {
   const {
