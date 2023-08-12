@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { AuthContext } from '@providers';
+import { Grid } from '@mui/material';
 import Logo from '../../assets/grail-chan-studying.png';
 import './footer.css';
 
@@ -8,38 +9,52 @@ export const Footer = () => {
   const { user } = useContext(AuthContext);
   return (
     <footer className='footer'>
-      <div className='footer__container container'>
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <img className='footer__logoImg' src={Logo} alt='' />
-        </div>
-        <div className='footer__sectionContainer container grid'>
-          <div className='footer__section'>
-            <div className='footer__title'>Information</div>
-            <div className='footer__content'>
+      <Grid container className='footer__container'>
+        <Grid container item className='footer__section'>
+          <Grid item className='footer__logo'>
+            <img className='footer__logoImg' src={Logo} alt='' />
+          </Grid>
+          <Grid item container xs={12} md={2} className='footer__column'>
+            <Grid item className='footer__title'>
+              Information
+            </Grid>
+            <Grid item className='footer__content'>
               <RouterLink to='/#home'>Home</RouterLink>
-            </div>
-            <div className='footer__content'>
+            </Grid>
+            <Grid item className='footer__content'>
               <RouterLink to='/#library'>Library</RouterLink>
-            </div>
-            <div className='footer__content'>
+            </Grid>
+            <Grid item className='footer__content'>
               <RouterLink to='/#FAQ'>FAQ</RouterLink>
-            </div>
-          </div>
-          <div className='footer__section'>
-            <div className='footer__title'>Account</div>
-            <div className='footer__content' style={user ? { display: 'none' } : undefined}>
+            </Grid>
+          </Grid>
+          <Grid item container xs={12} md={2} className='footer__column'>
+            <Grid item className='footer__title'>
+              Contribute
+            </Grid>
+            <Grid item className='footer__content'>
+              <RouterLink to='/upload'>Upload</RouterLink>
+            </Grid>
+          </Grid>
+          <Grid item container xs={12} md={2} className='footer__column'>
+            <Grid item className='footer__title'>
+              Account
+            </Grid>
+            <Grid item className='footer__content' style={user ? { display: 'none' } : undefined}>
               <RouterLink to='/login'>Log In</RouterLink>
-            </div>
-            <div className='footer__content' style={user ? { display: 'none' } : undefined}>
+            </Grid>
+            <Grid item className='footer__content' style={user ? { display: 'none' } : undefined}>
               <RouterLink to='/register'>Register</RouterLink>
-            </div>
-            <div className='footer__content' style={user ? undefined : { display: 'none' }}>
+            </Grid>
+            <Grid item className='footer__content' style={user ? undefined : { display: 'none' }}>
               <RouterLink to='/account'>Account Settings</RouterLink>
-            </div>
-          </div>
-        </div>
-        <span className='footer__copy'>&#169; 2023 Holy Grail Team</span>
-      </div>
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid item className='footer__copyright'>
+          &#169; 2023 Holy Grail Team
+        </Grid>
+      </Grid>
     </footer>
   );
 };
