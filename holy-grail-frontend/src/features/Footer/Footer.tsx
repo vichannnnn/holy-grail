@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { AuthContext } from '@providers';
-import Logo from '../../assets/placeholder.svg';
+import Logo from '../../assets/grail-chan-studying.png';
 import './footer.css';
 
 export const Footer = () => {
@@ -34,7 +34,7 @@ export const Footer = () => {
               <RouterLink to='/register'>Register</RouterLink>
             </div>
             <div className='footer__content' style={user ? undefined : { display: 'none' }}>
-              <RouterLink to='/update-password'>Change Password</RouterLink>
+              <RouterLink to='/account'>Account Settings</RouterLink>
             </div>
           </div>
         </div>
