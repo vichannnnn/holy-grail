@@ -8,9 +8,6 @@
 }
 .MuiGrid-root {
     width: 100% !important;
-    margin-left: 0 !important;
-    padding-left: 0 !important;
-    padding-right: 16px !important;
     text-align: center !important;
 }
 
