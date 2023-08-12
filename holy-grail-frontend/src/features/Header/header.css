@@ -1,15 +1,13 @@
 .header {
     width: 100%;
-    position: fixed;
     top: 0;
     left: 0;
-    z-index: var(--z-fixed);
-    background-color: var(--body-color);
+    background-color: transparent;
     padding: 0 2rem;
 }
 
 .nav {
-    height: calc(var(--header-height) + 1rem);
+    height: calc(var(--header-height) + 5rem);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -33,7 +31,12 @@
 
 .nav__logo {
     display: flex;
-    max-width: 10%
+}
+
+.nav__logo__image {
+    height: 128px;
+    width: 128px;
+    margin: auto 0.5rem auto 0;
 }
 
 .nav__divider {
@@ -43,10 +46,6 @@
     margin: auto 0;
 }
 
-.nav__logoImg {
-    height: calc(var(--header-height) - 1rem);
-    margin: auto 0.5rem auto 0;
-}
 
 .nav__logoText {
     margin: auto 0 auto 0.5rem;
@@ -61,4 +60,11 @@
     text-decoration: underline;
     text-decoration-thickness: 2px;
     text-decoration-skip-ink: none;
+}
+
+@media screen and (max-width: 600px) {
+    .nav__logo__image {
+        width: 64px;
+        height: 64px;
+    }
 }
