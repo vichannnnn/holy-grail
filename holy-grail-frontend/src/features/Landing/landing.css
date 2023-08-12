@@ -1,6 +1,7 @@
 .home {
-    padding-top: calc(var(--header-height) + 3rem);
+    padding-top: 3rem;
 }
+
 
 .library,
 .faq {
@@ -28,5 +29,11 @@
     .faq__container {
         padding-top: 2rem;
         grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .home {
+        padding-top: 1rem;
     }
 }
