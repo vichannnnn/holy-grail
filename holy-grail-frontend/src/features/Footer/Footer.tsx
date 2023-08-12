@@ -12,7 +12,7 @@ export const Footer = () => {
       <Grid container className='footer__container'>
         <Grid container item className='footer__section'>
           <Grid item className='footer__logo'>
-            <img className='footer__logoImg' src={Logo} alt='' />
+            <img className='footer__logo__image' src={Logo} alt='' />
           </Grid>
           <Grid item container xs={12} md={2} className='footer__column'>
             <Grid item className='footer__title'>
