@@ -306,11 +306,7 @@ export const NotesTable = ({
                           gap: '3%',
                         }}
                       >
-                        <Card>
-                          <CardContent className='table__notes-card'>
-                            <NotesIcon docSubject={note.doc_subject} />
-                          </CardContent>
-                        </Card>
+                        <NotesIcon docSubject={note.doc_subject} />
                         <div className='table__content1'>{note.document_name}</div>
                       </Link>
                     </TableCell>
