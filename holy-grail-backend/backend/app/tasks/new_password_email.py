@@ -12,7 +12,7 @@ FRONTEND_URL = environ["FRONTEND_URL"]
 def send_new_password_email_task(email: EmailStr, username: str, password: str):
     try:
         send_new_password_mail(
-            sender_name="Cute Bot",
+            sender_name="Grail-chan",
             username=username,
             from_email="do-not-reply@grail.moe",
             to_email=email,

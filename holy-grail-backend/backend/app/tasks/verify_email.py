@@ -12,7 +12,7 @@ FRONTEND_URL = environ["FRONTEND_URL"]
 def send_verification_email_task(email: EmailStr, username: str, confirm_url: str):
     try:
         send_email_verification_mail(
-            sender_name="Cute Bot",
+            sender_name="Grail-chan",
             username=username,
             from_email="do-not-reply@grail.moe",
             to_email=email,
