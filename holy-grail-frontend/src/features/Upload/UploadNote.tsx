@@ -52,8 +52,10 @@ export const UploadNote = ({
     const IconComponent: ElementType = expanded ? ExpandLess : ExpandMore;
     return (
       <IconComponent
-        style={{ marginLeft: 'auto', cursor: 'pointer' }}
-        sx={{ marginLeft: 'auto', display: isDesktop ? null : 'none' }}
+        className={expanded ? 'collapse-icon' : 'expand-icon'}
+        sx={{
+          display: isDesktop ? null : 'none',
+        }}
         onClick={() => setExpanded(!expanded)}
       />
     );
