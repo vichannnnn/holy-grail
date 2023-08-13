@@ -1,14 +1,14 @@
 from os import environ  # pylint: disable=E0611
+
 import httpx
-from pydantic import EmailStr
 from jinja2 import Environment, FileSystemLoader
+from pydantic import EmailStr
 
 MAILTRAP_BEARER_TOKEN = environ["MAILTRAP_BEARER_TOKEN"]
 MAILTRAP_API_KEY = environ["MAILTRAP_API_KEY"]
 MAILTRAP_API_SEND_URL = "https://send.api.mailtrap.io/api/send"
 
 env = Environment(loader=FileSystemLoader("./app/email_templates/"))
-
 
 verify_email_template = env.get_template("verify_email.html")
 reset_password_email_template = env.get_template("reset_password.html")
@@ -75,7 +75,7 @@ def send_new_password_mail(
     payload = {
         "to": [{"email": to_email}],
         "from": {"email": from_email, "name": sender_name},
-        "subject": "Your New Password for Holy Grail",
+        "subject": "New Password for Holy Grail",
         "html": new_password_email_template.render(
             username=username, password=password
         ),
