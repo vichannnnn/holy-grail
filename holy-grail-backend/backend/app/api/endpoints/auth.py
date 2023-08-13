@@ -1,5 +1,3 @@
-import os
-
 from fastapi import APIRouter, Request, status
 
 from app.api.deps import SessionUser, CurrentSession
@@ -19,29 +17,32 @@ from app.utils.limiter import conditional_rate_limit
 
 router = APIRouter()
 
-if os.getenv("PRODUCTION") != "local" or os.getenv("TESTING"):
 
-    @router.post("/create", response_model=CurrentUserWithJWTSchema)
-    @conditional_rate_limit("10/5minute")
-    async def create_account(
-        request: Request,  # pylint: disable=W0613
-        session: CurrentSession,
-        data: AccountRegisterSchema,
-    ):
-        created_user = await Account.register(session, data)
-        return created_user
+# if os.getenv("PRODUCTION") != "local" or os.getenv("TESTING"):
 
-else:
 
-    @router.post("/create", response_model=CurrentUserSchema)
-    @conditional_rate_limit("10/5minute")
-    async def create_account_development(
-        request: Request,  # pylint: disable=W0613
-        session: CurrentSession,
-        data: AccountRegisterSchema,
-    ):
-        created_user = await Account.register_development(session, data)
-        return created_user
+@router.post("/create", response_model=CurrentUserWithJWTSchema)
+@conditional_rate_limit("10/5minute")
+async def create_account(
+    request: Request,  # pylint: disable=W0613
+    session: CurrentSession,
+    data: AccountRegisterSchema,
+):
+    created_user = await Account.register(session, data)
+    return created_user
+
+
+# else:
+#
+#     @router.post("/create", response_model=CurrentUserSchema)
+#     @conditional_rate_limit("10/5minute")
+#     async def create_account_development(
+#         request: Request,  # pylint: disable=W0613
+#         session: CurrentSession,
+#         data: AccountRegisterSchema,
+#     ):
+#         created_user = await Account.register_development(session, data)
+#         return created_user
 
 
 @router.post("/update_password")

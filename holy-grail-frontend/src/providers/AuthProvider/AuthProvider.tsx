@@ -53,6 +53,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const registerUserAccount = useCallback(
     async (accountDetails: AccountDetails): Promise<number> => {
       const response: AxiosResponse = await registerAccount(accountDetails);
+      console.log(response.status);
       const user: CurrentUserWithJWT = response.data;
       setUser(user.data);
       localStorage.setItem('user', JSON.stringify(user.data));
