@@ -1,45 +1,36 @@
-import { useState, useEffect, useContext, useRef } from 'react';
-import { AxiosResponse } from 'axios';
+import { useState, useEffect, useContext } from 'react';
+import { useForm, useFieldArray } from 'react-hook-form';
 import { fetchLibraryTypes } from '@api/library';
 import { createNote } from '@api/actions';
 import { AlertToast, AlertProps } from '@components';
-import {
-  DeleteAlert,
-  OptionsProps,
-  SelectedFilesProps,
-  NotesProps,
-  UploadNote,
-  FileSelect,
-  UploadNoteIndexedErrors,
-  UploadNoteErrorType,
-  UploadNoteErrorText,
-} from '@features';
-import { useNavigation } from '@utils';
+import { DeleteAlert, OptionsProps, UploadNote, FileSelect, NoteInfoProps } from '@features';
 import { AuthContext } from '@providers';
 import { LoadingButton } from '@mui/lab';
 import './upload.css';
 
 export const UploadPage = () => {
-  const { goToHome, goToLoginPage } = useNavigation();
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
 
   const { user, isLoading } = useContext(AuthContext);
   const [options, setOptions] = useState<OptionsProps | null>(null);
 
-  const key = useRef<number>(0);
-  const [selectedFiles, setSelectedFiles] = useState<SelectedFilesProps | null>(null);
-  const [notes, setNotes] = useState<NotesProps | null>(null);
-
   const [openDeleteAlert, setOpenDeleteAlert] = useState<boolean>(false);
-  const [deleteAlertKey, setDeleteAlertKey] = useState<string | null>(null);
-
-  const [serverValidationErrors, setServerValidationErrors] = useState<Record<
-    string,
-    string[]
-  > | null>(null);
-
-  const [submitLoading, setSubmitLoading] = useState<boolean>(false);
+  const [deleteAlertKey, setDeleteAlertKey] = useState<number | null>(null);
+  const {
+    control,
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm<{ notes: NoteInfoProps[] }>({
+    defaultValues: {
+      notes: [],
+    },
+  });
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'notes',
+  });
 
   useEffect(() => {
     fetchLibraryTypes().then((options) => {
@@ -47,96 +38,8 @@ export const UploadPage = () => {
     });
   }, [isLoading, user]);
 
-  const handleSubmit = async () => {
-    setSubmitLoading(true);
-
-    if (!notes || !selectedFiles) {
-      setSubmitLoading(false);
-      return;
-    }
-    const response: AxiosResponse = await createNote(
-      Object.values(selectedFiles),
-      Object.values(notes),
-    );
-
-    const generalisedAlertError: AlertProps = {
-      title: 'Error',
-      description: 'Something went wrong.',
-      severity: 'error',
-    };
-
-    const statusAlertContent: () => AlertProps = () => {
-      if (response === undefined) {
-        return generalisedAlertError;
-      }
-      const responseStatus = response.status;
-
-      if (responseStatus === 400) {
-        const responseBody = response.data['detail'];
-        const indexedErrors: UploadNoteIndexedErrors = {};
-        for (const [err, val] of Object.entries<number[]>(responseBody)) {
-          val.forEach((errIndex: number) => {
-            if (indexedErrors[errIndex] === undefined) {
-              indexedErrors[errIndex] = [UploadNoteErrorText[err as UploadNoteErrorType]];
-            } else {
-              indexedErrors[errIndex].push(UploadNoteErrorText[err as UploadNoteErrorType]);
-            }
-          });
-        }
-
-        const keyedErrors: Record<string, string[]> = {};
-        for (const [errIndex, err] of Object.entries(indexedErrors)) {
-          keyedErrors[Object.keys(notes)[Number(errIndex)]] = err;
-        }
-
-        setServerValidationErrors(keyedErrors);
-
-        return {
-          title: 'Error',
-          description: 'You have errors in your submission. Please fix them and try again.',
-          severity: 'error',
-        } as AlertProps;
-      } else if (responseStatus === 401) {
-        return {
-          title: 'Error',
-          description: 'Please login to upload documents.',
-          severity: 'error',
-        } as AlertProps;
-      } else if (responseStatus === 500) {
-        return {
-          title: 'Internal Server Error',
-          description: 'Please try again later.',
-          severity: 'error',
-        } as AlertProps;
-      } else if (responseStatus === 200) {
-        return {
-          title: 'Success',
-          description: 'Successfully sent for review and will be shown in library once uploaded.',
-          severity: 'success',
-        } as AlertProps;
-      } else {
-        return generalisedAlertError;
-      }
-    };
-    setSubmitLoading(false);
-    if (response?.status === 200) {
-      goToHome({ state: { alertContent: statusAlertContent() } });
-    }
-    if (response?.status === 401) {
-      goToLoginPage({ state: { alertContent: statusAlertContent() } });
-    }
-    setAlertContent(statusAlertContent());
-    setOpenAlert(true);
-  };
-
-  const handleDisableSumbit = () => {
-    if (!notes) {
-      return true;
-    }
-
-    return !Object.values(notes)
-      .map((note) => note.valid)
-      .every((valid) => valid);
+  const handleSubmitUpload = async (formData: { notes: NoteInfoProps[] }) => {
+    await createNote(formData.notes);
   };
 
   const handleAddNotes = (eventFiles: FileList) => {
@@ -151,7 +54,7 @@ export const UploadPage = () => {
       setOpenAlert(true);
       return;
     }
-    if (files.length + Object.values(selectedFiles || {}).length >= 10) {
+    if (files.length + fields.length >= 10) {
       setAlertContent({
         title: 'Error',
         description: 'You can only upload up to 10 documents at a time.',
@@ -161,35 +64,26 @@ export const UploadPage = () => {
       return;
     }
 
-    let newKey = key.current;
-    const newSelectedFiles = { ...selectedFiles };
-    const newNotes = { ...notes };
-
     files.forEach((file: File) => {
-      newKey += 1;
-      newSelectedFiles[newKey] = [file, file.name];
-      newNotes[newKey] = { category: 0, subject: 0, type: 0, name: '', year: 0, valid: false };
+      append({
+        category: 0,
+        subject: 0,
+        type: 0,
+        name: file.name,
+        year: 0,
+        file: file,
+      });
     });
-    key.current = newKey;
-
-    setSelectedFiles(newSelectedFiles);
-    setNotes(newNotes);
   };
 
-  const handleDeleteNote = (key: string | null) => {
-    if (key === null) {
+  const handleDeleteNote = (index: number | null) => {
+    if (index === null) {
       setOpenDeleteAlert(false);
       return;
     }
-    const newNotes = { ...notes };
-    const newSelectedFiles = { ...selectedFiles };
-    delete newNotes[Number(key)];
-    delete newSelectedFiles[Number(key)];
 
-    setNotes(newNotes);
-    setSelectedFiles(newSelectedFiles);
+    remove(index);
     setOpenDeleteAlert(false);
-    setDeleteAlertKey(null);
   };
 
   return (
@@ -201,40 +95,39 @@ export const UploadPage = () => {
       </div>
 
       <div className='upload__multiContainer'>
-        {notes
-          ? Object.keys(notes).map((key) => (
-              <UploadNote
-                fileName={selectedFiles ? selectedFiles[key][1] : ''}
-                key={key}
-                options={options}
-                saveNoteUpdates={(note) => setNotes({ ...notes, [key]: note })}
-                deleteNote={() => {
-                  setOpenDeleteAlert(true);
-                  setDeleteAlertKey(key);
-                }}
-                errors={serverValidationErrors ? serverValidationErrors[key] : undefined}
-              />
-            ))
-          : null}
-        <FileSelect handleAddNotes={handleAddNotes} />
-
-        <LoadingButton
-          loading={submitLoading}
-          loadingIndicator='Submitting...'
-          sx={{
-            borderColor: 'transparent',
-            backgroundColor: 'rgb(237, 242, 247)',
-            textTransform: 'capitalize',
-            color: 'black',
-            fontWeight: 'bold',
-            width: '10%',
-            borderRadius: '4px',
-          }}
-          onClick={handleSubmit}
-          disabled={handleDisableSumbit()}
-        >
-          Submit
-        </LoadingButton>
+        <form onSubmit={handleSubmit(handleSubmitUpload)}>
+          {fields.map((field, index) => (
+            <UploadNote
+              key={field.id}
+              control={control}
+              register={register}
+              errors={Boolean(errors.notes)}
+              field={field}
+              options={options}
+              index={index}
+              deleteNote={() => {
+                setOpenDeleteAlert(true);
+                setDeleteAlertKey(index);
+              }}
+            />
+          ))}
+          <FileSelect handleAddNotes={handleAddNotes} />
+          <LoadingButton
+            loadingIndicator='Submitting...'
+            sx={{
+              borderColor: 'transparent',
+              backgroundColor: 'rgb(237, 242, 247)',
+              textTransform: 'capitalize',
+              color: 'black',
+              fontWeight: 'bold',
+              width: '10%',
+              borderRadius: '4px',
+            }}
+            type='submit'
+          >
+            Submit
+          </LoadingButton>
+        </form>
       </div>
       <DeleteAlert
         isOpen={openDeleteAlert}
