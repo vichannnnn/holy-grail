@@ -10,6 +10,9 @@ import {
   NotesProps,
   UploadNote,
   FileSelect,
+  UploadNoteIndexedErrors,
+  UploadNoteErrorType,
+  UploadNoteErrorText,
 } from '@features';
 import { useNavigation } from '@utils';
 import { AuthContext } from '@providers';
@@ -42,33 +45,16 @@ export const UploadPage = () => {
     fetchLibraryTypes().then((options) => {
       setOptions(options as OptionsProps);
     });
-    /* if (!isLoading) {
-      if (!user) {
-        const alertContentRedirect: AlertProps = {
-          title: 'Please login.',
-          description: 'You need to be logged in to upload documents.',
-          severity: 'error',
-        };
-        goToLoginPage({ state: { alertContent: alertContentRedirect } });
-      } else if (!user.verified) {
-        const alertContentNotVerified: AlertProps = {
-          title: 'Verification Required',
-          description: 'You need to be verified to upload documents.',
-          severity: 'error',
-        };
-        goToHome({ state: { alertContent: alertContentNotVerified } });
-      }
-    }
-    */
   }, [isLoading, user]);
 
   const handleSubmit = async () => {
     setSubmitLoading(true);
+
     if (!notes || !selectedFiles) {
       setSubmitLoading(false);
       return;
     }
-    const response: AxiosResponse | undefined = await createNote(
+    const response: AxiosResponse = await createNote(
       Object.values(selectedFiles),
       Object.values(notes),
     );
@@ -80,32 +66,24 @@ export const UploadPage = () => {
     };
 
     const statusAlertContent: () => AlertProps = () => {
-      if (response === undefined) return generalisedAlertError;
+      if (response === undefined) {
+        return generalisedAlertError;
+      }
+      const responseStatus = response.status;
 
-      const responseStatus = response?.status;
-      const responseBody = response?.data['detail'];
       if (responseStatus === 400) {
-        if (responseBody === undefined) return generalisedAlertError;
-        const friendlyErrorText: Record<string, string> = {
-          DOCUMENT_NAME_DUPLICATED: 'You are uploading multiple documents with the same name.',
-          DOCUMENT_NAME_IN_DB: 'Document name already exists.',
-          SCHEMA_VALIDATION_ERROR:
-            'Please ensure your document name is between 1 and 100 characters long.',
-          INVALID_FILE_TYPE: 'Please ensure all files uploaded are pdf files.',
-        };
-        const indexedErrors: Record<number, string[]> = {};
+        const responseBody = response.data['detail'];
+        const indexedErrors: UploadNoteIndexedErrors = {};
         for (const [err, val] of Object.entries<number[]>(responseBody)) {
-          if (val.length === 0) continue;
-
-          // if there is an error
           val.forEach((errIndex: number) => {
             if (indexedErrors[errIndex] === undefined) {
-              indexedErrors[errIndex] = [friendlyErrorText[err]];
+              indexedErrors[errIndex] = [UploadNoteErrorText[err as UploadNoteErrorType]];
             } else {
-              indexedErrors[errIndex].push(friendlyErrorText[err]);
+              indexedErrors[errIndex].push(UploadNoteErrorText[err as UploadNoteErrorType]);
             }
           });
         }
+
         const keyedErrors: Record<string, string[]> = {};
         for (const [errIndex, err] of Object.entries(indexedErrors)) {
           keyedErrors[Object.keys(notes)[Number(errIndex)]] = err;
@@ -152,7 +130,9 @@ export const UploadPage = () => {
   };
 
   const handleDisableSumbit = () => {
-    if (!notes) return true;
+    if (!notes) {
+      return true;
+    }
 
     return !Object.values(notes)
       .map((note) => note.valid)
