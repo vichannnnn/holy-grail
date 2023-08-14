@@ -9,11 +9,13 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import './UploadNote.css';
 
 export const UploadNote = ({
-  fileName,
   options,
-  saveNoteUpdates,
   deleteNote,
   errors,
+  control,
+  register,
+  field,
+  index,
 }: UploadNoteProps) => {
   const [documentName, setDocumentName] = useState<string>('');
   const [category, setCategory] = useState<number>(0);
