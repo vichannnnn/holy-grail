@@ -1,8 +1,11 @@
-import { AxiosError } from 'axios';
+import { AxiosError, AxiosResponse } from 'axios';
 import { apiClient } from '@apiClient';
 import { NoteInfoProps } from '@features';
 
-export const createNote = async (files: [File, string][], notes: NoteInfoProps[]) => {
+export const createNote = async (
+  files: [File, string][],
+  notes: NoteInfoProps[],
+): Promise<AxiosResponse> => {
   const allData = new FormData();
 
   const noteFilePairs: { file: File; note: NoteInfoProps }[] = files.map((file, idx) => ({
@@ -27,6 +30,9 @@ export const createNote = async (files: [File, string][], notes: NoteInfoProps[]
     });
   } catch (error) {
     const axiosError = error as AxiosError;
-    return axiosError.response;
+    if (axiosError.response) {
+      return axiosError.response;
+    }
+    throw error;
   }
 };
