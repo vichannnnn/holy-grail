@@ -1,5 +1,5 @@
 import { CategoryType, DocumentType, SubjectType, CommonType } from '@api/library';
-import { Control, useForm } from 'react-hook-form';
+import { Control } from 'react-hook-form';
 
 export interface OptionsProps {
   categories: CategoryType[];
@@ -17,20 +17,13 @@ export interface NoteInfoProps {
   file: File;
 }
 
-type FormReturnType = {
-  control: Control<{ notes: NoteInfoProps[] }>;
-  handleSubmit: ReturnType<typeof useForm>['handleSubmit'];
-  register: ReturnType<typeof useForm>['register'];
-  formState: ReturnType<typeof useForm>['formState'];
-};
-
 export interface UploadNoteProps {
   options: OptionsProps | null;
   deleteNote: () => void;
   errors?: boolean;
   control: Control<{ notes: NoteInfoProps[] }>;
-  register: FormReturnType['register'];
-  field: { id: string };
+  field: NoteInfoProps & { id: string };
+  watch: (name?: string | string[] | number, defaultValue?: string | number) => string | number;
   index: number;
 }
 

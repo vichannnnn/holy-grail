@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import { useForm, useFieldArray } from 'react-hook-form';
+import { useForm, useFieldArray, useFormContext } from 'react-hook-form';
 import { fetchLibraryTypes } from '@api/library';
 import { createNote } from '@api/actions';
 import { AlertToast, AlertProps } from '@components';
@@ -20,8 +20,8 @@ export const UploadPage = () => {
   const {
     control,
     handleSubmit,
-    register,
     formState: { errors },
+    watch,
   } = useForm<{ notes: NoteInfoProps[] }>({
     defaultValues: {
       notes: [],
@@ -94,41 +94,39 @@ export const UploadPage = () => {
         to the Holy Grail.
       </div>
 
-      <div className='upload__multiContainer'>
-        <form onSubmit={handleSubmit(handleSubmitUpload)}>
-          {fields.map((field, index) => (
-            <UploadNote
-              key={field.id}
-              control={control}
-              register={register}
-              errors={Boolean(errors.notes)}
-              field={field}
-              options={options}
-              index={index}
-              deleteNote={() => {
-                setOpenDeleteAlert(true);
-                setDeleteAlertKey(index);
-              }}
-            />
-          ))}
-          <FileSelect handleAddNotes={handleAddNotes} />
-          <LoadingButton
-            loadingIndicator='Submitting...'
-            sx={{
-              borderColor: 'transparent',
-              backgroundColor: 'rgb(237, 242, 247)',
-              textTransform: 'capitalize',
-              color: 'black',
-              fontWeight: 'bold',
-              width: '10%',
-              borderRadius: '4px',
+      <form onSubmit={handleSubmit(handleSubmitUpload)} className='upload__multiContainer'>
+        {fields.map((field, index) => (
+          <UploadNote
+            key={field.id}
+            control={control}
+            errors={Boolean(errors.notes)}
+            field={field}
+            options={options}
+            index={index}
+            watch={watch}
+            deleteNote={() => {
+              setOpenDeleteAlert(true);
+              setDeleteAlertKey(index);
             }}
-            type='submit'
-          >
-            Submit
-          </LoadingButton>
-        </form>
-      </div>
+          />
+        ))}
+        <FileSelect handleAddNotes={handleAddNotes} />
+        <LoadingButton
+          loadingIndicator='Submitting...'
+          sx={{
+            borderColor: 'transparent',
+            backgroundColor: 'rgb(237, 242, 247)',
+            textTransform: 'capitalize',
+            color: 'black',
+            fontWeight: 'bold',
+            width: '10%',
+            borderRadius: '4px',
+          }}
+          type='submit'
+        >
+          Submit
+        </LoadingButton>
+      </form>
       <DeleteAlert
         isOpen={openDeleteAlert}
         onClose={() => {
