@@ -39,6 +39,7 @@ export const UploadPage = () => {
   }, [isLoading, user]);
 
   const handleSubmitUpload = async (formData: { notes: NoteInfoProps[] }) => {
+    console.log(formData);
     await createNote(formData.notes);
   };
 
