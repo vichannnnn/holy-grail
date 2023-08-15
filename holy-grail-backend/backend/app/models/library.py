@@ -34,14 +34,14 @@ def form_data_note_parser(
 ) -> Union[bool, Tuple[NoteCreateSchema, int]]:
     try:
         note_ds = NoteCreateSchema(
-            file=form_data[f"notes[{idx}].file"],
-            category=int(form_data[f"notes[{idx}].category"]),
-            subject=int(form_data[f"notes[{idx}].subject"]),
-            type=int(form_data[f"notes[{idx}].type"]),
-            year=int(form_data[f"notes[{idx}].year"])
-            if form_data[f"notes[{idx}].year"] != 0
+            file=form_data[f"{idx}[file]"],
+            category=int(form_data[f"{idx}[category]"]),
+            subject=int(form_data[f"{idx}[subject]"]),
+            type=int(form_data[f"{idx}[type]"]),
+            year=int(form_data[f"{idx}[year]"])
+            if form_data[f"{idx}[year]"] != 0
             else None,
-            document_name=form_data[f"notes[{idx}].document_name"],
+            document_name=form_data[f"{idx}[name]"],
         )
 
     except ValidationError:
@@ -148,8 +148,7 @@ class Library(Base, CRUD["Library"]):
         track_duplicate_names = []
 
         document_names = [
-            (form_data[f"notes[{i}].document_name"], i)
-            for i in range(len(form_data) // 6)
+            (form_data[f"{i}[name]"], i) for i in range(len(form_data) // 6)
         ]
 
         # First check where we verify user input
