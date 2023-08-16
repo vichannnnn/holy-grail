@@ -1,14 +1,27 @@
 import { useState, useEffect, useContext } from 'react';
-import { useForm, useFieldArray, useFormContext } from 'react-hook-form';
+import { useForm, useFieldArray, FieldErrors } from 'react-hook-form';
+import { AxiosResponse } from 'axios';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { fetchLibraryTypes } from '@api/library';
 import { createNote } from '@api/actions';
 import { AlertToast, AlertProps } from '@components';
-import { DeleteAlert, OptionsProps, UploadNote, FileSelect, NoteInfoProps } from '@features';
+import {
+  DeleteAlert,
+  OptionsProps,
+  UploadNote,
+  FileSelect,
+  NoteInfoProps,
+  NotesFormData,
+  UploadError,
+} from '@features';
 import { AuthContext } from '@providers';
+import { useNavigation } from '@utils';
 import { LoadingButton } from '@mui/lab';
 import './upload.css';
+import { UploadNotesValidation } from '@forms/validation';
 
 export const UploadPage = () => {
+  const { goToHome, goToLoginPage } = useNavigation();
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
 
@@ -21,11 +34,13 @@ export const UploadPage = () => {
     control,
     handleSubmit,
     formState: { errors },
+    setError,
     watch,
-  } = useForm<{ notes: NoteInfoProps[] }>({
+  } = useForm<NotesFormData>({
     defaultValues: {
       notes: [],
     },
+    resolver: yupResolver(UploadNotesValidation),
   });
   const { fields, append, remove } = useFieldArray({
     control,
@@ -38,9 +53,85 @@ export const UploadPage = () => {
     });
   }, [isLoading, user]);
 
+  const statusAlertContent: (response: AxiosResponse) => AlertProps = (response) => {
+    const generalisedAlertError: AlertProps = {
+      title: 'Error',
+      description: 'Please check your input and try again.',
+      severity: 'error',
+    };
+
+    if (response.status === 200) {
+      return {
+        title: 'Success',
+        description: 'Successfully sent for review and will be shown in library once uploaded.',
+        severity: 'success',
+      } as AlertProps;
+    }
+    if (response.status === 401) {
+      return {
+        title: 'Error',
+        description: 'Please login to upload documents.',
+        severity: 'error',
+      } as AlertProps;
+    } else {
+      return generalisedAlertError;
+    }
+  };
+
   const handleSubmitUpload = async (formData: { notes: NoteInfoProps[] }) => {
-    console.log(formData);
-    await createNote(formData.notes);
+    const response = await createNote(formData.notes);
+    const alertContent = statusAlertContent(response);
+
+    if (response.status === 200) {
+      goToHome({ state: { alertContent: alertContent } });
+    }
+    if (response.status === 401) {
+      goToLoginPage({ state: { alertContent: alertContent } });
+    }
+
+    if (response.status === 400) {
+      const failedNotes = response.data['detail'];
+      console.log(failedNotes);
+
+      if (failedNotes[UploadError.DOCUMENT_NAME_DUPLICATED]) {
+        failedNotes[UploadError.DOCUMENT_NAME_DUPLICATED].forEach((index: number) => {
+          setError(`notes.${index}.name`, {
+            type: 'manual',
+            message: 'Document name is duplicated',
+          });
+        });
+      }
+
+      if (failedNotes[UploadError.SCHEMA_VALIDATION_ERROR]) {
+        failedNotes[UploadError.SCHEMA_VALIDATION_ERROR].forEach((index: number) => {
+          setError(`notes.${index}.name`, {
+            type: 'manual',
+            message: 'Please ensure your document name is between 1 and 100 characters long',
+          });
+        });
+      }
+
+      if (failedNotes[UploadError.INVALID_FILE_TYPE]) {
+        failedNotes[UploadError.INVALID_FILE_TYPE].forEach((index: number) => {
+          setError(`notes.${index}.file`, {
+            type: 'manual',
+            message: 'Invalid file type',
+          });
+        });
+      }
+
+      if (failedNotes[UploadError.DOCUMENT_NAME_IN_DB]) {
+        failedNotes[UploadError.DOCUMENT_NAME_IN_DB].forEach((index: number) => {
+          setError(`notes.${index}.name`, {
+            type: 'manual',
+            message: 'Document name already exists in the database',
+          });
+        });
+      }
+    }
+
+    setAlertContent(alertContent);
+    setOpenAlert(true);
   };
 
   const handleAddNotes = (eventFiles: FileList) => {
@@ -100,7 +191,7 @@ export const UploadPage = () => {
           <UploadNote
             key={field.id}
             control={control}
-            errors={Boolean(errors.notes)}
+            errors={errors.notes && (errors.notes[index] as FieldErrors<NoteInfoProps>)}
             field={field}
             options={options}
             index={index}
