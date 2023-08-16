@@ -1,4 +1,4 @@
-import { useState, useContext, ElementType, ReactNode } from 'react';
+import { useState, useContext, ElementType, ReactNode, useEffect } from 'react';
 import { Controller } from 'react-hook-form';
 import { fetchCategory, SubjectType, fetchAllSubjects } from '@api/library';
 import { Combobox } from '@components';
@@ -24,6 +24,25 @@ export const UploadNote = ({
   const { user } = useContext(AuthContext);
   const { isDesktop } = useContext(MediaQueryContext);
   const categoryValue = watch(`notes.${index}.category`);
+
+  const fetchSubjectsForCategory = async (categoryId: number) => {
+    const categoryData = await fetchCategory({
+      category_id: categoryId,
+    });
+    const subjects = await fetchAllSubjects(categoryData.id);
+    setSubjectsData(
+      subjects.map((subject: SubjectType) => ({
+        id: subject.id,
+        name: subject.name,
+      })),
+    );
+  };
+
+  useEffect(() => {
+    if (categoryValue && categoryValue !== 0) {
+      fetchSubjectsForCategory(Number(categoryValue));
+    }
+  }, [categoryValue]);
 
   const wrapForMobile = (component: ReactNode) => {
     if (isDesktop) {
@@ -148,17 +167,6 @@ export const UploadNote = ({
                             value={field.value}
                             onChange={async (newValue) => {
                               field.onChange(newValue);
-                              if (newValue === '') return;
-                              const categoryData = await fetchCategory({
-                                category_id: Number(newValue),
-                              });
-                              const subjects = await fetchAllSubjects(categoryData.id);
-                              setSubjectsData(
-                                subjects.map((subject: SubjectType) => ({
-                                  id: subject.id,
-                                  name: subject.name,
-                                })),
-                              );
                             }}
                             options={
                               options?.categories.map((category) => ({
