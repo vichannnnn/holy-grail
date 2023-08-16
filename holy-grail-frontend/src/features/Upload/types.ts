@@ -1,5 +1,5 @@
 import { CategoryType, DocumentType, SubjectType, CommonType } from '@api/library';
-import { Control } from 'react-hook-form';
+import { Control, FieldErrors } from 'react-hook-form';
 
 export interface OptionsProps {
   categories: CategoryType[];
@@ -9,18 +9,18 @@ export interface OptionsProps {
 }
 
 export interface NoteInfoProps {
+  name: string;
   category: number;
   subject: number;
   type: number;
   year?: number;
-  name: string;
   file: File;
 }
 
 export interface UploadNoteProps {
   options: OptionsProps | null;
   deleteNote: () => void;
-  errors?: boolean;
+  errors?: FieldErrors<NoteInfoProps>;
   control: Control<{ notes: NoteInfoProps[] }>;
   field: NoteInfoProps & { id: string };
   watch: (name?: string | string[] | number, defaultValue?: string | number) => string | number;
@@ -29,4 +29,15 @@ export interface UploadNoteProps {
 
 export interface FileSelectProps {
   handleAddNotes: (files: FileList) => void;
+}
+
+export type NotesFormData = {
+  notes: NoteInfoProps[];
+};
+
+export enum UploadError {
+  DOCUMENT_NAME_DUPLICATED = 'DOCUMENT_NAME_DUPLICATED',
+  DOCUMENT_NAME_IN_DB = 'DOCUMENT_NAME_IN_DB',
+  INVALID_FILE_TYPE = 'INVALID_FILE_TYPE',
+  SCHEMA_VALIDATION_ERROR = 'SCHEMA_VALIDATION_ERROR',
 }
