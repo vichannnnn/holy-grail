@@ -1,4 +1,8 @@
 import * as Yup from 'yup';
+import { NoteInfoProps, NotesFormData } from '@features';
+
+const SUPPORTED_FORMATS = ['application/pdf'];
+const SOME_SIZE_LIMIT = 1048576000;
 
 export const SignUpValidation = Yup.object().shape({
   username: Yup.string()
@@ -45,19 +49,37 @@ export const ChangeEmailValidation = Yup.object().shape({
   new_email: Yup.string().email('Invalid email').required('Email is required'),
 });
 
-export const ChangePasswordValidation = Yup.object().shape({
-  currentPassword: Yup.string().required('Password is required'),
+const UploadNoteValidation = Yup.object<NoteInfoProps>().shape({
+  name: Yup.string()
+    .required('Document name is required')
+    .min(1, 'Minimum 1 character')
+    .max(100, 'Maximum 100 characters'),
+  subject: Yup.number()
+    .typeError('Subject is required')
+    .required('Subject is required')
+    .notOneOf([0], 'Subject is required'),
+  type: Yup.number()
+    .typeError('Type is required')
+    .required('Type is required')
+    .notOneOf([0], 'Type is required'),
+  category: Yup.number()
+    .typeError('Category is required')
+    .required('Category is required')
+    .notOneOf([0], 'Category is required'),
+  file: Yup.mixed<File>()
+    .required()
+    .test(
+      'fileSize',
+      'File too large',
+      (value) => value instanceof File && value.size <= SOME_SIZE_LIMIT,
+    )
+    .test(
+      'fileType',
+      'Unsupported File Format',
+      (value) => value instanceof File && SUPPORTED_FORMATS.includes(value.type),
+    ),
+});
 
-  newPassword: Yup.string()
-    .matches(/[!@#$%^&*]/, 'Password must contain a special character.')
-    .matches(/[A-Z]/, 'Password must contain an uppercase letter.')
-    .min(8, 'Password must be at least 8 characters long.')
-    .max(30, 'Password cannot exceed 30 characters.')
-    .required('Password is required'),
-
-  repeatPassword: Yup.string()
-    .test('repeatPassword-log', 'Repeat password does not match new password', (value, context) => {
-      return value === context.parent.newPassword;
-    })
-    .required('Repeat password is required'),
+export const UploadNotesValidation = Yup.object<NotesFormData>().shape({
+  notes: Yup.array<NoteInfoProps>().of(UploadNoteValidation).required(),
 });

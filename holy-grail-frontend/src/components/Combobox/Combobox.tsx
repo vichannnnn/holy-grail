@@ -22,10 +22,19 @@ export interface ComboboxProps
   value: number | '';
   onChange: (newValue: number | '') => void;
   error?: boolean;
+  helperText?: string;
   options: CommonType[];
 }
 
-export const Combobox = ({ label, value, onChange, error, options, ...props }: ComboboxProps) => {
+export const Combobox = ({
+  label,
+  value,
+  onChange,
+  error,
+  options,
+  helperText,
+  ...props
+}: ComboboxProps) => {
   return (
     <Autocomplete
       value={options.find((option) => option.id === value) || null}
@@ -37,7 +46,9 @@ export const Combobox = ({ label, value, onChange, error, options, ...props }: C
           onChange(newValue.id);
         }
       }}
-      renderInput={(params) => <TextField {...params} label={label} error={error} />}
+      renderInput={(params) => (
+        <TextField {...params} label={label} error={error} helperText={helperText} />
+      )}
       isOptionEqualToValue={(option: string | CommonType, value: string | CommonType) =>
         typeof option !== 'string' && typeof value !== 'string' ? option.id === value.id : false
       }
