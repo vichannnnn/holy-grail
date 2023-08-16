@@ -99,6 +99,8 @@ export const UploadNote = ({
                           variant='outlined'
                           value={field.value}
                           onChange={field.onChange}
+                          error={Boolean(errors && errors.name)}
+                          helperText={errors && errors.name ? errors.name.message : ' '}
                         />
                       )}
                     />
@@ -128,6 +130,8 @@ export const UploadNote = ({
                                 variant='outlined'
                                 value={field.value}
                                 onChange={field.onChange}
+                                error={Boolean(errors && errors.name)}
+                                helperText={errors && errors.name ? errors.name.message : ' '}
                               />
                             )}
                           />
@@ -162,6 +166,8 @@ export const UploadNote = ({
                                 name: category.name,
                               })) ?? []
                             }
+                            error={Boolean(errors && errors.category)}
+                            helperText={errors && errors.category ? errors.category.message : ' '}
                           />
                         )}
                       />
@@ -177,6 +183,8 @@ export const UploadNote = ({
                             onChange={field.onChange}
                             options={subjectsData}
                             disabled={!categoryValue || categoryValue === 0}
+                            error={Boolean(errors && errors.subject)}
+                            helperText={errors && errors.subject ? errors.subject.message : ' '}
                           />
                         )}
                       />
@@ -197,6 +205,8 @@ export const UploadNote = ({
                                 name: type.name,
                               })) ?? []
                             }
+                            error={Boolean(errors && errors.type)}
+                            helperText={errors && errors.type ? errors.type.message : ' '}
                           />
                         )}
                       />
@@ -209,7 +219,7 @@ export const UploadNote = ({
                           <Combobox
                             className='note-combobox'
                             label='Year'
-                            value={field.value}
+                            value={field.value ?? ''}
                             onChange={field.onChange}
                             options={
                               options?.years.map((year) => ({
@@ -217,6 +227,7 @@ export const UploadNote = ({
                                 name: year.name,
                               })) ?? []
                             }
+                            helperText=' '
                           />
                         )}
                       />
