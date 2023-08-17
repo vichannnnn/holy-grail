@@ -14,6 +14,7 @@ import {
   NotesFormData,
   UploadError,
 } from '@features';
+import { Button } from '@mui/material';
 import { UploadNotesValidation } from '@forms/validation';
 import { AuthContext } from '@providers';
 import { useNavigation } from '@utils';
@@ -30,7 +31,6 @@ export const UploadPage = () => {
 
   const [openDeleteAlert, setOpenDeleteAlert] = useState<boolean>(false);
   const [deleteAlertKey, setDeleteAlertKey] = useState<number | null>(null);
-  const [mirrorValues, setMirrorValues] = useState(false);
 
   const {
     control,
@@ -57,18 +57,17 @@ export const UploadPage = () => {
     });
   }, [isLoading, user]);
 
-  useEffect(() => {
-    if (mirrorValues && fields.length > 1) {
-      fields.forEach((_, index) => {
-        if (index !== 0) {
-          setValue(`notes.${index}.category`, firstNote.category, { shouldValidate: true });
-          setValue(`notes.${index}.subject`, firstNote.subject, { shouldValidate: true });
-          setValue(`notes.${index}.type`, firstNote.type);
-          setValue(`notes.${index}.year`, firstNote.year);
-        }
-      });
-    }
-  }, [mirrorValues]);
+  const handleMirrorValues = () => {
+    if (fields.length <= 1) return;
+    fields.forEach((_, index) => {
+      if (index !== 0) {
+        setValue(`notes.${index}.category`, firstNote.category, { shouldValidate: true });
+        setValue(`notes.${index}.subject`, firstNote.subject, { shouldValidate: true });
+        setValue(`notes.${index}.type`, firstNote.type);
+        setValue(`notes.${index}.year`, firstNote.year);
+      }
+    });
+  };
 
   const statusAlertContent: (response: AxiosResponse) => AlertProps = (response) => {
     const generalisedAlertError: AlertProps = {
@@ -203,16 +202,16 @@ export const UploadPage = () => {
         to the Holy Grail.
       </div>
 
-      {fields.length > 1 && (
-        <div>
-          <input
-            type='checkbox'
-            checked={mirrorValues}
-            onChange={(e) => setMirrorValues(e.target.checked)}
-          />
-          <label>Mirror values from the first note</label>
-        </div>
-      )}
+      <div>
+        <Button
+          variant='contained'
+          color='primary'
+          onClick={handleMirrorValues}
+          disabled={fields.length <= 1}
+        >
+          Mirror first note properties
+        </Button>
+      </div>
 
       <form onSubmit={handleSubmit(handleSubmitUpload)} className='upload__multiContainer'>
         {fields.map((field, index) => (
