@@ -4,10 +4,21 @@ import { fetchCategory, SubjectType, fetchAllSubjects } from '@api/library';
 import { Combobox } from '@components';
 import { UploadNoteProps } from '@features';
 import { MediaQueryContext, AuthContext } from '@providers';
-import { Typography, TextField, Grid, Collapse, Box } from '@mui/material';
+import {
+  Typography,
+  TextField,
+  Grid,
+  Collapse,
+  Box,
+  IconButton,
+  Menu,
+  MenuItem,
+} from '@mui/material';
 import { ExpandMore, ExpandLess } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import './UploadNote.css';
+import { set } from 'lodash';
 
 export const UploadNote = ({
   options,
@@ -17,9 +28,11 @@ export const UploadNote = ({
   index,
   watch,
   deleteNote,
+  mirrorNote,
 }: UploadNoteProps) => {
   const [subjectsData, setSubjectsData] = useState<{ id: number; name: string }[]>([]);
   const [expanded, setExpanded] = useState<boolean>(true);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const { user } = useContext(AuthContext);
   const { isDesktop } = useContext(MediaQueryContext);
@@ -37,6 +50,8 @@ export const UploadNote = ({
       })),
     );
   };
+
+  useEffect(() => setAnchorEl(null), [expanded, isDesktop]);
 
   useEffect(() => {
     if (categoryValue && categoryValue !== 0) {
@@ -86,11 +101,12 @@ export const UploadNote = ({
             {isDesktop ? (
               renderExpandIcon()
             ) : (
-              <DeleteIcon
-                color='error'
-                onClick={deleteNote}
-                style={{ position: 'absolute', top: '8px', right: '8px' }}
-              />
+              <IconButton
+                onClick={(event) => setAnchorEl(event.currentTarget)}
+                style={{ position: 'absolute', top: '8px', right: '8px', padding: 0 }}
+              >
+                <MoreHorizIcon />
+              </IconButton>
             )}
           </Grid>
 
@@ -245,18 +261,50 @@ export const UploadNote = ({
               </Box>
               {isDesktop ? (
                 <Box className='note-form-box'>
-                  <DeleteIcon
-                    color='error'
-                    style={{ cursor: 'pointer' }}
-                    className={isDesktop ? 'delete-icon-desktop' : 'delete-icon-mobile'}
-                    onClick={deleteNote}
-                  />
+                  <IconButton
+                    onClick={(event) => setAnchorEl(event.currentTarget)}
+                    style={{ padding: 0 }}
+                  >
+                    <MoreHorizIcon />
+                  </IconButton>
                 </Box>
               ) : null}
             </Box>
           </Collapse>
         </Grid>
       </div>
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={() => setAnchorEl(null)}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+      >
+        <MenuItem
+          className='upload-item-options'
+          onClick={() => {
+            mirrorNote();
+            setAnchorEl(null);
+          }}
+        >
+          Mirror properties to all
+        </MenuItem>
+        <MenuItem
+          className='upload-item-options'
+          onClick={() => {
+            deleteNote();
+            setAnchorEl(null);
+          }}
+        >
+          Delete this field
+        </MenuItem>
+      </Menu>
     </div>
   );
 };
