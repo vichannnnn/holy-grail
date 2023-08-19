@@ -57,16 +57,24 @@ export const UploadPage = () => {
     });
   }, [isLoading, user]);
 
-  const handleMirrorValues = () => {
+  const handleMirrorNotes = (toMirror: number) => {
     if (fields.length <= 1) return;
+    const toMirrorNote = watch(`notes.${toMirror}`);
     fields.forEach((_, index) => {
       if (index !== 0) {
-        setValue(`notes.${index}.category`, firstNote.category, { shouldValidate: true });
-        setValue(`notes.${index}.subject`, firstNote.subject, { shouldValidate: true });
-        setValue(`notes.${index}.type`, firstNote.type);
-        setValue(`notes.${index}.year`, firstNote.year);
+        setValue(`notes.${index}.category`, toMirrorNote.category, { shouldValidate: true });
+        setValue(`notes.${index}.subject`, toMirrorNote.subject, { shouldValidate: true });
+        setValue(`notes.${index}.type`, toMirrorNote.type);
+        setValue(`notes.${index}.year`, toMirrorNote.year);
       }
     });
+  };
+
+  const handleMirrorNote = (index: number) => {
+    setValue(`notes.${index}.category`, firstNote.category, { shouldValidate: true });
+    setValue(`notes.${index}.subject`, firstNote.subject, { shouldValidate: true });
+    setValue(`notes.${index}.type`, firstNote.type);
+    setValue(`notes.${index}.year`, firstNote.year);
   };
 
   const statusAlertContent: (response: AxiosResponse) => AlertProps = (response) => {
@@ -206,7 +214,7 @@ export const UploadPage = () => {
         <Button
           variant='contained'
           color='primary'
-          onClick={handleMirrorValues}
+          onClick={() => handleMirrorNotes(0)}
           disabled={fields.length <= 1}
         >
           Mirror first note properties
@@ -227,6 +235,7 @@ export const UploadPage = () => {
               setOpenDeleteAlert(true);
               setDeleteAlertKey(index);
             }}
+            mirrorNote={() => handleMirrorNotes(index)}
           />
         ))}
         <FileSelect handleAddNotes={handleAddNotes} />
