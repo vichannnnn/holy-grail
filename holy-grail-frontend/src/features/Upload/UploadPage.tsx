@@ -61,12 +61,10 @@ export const UploadPage = () => {
     if (fields.length <= 1) return;
     const toMirrorNote = watch(`notes.${toMirror}`);
     fields.forEach((_, index) => {
-      if (index !== 0) {
-        setValue(`notes.${index}.category`, toMirrorNote.category, { shouldValidate: true });
-        setValue(`notes.${index}.subject`, toMirrorNote.subject, { shouldValidate: true });
-        setValue(`notes.${index}.type`, toMirrorNote.type);
-        setValue(`notes.${index}.year`, toMirrorNote.year);
-      }
+      setValue(`notes.${index}.category`, toMirrorNote.category, { shouldValidate: true });
+      setValue(`notes.${index}.subject`, toMirrorNote.subject, { shouldValidate: true });
+      setValue(`notes.${index}.type`, toMirrorNote.type);
+      setValue(`notes.${index}.year`, toMirrorNote.year);
     });
   };
 
