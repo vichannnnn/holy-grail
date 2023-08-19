@@ -20,6 +20,7 @@ export interface NoteInfoProps {
 export interface UploadNoteProps {
   options: OptionsProps | null;
   deleteNote: () => void;
+  mirrorNote: () => void;
   errors?: FieldErrors<NoteInfoProps>;
   control: Control<{ notes: NoteInfoProps[] }>;
   field: NoteInfoProps & { id: string };
