@@ -19,6 +19,7 @@ import {
 } from '@features';
 import { AuthProvider, MediaQueryProvider } from '@providers';
 import { createTheme, ThemeProvider } from '@mui/material';
+import ReactGA from "react-ga4";
 
 const customMuiTheme = {
   components: {
@@ -43,6 +44,7 @@ export function App() {
 
   const location = useLocation();
   useEffect(() => {
+    ReactGA.send({ hitType: "pageview", page: location.pathname + location.hash });
     if (location.state && location.state.alertContent) {
       setAlertContent(location.state.alertContent);
       setOpenAlert(true);
