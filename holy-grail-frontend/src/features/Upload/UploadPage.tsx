@@ -49,7 +49,9 @@ export const UploadPage = () => {
     control,
     name: 'notes',
   });
-  const firstNote = watch('notes.0');
+
+  const formData = watch();
+  console.log(formData);
 
   useEffect(() => {
     fetchLibraryTypes().then((options) => {
@@ -68,11 +70,8 @@ export const UploadPage = () => {
     });
   };
 
-  const handleMirrorNote = (index: number) => {
-    setValue(`notes.${index}.category`, firstNote.category, { shouldValidate: true });
-    setValue(`notes.${index}.subject`, firstNote.subject, { shouldValidate: true });
-    setValue(`notes.${index}.type`, firstNote.type);
-    setValue(`notes.${index}.year`, firstNote.year);
+  const resetSubjectForNote = (noteIndex: number) => {
+    setValue(`notes.${noteIndex}.subject`, 0);
   };
 
   const statusAlertContent: (response: AxiosResponse) => AlertProps = (response) => {
@@ -234,6 +233,7 @@ export const UploadPage = () => {
               setDeleteAlertKey(index);
             }}
             mirrorNote={() => handleMirrorNotes(index)}
+            resetSubject={() => resetSubjectForNote(index)}
           />
         ))}
         <FileSelect handleAddNotes={handleAddNotes} />

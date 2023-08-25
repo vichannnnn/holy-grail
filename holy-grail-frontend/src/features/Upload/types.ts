@@ -26,6 +26,7 @@ export interface UploadNoteProps {
   field: NoteInfoProps & { id: string };
   watch: (name?: string | string[] | number, defaultValue?: string | number) => string | number;
   index: number;
+  resetSubject: (noteIndex: number) => void;
 }
 
 export interface FileSelectProps {
