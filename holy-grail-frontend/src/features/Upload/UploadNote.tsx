@@ -15,10 +15,8 @@ import {
   MenuItem,
 } from '@mui/material';
 import { ExpandMore, ExpandLess } from '@mui/icons-material';
-import DeleteIcon from '@mui/icons-material/Delete';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import './UploadNote.css';
-import { set } from 'lodash';
 
 export const UploadNote = ({
   options,
@@ -29,11 +27,11 @@ export const UploadNote = ({
   watch,
   deleteNote,
   mirrorNote,
+  resetSubject,
 }: UploadNoteProps) => {
   const [subjectsData, setSubjectsData] = useState<{ id: number; name: string }[]>([]);
   const [expanded, setExpanded] = useState<boolean>(true);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
   const { user } = useContext(AuthContext);
   const { isDesktop } = useContext(MediaQueryContext);
   const categoryValue = watch(`notes.${index}.category`);
@@ -57,6 +55,7 @@ export const UploadNote = ({
     if (categoryValue && categoryValue !== 0) {
       fetchSubjectsForCategory(Number(categoryValue));
     }
+    resetSubject(index);
   }, [categoryValue]);
 
   const wrapForMobile = (component: ReactNode) => {
