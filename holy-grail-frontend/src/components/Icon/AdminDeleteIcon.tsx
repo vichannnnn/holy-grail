@@ -1,4 +1,5 @@
 import DeleteIcon from '@mui/icons-material/Delete';
+import './AdminIcon.css';
 
 interface AdminDeleteIconProps {
   noteId: number;
