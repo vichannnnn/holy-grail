@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import { useForm, useFieldArray, FieldErrors } from 'react-hook-form';
 import { AxiosResponse } from 'axios';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { fetchLibraryTypes } from '@api/library';
+import { fetchAllSubjects, fetchCategory, fetchLibraryTypes, SubjectType } from '@api/library';
 import { createNote } from '@api/actions';
 import { AlertToast, AlertProps } from '@components';
 import {
@@ -14,7 +14,6 @@ import {
   NotesFormData,
   UploadError,
 } from '@features';
-import { Button } from '@mui/material';
 import { UploadNotesValidation } from '@forms/validation';
 import { AuthContext } from '@providers';
 import { useNavigation } from '@utils';
@@ -70,12 +69,25 @@ export const UploadPage = () => {
     });
   }, [isLoading, user]);
 
+  const fetchSubjectsForCategory = async (categoryId: number) => {
+    const categoryData = await fetchCategory({
+      category_id: categoryId,
+    });
+    const subjects = await fetchAllSubjects(categoryData.id);
+    return subjects.map((subject: SubjectType) => ({
+      id: subject.id,
+      name: subject.name,
+    }));
+  };
+
   const handleMirrorNotes = (toMirror: number) => {
     if (fields.length <= 1) return;
     const toMirrorNote = watch(`notes.${toMirror}`);
     fields.forEach((_, index) => {
       setValue(`notes.${index}.category`, toMirrorNote.category, { shouldValidate: true });
-      setValue(`notes.${index}.subject`, toMirrorNote.subject, { shouldValidate: true });
+      fetchSubjectsForCategory(Number(toMirrorNote.category)).then(() => {
+        setValue(`notes.${index}.subject`, toMirrorNote.subject, { shouldValidate: true });
+      });
       setValue(`notes.${index}.type`, toMirrorNote.type);
       setValue(`notes.${index}.year`, toMirrorNote.year);
     });
@@ -178,10 +190,10 @@ export const UploadPage = () => {
       setOpenAlert(true);
       return;
     }
-    if (files.length + fields.length >= 10) {
+    if (files.length + fields.length >= 25) {
       setAlertContent({
         title: 'Error',
-        description: 'You can only upload up to 10 documents at a time.',
+        description: 'You can only upload up to 25 documents at a time.',
         severity: 'error',
       });
       setOpenAlert(true);
@@ -218,17 +230,6 @@ export const UploadPage = () => {
         to the Holy Grail.
       </div>
 
-      <div>
-        <Button
-          variant='contained'
-          color='primary'
-          onClick={() => handleMirrorNotes(0)}
-          disabled={fields.length <= 1}
-        >
-          Mirror first note properties
-        </Button>
-      </div>
-
       <form onSubmit={handleSubmit(handleSubmitUpload)} className='upload__multiContainer'>
         {fields.map((field, index) => (
           <UploadNote
@@ -245,6 +246,7 @@ export const UploadPage = () => {
             }}
             mirrorNote={() => handleMirrorNotes(index)}
             resetSubject={() => resetSubjectForNote(index)}
+            totalNotesCount={fields.length}
           />
         ))}
         <FileSelect handleAddNotes={handleAddNotes} />

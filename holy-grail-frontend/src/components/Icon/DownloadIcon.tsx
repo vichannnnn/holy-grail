@@ -1,7 +1,8 @@
 import { MouseEvent } from 'react';
-import { Download } from '@mui/icons-material';
 import { Note } from '@api/library';
 import { ButtonBase } from '@mui/material';
+import { Download } from '@mui/icons-material';
+import './DownloadIcon.css';
 
 interface DownloadIconProps {
   handleDownloadNote: (event: MouseEvent<HTMLAnchorElement>, note: Note) => Promise<void>;
@@ -9,11 +10,7 @@ interface DownloadIconProps {
 }
 
 export const DownloadIcon = ({ handleDownloadNote, note }: DownloadIconProps) => (
-  <ButtonBase
-    className='admin-actions'
-    href='#'
-    onClick={(event) => handleDownloadNote(event, note)}
-  >
-    <Download className='admin-icon' />
+  <ButtonBase href='#' onClick={(event) => handleDownloadNote(event, note)}>
+    <Download className='download-icon' />
   </ButtonBase>
 );

@@ -1,4 +1,5 @@
 import CheckIcon from '@mui/icons-material/Check';
+import './AdminIcon.css';
 
 interface AdminApproveIconProps {
   noteId: number;
