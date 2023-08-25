@@ -7,11 +7,33 @@
     align-items: center;
 }
 
-.upload__multiContainer{
+.upload__multiContainer {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 2vh;
     margin-top: 3rem;
+}
+
+.upload-notes-submit-button {
+    border-color: transparent;
+    background-color: rgb(49, 130, 206);
+    text-transform: capitalize;
+    color: white;
+    font-weight: bold;
+    border-radius: 4px;
+    width: 96px;
+    height: 42px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.upload-notes-submit-button:hover {
+    background-color: rgba(49, 130, 206, 0.75);
+}
+
+.upload-notes-submit-button:disabled {
+    cursor: not-allowed;
 }
