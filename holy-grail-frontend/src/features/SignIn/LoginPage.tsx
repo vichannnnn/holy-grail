@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { AccountForm, AlertToast, AlertProps } from '@components';
@@ -7,12 +7,14 @@ import { SignInValidation } from '@forms/validation';
 import { useNavigation } from '@utils';
 import { Box, Button, FormControl, Stack, TextField, Link } from '@mui/material';
 import './login.css';
+import { useNavigate } from 'react-router-dom';
 
 export const LoginPage = () => {
   const { goToHome, goToRegister, goToForgotPassword } = useNavigation();
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
-  const { user, login } = useContext(AuthContext);
+  const { user, isLoading, login } = useContext(AuthContext);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -24,6 +26,14 @@ export const LoginPage = () => {
   if (user) {
     goToHome();
   }
+
+  useEffect(() => {
+    if (!isLoading) {
+      if (user) {
+        navigate('/');
+      }
+    }
+  }, [isLoading, user]);
 
   const handleLogin = async (formData: LogInDetails) => {
     try {
