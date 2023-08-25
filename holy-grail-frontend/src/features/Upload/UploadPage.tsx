@@ -20,6 +20,7 @@ import { AuthContext } from '@providers';
 import { useNavigation } from '@utils';
 import { LoadingButton } from '@mui/lab';
 import './upload.css';
+import { useNavigate } from 'react-router-dom';
 
 export const UploadPage = () => {
   const { goToHome, goToLoginPage } = useNavigation();
@@ -28,9 +29,9 @@ export const UploadPage = () => {
 
   const { user, isLoading } = useContext(AuthContext);
   const [options, setOptions] = useState<OptionsProps | null>(null);
-
   const [openDeleteAlert, setOpenDeleteAlert] = useState<boolean>(false);
   const [deleteAlertKey, setDeleteAlertKey] = useState<number | null>(null);
+  const navigate = useNavigate();
 
   const {
     control,
@@ -50,8 +51,18 @@ export const UploadPage = () => {
     name: 'notes',
   });
 
-  const formData = watch();
-  console.log(formData);
+  useEffect(() => {
+    if (!isLoading) {
+      if (!user) {
+        const alertContentRedirect: AlertProps = {
+          title: 'Please login.',
+          description: 'You need to be logged in to upload resources.',
+          severity: 'error',
+        };
+        navigate('/login', { state: { alertContent: alertContentRedirect } });
+      }
+    }
+  }, [isLoading, user]);
 
   useEffect(() => {
     fetchLibraryTypes().then((options) => {
