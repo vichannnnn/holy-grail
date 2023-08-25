@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useForm, useFieldArray, FieldErrors } from 'react-hook-form';
 import { AxiosResponse } from 'axios';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -17,15 +18,13 @@ import {
 import { UploadNotesValidation } from '@forms/validation';
 import { AuthContext } from '@providers';
 import { useNavigation } from '@utils';
-import { LoadingButton } from '@mui/lab';
 import './upload.css';
-import { useNavigate } from 'react-router-dom';
 
 export const UploadPage = () => {
   const { goToHome, goToLoginPage } = useNavigation();
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
-
+  const [isUploading, setIsUploading] = useState<boolean>(false);
   const { user, isLoading } = useContext(AuthContext);
   const [options, setOptions] = useState<OptionsProps | null>(null);
   const [openDeleteAlert, setOpenDeleteAlert] = useState<boolean>(false);
@@ -123,6 +122,7 @@ export const UploadPage = () => {
   };
 
   const handleSubmitUpload = async (formData: { notes: NoteInfoProps[] }) => {
+    setIsUploading(true);
     const response = await createNote(formData.notes);
     const alertContent = statusAlertContent(response);
 
@@ -174,6 +174,7 @@ export const UploadPage = () => {
       }
     }
 
+    setIsUploading(false);
     setAlertContent(alertContent);
     setOpenAlert(true);
   };
@@ -250,21 +251,14 @@ export const UploadPage = () => {
           />
         ))}
         <FileSelect handleAddNotes={handleAddNotes} />
-        <LoadingButton
-          loadingIndicator='Submitting...'
-          sx={{
-            borderColor: 'transparent',
-            backgroundColor: 'rgb(237, 242, 247)',
-            textTransform: 'capitalize',
-            color: 'black',
-            fontWeight: 'bold',
-            width: '10%',
-            borderRadius: '4px',
-          }}
+
+        <button
+          className='upload-notes-submit-button'
           type='submit'
+          disabled={isUploading || fields.length === 0}
         >
           Submit
-        </LoadingButton>
+        </button>
       </form>
       <DeleteAlert
         isOpen={openDeleteAlert}
