@@ -116,6 +116,13 @@ export const UploadPage = () => {
         description: 'Please login to upload documents.',
         severity: 'error',
       } as AlertProps;
+    }
+    if (response.status === 429) {
+      return {
+        title: 'Rate Limit Exceeded',
+        description: "You're trying too fast! Please try again in 1 minute.",
+        severity: 'error',
+      } as AlertProps;
     } else {
       return generalisedAlertError;
     }
