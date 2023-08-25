@@ -1,7 +1,7 @@
 import { useState, useContext, ElementType, ReactNode, useEffect } from 'react';
 import { Controller } from 'react-hook-form';
 import { fetchCategory, SubjectType, fetchAllSubjects } from '@api/library';
-import { Combobox } from '@components';
+import { Combobox, NoteOptionsIcon } from '@components';
 import { UploadNoteProps } from '@features';
 import { MediaQueryContext, AuthContext } from '@providers';
 import {
@@ -28,25 +28,29 @@ export const UploadNote = ({
   deleteNote,
   mirrorNote,
   resetSubject,
+  totalNotesCount,
 }: UploadNoteProps) => {
   const [subjectsData, setSubjectsData] = useState<{ id: number; name: string }[]>([]);
   const [expanded, setExpanded] = useState<boolean>(true);
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<(EventTarget & Element) | null>(null);
   const { user } = useContext(AuthContext);
   const { isDesktop } = useContext(MediaQueryContext);
   const categoryValue = watch(`notes.${index}.category`);
 
   const fetchSubjectsForCategory = async (categoryId: number) => {
-    const categoryData = await fetchCategory({
+    return fetchCategory({
       category_id: categoryId,
-    });
-    const subjects = await fetchAllSubjects(categoryData.id);
-    setSubjectsData(
-      subjects.map((subject: SubjectType) => ({
-        id: subject.id,
-        name: subject.name,
-      })),
-    );
+    })
+      .then((categoryData) => fetchAllSubjects(categoryData.id))
+      .then((subjects) => {
+        setSubjectsData(
+          subjects.map((subject: SubjectType) => ({
+            id: subject.id,
+            name: subject.name,
+          })),
+        );
+        return subjects;
+      });
   };
 
   useEffect(() => setAnchorEl(null), [expanded, isDesktop]);
@@ -260,12 +264,7 @@ export const UploadNote = ({
               </Box>
               {isDesktop ? (
                 <Box className='note-form-box'>
-                  <IconButton
-                    onClick={(event) => setAnchorEl(event.currentTarget)}
-                    style={{ padding: 0 }}
-                  >
-                    <MoreHorizIcon />
-                  </IconButton>
+                  <NoteOptionsIcon onClick={(event) => setAnchorEl(event.currentTarget)} />
                 </Box>
               ) : null}
             </Box>
@@ -286,13 +285,14 @@ export const UploadNote = ({
         }}
       >
         <MenuItem
+          disabled={totalNotesCount <= 1}
           className='upload-item-options'
           onClick={() => {
             mirrorNote();
             setAnchorEl(null);
           }}
         >
-          Mirror properties to all
+          Mirror properties to all other notes
         </MenuItem>
         <MenuItem
           className='upload-item-options'

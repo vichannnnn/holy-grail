@@ -132,7 +132,7 @@ class Library(Base, CRUD["Library"]):
         uploaded_by: int,
         s3_bucket: boto3.client,
     ):
-        if len(form_data) > 50:
+        if len(form_data) > 25:
             raise AppError.BAD_REQUEST_ERROR
 
         valid_notes: List[tuple[NoteCreateSchema, int]] = []

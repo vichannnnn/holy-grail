@@ -11,6 +11,7 @@ module.exports = {
   rules: {
     '@typescript-eslint/no-empty-function': 'off',
     'react-refresh/only-export-components': 'off',
+    'react-hooks/exhaustive-deps': 'off'
 
   },
 }
