@@ -110,6 +110,14 @@ export const UploadPage = () => {
         severity: 'success',
       } as AlertProps;
     }
+    if (response.status === 400) {
+      return {
+        title: 'Error',
+        description:
+          'You can upload a maximum of 25 documents at once. Please remove some documents and try again.',
+        severity: 'error',
+      } as AlertProps;
+    }
     if (response.status === 401) {
       return {
         title: 'Error',
@@ -149,16 +157,6 @@ export const UploadPage = () => {
 
     if (response.status === 400) {
       const failedNotes = response.data['detail'];
-      console.log(failedNotes);
-
-      if (failedNotes[UploadError.DOCUMENT_NAME_DUPLICATED]) {
-        failedNotes[UploadError.DOCUMENT_NAME_DUPLICATED].forEach((index: number) => {
-          setError(`notes.${index}.name`, {
-            type: 'manual',
-            message: 'Document name is duplicated',
-          });
-        });
-      }
 
       if (failedNotes[UploadError.SCHEMA_VALIDATION_ERROR]) {
         failedNotes[UploadError.SCHEMA_VALIDATION_ERROR].forEach((index: number) => {
@@ -174,15 +172,6 @@ export const UploadPage = () => {
           setError(`notes.${index}.file`, {
             type: 'manual',
             message: 'Invalid file type',
-          });
-        });
-      }
-
-      if (failedNotes[UploadError.DOCUMENT_NAME_IN_DB]) {
-        failedNotes[UploadError.DOCUMENT_NAME_IN_DB].forEach((index: number) => {
-          setError(`notes.${index}.name`, {
-            type: 'manual',
-            message: 'Document name already exists in the database',
           });
         });
       }

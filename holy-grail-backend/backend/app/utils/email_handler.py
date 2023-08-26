@@ -14,6 +14,8 @@ verify_email_template = env.get_template("verify_email.html")
 reset_password_email_template = env.get_template("reset_password.html")
 new_password_email_template = env.get_template("new_password.html")
 
+APPLICATION_JSON_TYPE = "application/json"
+
 
 def send_email_verification_mail(
     sender_name: str,
@@ -32,9 +34,9 @@ def send_email_verification_mail(
     }
 
     headers = {
-        "Accept": "application/json",
+        "Accept": APPLICATION_JSON_TYPE,
         "Api-Token": MAILTRAP_API_KEY,
-        "Content-Type": "application/json",
+        "Content-Type": APPLICATION_JSON_TYPE,
     }
 
     with httpx.Client() as client:
@@ -59,9 +61,9 @@ def send_reset_password_mail(
     }
 
     headers = {
-        "Accept": "application/json",
+        "Accept": APPLICATION_JSON_TYPE,
         "Api-Token": MAILTRAP_API_KEY,
-        "Content-Type": "application/json",
+        "Content-Type": APPLICATION_JSON_TYPE,
     }
 
     with httpx.Client() as client:
@@ -82,9 +84,9 @@ def send_new_password_mail(
     }
 
     headers = {
-        "Accept": "application/json",
+        "Accept": APPLICATION_JSON_TYPE,
         "Api-Token": MAILTRAP_API_KEY,
-        "Content-Type": "application/json",
+        "Content-Type": APPLICATION_JSON_TYPE,
     }
 
     with httpx.Client() as client:
