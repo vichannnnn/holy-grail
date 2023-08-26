@@ -99,8 +99,8 @@ class Library(Base, CRUD["Library"]):
         uploaded_by: int,
         s3_bucket: boto3.client,
     ):
-        # A form has 5 fields, we have 25 limits so it should be 25 * 5
-        if len(form_data) > 25 * 5:
+        # A form has 6 fields, we have 25 limits so it should be 25 * 6
+        if len(form_data) > 25 * 6:
             raise AppError.BAD_REQUEST_ERROR
 
         valid_notes: List[tuple[NoteCreateSchema, int]] = []
