@@ -1,4 +1,4 @@
-import { Autocomplete, AutocompleteProps, TextField } from '@mui/material';
+import { Autocomplete, AutocompleteProps, TextField, Typography } from '@mui/material';
 import { SyntheticEvent } from 'react';
 import { CommonType } from '@api/library';
 
@@ -47,7 +47,16 @@ export const Combobox = ({
         }
       }}
       renderInput={(params) => (
-        <TextField {...params} label={label} error={error} helperText={helperText} />
+        <TextField
+          {...params}
+          label={label}
+          error={error}
+          helperText={
+            <Typography sx={{ fontSize: '80%', position: 'absolute' }} noWrap>
+              {helperText}
+            </Typography>
+          }
+        />
       )}
       isOptionEqualToValue={(option: string | CommonType, value: string | CommonType) =>
         typeof option !== 'string' && typeof value !== 'string' ? option.id === value.id : false
