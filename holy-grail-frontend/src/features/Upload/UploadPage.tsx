@@ -117,6 +117,13 @@ export const UploadPage = () => {
         severity: 'error',
       } as AlertProps;
     }
+    if (response.status === 403) {
+      return {
+        title: 'Error',
+        description: 'You must verify your account before you upload notes.',
+        severity: 'error',
+      } as AlertProps;
+    }
     if (response.status === 429) {
       return {
         title: 'Rate Limit Exceeded',
