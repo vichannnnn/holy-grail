@@ -26,11 +26,13 @@
 }
 
 .expand-icon {
+    cursor: pointer;
     position: absolute;
     right: 8px;
 }
 
 .collapse-icon {
+    cursor: pointer;
     position: absolute;
     top: 8px;
     right: 8px;
@@ -121,15 +123,6 @@
 
 .note-form-box {
     margin-left: 2%;
-}
-
-.delete-icon-desktop {
-    display: inline-block;
-}
-
-.delete-icon-mobile {
-    flex-grow: 0;
-    display: none;
 }
 
 .upload-item-options {
