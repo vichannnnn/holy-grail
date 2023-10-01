@@ -16,11 +16,13 @@ from starlette.datastructures import FormData
 from app.crud.base import CRUD
 from app.db.base_class import Base
 from app.models.auth import Account
+from app.schemas.auth import RoleEnum
 from app.schemas.library import NoteCreateSchema, NoteInsertSchema, NoteSchema
 from app.utils.exceptions import AppError
 from app.utils.file_handler import (
     save_file,
     accepted_doc_type_extensions,
+    developer_accepted_doc_type_extensions,
     S3_BUCKET_URL,
 )
 from app.utils.upload_errors import UploadError
@@ -95,6 +97,7 @@ class Library(Base, CRUD["Library"]):
     async def create_many(
         cls,
         session: AsyncSession,
+        uploader_role: RoleEnum,
         form_data: FormData,
         uploaded_by: int,
         s3_bucket: boto3.client,
@@ -123,7 +126,10 @@ class Library(Base, CRUD["Library"]):
         idxes_to_remove = []
         for note, idx in valid_notes:
             try:
-                accepted_doc_type_extensions[note.file.content_type]
+                if uploader_role.DEVELOPER:
+                    developer_accepted_doc_type_extensions[note.file.content_type]
+                else:
+                    accepted_doc_type_extensions[note.file.content_type]
 
             except KeyError:
                 failed_notes[UploadError.INVALID_FILE_TYPE.name].append(idx)
@@ -140,7 +146,12 @@ class Library(Base, CRUD["Library"]):
         objs = []
         files: List[Tuple[UploadFile, str]] = []
         for note, idx in valid_notes:
-            extension = accepted_doc_type_extensions[note.file.content_type]
+            if uploader_role.DEVELOPER:
+                extension = developer_accepted_doc_type_extensions[
+                    note.file.content_type
+                ]
+            else:
+                extension = accepted_doc_type_extensions[note.file.content_type]
             file_id = uuid.uuid4().hex
             file_name = file_id + extension
             data_insert = NoteInsertSchema(

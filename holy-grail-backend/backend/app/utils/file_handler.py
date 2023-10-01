@@ -21,6 +21,13 @@ accepted_doc_type_extensions = {
     # "text/plain": ".txt",
 }
 
+developer_accepted_doc_type_extensions = {
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document": ".docx",
+    "application/pdf": ".pdf",
+    "text/plain": ".txt",
+    "application/zip": ".zip",
+}
+
 
 async def save_file(file: UploadFile, file_name: str, s3_client: boto3.client) -> str:
     file.filename = file_name

@@ -28,6 +28,7 @@ async def create_note(
     async with request.form() as form:
         notes = await Library.create_many(
             session,
+            uploader_role=authenticated.role,
             form_data=form,
             uploaded_by=authenticated.user_id,
             s3_bucket=s3_bucket,
