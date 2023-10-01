@@ -33,10 +33,20 @@ async def save_file(file: UploadFile, file_name: str, s3_client: boto3.client) -
     file.filename = file_name
     file_content = await file.read()
     file_obj = BytesIO(file_content)
+    print(file.filename)
+    if file.filename.endswith(".zip"):
+        print("true!")
+        ExtraArgs = {
+            "ContentType": "application/zip",
+            "ContentDisposition": "attachment",
+        }
+    else:
+        ExtraArgs = {"ContentType": "application/pdf", "ContentDisposition": "inline"}
+
     s3_client.upload_fileobj(
         Fileobj=file_obj,
         Bucket=S3_BUCKET_NAME,
         Key=file.filename,
-        ExtraArgs={"ContentType": "application/pdf", "ContentDisposition": "inline"},
+        ExtraArgs=ExtraArgs,
     )
     return file.filename

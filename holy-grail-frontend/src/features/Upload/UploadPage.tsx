@@ -145,6 +145,7 @@ export const UploadPage = () => {
 
   const handleSubmitUpload = async (formData: { notes: NoteInfoProps[] }) => {
     setIsUploading(true);
+
     const response = await createNote(formData.notes);
     const alertContent = statusAlertContent(response);
 
@@ -184,16 +185,29 @@ export const UploadPage = () => {
 
   const handleAddNotes = (eventFiles: FileList) => {
     const files = Array.from(eventFiles);
-
-    if (files.some((file) => file.type !== 'application/pdf')) {
-      setAlertContent({
-        title: 'Error',
-        description: 'Please ensure all files uploaded are pdf files.',
-        severity: 'error',
-      });
-      setOpenAlert(true);
-      return;
+    if (user && user.role === 3) {
+      const devAcceptedTypes = ['application/pdf', 'application/zip'];
+      if (files.some((file) => !devAcceptedTypes.includes(file.type))) {
+        setAlertContent({
+          title: 'Error',
+          description: 'Please ensure all files uploaded are pdf or zip files.',
+          severity: 'error',
+        });
+        setOpenAlert(true);
+        return;
+      }
+    } else {
+      if (files.some((file) => file.type !== 'application/pdf')) {
+        setAlertContent({
+          title: 'Error',
+          description: 'Please ensure all files uploaded are pdf files.',
+          severity: 'error',
+        });
+        setOpenAlert(true);
+        return;
+      }
     }
+
     if (files.length + fields.length >= 25) {
       setAlertContent({
         title: 'Error',

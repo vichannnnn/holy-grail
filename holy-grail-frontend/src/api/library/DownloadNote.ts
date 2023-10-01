@@ -8,10 +8,11 @@ export const downloadNote = async (note: Note) => {
 
   if (response.status === 200) {
     const blob = new Blob([response.data]);
+
     const blobUrl = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = blobUrl;
-    link.download = `${note.document_name}.pdf`;
+    link.download = `${note.document_name}`;
     link.click();
     URL.revokeObjectURL(blobUrl);
   } else {

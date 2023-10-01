@@ -1,12 +1,13 @@
 import { useEffect, useRef, useContext } from 'react';
 import { FileSelectProps } from '@features';
-import { MediaQueryContext } from '@providers';
+import { AuthContext, MediaQueryContext } from '@providers';
 import { Button, Typography } from '@mui/material';
 
 export const FileSelect = ({ handleAddNotes }: FileSelectProps) => {
   const dragDropRef = useRef<HTMLDivElement | null>(null);
   const fileRef = useRef<HTMLInputElement | null>(null);
   const { isDesktop } = useContext(MediaQueryContext);
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     const drop = dragDropRef.current as HTMLDivElement;
@@ -80,7 +81,7 @@ export const FileSelect = ({ handleAddNotes }: FileSelectProps) => {
         multiple
         ref={fileRef}
         type='file'
-        accept='application/pdf'
+        accept={user && user.role === 3 ? 'application/pdf, application/zip' : 'application/pdf'}
         // , text/plain, application/vnd.openxmlformats-officedocument.wordprocessingml.document
         onChange={(event) => {
           if (event.target.files) {
