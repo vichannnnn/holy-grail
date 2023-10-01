@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 import { NoteInfoProps, NotesFormData } from '@features';
 
-const SUPPORTED_FORMATS = ['application/pdf'];
+const SUPPORTED_FORMATS = ['application/pdf', 'application/zip'];
 const SOME_SIZE_LIMIT = 1048576000;
 
 export const SignUpValidation = Yup.object().shape({
