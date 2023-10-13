@@ -92,6 +92,7 @@ class Library(Base, CRUD["Library"]):
     doc_category: Mapped["CategoryLevel"] = relationship(back_populates="documents")
     doc_subject: Mapped["Subjects"] = relationship(back_populates="documents")
     doc_type: Mapped["DocumentTypes"] = relationship(back_populates="documents")
+    extension: Mapped[str] = mapped_column(nullable=False, server_default=text("pdf"))
 
     @classmethod
     async def create_many(
@@ -152,10 +153,14 @@ class Library(Base, CRUD["Library"]):
                 ]
             else:
                 extension = accepted_doc_type_extensions[note.file.content_type]
+
             file_id = uuid.uuid4().hex
-            file_name = file_id + extension
+            file_name = file_id
             data_insert = NoteInsertSchema(
-                **note.dict(), uploaded_by=uploaded_by, file_name=file_name
+                **note.dict(),
+                uploaded_by=uploaded_by,
+                file_name=file_name,
+                extension=extension,
             )
             obj = Library(**data_insert.dict())
             objs.append(obj)
