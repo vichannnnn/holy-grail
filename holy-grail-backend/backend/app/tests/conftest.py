@@ -1,9 +1,11 @@
 import asyncio
+from io import BytesIO
 from typing import AsyncGenerator
 
 import pytest
 import sqlalchemy.exc as SQLAlchemyExceptions
 from fastapi.testclient import TestClient
+from fpdf import FPDF
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 
@@ -276,15 +278,36 @@ def test_category_insert_university():
 
 @pytest.fixture(name="test_note_insert")
 def test_note_insert():
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font("Arial", size=12)
+    pdf.cell(200, 10, txt="Test PDF Content", ln=True, align="C")
+
+    pdf_content = pdf.output(name="", dest="S").encode("latin1")
+    pdf_buffer = BytesIO(pdf_content)
+
     yield schemas.library.NoteCreateSchema(
-        category=1, subject=1, type=1, document_name="Document"
+        file=pdf_buffer,
+        category=1,
+        subject=1,
+        type=1,
+        year=2022,
+        document_name="Document",
     )
 
 
 @pytest.fixture(name="test_note_insert_2")
 def test_note_insert_2():
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font("Arial", size=12)
+    pdf.cell(200, 10, txt="Test PDF Content", ln=True, align="C")
+
+    pdf_content = pdf.output(name="", dest="S").encode("latin1")
+    pdf_buffer = BytesIO(pdf_content)
+
     yield schemas.library.NoteCreateSchema(
-        category=1, subject=1, type=1, document_name="Document2"
+        file=pdf_buffer, category=1, subject=1, type=1, document_name="Document2"
     )
 
 
