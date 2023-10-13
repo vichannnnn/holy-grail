@@ -31,6 +31,7 @@ developer_accepted_doc_type_extensions = {
 
 async def save_file(file: UploadFile, file_name: str, s3_client: boto3.client) -> str:
     file.filename = file_name
+    print(file_name)
     file_content = await file.read()
     file_obj = BytesIO(file_content)
     if file.filename.endswith(".zip"):
