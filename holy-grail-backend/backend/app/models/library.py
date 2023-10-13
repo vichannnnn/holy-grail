@@ -266,7 +266,7 @@ class Library(Base, CRUD["Library"]):
         cls, session: AsyncSession, id: int
     ):  # pylint: disable=W0622, C0103
         note: NoteSchema = await cls.get(session, id)
-        url = S3_BUCKET_URL + note.file_name + note.extension
+        url = S3_BUCKET_URL + note.file_name
 
         async with httpx.AsyncClient() as client:
             response = await client.get(url)
