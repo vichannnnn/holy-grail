@@ -127,7 +127,7 @@ class Library(Base, CRUD["Library"]):
         idxes_to_remove = []
         for note, idx in valid_notes:
             try:
-                if uploader_role.DEVELOPER:
+                if uploader_role == uploader_role.DEVELOPER:
                     developer_accepted_doc_type_extensions[note.file.content_type]
                 else:
                     accepted_doc_type_extensions[note.file.content_type]
