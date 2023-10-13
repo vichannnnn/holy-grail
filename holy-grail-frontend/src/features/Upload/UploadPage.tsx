@@ -20,6 +20,10 @@ import { AuthContext } from '@providers';
 import { useNavigation } from '@utils';
 import './upload.css';
 
+function getFileNameWithoutExtension(fileName: string) {
+  return fileName.split('.').slice(0, -1).join('.');
+}
+
 export const UploadPage = () => {
   const { goToHome, goToLoginPage } = useNavigation();
   const [openAlert, setOpenAlert] = useState<boolean>(false);
@@ -223,7 +227,7 @@ export const UploadPage = () => {
         category: 0,
         subject: 0,
         type: 0,
-        name: file.name,
+        name: getFileNameWithoutExtension(file.name),
         year: 0,
         file: file,
       });
