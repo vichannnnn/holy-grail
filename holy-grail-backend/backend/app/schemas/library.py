@@ -27,6 +27,7 @@ class NoteInsertSchema(BaseModel):
     document_name: str
     uploaded_by: int
     file_name: str
+    extension: str
 
 
 class NoteUpdateSchema(BaseModel):
@@ -36,6 +37,7 @@ class NoteUpdateSchema(BaseModel):
     type: Optional[int]
     year: Optional[int]
     uploaded_by: Optional[int]
+    extension: Optional[str]
 
 
 class NoteSchema(BaseModel):
@@ -54,3 +56,4 @@ class NoteSchema(BaseModel):
     doc_category: CategorySchema
     doc_subject: SubjectSchema
     account: UploaderSchema
+    extension: str
