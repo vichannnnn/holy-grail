@@ -164,7 +164,7 @@ class Library(Base, CRUD["Library"]):
             )
             obj = Library(**data_insert.dict())
             objs.append(obj)
-            files.append((note.file, file_name))
+            files.append((note.file, file_name + extension))
 
         try:
             session.add_all(objs)

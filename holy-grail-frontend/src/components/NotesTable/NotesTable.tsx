@@ -295,7 +295,7 @@ export const NotesTable = ({
                   >
                     <TableCell className='table__content' component='th' scope='row'>
                       <Link
-                        href={`${VITE_APP_AWS_S3_BUCKET_URL}/${note.file_name}${note.extension}`}
+                        href={`${VITE_APP_AWS_S3_BUCKET_URL}/${note.file_name}`}
                         target='_blank'
                         rel='noopener noreferrer'
                         underline='hover'
