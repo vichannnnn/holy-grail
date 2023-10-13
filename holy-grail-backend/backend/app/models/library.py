@@ -159,12 +159,12 @@ class Library(Base, CRUD["Library"]):
             data_insert = NoteInsertSchema(
                 **note.dict(),
                 uploaded_by=uploaded_by,
-                file_name=file_name,
+                file_name=file_name + extension,
                 extension=extension,
             )
             obj = Library(**data_insert.dict())
             objs.append(obj)
-            files.append((note.file, file_name + extension))
+            files.append((note.file, file_name))
 
         try:
             session.add_all(objs)
