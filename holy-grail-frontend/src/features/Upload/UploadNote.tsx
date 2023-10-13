@@ -126,7 +126,6 @@ export const UploadNote = ({
                     <Controller
                       name={`notes.${index}.name`}
                       control={control}
-                      defaultValue={field.name}
                       render={({ field }) => (
                         <TextField
                           className='document-name-text-field'

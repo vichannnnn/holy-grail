@@ -51,6 +51,7 @@ export type Note = {
     user_id: number;
     username: string;
   };
+  extension: string;
 };
 
 export interface CommonType {
