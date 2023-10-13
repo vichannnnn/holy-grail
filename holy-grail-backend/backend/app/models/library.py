@@ -92,7 +92,7 @@ class Library(Base, CRUD["Library"]):
     doc_category: Mapped["CategoryLevel"] = relationship(back_populates="documents")
     doc_subject: Mapped["Subjects"] = relationship(back_populates="documents")
     doc_type: Mapped["DocumentTypes"] = relationship(back_populates="documents")
-    extension: Mapped[str] = mapped_column(nullable=False, server_default=text("pdf"))
+    extension: Mapped[str] = mapped_column(server_default=".pdf", nullable=False)
 
     @classmethod
     async def create_many(

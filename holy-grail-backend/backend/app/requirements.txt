@@ -24,6 +24,7 @@ mailtrap
 prometheus-fastapi-instrumentator==6.0.0
 moto[s3]
 requests-toolbelt==1.0.0
+fpdf==1.7.2
 
 # LINTING
 black==23.3.0
