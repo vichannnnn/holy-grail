@@ -1,4 +1,5 @@
 import asyncio
+import zipfile
 from io import BytesIO
 from typing import AsyncGenerator
 
@@ -308,6 +309,38 @@ def test_note_insert_2():
 
     yield schemas.library.NoteCreateSchema(
         file=pdf_buffer, category=1, subject=1, type=1, document_name="Document2"
+    )
+
+
+@pytest.fixture(name="test_note_insert_pdf")
+def test_note_insert_pdf():
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font("Arial", size=12)
+    pdf.cell(200, 10, txt="Test PDF Content", ln=True, align="C")
+
+    pdf_content = pdf.output(name="", dest="S").encode("latin1")
+    pdf_buffer = BytesIO(pdf_content)
+
+    yield schemas.library.NoteCreateSchema(
+        file=pdf_buffer, category=1, subject=1, type=1, document_name="peedeeeff.pdf"
+    )
+
+
+@pytest.fixture(name="test_note_insert_zip")
+def test_note_insert_zip():
+    zip_buffer = BytesIO()
+    with zipfile.ZipFile(zip_buffer, "a", zipfile.ZIP_DEFLATED, False) as zipf:
+        zipf.writestr("test_file.txt", "This is some content inside the ZIP file.")
+    zip_buffer.seek(0)
+
+    yield schemas.library.NoteCreateSchema(
+        file=zip_buffer,
+        category=1,
+        subject=1,
+        type=1,
+        year=2022,
+        document_name="zeep.zip",
     )
 
 
