@@ -164,7 +164,7 @@ class Library(Base, CRUD["Library"]):
             )
             obj = Library(**data_insert.dict())
             objs.append(obj)
-            files.append((note.file, file_name))
+            files.append((note.file, file_name + extension))
 
         try:
             session.add_all(objs)
@@ -266,7 +266,7 @@ class Library(Base, CRUD["Library"]):
         cls, session: AsyncSession, id: int
     ):  # pylint: disable=W0622, C0103
         note: NoteSchema = await cls.get(session, id)
-        url = S3_BUCKET_URL + note.file_name
+        url = S3_BUCKET_URL + note.file_name + note.extension
 
         async with httpx.AsyncClient() as client:
             response = await client.get(url)
@@ -276,7 +276,7 @@ class Library(Base, CRUD["Library"]):
                 response = Response(content=content)
                 response.headers[
                     "Content-Disposition"
-                ] = f"attachment; filename={note.document_name}.pdf"
+                ] = f"attachment; filename={note.document_name}{note.extension}"
                 return response
             else:
                 raise HTTPException(
