@@ -21,8 +21,8 @@ def upgrade():
     op.add_column("library", sa.Column("extension", sa.String()))
 
     # Step 2: Update the extension column based on file_name values
-    op.execute("UPDATE library SET extension = 'pdf' WHERE file_name LIKE '%.pdf'")
-    op.execute("UPDATE library SET extension = 'zip' WHERE file_name LIKE '%.zip'")
+    op.execute("UPDATE library SET extension = '.pdf' WHERE file_name LIKE '%.pdf'")
+    op.execute("UPDATE library SET extension = '.zip' WHERE file_name LIKE '%.zip'")
 
     # Update the 'document_name' column to remove the .pdf and .zip extensions
     op.execute(
