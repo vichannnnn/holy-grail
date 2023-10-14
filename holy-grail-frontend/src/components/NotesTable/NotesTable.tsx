@@ -364,7 +364,7 @@ export const NotesTable = ({
                   </CardContent>
                   <Box sx={{ p: 2 }}>
                     <Link
-                      href={`${VITE_APP_AWS_S3_BUCKET_URL}/${note.file_name}`}
+                      href={`${VITE_APP_AWS_S3_BUCKET_URL}/${note.file_name}${note.extension}`}
                       target='_blank'
                       rel='noopener noreferrer'
                       underline='always'
