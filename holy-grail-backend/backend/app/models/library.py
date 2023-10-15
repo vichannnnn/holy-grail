@@ -23,7 +23,7 @@ from app.utils.file_handler import (
     save_file,
     accepted_doc_type_extensions,
     developer_accepted_doc_type_extensions,
-    S3_BUCKET_URL,
+    AWS_CLOUDFRONT_URL,
 )
 from app.utils.upload_errors import UploadError
 
@@ -266,7 +266,7 @@ class Library(Base, CRUD["Library"]):
         cls, session: AsyncSession, id: int
     ):  # pylint: disable=W0622, C0103
         note: NoteSchema = await cls.get(session, id)
-        url = S3_BUCKET_URL + note.file_name
+        url = AWS_CLOUDFRONT_URL + "/" + note.file_name
 
         async with httpx.AsyncClient() as client:
             response = await client.get(url)
