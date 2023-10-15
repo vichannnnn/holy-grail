@@ -46,6 +46,7 @@ async def read_note_by_id(
 
 
 @router.get("/download/{id}")
+@conditional_rate_limit("20/5minute")
 async def download_note_by_id(
     session: CurrentSession,
     id: int,  # pylint: disable=W0622, C0103
