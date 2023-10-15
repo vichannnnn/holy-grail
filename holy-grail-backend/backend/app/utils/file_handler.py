@@ -10,6 +10,7 @@ S3_BUCKET_NAME = (
     "test-bucket" if os.environ.get("TESTING") else os.environ["AWS_S3_BUCKET_NAME"]
 )
 S3_BUCKET_URL = f"https://{S3_BUCKET_NAME}.s3.ap-southeast-1.amazonaws.com/"
+AWS_CLOUDFRONT_URL = os.environ["AWS_CLOUDFRONT_URL"]
 
 s3_app_client = boto3.client(
     "s3", aws_access_key_id=S3_KEY_ID, aws_secret_access_key=S3_KEY
