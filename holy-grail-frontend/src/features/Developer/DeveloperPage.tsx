@@ -1,9 +1,13 @@
-import { useEffect, useState, SyntheticEvent } from 'react';
+import { useEffect, useState, SyntheticEvent, useContext } from 'react';
 import { CategoryType, DocumentType, fetchLibraryTypes, SubjectType } from '@api/library';
 import { User, TabContent, TabContentSubjects, Hero, TabContentUsers } from '@features';
 import { Tab, Tabs } from '@mui/material';
+import { AuthContext } from '@providers';
+import { useNavigate } from 'react-router-dom';
+import { AlertProps } from '@components';
 
 export const DeveloperPage = () => {
+  const { user, isLoading } = useContext(AuthContext);
   const [value, setValue] = useState(0);
   const [data, setData] = useState<{
     categories: CategoryType[];
@@ -11,6 +15,20 @@ export const DeveloperPage = () => {
     types: DocumentType[];
     users: User[];
   }>({ categories: [], subjects: [], types: [], users: [] });
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isLoading) {
+      if (!user) {
+        const alertContentRedirect: AlertProps = {
+          title: 'You are not allowed here!',
+          description: 'Please log in as an administrator or developer to access this page.',
+          severity: 'error',
+        };
+        navigate('/login', { state: { alertContent: alertContentRedirect } });
+      }
+    }
+  }, [isLoading, user]);
 
   const handleChange = (event: SyntheticEvent, newValue: number) => {
     setValue(newValue);

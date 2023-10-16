@@ -1,6 +1,26 @@
 import { ApprovalTable, Hero } from '@features';
+import { useContext, useEffect } from 'react';
+import { AuthContext } from '@providers';
+import { AlertProps } from '@components';
+import { useNavigate } from 'react-router-dom';
 
 export const ApprovalPage = () => {
+  const { user, isLoading } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isLoading) {
+      if (!user) {
+        const alertContentRedirect: AlertProps = {
+          title: 'You are not allowed here!',
+          description: 'Please log in as an administrator or developer to access this page.',
+          severity: 'error',
+        };
+        navigate('/login', { state: { alertContent: alertContentRedirect } });
+      }
+    }
+  }, [isLoading, user]);
+
   return (
     <>
       <Hero />
