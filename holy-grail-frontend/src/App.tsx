@@ -10,12 +10,13 @@ import {
   Footer,
   Header,
   LoginPage,
+  Library,
+  LandingPage,
   ResetPasswordPage,
   NotFound,
   SignUpPage,
   UploadPage,
   AccountPage,
-  Library,
 } from '@features';
 import { AuthProvider, MediaQueryProvider } from '@providers';
 import { createTheme, ThemeProvider } from '@mui/material';
@@ -58,7 +59,8 @@ export function App() {
         <AuthProvider>
           <Header />
           <Routes>
-            <Route path='/' element={<Library />} />
+            <Route path='/' element={<LandingPage />} />
+            <Route path='/library' element={<Library />} />
             <Route path='/login' element={<LoginPage />} />
             <Route path='/register' element={<SignUpPage />} />
             <Route path='/upload' element={<UploadPage />} />

@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { AuthContext } from '@providers';
 import { useNavigation } from '@utils';
-import './landing.css';
+import './FAQ.css';
 
 export const FAQ = () => {
   const { goToUploadPage, goToLoginPage } = useNavigation();
@@ -42,7 +42,7 @@ export const FAQ = () => {
           <div className='faq__qn'>How do I use the Holy Grail?</div>
           <p className='faq__ans'>
             You can access the resources uploaded at the{' '}
-            <RouterLink to='/#library' className='text__link'>
+            <RouterLink to='/library' className='text__link'>
               Library
             </RouterLink>{' '}
             above this section. Anyone is able to freely access these resources even without having
