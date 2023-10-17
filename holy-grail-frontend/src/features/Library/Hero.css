@@ -1,0 +1,13 @@
+.home {
+    padding-top: 3rem;
+}
+
+.horizontal-divider {
+    margin-bottom: 2rem;
+}
+
+@media screen and (max-width: 600px) {
+    .home {
+        padding-top: 1rem;
+    }
+}
