@@ -1,10 +1,8 @@
-import { Hero, FAQ, Library } from '@features';
+import { FAQ } from '@features';
 
 export const LandingPage = () => {
   return (
     <>
-      <Hero />
-      <Library />
       <FAQ />
     </>
   );
