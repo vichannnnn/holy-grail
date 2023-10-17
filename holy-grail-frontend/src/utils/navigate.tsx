@@ -7,7 +7,7 @@ export const useNavigation = () => {
   const goToRegister = (options = {}) => navigate('/register', options);
   const goToUploadPage = (options = {}) => navigate('/upload', options);
   const goToLoginPage = (options = {}) => navigate('/login', options);
-  const goToLibrary = (options = {}) => navigate('/#library', options);
+  const goToLibrary = (options = {}) => navigate('/library', options);
   const goToFAQ = (options = {}) => navigate('/#faq', options);
   const goToUpdatePassword = (options = {}) => navigate('/update-password', options);
   const goToForgotPassword = (options = {}) => navigate('/forgot-password', options);
