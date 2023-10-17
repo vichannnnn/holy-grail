@@ -22,7 +22,7 @@ export const Footer = () => {
               <RouterLink to='/#home'>Home</RouterLink>
             </Grid>
             <Grid item className='footer__content'>
-              <RouterLink to='/#library'>Library</RouterLink>
+              <RouterLink to='/library'>Library</RouterLink>
             </Grid>
             <Grid item className='footer__content'>
               <RouterLink to='/#FAQ'>FAQ</RouterLink>

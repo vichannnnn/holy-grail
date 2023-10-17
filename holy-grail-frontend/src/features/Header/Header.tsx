@@ -164,7 +164,7 @@ export const Header = () => {
               </li>
               <li className='nav__item'>
                 <HashLink
-                  to='/#library'
+                  to='/library'
                   scroll={(el: HTMLElement) => el.scrollIntoView({ behavior: 'smooth' })}
                   onClick={() => setActiveNav('#library')}
                 >
