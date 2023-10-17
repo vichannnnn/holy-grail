@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { AuthContext } from '@providers';
-import './landing.css';
+import '../Landing/landing.css';
 
 export const Hero = () => {
   const { user } = useContext(AuthContext);

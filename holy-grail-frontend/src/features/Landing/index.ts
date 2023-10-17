@@ -1,3 +1,3 @@
 export * from './FAQ';
-export * from './Hero';
+export * from '../Library/Hero';
 export * from './LandingPage';
