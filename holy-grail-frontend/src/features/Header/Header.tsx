@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { ReactNode, useContext, useEffect, useState } from 'react';
 import { HashLink } from 'react-router-hash-link';
 import { Link as RouterLink } from 'react-router-dom';
 import { resendVerificationEmail } from '@api/auth';
@@ -6,6 +6,18 @@ import { AlertToast, AlertProps } from '@components';
 import { UserButton } from '@features';
 import { AuthContext, MediaQueryContext } from '@providers';
 import { useNavigation } from '@utils';
+
+import HomeIcon from '@mui/icons-material/Home';
+import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
+import HelpIcon from '@mui/icons-material/Help';
+import PublishIcon from '@mui/icons-material/Publish';
+
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import MailOutline from '@mui/icons-material/MailOutline';
+import Settings from '@mui/icons-material/Settings';
+import DeveloperMode from '@mui/icons-material/DeveloperMode';
+import ExitToApp from '@mui/icons-material/ExitToApp';
+import VpnKey from '@mui/icons-material/VpnKey';
 
 import './header.css';
 import Logo from '../../assets/grail-chan-happy.png';
@@ -29,7 +41,7 @@ export const Header = () => {
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
 
   const [UserButtonChildren, setUserButtonChildren] = useState<
-    { label: string; callback: () => void }[]
+    { label: string; icon?: ReactNode | null; callback: () => void }[]
   >([]);
 
   useEffect(() => {
@@ -39,6 +51,7 @@ export const Header = () => {
       children.push(
         {
           label: 'Home',
+          icon: <HomeIcon />,
           callback: () => {
             const homeElement = document.querySelector('#home');
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -51,6 +64,7 @@ export const Header = () => {
         },
         {
           label: 'Library',
+          icon: <LibraryBooksIcon />,
           callback: () => {
             const libraryElement = document.querySelector('#library');
             if (libraryElement) {
@@ -62,6 +76,7 @@ export const Header = () => {
         },
         {
           label: 'FAQ',
+          icon: <HelpIcon />,
           callback: () => {
             const faqElement = document.querySelector('#faq');
             if (faqElement) {
@@ -73,6 +88,7 @@ export const Header = () => {
         },
         {
           label: 'Contribute',
+          icon: <PublishIcon />,
           callback: () => {
             const contributeElement = document.querySelector('#contribute');
             if (contributeElement) {
@@ -86,22 +102,35 @@ export const Header = () => {
     }
 
     if (user) {
-      children.push({ label: 'My Account', callback: () => goToAccountPage() });
+      children.push({
+        label: 'My Account',
+        icon: <AccountCircle />,
+        callback: () => goToAccountPage(),
+      });
       if (!user.verified) {
         children.push({
           label: 'Resend Verification Email',
+          icon: <MailOutline />,
           callback: handleResendVerificationEmail,
         });
       }
       if (user.role > 1) {
-        children.push({ label: 'Admin Panel', callback: () => goToAdminPanel() });
+        children.push({
+          label: 'Admin Panel',
+          icon: <Settings />,
+          callback: () => goToAdminPanel(),
+        });
       }
       if (user.role > 2) {
-        children.push({ label: 'Developer Panel', callback: () => goToDeveloperPanel() });
+        children.push({
+          label: 'Developer Panel',
+          icon: <DeveloperMode />,
+          callback: () => goToDeveloperPanel(),
+        });
       }
-      children.push({ label: 'Log Out', callback: handleLogout });
+      children.push({ label: 'Log Out', icon: <ExitToApp />, callback: handleLogout });
     } else {
-      children.push({ label: 'Log In', callback: () => goToLoginPage() });
+      children.push({ label: 'Log In', icon: <VpnKey />, callback: () => goToLoginPage() });
     }
 
     setUserButtonChildren(children);
