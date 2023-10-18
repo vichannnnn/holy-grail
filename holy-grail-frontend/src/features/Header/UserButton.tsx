@@ -1,12 +1,12 @@
-import { useContext, useEffect, useState, MouseEvent } from 'react';
+import { useContext, useEffect, useState, MouseEvent, ReactNode } from 'react';
 import { HeaderRightButton } from '@components';
 import { AuthContext, MediaQueryContext } from '@providers';
 import { useNavigation } from '@utils';
-import { IconButton, Menu, MenuItem } from '@mui/material';
+import { IconButton, Menu, MenuItem, Stack } from '@mui/material';
 import DensityMediumIcon from '@mui/icons-material/DensityMedium';
 
 interface UserButtonProps {
-  children: { label: string; callback: () => void }[];
+  children: { label: string; icon?: ReactNode | null; callback: () => void }[];
 }
 
 const MobileButtonFace = ({
@@ -74,7 +74,14 @@ export const UserButton = ({ children }: UserButtonProps) => {
             }}
             onClick={child.callback}
           >
-            {child.label}
+            <Stack direction='row' alignItems='center' gap={1}>
+              {child.icon && (
+                <div style={{ marginRight: '8px', position: 'relative', top: '3px' }}>
+                  {child.icon}
+                </div>
+              )}
+              {child.label}
+            </Stack>
           </MenuItem>
         ))}
       </Menu>
