@@ -9,6 +9,7 @@ import {
   CurrentUserWithJWT,
   LogInDetails,
 } from '@providers';
+import jwt_decode from 'jwt-decode';
 
 export const AuthContext = createContext<AuthContextType>({
   user: null,
@@ -19,9 +20,28 @@ export const AuthContext = createContext<AuthContextType>({
   registerUserAccount: async () => 0,
 });
 
+interface DecodedToken {
+  exp: number;
+}
+
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      const token = localStorage.getItem('access_token');
+      if (token) {
+        const decodedToken = jwt_decode<DecodedToken>(token);
+        const currentTime = Date.now() / 1000;
+        const remainingTime = decodedToken.exp - currentTime;
+        if (remainingTime < 0) {
+          logout();
+        }
+      }
+    }, 10000);
+    return () => clearInterval(intervalId);
+  }, []);
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
