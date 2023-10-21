@@ -24,7 +24,7 @@ celery_app.conf.beat_schedule = {
     },
     "fetch_google_analytics": {
         "task": "fetch_google_analytics",
-        "schedule": 15.0,
+        "schedule": 86400.0,
         "options": {"countdown": 0},
     },
 }
