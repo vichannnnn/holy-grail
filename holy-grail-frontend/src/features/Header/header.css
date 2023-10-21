@@ -62,7 +62,7 @@
     text-decoration-skip-ink: none;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 768px) {
     .nav__logo__image {
         width: 64px;
         height: 64px;
