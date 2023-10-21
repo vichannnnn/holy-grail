@@ -29,14 +29,6 @@ async def get_all_account(
     return res
 
 
-@router.get("/users/count", response_model=List[CurrentUserSchema])
-async def get_users_count(
-    session: CurrentSession, authenticated: SessionDeveloper  # pylint: disable=W0613
-):
-    res = await Account.get_users_count(session)
-    return res
-
-
 @router.get("/user/{id}", response_model=CurrentUserSchema)
 async def get_account(
     session: CurrentSession,
