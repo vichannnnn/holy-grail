@@ -5,7 +5,7 @@ from uuid import uuid4
 import jwt
 from fastapi import Response as FastAPIResponse
 from pydantic import EmailStr
-from sqlalchemy import Index, asc
+from sqlalchemy import Index, asc, func
 from sqlalchemy import exc as SQLAlchemyExceptions
 from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -59,6 +59,12 @@ class Account(Base, CRUD["Account"]):
     reset_password_token: Mapped[str] = mapped_column(nullable=True)
 
     id: Mapped[int] = synonym("user_id")
+
+    @classmethod
+    async def get_users_count(cls, session: AsyncSession):
+        stmt = select(func.count(cls.user_id))
+        result = await session.execute(stmt)
+        return result.scalar_one()
 
     @classmethod
     async def register_development(
