@@ -9,6 +9,7 @@ celery_app = Celery(
         "app.tasks.verify_email",
         "app.tasks.reset_password_email",
         "app.tasks.new_password_email",
+        "app.tasks.fetch_google_analytics",
     ],
 )
 celery_app.conf.timezone = "Asia/Singapore"
@@ -21,4 +22,5 @@ celery_app.conf.beat_schedule = {
         "task": "ping",
         "schedule": 120.0,
     },
+    "fetch_google_analytics": {"task": "fetch_google_analytics", "schedule": 86400.0},
 }
