@@ -20,7 +20,12 @@ export const Analytics = () => {
         <span className='analytics-title'>Notes Downloaded</span>
         <span className='analytics-value'>
           {analyticsData ? (
-            <CountUp start={0} end={analyticsData.file_download_count} separator=',' />
+            <CountUp
+              start={0}
+              end={analyticsData.file_download_count}
+              separator=','
+              enableScrollSpy={true}
+            />
           ) : null}
         </span>
       </div>
@@ -28,7 +33,12 @@ export const Analytics = () => {
         <span className='analytics-title'>Students</span>
         <span className='analytics-value'>
           {analyticsData ? (
-            <CountUp start={0} end={analyticsData.unique_active_users} separator=',' />
+            <CountUp
+              start={0}
+              end={analyticsData.unique_active_users}
+              separator=','
+              enableScrollSpy={true}
+            />
           ) : null}
         </span>
       </div>
@@ -36,7 +46,12 @@ export const Analytics = () => {
         <span className='analytics-title'>Accounts Created</span>
         <span className='analytics-value'>
           {analyticsData ? (
-            <CountUp start={0} end={analyticsData.user_count} separator=',' />
+            <CountUp
+              start={0}
+              end={analyticsData.user_count}
+              separator=','
+              enableScrollSpy={true}
+            />
           ) : null}
         </span>
       </div>
