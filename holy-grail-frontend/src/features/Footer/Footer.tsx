@@ -52,7 +52,7 @@ export const Footer = () => {
           </Grid>
         </Grid>
         <Grid item className='footer__copyright'>
-          &#169; 2023 Holy Grail Team
+          &#169; 2023 Holy Grail Team • Questions? Contact us at grail@himaa.me
         </Grid>
       </Grid>
     </footer>
