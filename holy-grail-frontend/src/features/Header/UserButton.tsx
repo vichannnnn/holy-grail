@@ -22,7 +22,7 @@ const MobileButtonFace = ({
 };
 
 export const UserButton = ({ children }: UserButtonProps) => {
-  const { goToLoginPage } = useNavigation();
+  const { goToLoginPage, goToRegister } = useNavigation();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { isDesktop } = useContext(MediaQueryContext);
   const { user } = useContext(AuthContext);
@@ -34,12 +34,22 @@ export const UserButton = ({ children }: UserButtonProps) => {
   return (
     <>
       {isDesktop ? (
-        <HeaderRightButton
-          onClick={(event) => (user ? setAnchorEl(event.currentTarget) : goToLoginPage())}
-          sx={{ width: 'fit-content' }}
-        >
-          {user ? user.username : 'Log In'}
-        </HeaderRightButton>
+        <>
+          {/*{!user && (*/}
+          {/*  <HeaderRightButton*/}
+          {/*    onClick={(event) => (user ? setAnchorEl(event.currentTarget) : goToRegister())}*/}
+          {/*    sx={{ width: 'fit-content' }}*/}
+          {/*  >*/}
+          {/*    Sign up*/}
+          {/*  </HeaderRightButton>*/}
+          {/*)}*/}
+          <HeaderRightButton
+            onClick={(event) => (user ? setAnchorEl(event.currentTarget) : goToLoginPage())}
+            sx={{ width: 'fit-content' }}
+          >
+            {user ? user.username : 'Log In'}
+          </HeaderRightButton>
+        </>
       ) : (
         <MobileButtonFace onClick={(event) => setAnchorEl(event.currentTarget)} />
       )}

@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { AccountDetails } from '@api/auth';
@@ -11,7 +11,7 @@ import { Box, Button, FormControl, TextField, Link, Stack } from '@mui/material'
 import '../SignIn/login.css';
 
 export const SignUpPage = () => {
-  const { goToLoginPage } = useNavigation();
+  const { goToLoginPage, goToHome } = useNavigation();
   const {
     register,
     watch,
@@ -24,6 +24,15 @@ export const SignUpPage = () => {
   const { registerUserAccount } = useContext(AuthContext);
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
+  const { user, isLoading } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (!isLoading) {
+      if (user) {
+        goToHome();
+      }
+    }
+  }, [isLoading, user]);
 
   const handleRegister = async (formData: AccountDetails) => {
     const status = await registerUserAccount(formData);
