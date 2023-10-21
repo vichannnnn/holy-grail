@@ -5,10 +5,10 @@ from fastapi.middleware import cors
 from prometheus_fastapi_instrumentator import Instrumentator
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
-from starlette_validation_uploadfile import ValidateUploadFileMiddleware
 
 from app.api.api import api_router
 from app.utils.limiter import limiter
+from app.utils.starlette_validation_uploadfile import ValidateUploadFileMiddleware
 
 app = FastAPI(
     root_path="/api/v1" if os.getenv("PRODUCTION") in ["true", "dev"] else None,

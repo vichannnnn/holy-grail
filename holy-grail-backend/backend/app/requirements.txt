@@ -17,7 +17,6 @@ pydantic[email]==1.10.11
 python-multipart
 types-requests==2.31.0.0
 PyJWT==2.7.0
-starlette_validation_uploadfile
 slowapi
 boto3==1.28.1
 mailtrap
@@ -55,7 +54,7 @@ faker==15.3.4
 coverage
 
 # celery
-celery==5.2.7
+celery==5.3.4
 psycopg==3.1.8
 psycopg-binary==3.1.8
 redis==4.5.5
