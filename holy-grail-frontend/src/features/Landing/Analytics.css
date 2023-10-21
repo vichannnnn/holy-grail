@@ -27,7 +27,7 @@
 }
 
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 913px) {
     .analytics-container {
         display: flex;
         flex-direction: column;

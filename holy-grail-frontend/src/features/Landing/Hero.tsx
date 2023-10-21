@@ -40,7 +40,7 @@ export const Hero = () => {
         </div>
         <div className='right-hero'>
           <div>
-            <h1>Want to be a contributor?</h1>
+            <h1>Want to contribute?</h1>
             <p>
               Accessing notes is free for everyone, even for those without an account, but if you
               want to contribute revision materials into the repository, you can log in or sign up

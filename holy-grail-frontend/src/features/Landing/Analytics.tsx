@@ -30,7 +30,7 @@ export const Analytics = () => {
         </span>
       </div>
       <div className='analytics-item'>
-        <span className='analytics-title'>Students</span>
+        <span className='analytics-title'>Students Visited</span>
         <span className='analytics-value'>
           {analyticsData ? (
             <CountUp

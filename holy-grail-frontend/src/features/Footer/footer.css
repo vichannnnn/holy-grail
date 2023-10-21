@@ -52,7 +52,7 @@
     font-size: var(--smaller-font-size);
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 913px) {
     .footer__section {
         gap: 1rem;
     }
