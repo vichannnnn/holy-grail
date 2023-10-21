@@ -22,5 +22,9 @@ celery_app.conf.beat_schedule = {
         "task": "ping",
         "schedule": 120.0,
     },
-    "fetch_google_analytics": {"task": "fetch_google_analytics", "schedule": 86400.0},
+    "fetch_google_analytics": {
+        "task": "fetch_google_analytics",
+        "schedule": 15.0,
+        "options": {"countdown": 0},
+    },
 }

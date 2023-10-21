@@ -1,3 +1,4 @@
+import asyncio
 import os
 
 from google.analytics.data_v1beta import BetaAnalyticsDataClient
@@ -8,9 +9,13 @@ from google.analytics.data_v1beta.types import (
     RunReportRequest,
 )
 
-from app.db.database import SessionLocal
+from app.api.deps import async_session
+from app.models.analytics import Analytics
 from app.models.auth import Account
 from app.utils.worker import celery_app
+
+loop = asyncio.new_event_loop()
+asyncio.set_event_loop(loop)
 
 
 def extract_metrics(response):
@@ -51,8 +56,12 @@ def extract_metrics(response):
     return file_download_event_count, page_view_active_user
 
 
-@celery_app.task(name="fetch_google_analytics")
-def fetch_google_analytics():
+@celery_app.task(name="fetch_google_analytics", bind=True, ignore_result=True)
+def fetch_google_analytics(self) -> None:
+    loop.run_until_complete(fetch_google_analytics_async())
+
+
+async def fetch_google_analytics_async() -> None:
     starting_date = "2023-06-14"
     ending_date = "today"
     client = BetaAnalyticsDataClient()
@@ -65,16 +74,15 @@ def fetch_google_analytics():
     )
     resp = client.run_report(request=request_api)
 
-    session = SessionLocal()
-    user_count = Account.get_users_count(session=session)
-    session.close()
+    async with async_session() as session:
+        user_count = await Account.get_users_count(session=session)
+        file_download_event_count, page_view_active_user = extract_metrics(resp)
 
-    file_download_event_count, page_view_active_user = extract_metrics(resp)
-
-    data = {
-        "file_download_count": file_download_event_count,
-        "unique_active_users": page_view_active_user,
-        "user-count": user_count,
-    }
-
+        data = {
+            "file_download_count": int(file_download_event_count),
+            "unique_active_users": int(page_view_active_user),
+            "user_count": user_count,
+        }
+        await Analytics.create(session=session, data=data)
+        print(data)
     return data
