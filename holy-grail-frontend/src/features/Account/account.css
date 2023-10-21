@@ -67,7 +67,7 @@
 
 }
 
-@media screen and (min-width: 600px) {
+@media screen and (min-width: 768px) {
     .account__main {
         margin: 2rem;
     }
