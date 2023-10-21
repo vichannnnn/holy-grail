@@ -7,6 +7,7 @@ from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 
 from app.api.api import api_router
+from app.tasks.fetch_google_analytics import fetch_google_analytics
 from app.utils.limiter import limiter
 from app.utils.starlette_validation_uploadfile import ValidateUploadFileMiddleware
 
@@ -29,3 +30,5 @@ app.add_middleware(
 
 app.include_router(api_router)
 Instrumentator().instrument(app)
+
+fetch_google_analytics.delay()
