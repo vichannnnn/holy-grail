@@ -77,7 +77,10 @@ class Subjects(Base, CRUD["subjects"]):
 
     @classmethod
     async def update(
-        cls, session: AsyncSession, id: int, data: dict  # pylint: disable=W0622, C0103
+        cls,
+        session: AsyncSession,
+        id: int,
+        data: dict,  # pylint: disable=W0622, C0103
     ) -> "Subjects":
         try:
             res = await super().update(session, id, data)

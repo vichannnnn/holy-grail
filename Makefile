@@ -52,13 +52,13 @@ migrate:
 migrations:
 	$(DC_COMMAND) run --rm $(backend_container) alembic revision --autogenerate -m $(name)
 
-pylint:
-	$(DC_COMMAND) run --rm $(backend_container) pylint ./app --disable=C0114,C0115,C0116,R0903,R0913,C0411 --extension-pkg-whitelist=pydantic --load-plugins pylint_flask_sqlalchemy
+ruff:
+	$(DC_COMMAND) run --rm $(backend_container) ruff check .
 
 mypy:
 	$(DC_COMMAND) run --rm $(backend_container) mypy ./app --install-types --strict
 
-check: pylint \
+check: ruff \
 	mypy \
 	tests \
 
