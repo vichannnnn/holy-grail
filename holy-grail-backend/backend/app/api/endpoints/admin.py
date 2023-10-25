@@ -23,7 +23,8 @@ async def approve_note(
 
 @router.get("/users", response_model=List[CurrentUserSchema])
 async def get_all_account(
-    session: CurrentSession, authenticated: SessionDeveloper  # pylint: disable=W0613
+    session: CurrentSession,
+    authenticated: SessionDeveloper,  # pylint: disable=W0613
 ):
     res = await Account.get_all_users_ascending_by_id(session)
     return res
