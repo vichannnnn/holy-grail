@@ -1,9 +1,10 @@
 from typing import TypeVar, Generic, Optional, Sequence, Type, Dict, Any, List
+
 from fastapi import Response as FastAPIResponse
+from sqlalchemy import exc as SQLAlchemyExceptions, and_
 from sqlalchemy import update, delete, select, asc
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import declared_attr, Load
-from sqlalchemy import exc as SQLAlchemyExceptions, and_
 
 from app.db.base_class import Base
 from app.utils.exceptions import AppError
@@ -27,7 +28,7 @@ class CRUD(Generic[ModelType]):
         except SQLAlchemyExceptions.IntegrityError as exc:
             await session.rollback()
             if str(exc).find("ForeignKeyViolationError") != -1:
-                raise AppError.RESOURCES_NOT_FOUND_ERROR
+                raise AppError.RESOURCES_NOT_FOUND_ERROR from exc
             elif str(exc).find("UniqueViolationError") != -1:
                 raise AppError.RESOURCES_ALREADY_EXISTS_ERROR from exc
             raise AppError.RESOURCES_ALREADY_EXISTS_ERROR from exc
@@ -62,7 +63,7 @@ class CRUD(Generic[ModelType]):
         except SQLAlchemyExceptions.IntegrityError as exc:
             await session.rollback()
             if str(exc).find("ForeignKeyViolationError") != -1:
-                raise AppError.RESOURCES_NOT_FOUND_ERROR
+                raise AppError.RESOURCES_NOT_FOUND_ERROR from exc
             elif str(exc).find("UniqueViolationError") != -1:
                 raise AppError.RESOURCES_ALREADY_EXISTS_ERROR from exc
             raise AppError.RESOURCES_ALREADY_EXISTS_ERROR from exc

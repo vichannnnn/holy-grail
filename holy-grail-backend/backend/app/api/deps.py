@@ -1,7 +1,14 @@
+import os
 from typing import AsyncGenerator, Generator, Annotated
+
+import boto3
 from fastapi import Depends
+from jose import JWTError, jwt
+from moto import mock_s3
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import Session
+
 from app.db.database import SessionLocal, async_session
-from app.utils.file_handler import s3_app_client
 from app.models.auth import (
     Authenticator,
     AppError,
@@ -10,13 +17,7 @@ from app.models.auth import (
     SECRET_KEY,
     Account,
 )
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import Session
-
-import os
-from moto import mock_s3
-import boto3
-from jose import JWTError, jwt
+from app.utils.file_handler import s3_app_client
 
 
 def get_db() -> Generator[Session, None, None]:
@@ -52,23 +53,26 @@ async def get_verified_user(
 ) -> CurrentUserSchema:
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
-        if username := payload.get("sub"):
-            if user := await Account.select_from_username(session, username):
-                if user.verified:
-                    return CurrentUserSchema(
-                        user_id=user.user_id,
-                        username=username,
-                        role=user.role,
-                        email=user.email,
-                        verified=user.verified,
-                    )
 
-                else:
-                    raise AppError.PERMISSION_DENIED_ERROR
+        username = payload.get("sub")
+        user = (
+            await Account.select_from_username(session, username) if username else None
+        )
+
+        if username and user and user.verified:
+            return CurrentUserSchema(
+                user_id=user.user_id,
+                username=username,
+                role=user.role,
+                email=user.email,
+                verified=user.verified,
+            )
+
+        else:
+            raise AppError.PERMISSION_DENIED_ERROR
 
     except JWTError as exc:
         raise AppError.INVALID_CREDENTIALS_ERROR from exc
-    raise AppError.PERMISSION_DENIED_ERROR
 
 
 async def get_current_user(
@@ -77,22 +81,25 @@ async def get_current_user(
 ) -> CurrentUserSchema:
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
-        if username := payload.get("sub"):
-            if user := await Account.select_from_username(session, username):
-                return CurrentUserSchema(
-                    user_id=user.user_id,
-                    username=username,
-                    role=user.role,
-                    email=user.email,
-                    verified=user.verified,
-                )
+        username = payload.get("sub")
+        user = (
+            await Account.select_from_username(session, username) if username else None
+        )
 
-            else:
-                raise AppError.PERMISSION_DENIED_ERROR
+        if username and user:
+            return CurrentUserSchema(
+                user_id=user.user_id,
+                username=username,
+                role=user.role,
+                email=user.email,
+                verified=user.verified,
+            )
+
+        else:
+            raise AppError.PERMISSION_DENIED_ERROR
 
     except JWTError as exc:
         raise AppError.INVALID_CREDENTIALS_ERROR from exc
-    raise AppError.PERMISSION_DENIED_ERROR
 
 
 async def get_admin(
@@ -101,23 +108,25 @@ async def get_admin(
 ) -> CurrentUserSchema:
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
-        if username := payload.get("sub"):
-            if user := await Account.select_from_username(session, username):
-                if user.role >= 2:
-                    return CurrentUserSchema(
-                        user_id=user.user_id,
-                        username=username,
-                        role=user.role,
-                        email=user.email,
-                        verified=user.verified,
-                    )
+        username = payload.get("sub")
+        user = (
+            await Account.select_from_username(session, username) if username else None
+        )
 
-                else:
-                    raise AppError.PERMISSION_DENIED_ERROR
+        if username and user and user.role >= 2:
+            return CurrentUserSchema(
+                user_id=user.user_id,
+                username=username,
+                role=user.role,
+                email=user.email,
+                verified=user.verified,
+            )
+
+        else:
+            raise AppError.PERMISSION_DENIED_ERROR
 
     except JWTError as exc:
         raise AppError.INVALID_CREDENTIALS_ERROR from exc
-    raise AppError.PERMISSION_DENIED_ERROR
 
 
 async def get_developer(
@@ -126,23 +135,25 @@ async def get_developer(
 ) -> CurrentUserSchema:
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
-        if username := payload.get("sub"):
-            if user := await Account.select_from_username(session, username):
-                if user.role >= 3:
-                    return CurrentUserSchema(
-                        user_id=user.user_id,
-                        username=username,
-                        role=user.role,
-                        email=user.email,
-                        verified=user.verified,
-                    )
+        username = payload.get("sub")
+        user = (
+            await Account.select_from_username(session, username) if username else None
+        )
 
-                else:
-                    raise AppError.PERMISSION_DENIED_ERROR
+        if username and user and user.role >= 3:
+            return CurrentUserSchema(
+                user_id=user.user_id,
+                username=username,
+                role=user.role,
+                email=user.email,
+                verified=user.verified,
+            )
+
+        else:
+            raise AppError.PERMISSION_DENIED_ERROR
 
     except JWTError as exc:
         raise AppError.INVALID_CREDENTIALS_ERROR from exc
-    raise AppError.PERMISSION_DENIED_ERROR
 
 
 SessionUser = Annotated[CurrentUserSchema, Depends(get_current_user)]

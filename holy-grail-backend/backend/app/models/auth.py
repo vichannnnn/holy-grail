@@ -79,8 +79,8 @@ class Account(Base, CRUD["Account"]):
         try:
             res = await super().create(session, insert_data.dict())
 
-        except SQLAlchemyExceptions.IntegrityError:
-            raise AppError.RESOURCES_ALREADY_EXISTS_ERROR
+        except SQLAlchemyExceptions.IntegrityError as exc:
+            raise AppError.RESOURCES_ALREADY_EXISTS_ERROR from exc
         await session.refresh(res)
 
         return CurrentUserSchema(**res.__dict__)
@@ -100,8 +100,8 @@ class Account(Base, CRUD["Account"]):
         try:
             res = await super().create(session, insert_data.dict())
 
-        except SQLAlchemyExceptions.IntegrityError:
-            raise AppError.RESOURCES_ALREADY_EXISTS_ERROR
+        except SQLAlchemyExceptions.IntegrityError as exc:
+            raise AppError.RESOURCES_ALREADY_EXISTS_ERROR from exc
 
         await session.refresh(res)
 
