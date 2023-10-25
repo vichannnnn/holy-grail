@@ -119,7 +119,7 @@ class Library(Base, CRUD["Library"]):
             (form_data[f"{i}[name]"], i) for i in range(len(form_data) // 6)
         ]
 
-        for name, idx in document_names:
+        for _, idx in document_names:
             res, idx = form_data_note_parser(form_data, idx)
             if res:
                 valid_notes.append((res, idx))
@@ -148,7 +148,7 @@ class Library(Base, CRUD["Library"]):
 
         objs = []
         files: List[Tuple[UploadFile, str]] = []
-        for note, idx in valid_notes:
+        for note, _ in valid_notes:
             if uploader_role.DEVELOPER:
                 extension = developer_accepted_doc_type_extensions[
                     note.file.content_type
@@ -180,9 +180,9 @@ class Library(Base, CRUD["Library"]):
                     obj, ["doc_category", "doc_type", "doc_subject", "account"]
                 )
 
-        except SQLAlchemyExceptions.IntegrityError:
+        except SQLAlchemyExceptions.IntegrityError as exc:
             await session.rollback()
-            raise AppError.RESOURCES_NOT_FOUND_ERROR
+            raise AppError.RESOURCES_NOT_FOUND_ERROR from exc
         return objs
 
     @classmethod

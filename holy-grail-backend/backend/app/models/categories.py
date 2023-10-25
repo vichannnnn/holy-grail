@@ -1,9 +1,9 @@
 from typing import TYPE_CHECKING, List
 
-from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import Integer, ForeignKey, select, UniqueConstraint
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import exc as SQLAlchemyExceptions
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.crud.base import CRUD
 from app.db.base_class import Base
@@ -70,7 +70,7 @@ class Subjects(Base, CRUD["subjects"]):
         except SQLAlchemyExceptions.IntegrityError as exc:
             await session.rollback()
             if str(exc).find("ForeignKeyViolationError") != -1:
-                raise AppError.RESOURCES_NOT_FOUND_ERROR
+                raise AppError.RESOURCES_NOT_FOUND_ERROR from exc
             elif str(exc).find("UniqueViolationError") != -1:
                 raise AppError.RESOURCES_ALREADY_EXISTS_ERROR from exc
             raise AppError.RESOURCES_ALREADY_EXISTS_ERROR from exc
@@ -90,7 +90,7 @@ class Subjects(Base, CRUD["subjects"]):
         except SQLAlchemyExceptions.IntegrityError as exc:
             await session.rollback()
             if str(exc).find("ForeignKeyViolationError") != -1:
-                raise AppError.RESOURCES_NOT_FOUND_ERROR
+                raise AppError.RESOURCES_NOT_FOUND_ERROR from exc
             elif str(exc).find("UniqueViolationError") != -1:
                 raise AppError.RESOURCES_ALREADY_EXISTS_ERROR from exc
             raise AppError.RESOURCES_ALREADY_EXISTS_ERROR from exc

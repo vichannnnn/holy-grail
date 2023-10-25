@@ -11,4 +11,4 @@ select = [# pycodestyle
     "SIM",
     # isort
     "I", ]
-ignore = ["F401", "F403", "E501"]
+ignore = ["F401", "F403", "E501", "I001"]
