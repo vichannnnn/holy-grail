@@ -77,7 +77,9 @@ class CRUD(Generic[ModelType]):
 
     @classmethod
     async def delete(  # type: ignore
-        cls: Type[ModelType], session: AsyncSession, id: int  # pylint: disable=W0622
+        cls: Type[ModelType],
+        session: AsyncSession,
+        id: int,  # pylint: disable=W0622
     ) -> FastAPIResponse:
         stmt = delete(cls).returning(cls).where(cls.id == id)
         res = await session.execute(stmt)

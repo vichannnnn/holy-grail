@@ -81,7 +81,9 @@ class Library(Base, CRUD["Library"]):
         ForeignKey("account.user_id"), nullable=False
     )
     uploaded_on: Mapped[datetime.datetime] = mapped_column(
-        nullable=False, server_default=func.now(), index=True  # pylint: disable=E1102
+        nullable=False,
+        server_default=func.now(),
+        index=True,  # pylint: disable=E1102
     )
     approved: Mapped[bool] = mapped_column(
         index=True, nullable=False, server_default="f"
@@ -241,9 +243,7 @@ class Library(Base, CRUD["Library"]):
         }
 
     @classmethod
-    async def get(
-        cls, session: AsyncSession, id: int
-    ) -> NoteSchema:  # pylint: disable=W0622, C0103
+    async def get(cls, session: AsyncSession, id: int) -> NoteSchema:  # pylint: disable=W0622, C0103
         stmt = (
             select(cls)
             .where(cls.id == id)
@@ -262,9 +262,7 @@ class Library(Base, CRUD["Library"]):
         return res
 
     @classmethod
-    async def download(
-        cls, session: AsyncSession, id: int
-    ):  # pylint: disable=W0622, C0103
+    async def download(cls, session: AsyncSession, id: int):  # pylint: disable=W0622, C0103
         note: NoteSchema = await cls.get(session, id)
         url = AWS_CLOUDFRONT_URL + "/" + note.file_name
 
@@ -325,7 +323,9 @@ class Library(Base, CRUD["Library"]):
 
     @classmethod
     async def approve_note(
-        cls, session: AsyncSession, id: int  # pylint: disable=W0622, C0103
+        cls,
+        session: AsyncSession,
+        id: int,  # pylint: disable=W0622, C0103
     ):
         stmt = update(cls)
         fetch_stmt = select(cls)
