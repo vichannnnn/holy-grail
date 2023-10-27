@@ -34,6 +34,9 @@ async def save_file(file: UploadFile, file_name: str, s3_client: boto3.client) -
     file.filename = file_name
     file_content = await file.read()
     file_obj = BytesIO(file_content)
+
+    CommonArgs = {"CacheControl": "max-age=31536000, public, immutable"}
+
     if file.filename.endswith(".zip"):
         ExtraArgs = {
             "ContentType": "application/zip",
@@ -42,10 +45,12 @@ async def save_file(file: UploadFile, file_name: str, s3_client: boto3.client) -
     else:
         ExtraArgs = {"ContentType": "application/pdf", "ContentDisposition": "inline"}
 
+    HeaderArgs = {**CommonArgs, **ExtraArgs}
+
     s3_client.upload_fileobj(
         Fileobj=file_obj,
         Bucket=S3_BUCKET_NAME,
         Key=file.filename,
-        ExtraArgs=ExtraArgs,
+        ExtraArgs=HeaderArgs,
     )
     return file.filename
