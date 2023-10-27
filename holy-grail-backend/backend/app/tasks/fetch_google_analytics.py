@@ -1,6 +1,8 @@
 import asyncio
 import os
+from datetime import datetime
 
+import pytz
 from google.analytics.data_v1beta import BetaAnalyticsDataClient
 from google.analytics.data_v1beta.types import (
     DateRange,
@@ -78,11 +80,15 @@ async def fetch_google_analytics_async() -> None:
         user_count = await Account.get_users_count(session=session)
         file_download_event_count, page_view_active_user = extract_metrics(resp)
 
+        tz = pytz.timezone("Asia/Singapore")
+        now = datetime.now(tz)
+
         data = {
             "file_download_count": int(file_download_event_count),
             "unique_active_users": int(page_view_active_user),
             "user_count": user_count,
+            "timestamp": now,
         }
         await Analytics.create(session=session, data=data)
-        print(data)
-    return data
+
+    return

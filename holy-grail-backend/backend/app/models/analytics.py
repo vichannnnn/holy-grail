@@ -19,9 +19,7 @@ class Analytics(Base, CRUD["analytics"]):
     file_download_count: Mapped[int] = mapped_column(nullable=False)
     unique_active_users: Mapped[int] = mapped_column(nullable=False)
     user_count: Mapped[int] = mapped_column(nullable=False)
-    timestamp: Mapped[datetime] = mapped_column(
-        nullable=False, default=datetime.utcnow()
-    )
+    timestamp: Mapped[datetime] = mapped_column(nullable=False, default=datetime.utcnow)
 
     @classmethod
     async def get_latest_analytics(cls, session: AsyncSession) -> ModelType:
