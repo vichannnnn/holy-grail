@@ -12,7 +12,11 @@ export const Hero = () => {
       <div className='inner-hero-container'>
         {!isDesktop && (
           <div className='right-hero'>
-            <img src='/grail-chan-studying.png' alt='Studying' width='450' />
+            <img
+              src='https://document.grail.moe/grail-chan-studying.png'
+              alt='Studying'
+              width='450'
+            />
           </div>
         )}
         <div className='left-hero'>
@@ -30,13 +34,21 @@ export const Hero = () => {
         </div>
         {isDesktop && (
           <div className='right-hero'>
-            <img src='/grail-chan-studying.png' alt='Studying' width='450' />
+            <img
+              src='https://document.grail.moe/grail-chan-studying.png'
+              alt='Studying'
+              width='450'
+            />
           </div>
         )}
       </div>
       <div className='inner-hero-container'>
         <div className='left-hero'>
-          <img src='/grail-chan-sparkling.png' alt='Sparkling' width='450' />
+          <img
+            src='https://document.grail.moe/grail-chan-sparkling.png'
+            alt='Sparkling'
+            width='450'
+          />
         </div>
         <div className='right-hero'>
           <div>

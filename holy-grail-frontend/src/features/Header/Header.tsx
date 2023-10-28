@@ -20,7 +20,6 @@ import ExitToApp from '@mui/icons-material/ExitToApp';
 import VpnKey from '@mui/icons-material/VpnKey';
 
 import './header.css';
-import Logo from '../../assets/grail-chan-happy.png';
 
 export const Header = () => {
   const {
@@ -172,7 +171,11 @@ export const Header = () => {
     <header className='header'>
       <nav className='nav container grid'>
         <RouterLink className='nav__logo' to='/'>
-          <img className='nav__logo__image' src={Logo} alt='' />
+          <img
+            className='nav__logo__image'
+            src='https://document.grail.moe/grail-chan-happy.png'
+            alt=''
+          />
         </RouterLink>
         {isDesktop ? (
           <div className='nav__menu'>
