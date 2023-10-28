@@ -36,13 +36,6 @@ jobs:
           sed -i "s|app/|/github/workspace/holy-grail-backend/backend/app/|g" coverage.xml
           sed -i "s|<source>/app</source>|<source>/github/workspace/holy-grail-backend/backend/app</source>|g" coverage.xml
 
-
-      - name: SonarQube Scan
-        uses: sonarsource/sonarqube-scan-action@master
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         with:
