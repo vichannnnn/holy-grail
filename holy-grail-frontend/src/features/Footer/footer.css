@@ -1,7 +1,7 @@
 .footer {
     background-color: var(--container-color);
+    margin-top: calc(var(--header-height));
     border-top: 1px solid rgba(0,0,0,0.1);
-    margin-top: calc(var(--header-height) + 3rem);
     display: flex;
     padding: 2rem 0;
 }
@@ -50,6 +50,13 @@
     color: var(--title-color);
     text-align: center;
     font-size: var(--smaller-font-size);
+}
+
+.ads__container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: calc(var(--header-height));
 }
 
 @media screen and (max-width: 913px) {
