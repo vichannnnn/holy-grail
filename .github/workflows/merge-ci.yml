@@ -124,8 +124,8 @@ jobs:
               docker compose pull
               docker compose up -d
               make migrate
-              rm -r ../caddy-server/holy-grail-dev
-              docker cp holy-grail-frontend:/usr/share/caddy/holy-grail-dev ../caddy-server/holy-grail-dev/
+              rm -r ../api-gateway/holy-grail-dev
+              docker cp holy-grail-frontend:/usr/share/caddy/holy-grail-dev ../api-gateway/holy-grail-dev/
               docker compose stop holy-grail-frontend
-              docker restart caddy
+              docker restart api-gateway
             fi
