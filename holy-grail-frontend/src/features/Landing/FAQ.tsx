@@ -74,7 +74,22 @@ export const FAQ = () => {
           <div className='faq__qn'>Will the Holy Grail always be free?</div>
           <p className='faq__ans'>
             Yes. The entire project and application is done out of initiative and will always be
-            free.
+            free. This means that content and resources such as contributed notes and practice
+            papers will never be behind a paywall.
+          </p>
+        </div>
+        <div>
+          <div className='faq__qn'>How are you guys sustaining this project then?</div>
+          <p className='faq__ans'>
+            Aside from free time spent in development for this project, we are currently incurring
+            monthly costs such as infrastructure and hosting that is being paid from our own pocket
+            thus far.
+            <br></br>
+            <br></br>
+            With that being said, as of November 2023, we are collaborating with sponsors that are
+            helping us with the costs in exchange for displaying advertisements for their services.
+            The remainders will go into development effort for more features in the near future
+            (circa 2024).
           </p>
         </div>
       </div>

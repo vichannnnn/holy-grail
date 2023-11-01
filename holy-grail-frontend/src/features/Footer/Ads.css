@@ -1,0 +1,9 @@
+.info_button_header {
+    font-size: var(--normal-font-size);
+    font-weight: var(--font-semi-bold);
+}
+
+.info_button_description {
+    font-size: var(--normal-font-size);
+    margin-top: 0.5rem;
+}
