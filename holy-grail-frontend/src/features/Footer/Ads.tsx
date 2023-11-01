@@ -1,6 +1,5 @@
 import { useContext } from 'react';
 import { MediaQueryContext } from '@providers';
-import { Typography } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import InfoIcon from '@mui/icons-material/Info';
@@ -15,8 +14,10 @@ interface InfoButtonProps {
 
 const InfoButton = ({ isDesktop }: InfoButtonProps) => {
   const iconButtonTop = isDesktop ? '12px' : '4px';
+
   return (
     <Tooltip
+      enterTouchDelay={0}
       title={
         <div>
           <div className='info_button_header'>
