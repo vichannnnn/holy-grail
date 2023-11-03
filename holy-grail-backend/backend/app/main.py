@@ -1,3 +1,4 @@
+import ast
 import os
 
 from fastapi import FastAPI
@@ -22,7 +23,9 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 app.add_middleware(
     cors.CORSMiddleware,
-    allow_origins=["https://grail.moe" if os.getenv("PRODUCTION") == "true" else "*"],
+    allow_origins=ast.literal_eval(os.getenv("ORIGINS"))
+    if os.getenv("PRODUCTION") == "true"
+    else ["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

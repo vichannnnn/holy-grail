@@ -93,6 +93,24 @@ jobs:
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/holy-grail-frontend${{ env.TAG_SUFFIX }}:latest
 
+      - name: Build and push Second Frontend Docker image
+        if: github.ref == 'refs/heads/master'
+        uses: docker/build-push-action@v2
+        with:
+          context: ./holy-grail-frontend
+          file: ./holy-grail-frontend/Dockerfile.one
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/holy-grail-frontend-one:latest
+
+      - name: Build and push Third Frontend Docker image
+        if: github.ref == 'refs/heads/master'
+        uses: docker/build-push-action@v2
+        with:
+          context: ./holy-grail-frontend
+          file: ./holy-grail-frontend/Dockerfile.two
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/holy-grail-frontend-two:latest
+
       - name: Build and push Scheduler Docker image
         uses: docker/build-push-action@v2
         with:
