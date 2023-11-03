@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "local": "vite --mode custom --host 0.0.0.0 --port 5175",
-    "build-1": "vite build --mode one",
-    "build-2": "vite build --mode two",
+    "build-one": "vite build --mode one",
+    "build-two": "vite build --mode two",
     "dev-build": "vite build --mode development",
     "build": "vite build --mode production",
     "test": "react-scripts test",
