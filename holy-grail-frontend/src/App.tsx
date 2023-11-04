@@ -39,10 +39,6 @@ const customMuiTheme = {
 };
 
 export function App() {
-  const VITE_APP_API_URL = import.meta.env.VITE_APP_API_URL;
-  const VITE_APP_AWS_S3_BUCKET_URL = import.meta.env.VITE_APP_AWS_S3_BUCKET_URL;
-  console.log(VITE_APP_API_URL);
-  console.log(VITE_APP_AWS_S3_BUCKET_URL);
   const muiTheme = createTheme(customMuiTheme);
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
   const [openAlert, setOpenAlert] = useState<boolean>(false);
