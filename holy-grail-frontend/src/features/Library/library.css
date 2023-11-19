@@ -12,7 +12,7 @@
 }
 
 .table__header {
-    font-weight: var(--font-semi-bold) !important;
+    font-weight: 600 !important;
 }
 
 .table__header,
@@ -22,7 +22,7 @@
 
 .table__content1 {
     margin: auto 0;
-    font-weight: var(--font-semi-bold);
+    font-weight: 600;
 }
 
 .table__notes-card {
