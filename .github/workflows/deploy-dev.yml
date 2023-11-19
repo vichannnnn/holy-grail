@@ -35,4 +35,3 @@ jobs:
             docker cp holy-grail-frontend:/usr/share/caddy/holy-grail-dev ../api-gateway/holy-grail-dev/
             docker compose stop holy-grail-frontend
             docker restart api-gateway
-            fi
