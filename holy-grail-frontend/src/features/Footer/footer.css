@@ -1,6 +1,6 @@
 .footer {
-    background-color: var(--container-color);
-    margin-top: calc(var(--header-height));
+    background-color: #FFFFFF;
+    margin-top: 3rem;
     border-top: 1px solid rgba(0,0,0,0.1);
     display: flex;
     padding: 2rem 0;
@@ -31,13 +31,11 @@
 }
 
 .footer__title {
-    font-weight: var(--font-semi-bold);
-    margin-bottom: var(--mb-1);
-    color: var(--title-color);
+    font-weight: 600;
+    margin-bottom: 1rem;
 }
 
 .footer__content {
-    font-size:  var(--small-font-size);
 }
 
 .footer__content:hover {
@@ -47,16 +45,15 @@
 .footer__copyright {
     display: block;
     padding-top: 1.5rem;
-    color: var(--title-color);
     text-align: center;
-    font-size: var(--smaller-font-size);
+    font-size: 0.875rem;
 }
 
 .ads__container {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: calc(var(--header-height));
+    margin-top: 3rem;
 }
 
 @media screen and (max-width: 913px) {

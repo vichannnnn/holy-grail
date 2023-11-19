@@ -17,11 +17,10 @@
 }
 
 .info-button-header {
-    font-size: var(--normal-font-size);
-    font-weight: var(--font-semi-bold);
+    font-size: 1rem;
 }
 
 .info-button-description {
-    font-size: var(--normal-font-size);
+    font-size: 1rem;
     margin-top: 0.5rem;
 }
