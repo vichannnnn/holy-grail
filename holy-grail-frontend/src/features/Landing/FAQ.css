@@ -1,5 +1,5 @@
 .faq {
-    padding-top: calc(var(--header-height) + 2rem);
+    padding-top: 6rem;
 
 }
 
@@ -12,12 +12,12 @@
 }
 
 .faq__qn {
-    font-size: var(--normal-font-size);
-    font-weight: var(--font-semi-bold);
+    font-size: 1rem;
+    font-weight: 600;
 }
 
 .faq__ans {
-    font-size: var(--normal-font-size);
+    font-size: 1rem;
     color: #575f73;
     margin-top: 0.5rem;
 }

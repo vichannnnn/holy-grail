@@ -3,13 +3,13 @@
 .forgotPw,
 .resetPw,
 .updatePw {
-    padding-top: calc(var(--header-height) + 1rem);
+    padding-top: 3rem;
 }
 
 
 .login__title {
-    font-size: calc(var(--h2-font-size) * 1.5);
-    font-weight: var(--font-semi-bold);
+    font-size: 2.625rem;
+    font-weight: 600;
     margin-top: 80px;
 }
 
@@ -24,13 +24,13 @@
 
 .password__validation {
     font-size: var(--small-font-size);
-    font-weight: var(--font-semi-bold);
+    font-weight: 600;
     padding-bottom: 0.5rem;
 }
 
 .signup__validation {
-    font-weight: var(--font-semi-bold);
-    font-size: var(--normal-font-size);
+    font-weight: 600;
+    font-size: 1rem;
     padding: 0.2rem 0;
 }
 

@@ -1,4 +1,4 @@
 .developer {
-    padding-top: calc(var(--header-height) + 3rem);
-    min-height: calc(70vh - var(--header-height));
+    padding-top: 6rem;
+    min-height: calc(70vh - 3rem);
 }
