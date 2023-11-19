@@ -1,0 +1,40 @@
+name: Deploy
+
+on:
+  workflow_run:
+    workflows: [ "Frontend build", "Backend build" ]
+    branches: [ dev, master ]
+    types:
+      - completed
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: vichannnnn/holy-grail
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: executing remote ssh commands using private key
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ github.ref == 'refs/heads/dev' && secrets.DEV_REMOTE_HOST || secrets.MASTER_REMOTE_HOST }}
+          username: ${{ github.ref == 'refs/heads/dev' && secrets.DEV_REMOTE_USER || secrets.MASTER_REMOTE_USER }}
+          key: ${{ github.ref == 'refs/heads/dev' && secrets.DEV_SSH_PRIVATE_KEY || secrets.MASTER_SSH_PRIVATE_KEY }}
+          script: |
+            cd ./holy-grail
+            if [[ "${{ github.ref }}" == 'refs/heads/master' ]]; then
+              docker compose -f docker-compose.prod.yml pull
+              docker compose -f docker-compose.prod.yml up -d
+              make migrate version=prod
+            else
+              docker compose pull
+              docker compose up -d
+              make migrate
+              rm -r ../api-gateway/holy-grail-dev
+              docker cp holy-grail-frontend:/usr/share/caddy/holy-grail-dev ../api-gateway/holy-grail-dev/
+              docker compose stop holy-grail-frontend
+              docker restart api-gateway
+            fi
