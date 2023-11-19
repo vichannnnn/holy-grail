@@ -7,7 +7,7 @@
 }
 
 .nav {
-    height: calc(var(--header-height) + 5rem);
+    height: 8rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -24,9 +24,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-size: var(--h3-font-size);
-    color: var(--alt-color);
-    font-weight: var(--font-medium);
+    font-size: 1.25rem;
 }
 
 .nav__logo {
@@ -42,21 +40,20 @@
 .nav__divider {
     border-left:1px solid var(--title-color);
     border-right:1px solid var(--title-color);
-    height: calc(var(--header-height) - 1rem);
+    height: 2rem;
     margin: auto 0;
 }
 
 
 .nav__logoText {
     margin: auto 0 auto 0.5rem;
-    font-size: var(--h3-font-size);
-    font-weight: var(--font-semi-bold);
+    font-size: 1.25rem;
+    font-weight: 600;
 }
 
 /* active */
 .active-link,
 .nav__link:hover {
-    color: var(--title-color-dark);
     text-decoration: underline;
     text-decoration-thickness: 2px;
     text-decoration-skip-ink: none;

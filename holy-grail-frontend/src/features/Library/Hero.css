@@ -2,9 +2,7 @@
     padding-top: 3rem;
 }
 
-.horizontal-divider {
-    margin-bottom: 2rem;
-}
+
 
 @media screen and (max-width: 913px) {
     .home {

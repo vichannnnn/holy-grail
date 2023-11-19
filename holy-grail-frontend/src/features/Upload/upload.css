@@ -1,6 +1,6 @@
 .upload {
-    padding-top: calc(var(--header-height) + 3rem);
-    min-height: calc(80vh - var(--header-height));
+    padding-top: 6rem;
+    min-height: calc(80vh - 3rem);
     display: flex;
     flex-direction: column;
     justify-content: center;
