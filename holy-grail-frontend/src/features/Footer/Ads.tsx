@@ -20,10 +20,10 @@ const InfoButton = ({ isDesktop }: InfoButtonProps) => {
       enterTouchDelay={0}
       title={
         <div>
-          <div className='info_button_header'>
+          <div className='info-button-header'>
             <p>Why am I seeing this ad?</p>
           </div>
-          <div className='info_button_description'>
+          <div className='info-button-description'>
             <p>
               This is an advertisement from our sponsor to help with our hosting and infrastructure
               cost in keeping this project alive.
@@ -58,17 +58,32 @@ export const Ads = () => {
   };
 
   return (
-    <div style={{ position: 'relative', display: 'inline-block' }}>
-      <a
-        href={ADS_HYPERLINK_URL}
-        onClick={(e) => {
-          e.preventDefault();
-          openPopup(ADS_HYPERLINK_URL);
-        }}
-      >
-        <img alt='GP Ads here!' src={ADS_IMAGE_URL} width={isDesktop ? '468' : '320'}></img>
-      </a>
-      <InfoButton isDesktop={isDesktop} />
+    <div className='ads-container'>
+      <div className='ads-text'>
+        <p>
+          Check these out on Telegram! Weekly Kahoot (with prizes) based on O/N-Level, A-Level
+          syllabus:
+          <br></br>
+          @studentskahoot
+          <br></br>
+          Chat or study together with other students: @JuniorCollegeBot / @JCchatbot /
+          @SecondarySchoolBot
+          <br></br>
+          Student Discounts: @ThisCounted
+        </p>
+      </div>
+      <div className='ads-image'>
+        <a
+          href={ADS_HYPERLINK_URL}
+          onClick={(e) => {
+            e.preventDefault();
+            openPopup(ADS_HYPERLINK_URL);
+          }}
+        >
+          <img alt='GP Ads here!' src={ADS_IMAGE_URL} width={isDesktop ? '468' : '320'}></img>
+        </a>
+        <InfoButton isDesktop={isDesktop} />
+      </div>
     </div>
   );
 };

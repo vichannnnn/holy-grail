@@ -1,9 +1,27 @@
-.info_button_header {
+.ads-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 16px;
+}
+
+.ads-text {
+    text-wrap: inherit;
+    text-align: center;
+}
+
+.ads-image {
+    position: relative;
+    display: flex;
+    margin: auto;
+}
+
+.info-button-header {
     font-size: var(--normal-font-size);
     font-weight: var(--font-semi-bold);
 }
 
-.info_button_description {
+.info-button-description {
     font-size: var(--normal-font-size);
     margin-top: 0.5rem;
 }
