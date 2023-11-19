@@ -2,25 +2,6 @@
 version: '3.8'
 
 services:
-  holy-grail-frontend:
-    container_name: holy-grail-frontend
-    ports:
-      - "5175:5175"
-    networks:
-      - holy-grail-network
-    build:
-      context: ./holy-grail-frontend
-      dockerfile: Dockerfile.local
-    environment:
-      VITE_APP_API_URL: ${VITE_APP_API_URL}
-      VITE_APP_AWS_S3_BUCKET_URL: ${VITE_APP_AWS_S3_BUCKET_URL}
-    depends_on:
-      - holy-grail-backend
-    volumes:
-      - ./holy-grail-frontend/src:/app/src
-    restart:
-      unless-stopped
-
   holy-grail-backend:
     container_name: holy-grail-backend
     build: ./holy-grail-backend/backend

@@ -1,18 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import { App } from './App.tsx';
-import { BrowserRouter } from 'react-router-dom';
-import './index.css';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { App } from './App';
 import ReactGA from 'react-ga4';
+import './index.css';
 
 ReactGA.initialize(import.meta.env.VITE_APP_GOOGLE_ANALYTICS_ID as string);
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <BrowserRouter>
+    <Router>
       <App />
-    </BrowserRouter>
+    </Router>
   </React.StrictMode>,
 );

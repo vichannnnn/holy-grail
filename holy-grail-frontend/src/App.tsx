@@ -58,6 +58,7 @@ export function App() {
       <MediaQueryProvider>
         <AuthProvider>
           <Header />
+
           <Routes>
             <Route path='/' element={<LandingPage />} />
             <Route path='/library' element={<Library />} />
