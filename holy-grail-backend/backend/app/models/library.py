@@ -7,7 +7,7 @@ import httpx
 from fastapi import UploadFile, HTTPException, Response
 from pydantic import ValidationError
 from sqlalchemy import exc as SQLAlchemyExceptions
-from sqlalchemy import func, ForeignKey, select, update, delete
+from sqlalchemy import func, ForeignKey, select, update, delete, DateTime
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Mapped, mapped_column, relationship, selectinload
 from sqlalchemy.sql.expression import text
@@ -81,9 +81,7 @@ class Library(Base, CRUD["Library"]):
         ForeignKey("account.user_id"), nullable=False
     )
     uploaded_on: Mapped[datetime.datetime] = mapped_column(
-        nullable=False,
-        server_default=func.now(),
-        index=True,  # pylint: disable=E1102
+        DateTime(timezone=True), nullable=False, server_default=func.now(), index=True
     )
     approved: Mapped[bool] = mapped_column(
         index=True, nullable=False, server_default="f"

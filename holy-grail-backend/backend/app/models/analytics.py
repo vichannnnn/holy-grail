@@ -1,6 +1,6 @@
-from datetime import datetime
+import datetime
 
-from sqlalchemy import select
+from sqlalchemy import select, DateTime, func
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.crud.base import CRUD, ModelType
@@ -19,7 +19,9 @@ class Analytics(Base, CRUD["analytics"]):
     file_download_count: Mapped[int] = mapped_column(nullable=False)
     unique_active_users: Mapped[int] = mapped_column(nullable=False)
     user_count: Mapped[int] = mapped_column(nullable=False)
-    timestamp: Mapped[datetime] = mapped_column(nullable=False, default=datetime.utcnow)
+    timestamp: Mapped[datetime.datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now(), index=True
+    )
 
     @classmethod
     async def get_latest_analytics(cls, session: AsyncSession) -> ModelType:
