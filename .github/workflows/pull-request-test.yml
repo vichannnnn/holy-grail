@@ -6,10 +6,6 @@ on:
       - dev
       - master
 
-env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: vichannnnn/holy-grail
-
 jobs:
   test:
     runs-on: ubuntu-latest
