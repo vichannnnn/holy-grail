@@ -8,7 +8,7 @@
     "build-one": "bunx --bun vite build --mode one",
     "build-two": "bunx --bun vite build --mode two",
     "dev-build": "bunx --bun vite build --mode development",
-    "build": "bunx --bun vite build --mode production",
+    "build": "bunx --bun vite build",
     "test": "react-scripts test",
     "lint": "eslint .",
     "format": "prettier --write \"src/**/*.{ts,tsx}\" \"../holy-grail-backend/backend/app/email_templates/*.html\"",
@@ -51,6 +51,6 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.3.4",
     "typescript": "^5.0.2",
-    "vite": "5.0.0"
+    "vite": "4.4.8"
   }
 }
