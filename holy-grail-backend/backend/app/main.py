@@ -35,4 +35,5 @@ app.include_router(api_router)
 Instrumentator().instrument(app)
 
 # Force runs the google analytics job once on app start up.
+
 fetch_google_analytics.delay()
