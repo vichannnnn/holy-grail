@@ -1,22 +1,22 @@
 import './App.css';
 import { useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
-import { AlertToast, AlertProps } from '@components';
+import { AlertProps, AlertToast } from '@components';
 import {
+  AccountPage,
   AccountVerifyPage,
   ApprovalPage,
   DeveloperPage,
-  ForgotPasswordPage,
   Footer,
+  ForgotPasswordPage,
   Header,
-  LoginPage,
-  Library,
   LandingPage,
-  ResetPasswordPage,
+  Library,
+  LoginPage,
   NotFound,
+  ResetPasswordPage,
   SignUpPage,
   UploadPage,
-  AccountPage,
 } from '@features';
 import { AuthProvider, MediaQueryProvider } from '@providers';
 import { createTheme, ThemeProvider } from '@mui/material';
@@ -58,7 +58,6 @@ export function App() {
       <MediaQueryProvider>
         <AuthProvider>
           <Header />
-
           <Routes>
             <Route path='/' element={<LandingPage />} />
             <Route path='/library' element={<Library />} />
@@ -74,7 +73,6 @@ export function App() {
             <Route path='*' element={<NotFound />} />
           </Routes>
           <Footer />
-
           <AlertToast
             openAlert={openAlert}
             onClose={() => setOpenAlert(false)}
