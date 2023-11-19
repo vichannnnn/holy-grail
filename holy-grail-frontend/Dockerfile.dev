@@ -4,6 +4,7 @@ FROM base AS build
 
 WORKDIR /app
 COPY package.json bun.lockb ./
+ENV NODE_ENV=development
 RUN bun install --frozen-lockfile
 COPY . .
 RUN bun run dev-build

@@ -8,11 +8,11 @@
     "build-one": "bunx --bun vite build --mode one",
     "build-two": "bunx --bun vite build --mode two",
     "dev-build": "bunx --bun vite build --mode development",
-    "build": "bunx --bun vite build",
+    "build": "bunx --bun vite build --mode production",
     "test": "react-scripts test",
     "lint": "eslint .",
     "format": "prettier --write \"src/**/*.{ts,tsx}\" \"../holy-grail-backend/backend/app/email_templates/*.html\"",
-    "serve": "bunx preview"
+    "serve": "vite preview"
   },
   "dependencies": {
     "@ctrl/react-adsense": "^1.7.0",
