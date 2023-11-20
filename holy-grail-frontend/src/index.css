@@ -37,6 +37,10 @@ h1 {
   color: black;
 }
 
+ul {
+  list-style: none;
+}
+
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -63,6 +67,34 @@ button:focus-visible {
     color: #747bff;
   }
   button {
-    background-color: #f9f9f9;
+    background-color: #ffffff;
   }
+}
+
+.section__title {
+  font-size: 2.25rem;
+  font-weight: 600;
+}
+
+.section__subtitle {
+  display: block;
+  font-size: 1rem;
+  margin-bottom: 2%;
+}
+
+.sub-section__title {
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+.section__title,
+.section__subtitle,
+.sub-section__title {
+  text-align: left;
+}
+
+/* layout */
+.container {
+  width: 80%;
+  margin: auto;
 }
