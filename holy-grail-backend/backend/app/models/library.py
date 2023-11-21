@@ -230,10 +230,13 @@ class Library(Base, CRUD["Library"]):
             selectinload(cls.doc_type),
         )
 
-        result = await session.execute(stmt)
+        res = await session.execute(stmt)
+        await session.refresh(
+            res, ["doc_category", "doc_type", "doc_subject", "account"]
+        )
         pages = total // size if total % size == 0 else (total // size) + 1
         return {
-            "items": result.scalars().all(),
+            "items": res.scalars().all(),
             "page": page,
             "pages": pages,
             "size": size,
