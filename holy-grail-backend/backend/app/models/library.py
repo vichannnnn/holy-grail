@@ -301,23 +301,28 @@ class Library(Base, CRUD["Library"]):
             fetch_stmt = fetch_stmt.where(cls.id == id)
             stmt = stmt.where(cls.id == id)
 
+        res = await session.execute(fetch_stmt)
+        existing_note = res.scalar()
+
+        if not existing_note:
+            raise HTTPException(status_code=404, detail="Note not found")
+
+        if (
+            authenticated.role < 2
+            and existing_note.uploaded_by != authenticated.user_id
+        ):
+            raise HTTPException(
+                status_code=403, detail="Not authorized to update this note"
+            )
+
         stmt = stmt.values(**data)
         await session.execute(stmt)
         await session.commit()
-
-        fetch_stmt = fetch_stmt.options(
-            selectinload(cls.account).load_only(Account.user_id, Account.username),
-            selectinload(cls.doc_category),
-            selectinload(cls.doc_subject),
-            selectinload(cls.doc_type),
+        await session.refresh(
+            existing_note, ["doc_category", "doc_type", "doc_subject", "account"]
         )
 
-        res = await session.execute(fetch_stmt)
-        updated_note = res.scalar()
-
-        if not updated_note:
-            raise HTTPException(status_code=404, detail="note not found")
-        return updated_note
+        return existing_note
 
     @classmethod
     async def approve_note(
