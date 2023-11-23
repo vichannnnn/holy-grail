@@ -1,23 +1,25 @@
 import { useContext } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { AuthContext } from '@providers';
+import { AuthContext, MediaQueryContext } from '@providers';
 import { Ads } from './Ads';
 import './Footer.css';
 
 export const Footer = () => {
   const { user } = useContext(AuthContext);
+  const { isDesktop } = useContext(MediaQueryContext);
+
   return (
     <>
       <Ads />
       <footer className='footer'>
+        <div className='footer-logo-section'>
+          <img
+            className='footer-logo-image'
+            src='https://document.grail.moe/grail-chan-happy.png'
+            alt=''
+          />
+        </div>
         <div className='footer-container'>
-          <div className='footer-logo-section'>
-            <img
-              className='footer-logo-image'
-              src='https://document.grail.moe/grail-chan-happy.png'
-              alt=''
-            />
-          </div>
           <div>
             <div className='footer-title'>Information</div>
             <div className='footer-content'>
@@ -49,9 +51,9 @@ export const Footer = () => {
             </div>
           </div>
         </div>
-        {/*<div className='footer-copyright-section'>*/}
-        {/*  &#169; 2023 Holy Grail Team • Questions? Contact us at grail@himaa.me*/}
-        {/*</div>*/}
+        <div className='footer-copyright-section'>
+          &#169; 2023 Holy Grail Team • Questions? Contact us at grail@himaa.me
+        </div>
       </footer>
     </>
   );
