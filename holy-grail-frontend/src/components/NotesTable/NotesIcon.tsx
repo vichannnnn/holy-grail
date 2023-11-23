@@ -1,3 +1,4 @@
+import { SvgIconComponent } from '@mui/icons-material';
 import ScienceOutlinedIcon from '@mui/icons-material/ScienceOutlined';
 import CalculateOutlinedIcon from '@mui/icons-material/CalculateOutlined';
 import PaletteOutlinedIcon from '@mui/icons-material/PaletteOutlined';
@@ -5,18 +6,23 @@ import LanguageOutlinedIcon from '@mui/icons-material/LanguageOutlined';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import { CommonType } from '@api/library';
 
-type IconType = 'science' | 'math' | 'arts' | 'language' | 'default';
-type IconMapping = { [K in IconType]: JSX.Element };
+enum IconTypeEnum {
+  SCIENCE = 'science',
+  MATH = 'math',
+  ARTS = 'arts',
+  LANGUAGE = 'language',
+  DEFAULT = 'default',
+}
 
-const iconMapping: IconMapping = {
-  science: <ScienceOutlinedIcon />,
-  math: <CalculateOutlinedIcon />,
-  arts: <PaletteOutlinedIcon />,
-  language: <LanguageOutlinedIcon />,
-  default: <DescriptionOutlinedIcon />,
+const iconMapping: Record<IconTypeEnum, SvgIconComponent> = {
+  [IconTypeEnum.SCIENCE]: ScienceOutlinedIcon,
+  [IconTypeEnum.MATH]: CalculateOutlinedIcon,
+  [IconTypeEnum.ARTS]: PaletteOutlinedIcon,
+  [IconTypeEnum.LANGUAGE]: LanguageOutlinedIcon,
+  [IconTypeEnum.DEFAULT]: DescriptionOutlinedIcon,
 };
 
-const subjectData = [
+const subjectData: { subjects: string[]; type: IconTypeEnum }[] = [
   {
     subjects: [
       'Combined Biology',
@@ -43,7 +49,7 @@ const subjectData = [
       'H3 Chemistry',
       'H3 Physics',
     ],
-    type: 'science',
+    type: IconTypeEnum.SCIENCE,
   },
   {
     subjects: [
@@ -56,7 +62,7 @@ const subjectData = [
       'H3 Mathematics',
       'H2 Further Mathematics',
     ],
-    type: 'math',
+    type: IconTypeEnum.MATH,
   },
   {
     subjects: [
@@ -83,11 +89,11 @@ const subjectData = [
       'H3 Economics',
       'H3 Chinese Language and Literature',
     ],
-    type: 'arts',
+    type: IconTypeEnum.ARTS,
   },
   {
     subjects: ['English', 'Higher Chinese', 'H1 General Paper', 'H2 Literature in English'],
-    type: 'language',
+    type: IconTypeEnum.LANGUAGE,
   },
 ];
 
@@ -103,7 +109,8 @@ interface NotesIconProps {
 }
 
 export const NotesIcon = ({ docSubject }: NotesIconProps) => {
-  const subject = (subjectMap[docSubject.name] as IconType) || 'default';
+  const subjectType = (subjectMap[docSubject.name] as IconTypeEnum) || IconTypeEnum.DEFAULT;
+  const Icon = iconMapping[subjectType];
 
-  return <>{iconMapping[subject]}</>;
+  return <Icon />;
 };
