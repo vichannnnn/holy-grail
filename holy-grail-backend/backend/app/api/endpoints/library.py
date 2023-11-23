@@ -118,9 +118,9 @@ async def update_note_by_id(
     id: int,  # pylint: disable=W0622, C0103
     note: NoteUpdateSchema,
 ):
-    updated_note = await Library.update_note(
-        session, id, authenticated, data=note.dict(exclude_unset=True)
-    )
+    updated_note = await Library.update_note(session, id, authenticated, data=note)
+    # import pdb
+    # pdb.set_trace()
     return updated_note
 
 
