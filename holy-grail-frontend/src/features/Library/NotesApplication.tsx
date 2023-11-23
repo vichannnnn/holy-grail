@@ -137,7 +137,7 @@ export const NotesApplication = () => {
   };
 
   return (
-    <section className='materials container'>
+    <>
       <NotesTable
         notes={notes.items}
         categories={categories.map((c) => ({ id: c.id, name: c.name }))}
@@ -210,6 +210,6 @@ export const NotesApplication = () => {
         documentName={noteInitialProperties ? noteInitialProperties.document_name : ''}
         year={noteInitialProperties ? noteInitialProperties.year : ''}
       />
-    </section>
+    </>
   );
 };

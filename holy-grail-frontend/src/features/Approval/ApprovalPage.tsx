@@ -3,6 +3,7 @@ import { AlertProps, WelcomeBackHeader } from '@components';
 import { useContext, useEffect } from 'react';
 import { AuthContext } from '@providers';
 import { useNavigate } from 'react-router-dom';
+import './ApprovalPage.css';
 
 export const ApprovalPage = () => {
   const { user, isLoading } = useContext(AuthContext);
@@ -22,18 +23,16 @@ export const ApprovalPage = () => {
   }, [isLoading, user]);
 
   return (
-    <>
+    <div className='approval-page-container'>
       <WelcomeBackHeader />
-      <section className='library section container'>
-        <div>
-          <div className='sub-section__title'>Administrator Panel</div>
-          <div className='section__subtitle'>
-            This is a list of unapproved notes for your review, you can approve or delete them
-            accordingly.
-          </div>
+      <div>
+        <div className='approval-page-title'>Administrator Panel</div>
+        <div className='approval-page-subtitle'>
+          This is a list of unapproved notes for your review, you can approve or delete them
+          accordingly.
         </div>
-        <ApprovalTable />
-      </section>
-    </>
+      </div>
+      <ApprovalTable />
+    </div>
   );
 };
