@@ -37,14 +37,7 @@ export const DesktopUserButton = ({ user, isDesktop, logout }: DropdownRenderPro
           'aria-labelledby': 'desktop-user-button',
         }}
       >
-        <Dropdown
-          user={user}
-          isDesktop={isDesktop}
-          logout={logout}
-          open={open}
-          anchorEl={anchorEl}
-          onClose={handleClose}
-        />
+        <Dropdown user={user} isDesktop={isDesktop} logout={logout} />
       </Menu>
     </div>
   );

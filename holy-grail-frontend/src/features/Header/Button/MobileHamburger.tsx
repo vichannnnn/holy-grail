@@ -37,14 +37,7 @@ export const MobileHamburger = ({ user, isDesktop, logout }: DropdownRenderProps
           'aria-labelledby': 'mobile-hamburger-button',
         }}
       >
-        <Dropdown
-          user={user}
-          isDesktop={isDesktop}
-          logout={logout}
-          open={open}
-          anchorEl={anchorEl}
-          onClose={handleClose}
-        />
+        <Dropdown user={user} isDesktop={isDesktop} logout={logout} />
       </Menu>
     </>
   );
