@@ -17,13 +17,7 @@ import VpnKey from '@mui/icons-material/VpnKey';
 import { DropdownRenderProps } from './Button/types';
 import './Dropdown.css';
 
-interface DropdownProps extends DropdownRenderProps {
-  open: boolean;
-  anchorEl: HTMLElement | null;
-  onClose: () => void;
-}
-
-export const Dropdown = ({ user, isDesktop, logout }: DropdownProps) => {
+export const Dropdown = ({ user, isDesktop, logout }: DropdownRenderProps) => {
   const {
     goToHome,
     goToLibrary,
