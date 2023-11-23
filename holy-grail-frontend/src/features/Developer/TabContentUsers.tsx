@@ -12,7 +12,7 @@ import {
   TableRow,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
-import '../Library/library.css';
+import '../Library/Library.css';
 
 export const TabContentUsers = ({ data, fetchData }: TabContentUsersProps) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
@@ -36,21 +36,21 @@ export const TabContentUsers = ({ data, fetchData }: TabContentUsersProps) => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell className='table__header'>User Id</TableCell>
-              <TableCell className='table__header'>Username</TableCell>
-              <TableCell className='table__header'>Role</TableCell>
+              <TableCell className='table-header'>User Id</TableCell>
+              <TableCell className='table-header'>Username</TableCell>
+              <TableCell className='table-header'>Role</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {data.map((item) => (
               <TableRow key={item.user_id}>
-                <TableCell className='table__content' component='th' scope='row'>
+                <TableCell className='table-content' component='th' scope='row'>
                   {item.user_id}
                 </TableCell>
-                <TableCell className='table__content' component='th' scope='row'>
+                <TableCell className='table-content' component='th' scope='row'>
                   {item.username}
                 </TableCell>
-                <TableCell className='table__content' component='th' scope='row'>
+                <TableCell className='table-content' component='th' scope='row'>
                   {RoleEnum[item.role]}
                 </TableCell>
                 <TableCell align='right'>

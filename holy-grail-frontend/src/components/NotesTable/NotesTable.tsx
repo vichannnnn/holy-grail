@@ -21,12 +21,12 @@ import {
   FreeTextComboboxProps,
   DownloadIcon,
 } from '@components';
-import { Pagination } from '../Pagination';
-import { NotesIcon } from './NotesIcon';
 import { MediaQueryContext } from '@providers';
 import MenuItem from '@mui/material/MenuItem';
 import { ExpandMore } from '@mui/icons-material';
-import '../../features/Library/library.css';
+import { Pagination } from '../Pagination';
+import { NotesIcon } from './NotesIcon';
+import './NotesTable.css';
 
 interface NotesTableProps {
   notes: Note[];
@@ -214,13 +214,13 @@ export const NotesTable = ({
             <Table className='table__notes'>
               <TableHead>
                 <TableRow>
-                  <TableCell className='table__header'>Document Name</TableCell>
-                  <TableCell className='table__header'>Category</TableCell>
-                  <TableCell className='table__header'>Subject</TableCell>
-                  <TableCell className='table__header'>Type</TableCell>
-                  <TableCell className='table__header'>Uploaded By</TableCell>
-                  <TableCell className='table__header'>Year</TableCell>
-                  <TableCell className='table__header'>
+                  <TableCell className='table-header'>Document Name</TableCell>
+                  <TableCell className='table-header'>Category</TableCell>
+                  <TableCell className='table-header'>Subject</TableCell>
+                  <TableCell className='table-header'>Type</TableCell>
+                  <TableCell className='table-header'>Uploaded By</TableCell>
+                  <TableCell className='table-header'>Year</TableCell>
+                  <TableCell className='table-header'>
                     <Box display='flex' alignItems='center'>
                       Uploaded On
                       <Box
@@ -281,9 +281,9 @@ export const NotesTable = ({
                       )}
                     </Popper>
                   </TableCell>
-                  <TableCell className='table__header'>Download</TableCell>
+                  <TableCell className='table-header'>Download</TableCell>
                   {isAdmin && renderAdminActions && (
-                    <TableCell className='table__header'>Actions</TableCell>
+                    <TableCell className='table-header'>Actions</TableCell>
                   )}
                 </TableRow>
               </TableHead>
@@ -293,7 +293,7 @@ export const NotesTable = ({
                     key={note.id}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
-                    <TableCell className='table__content' component='th' scope='row'>
+                    <TableCell className='table-content' component='th' scope='row'>
                       <Link
                         href={`${VITE_APP_AWS_S3_BUCKET_URL}/${note.file_name}`}
                         target='_blank'
@@ -307,22 +307,22 @@ export const NotesTable = ({
                         }}
                       >
                         <NotesIcon docSubject={note.doc_subject} />
-                        <div className='table__content1'>{note.document_name}</div>
+                        <div className='table-document-name'>{note.document_name}</div>
                       </Link>
                     </TableCell>
-                    <TableCell className='table__content'>{note.doc_category?.name}</TableCell>
-                    <TableCell className='table__content'>{note.doc_subject?.name}</TableCell>
-                    <TableCell className='table__content'>{note.doc_type?.name}</TableCell>
-                    <TableCell className='table__content'>{note.account?.username}</TableCell>
-                    <TableCell className='table__content'>
+                    <TableCell className='table-content'>{note.doc_category?.name}</TableCell>
+                    <TableCell className='table-content'>{note.doc_subject?.name}</TableCell>
+                    <TableCell className='table-content'>{note.doc_type?.name}</TableCell>
+                    <TableCell className='table-content'>{note.account?.username}</TableCell>
+                    <TableCell className='table-content'>
                       {note.year ? note.year : 'None'}
                     </TableCell>
-                    <TableCell className='table__content'>{formatDate(note.uploaded_on)}</TableCell>
+                    <TableCell className='table-content'>{formatDate(note.uploaded_on)}</TableCell>
                     <TableCell>
                       <DownloadIcon handleDownloadNote={handleDownloadNote} note={note} />
                     </TableCell>
                     {isAdmin && renderAdminActions && (
-                      <TableCell className='table__content'>{renderAdminActions(note)}</TableCell>
+                      <TableCell className='table-content'>{renderAdminActions(note)}</TableCell>
                     )}
                   </TableRow>
                 ))}
