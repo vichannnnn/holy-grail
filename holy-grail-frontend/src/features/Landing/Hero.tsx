@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import { Button } from '@components';
 import { MediaQueryContext } from '@providers';
 import { useNavigation } from '@utils';
 import './Hero.css';
@@ -27,9 +28,9 @@ export const Hero = () => {
               the relevant summary notes and practice papers for GCE 'O' Levels, GCE 'A' Levels and
               International Baccalaureate.
             </p>
-            <button className='try-btn' onClick={goToLibrary}>
+            <Button className='try-btn' onClick={goToLibrary}>
               Click here to access the library!
-            </button>
+            </Button>
           </div>
         </div>
         {isDesktop && (
@@ -58,9 +59,9 @@ export const Hero = () => {
               want to contribute revision materials into the repository, you can log in or sign up
               for an account below to start contributing!
             </p>
-            <button className='signup-btn' onClick={goToRegister}>
+            <Button className='signup-btn' onClick={goToRegister}>
               Click here to sign up!
-            </button>
+            </Button>
           </div>
         </div>
       </div>
