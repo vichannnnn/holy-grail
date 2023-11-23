@@ -1,6 +1,6 @@
 import { Link as RouterLink } from 'react-router-dom';
-import { HomeButton } from '@components';
-import './notFound.css';
+import { Button } from '@components';
+import './NotFound.css';
 
 export const NotFound = () => {
   return (
@@ -49,7 +49,7 @@ export const NotFound = () => {
       </div>
       <br />
       <RouterLink to='/'>
-        <HomeButton children='Back to home' />
+        <Button children='Back to home' />
       </RouterLink>
     </div>
   );

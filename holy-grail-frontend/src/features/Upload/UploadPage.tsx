@@ -18,7 +18,7 @@ import {
 import { UploadNotesValidation } from '@forms/validation';
 import { AuthContext } from '@providers';
 import { useNavigation } from '@utils';
-import './upload.css';
+import './UploadPage.css';
 
 function getFileNameWithoutExtension(fileName: string) {
   return fileName.split('.').slice(0, -1).join('.');
