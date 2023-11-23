@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { AuthContext, MediaQueryContext } from '@providers';
+import { AuthContext } from '@providers';
 import { Ads } from './Ads';
 import './Footer.css';
 
