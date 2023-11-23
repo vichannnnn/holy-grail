@@ -59,19 +59,6 @@ export const Ads = () => {
 
   return (
     <div className='ads-container'>
-      <div className='ads-text'>
-        <p>
-          Check these out on Telegram! Weekly Kahoot (with prizes) based on O/N-Level, A-Level
-          syllabus:
-          <br></br>
-          @studentskahoot
-          <br></br>
-          Chat or study together with other students: @JuniorCollegeBot / @JCchatbot /
-          @SecondarySchoolBot
-          <br></br>
-          Student Discounts: @ThisCounted
-        </p>
-      </div>
       <div className='ads-image'>
         <a
           href={ADS_HYPERLINK_URL}
