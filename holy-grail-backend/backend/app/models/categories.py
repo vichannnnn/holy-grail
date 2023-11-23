@@ -22,7 +22,7 @@ class CategoryLevel(Base, CRUD["category_level"]):
     )
     name: Mapped[str] = mapped_column(nullable=False, unique=True)
     documents: Mapped["Library"] = relationship(
-        back_populates="doc_category", uselist=True
+        "Library", back_populates="doc_category", uselist=True
     )
     subjects: Mapped[List["Subjects"]] = relationship(
         "Subjects", back_populates="category", cascade="all, delete-orphan"
@@ -43,6 +43,7 @@ class Subjects(Base, CRUD["subjects"]):
     __tablename__ = "subjects"
     __table_args__ = (
         UniqueConstraint("name", "category_id", name="category_level_name_unique"),
+        UniqueConstraint("id", "category_id", name="subject_id_category_id_unique"),
     )
 
     id: Mapped[int] = mapped_column(
@@ -50,14 +51,17 @@ class Subjects(Base, CRUD["subjects"]):
         index=True,
     )
     name: Mapped[str] = mapped_column(nullable=False)
-    documents: Mapped["Library"] = relationship(
-        back_populates="doc_subject", uselist=True
-    )
     category_id: Mapped[int] = mapped_column(
         Integer, ForeignKey("category_level.id"), nullable=False, index=True
     )
+    documents: Mapped["Library"] = relationship(
+        "Library",
+        back_populates="doc_subject",
+        uselist=True,
+        foreign_keys="Library.subject",
+    )
     category: Mapped[CategoryLevel] = relationship(
-        "CategoryLevel", back_populates="subjects"
+        "CategoryLevel", back_populates="subjects", uselist=False
     )
 
     @classmethod

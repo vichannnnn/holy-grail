@@ -7,7 +7,15 @@ import httpx
 from fastapi import UploadFile, HTTPException, Response
 from pydantic import ValidationError
 from sqlalchemy import exc as SQLAlchemyExceptions
-from sqlalchemy import func, ForeignKey, select, update, delete, DateTime
+from sqlalchemy import (
+    func,
+    ForeignKey,
+    select,
+    update,
+    delete,
+    DateTime,
+    ForeignKeyConstraint,
+)
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Mapped, mapped_column, relationship, selectinload
 from sqlalchemy.sql.expression import text
@@ -17,7 +25,12 @@ from app.crud.base import CRUD
 from app.db.base_class import Base
 from app.models.auth import Account
 from app.schemas.auth import RoleEnum
-from app.schemas.library import NoteCreateSchema, NoteInsertSchema, NoteSchema
+from app.schemas.library import (
+    NoteCreateSchema,
+    NoteInsertSchema,
+    NoteSchema,
+    NoteUpdateSchema,
+)
 from app.utils.exceptions import AppError
 from app.utils.file_handler import (
     save_file,
@@ -54,6 +67,11 @@ def form_data_note_parser(
 
 class Library(Base, CRUD["Library"]):
     __tablename__ = "library"
+    __table_args__ = (
+        ForeignKeyConstraint(
+            ["subject", "category"], ["subjects.id", "subjects.category_id"]
+        ),
+    )
 
     id: Mapped[int] = mapped_column(
         primary_key=True,
@@ -88,10 +106,16 @@ class Library(Base, CRUD["Library"]):
     )
     year: Mapped[int] = mapped_column(nullable=True, index=True)
 
-    account: Mapped["Account"] = relationship(back_populates="documents")
-    doc_category: Mapped["CategoryLevel"] = relationship(back_populates="documents")
-    doc_subject: Mapped["Subjects"] = relationship(back_populates="documents")
-    doc_type: Mapped["DocumentTypes"] = relationship(back_populates="documents")
+    account: Mapped["Account"] = relationship("Account", back_populates="documents")
+    doc_category: Mapped["CategoryLevel"] = relationship(
+        "CategoryLevel", back_populates="documents"
+    )
+    doc_subject: Mapped["Subjects"] = relationship(
+        "Subjects", back_populates="documents", foreign_keys=[subject]
+    )
+    doc_type: Mapped["DocumentTypes"] = relationship(
+        "DocumentTypes", back_populates="documents"
+    )
     extension: Mapped[str] = mapped_column(server_default=".pdf", nullable=False)
 
     @classmethod
@@ -231,9 +255,6 @@ class Library(Base, CRUD["Library"]):
         )
 
         res = await session.execute(stmt)
-        await session.refresh(
-            res, ["doc_category", "doc_type", "doc_subject", "account"]
-        )
         pages = total // size if total % size == 0 else (total // size) + 1
         return {
             "items": res.scalars().all(),
@@ -288,7 +309,7 @@ class Library(Base, CRUD["Library"]):
         session: AsyncSession,
         id: int,  # pylint: disable=W0622, C0103
         authenticated: Account,
-        data: dict,
+        data: NoteUpdateSchema,
     ):
         stmt = update(cls)
         fetch_stmt = select(cls)
@@ -318,9 +339,11 @@ class Library(Base, CRUD["Library"]):
                 status_code=403, detail="Not authorized to update this note"
             )
 
-        stmt = stmt.values(**data)
+        stmt = stmt.values(**data.dict(exclude_none=True))
         await session.execute(stmt)
         await session.commit()
+        # import pdb
+        # pdb.set_trace()
         await session.refresh(
             existing_note, ["doc_category", "doc_type", "doc_subject", "account"]
         )
