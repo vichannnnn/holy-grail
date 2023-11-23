@@ -1,4 +1,13 @@
-from app.api.endpoints import example, auth, tasks, library, categories, admin, dev
+from app.api.endpoints import (
+    example,
+    auth,
+    tasks,
+    library,
+    categories,
+    admin,
+    dev,
+    ad_analytics,
+)
 from fastapi import APIRouter
 
 api_router = APIRouter()
@@ -10,3 +19,6 @@ api_router.include_router(tasks.router, tags=["Tasks"])
 api_router.include_router(auth.router, tags=["Authentication"], prefix="/auth")
 api_router.include_router(admin.router, tags=["Admin"], prefix="/admin")
 api_router.include_router(dev.router, tags=["Dev"], prefix="/dev")
+api_router.include_router(
+    ad_analytics.router, tags=["Ad Analytics"], prefix="/ad_analytics"
+)

@@ -9,3 +9,4 @@ export * from './UpdateDocumentType';
 export * from './UpdateNote';
 export * from './UpdateSubject';
 export * from './UpdateUserRole';
+export * from './AdAnalytics';
