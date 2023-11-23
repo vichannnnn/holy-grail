@@ -19,9 +19,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonBaseProps>(
           backgroundColor: 'none',
           color: 'black',
           textTransform: 'capitalize',
-          fontFamily: 'PatrickHandSC, sans-serif',
           padding: '8px 36px',
-          fontSize: '36px',
+          fontSize: '18px',
           borderRadius: '50px',
           '&:hover': {
             backgroundColor: '#aed1ca',

@@ -17,16 +17,16 @@ export const FAQ = () => {
   };
 
   return (
-    <section className='faq section container' id='faq'>
-      <div className='sub-section__title'>Frequently Asked Questions</div>
-      <div className='section__subtitle'>
+    <section className='faq-container' id='faq'>
+      <div className='faq-title'>Frequently Asked Questions</div>
+      <div className='faq-description'>
         Quick answers to questions you may have. Can't find what you're looking for? Send the
         administrators a message through the relevant channels.
       </div>
-      <div className='faq__container container grid'>
+      <div className='faq-qna-section'>
         <div>
-          <div className='faq__qn'>What is the Holy Grail?</div>
-          <p className='faq__ans'>
+          <div className='faq-question'>What is the Holy Grail?</div>
+          <p className='faq-answer'>
             Holy Grail is a collaborative initiative undertaken by a group of students in Singapore
             to compile a repository of notes and practice papers to support fellow students in their
             academic journey.
@@ -37,8 +37,8 @@ export const FAQ = () => {
           </p>
         </div>
         <div>
-          <div className='faq__qn'>How did the Holy Grail come about?</div>
-          <p className='faq__ans'>
+          <div className='faq-question'>How did the Holy Grail come about?</div>
+          <p className='faq-answer'>
             The project was initiated due to the absence of a suitable platform to store and access
             these educational resources.
             <br></br>
@@ -49,8 +49,8 @@ export const FAQ = () => {
           </p>
         </div>
         <div>
-          <div className='faq__qn'>How do I use the Holy Grail?</div>
-          <p className='faq__ans'>
+          <div className='faq-question'>How do I use the Holy Grail?</div>
+          <p className='faq-answer'>
             You can access the resources uploaded at the{' '}
             <RouterLink to='/library' className='text__link'>
               Library
@@ -60,8 +60,8 @@ export const FAQ = () => {
           </p>
         </div>
         <div>
-          <div className='faq__qn'>How can I contribute my materials?</div>
-          <p className='faq__ans'>
+          <div className='faq-question'>How can I contribute my materials?</div>
+          <p className='faq-answer'>
             You can upload the notes that you want to share over{' '}
             <a onClick={handleUploadButtonClick} className='text__link'>
               here
@@ -71,16 +71,16 @@ export const FAQ = () => {
           </p>
         </div>
         <div>
-          <div className='faq__qn'>Will the Holy Grail always be free?</div>
-          <p className='faq__ans'>
+          <div className='faq-question'>Will the Holy Grail always be free?</div>
+          <p className='faq-answer'>
             Yes. The entire project and application is done out of initiative and will always be
             free. This means that content and resources such as contributed notes and practice
             papers will never be behind a paywall.
           </p>
         </div>
         <div>
-          <div className='faq__qn'>How are you guys sustaining this project then?</div>
-          <p className='faq__ans'>
+          <div className='faq-question'>How are you guys sustaining this project then?</div>
+          <p className='faq-answer'>
             Aside from free time spent in development for this project, we are currently incurring
             monthly costs such as infrastructure and hosting that is being paid from our own pocket
             thus far.
