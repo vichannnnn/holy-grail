@@ -1,0 +1,19 @@
+.table-header {
+    font-weight: 600 !important;
+}
+
+.table-header,
+.table-content {
+    padding-left: 0  !important;
+}
+
+.table-document-name {
+    margin: auto 0;
+    font-weight: 600  !important;
+}
+
+.table__notes-card {
+    display: flex;
+    justify-content: center;
+    padding: 0.3rem;
+}

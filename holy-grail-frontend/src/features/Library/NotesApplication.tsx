@@ -13,7 +13,7 @@ import { deleteNote, updateNote } from '@api/actions';
 import { AdminActions, NotesTable } from '@components';
 import { AuthContext } from '@providers';
 import { DeleteAlert, ApprovalEditModal } from '../Approval';
-import './library.css';
+import './Library.css';
 
 export const NotesApplication = () => {
   const [notes, setNotes] = useState<PaginatedNotes>({

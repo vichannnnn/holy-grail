@@ -1,7 +1,7 @@
-import { ApprovalTable, Hero } from '@features';
+import { ApprovalTable } from '@features';
+import { AlertProps, WelcomeBackHeader } from '@components';
 import { useContext, useEffect } from 'react';
 import { AuthContext } from '@providers';
-import { AlertProps } from '@components';
 import { useNavigate } from 'react-router-dom';
 
 export const ApprovalPage = () => {
@@ -23,7 +23,7 @@ export const ApprovalPage = () => {
 
   return (
     <>
-      <Hero />
+      <WelcomeBackHeader />
       <section className='library section container'>
         <div>
           <div className='sub-section__title'>Administrator Panel</div>

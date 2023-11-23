@@ -1,12 +1,17 @@
+import { ReactNode } from 'react';
 import { Typography, TypographyProps } from '@mui/material';
+import './TextLink.css';
 
-type TextLinkProps = TypographyProps & {
-  children: string;
-};
+interface TextLinkProps extends TypographyProps {
+  children: ReactNode;
+  className?: string;
+  onClick?: () => void;
+}
 
-export const TextLink = ({ children, ...props }: TextLinkProps) => {
+export const TextLink = ({ children, className, ...props }: TextLinkProps) => {
+  const combinedClassName = `text-link ${className || ''}`.trim();
   return (
-    <Typography className='text__link' sx={{ cursor: 'pointer', display: 'inline' }} {...props}>
+    <Typography component='a' className={combinedClassName} {...props}>
       {children}
     </Typography>
   );
