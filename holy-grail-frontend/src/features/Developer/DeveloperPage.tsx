@@ -1,10 +1,10 @@
 import { useEffect, useState, SyntheticEvent, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { CategoryType, DocumentType, fetchLibraryTypes, SubjectType } from '@api/library';
-import { User, TabContent, TabContentSubjects, Hero, TabContentUsers } from '@features';
+import { AlertProps, WelcomeBackHeader } from '@components';
+import { User, TabContent, TabContentSubjects, TabContentUsers } from '@features';
 import { Tab, Tabs } from '@mui/material';
 import { AuthContext } from '@providers';
-import { useNavigate } from 'react-router-dom';
-import { AlertProps } from '@components';
 
 export const DeveloperPage = () => {
   const { user, isLoading } = useContext(AuthContext);
@@ -45,7 +45,7 @@ export const DeveloperPage = () => {
 
   return (
     <>
-      <Hero />
+      <WelcomeBackHeader />
       <section className='library section container'>
         <div>
           <div className='sub-section__title'>Developer Panel</div>

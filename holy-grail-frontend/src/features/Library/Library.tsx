@@ -1,61 +1,35 @@
 import { useNavigation } from '@utils';
+import { WelcomeBackHeader, TextLink } from '@components';
 import { NotesApplication } from './NotesApplication';
-import { Hero } from './Hero';
-import { TextLink } from '@components';
+import './Library.css';
 
 export const Library = () => {
-  const {
-    goToUploadPage,
-    goToStudentsKahoot,
-    goToSecondarySchoolBot,
-    goToJCBot,
-    goToJCChatBot,
-    goToThisCounted,
-  } = useNavigation();
+  const { goToUploadPage } = useNavigation();
 
   return (
-    <div>
-      <Hero />
-      <section className='library section container' id='library'>
-        <div>
-          <div className='sub-section__title'>Library</div>
-          <div className='section__subtitle'>
-            View materials or contribute{' '}
-            <a onClick={goToUploadPage} className='text__link'>
-              here
-            </a>{' '}
-            after you have logged in (subjected to approval of administrators).
-          </div>
+    <>
+      <div className='library-container' id='library'>
+        <WelcomeBackHeader />
+        <div className='library-title'>Library</div>
+        <div className='library-subtitle'>
+          View materials or contribute <TextLink onClick={goToUploadPage}>here</TextLink> after you
+          have logged in (subjected to approval of administrators).
         </div>
-        <div className='section__subtitle'>
+
+        <div className='library-subtitle'>
           <p>
             Check these out on Telegram! Weekly Kahoot (with prizes) based on O/N-Level, A-Level
-            syllabus:{' '}
-            <a className='text__link' onClick={goToStudentsKahoot}>
-              @studentskahoot
-            </a>
+            syllabus: @studentskahoot
             <br></br>
-            Chat or study together with other students:{' '}
-            <a className='text__link' onClick={goToJCBot}>
-              @JuniorCollegeBot
-            </a>{' '}
-            /{' '}
-            <a className='text__link' onClick={goToJCChatBot}>
-              @JCchatbot
-            </a>{' '}
-            /{' '}
-            <a className='text__link' onClick={goToSecondarySchoolBot}>
-              @SecondarySchoolBot
-            </a>
+            Chat or study together with other students: @JuniorCollegeBot / @JCchatbot /
+            @SecondarySchoolBot
             <br></br>
-            Student Discounts:{' '}
-            <a className='text__link' onClick={goToThisCounted}>
-              @ThisCounted
-            </a>
+            Student Discounts: @ThisCounted
           </p>
         </div>
         <NotesApplication />
-      </section>
-    </div>
+      </div>
+      <NotesApplication />
+    </>
   );
 };
