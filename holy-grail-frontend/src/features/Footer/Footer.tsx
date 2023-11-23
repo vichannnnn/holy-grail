@@ -6,7 +6,6 @@ import './Footer.css';
 
 export const Footer = () => {
   const { user } = useContext(AuthContext);
-  const { isDesktop } = useContext(MediaQueryContext);
 
   return (
     <>
