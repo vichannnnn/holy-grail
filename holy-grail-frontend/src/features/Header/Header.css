@@ -1,9 +1,9 @@
 .header {
-    width: 100%;
-    top: 0;
-    left: 0;
+    width: 80%;
+    margin: 0 auto;
     background-color: transparent;
-    padding: 0 2rem;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .nav {
@@ -38,8 +38,8 @@
 }
 
 .nav__divider {
-    border-left:1px solid var(--title-color);
-    border-right:1px solid var(--title-color);
+    border-left:1px solid;
+    border-right:1px solid;
     height: 2rem;
     margin: auto 0;
 }

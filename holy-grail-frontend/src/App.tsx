@@ -34,6 +34,21 @@ const customMuiTheme = {
         },
       },
     },
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          '&:hover': {
+            backgroundColor: '#aed1ca',
+            border: 'none',
+          },
+          '&:focus': {
+            border: 'none',
+            outline: 'none',
+            boxShadow: 'none',
+          },
+        },
+      },
+    },
   },
 };
 
