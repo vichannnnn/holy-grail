@@ -4,8 +4,6 @@ export * from './AlertToast';
 export * from './Button';
 export * from './Combobox';
 export * from './DropdownMenuItem';
-export * from './HeroBox';
-export * from './HomeButton';
 export * from './Icon';
 export * from './NotesTable';
 export * from './Pagination';

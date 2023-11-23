@@ -28,9 +28,7 @@ export const Hero = () => {
               the relevant summary notes and practice papers for GCE 'O' Levels, GCE 'A' Levels and
               International Baccalaureate.
             </p>
-            <Button className='try-btn' onClick={goToLibrary}>
-              Click here to access the library!
-            </Button>
+            <Button onClick={goToLibrary}>Click here to access the library!</Button>
           </div>
         </div>
         {isDesktop && (
@@ -59,9 +57,7 @@ export const Hero = () => {
               want to contribute revision materials into the repository, you can log in or sign up
               for an account below to start contributing!
             </p>
-            <Button className='signup-btn' onClick={goToRegister}>
-              Click here to sign up!
-            </Button>
+            <Button onClick={goToRegister}>Click here to sign up!</Button>
           </div>
         </div>
       </div>
