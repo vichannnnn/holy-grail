@@ -49,6 +49,9 @@ buildfrontend:
 migrate:
 	$(DC_COMMAND) run --rm $(backend_container) alembic upgrade head
 
+downgrade:
+	$(DC_COMMAND) run --rm $(backend_container) alembic downgrade -1
+
 migrations:
 	$(DC_COMMAND) run --rm $(backend_container) alembic revision --autogenerate -m $(name)
 
