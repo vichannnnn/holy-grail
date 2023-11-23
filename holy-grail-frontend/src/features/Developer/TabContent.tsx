@@ -14,7 +14,7 @@ import {
   TableRow,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
-import '../Library/library.css';
+import '../Library/Library.css';
 
 export const TabContent = ({ title, data, type, fetchData }: TabContentProps) => {
   const [query, setQuery] = useState<string>('');
@@ -78,21 +78,21 @@ export const TabContent = ({ title, data, type, fetchData }: TabContentProps) =>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell className='table__header'>ID</TableCell>
-              <TableCell className='table__header'>Name</TableCell>
-              <TableCell className='table__header'>Actions</TableCell>
+              <TableCell className='table-header'>ID</TableCell>
+              <TableCell className='table-header'>Name</TableCell>
+              <TableCell className='table-header'>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {(handlePaging()[page] || []).map((item) => (
               <TableRow key={item.id}>
-                <TableCell className='table__content' component='th' scope='row'>
+                <TableCell className='table-content' component='th' scope='row'>
                   {item.id}
                 </TableCell>
-                <TableCell className='table__content' component='th' scope='row'>
+                <TableCell className='table-content' component='th' scope='row'>
                   {item.name}
                 </TableCell>
-                <TableCell className='table__content' component='th' scope='row'>
+                <TableCell className='table-content' component='th' scope='row'>
                   <Button onClick={() => handleEdit(item)}>
                     <EditIcon />
                   </Button>

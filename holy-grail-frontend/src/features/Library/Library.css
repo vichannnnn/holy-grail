@@ -1,0 +1,17 @@
+.library-container {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 48px auto;
+}
+
+.library-title {
+    font-size: 1.75rem;
+    font-weight: 600;
+}
+
+.library-subtitle {
+    font-size: 1rem;
+    margin-bottom: 2%;
+}
