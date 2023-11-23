@@ -3,6 +3,7 @@
     margin-top: 3rem;
     border-top: 1px solid rgba(0,0,0,0.1);
     display: flex;
+    flex-direction: column;
     padding: 2rem 0;
 }
 
@@ -11,7 +12,7 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
-    margin: 64px auto;
+    margin: 16px auto;
     gap: 2rem 5rem;
 }
 
@@ -48,12 +49,13 @@
 }
 
 @media screen and (max-width: 913px) {
-    .footer-section {
-        gap: 1rem;
-    }
-
     .footer-logo-image {
         width: 64px;
         height: 64px;
+    }
+
+    .footer-container {
+        flex-direction: column;
+        text-align: center;
     }
 }
