@@ -4,9 +4,9 @@ import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import InfoIcon from '@mui/icons-material/Info';
 import './Ads.css';
+import { useNavigation } from '@utils';
 
 const ADS_IMAGE_URL = 'https://document.grail.moe/General+Paper+Ad.png';
-const ADS_HYPERLINK_URL = 'https://GP.sg';
 
 interface InfoButtonProps {
   isDesktop: boolean;
@@ -53,20 +53,12 @@ const InfoButton = ({ isDesktop }: InfoButtonProps) => {
 
 export const Ads = () => {
   const { isDesktop } = useContext(MediaQueryContext);
-  const openPopup = (url: string) => {
-    window.open(url, '_blank');
-  };
+  const { goToGP } = useNavigation();
 
   return (
     <div className='ads-container'>
       <div className='ads-image'>
-        <a
-          href={ADS_HYPERLINK_URL}
-          onClick={(e) => {
-            e.preventDefault();
-            openPopup(ADS_HYPERLINK_URL);
-          }}
-        >
+        <a onClick={goToGP} style={{ cursor: 'pointer' }}>
           <img alt='GP Ads here!' src={ADS_IMAGE_URL} width={isDesktop ? '468' : '320'}></img>
         </a>
         <InfoButton isDesktop={isDesktop} />
