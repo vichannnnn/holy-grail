@@ -15,16 +15,17 @@ export const Button = forwardRef<HTMLButtonElement, ButtonBaseProps>(
         ref={ref}
         variant='outlined'
         sx={{
-          border: 'none',
-          backgroundColor: 'none',
+          backgroundColor: '#ffe1f0',
+          borderColor: '#ffe1f0',
           color: 'black',
           textTransform: 'capitalize',
-          padding: '8px 36px',
-          fontSize: '18px',
-          borderRadius: '50px',
+          fontFamily: `'Poppins', 'sans-serif'`,
+          padding: '4px 16px',
+          fontSize: '16px',
+          borderRadius: '12px',
           '&:hover': {
-            backgroundColor: '#aed1ca',
-            border: 'none',
+            backgroundColor: '#ffe1f0',
+            borderColor: '#fcaac0',
           },
           '&:focus': {
             border: 'none',
