@@ -6,7 +6,7 @@ type TextLinkProps = TypographyProps & {
 
 export const TextLink = ({ children, ...props }: TextLinkProps) => {
   return (
-    <Typography sx={{ cursor: 'pointer' }} {...props}>
+    <Typography className='text__link' sx={{ cursor: 'pointer', display: 'inline' }} {...props}>
       {children}
     </Typography>
   );

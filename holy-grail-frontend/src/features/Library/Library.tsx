@@ -1,9 +1,17 @@
 import { useNavigation } from '@utils';
 import { NotesApplication } from './NotesApplication';
 import { Hero } from './Hero';
+import { TextLink } from '@components';
 
 export const Library = () => {
-  const { goToUploadPage } = useNavigation();
+  const {
+    goToUploadPage,
+    goToStudentsKahoot,
+    goToSecondarySchoolBot,
+    goToJCBot,
+    goToJCChatBot,
+    goToThisCounted,
+  } = useNavigation();
 
   return (
     <div>
@@ -22,12 +30,28 @@ export const Library = () => {
         <div className='section__subtitle'>
           <p>
             Check these out on Telegram! Weekly Kahoot (with prizes) based on O/N-Level, A-Level
-            syllabus: @studentskahoot
+            syllabus:{' '}
+            <a className='text__link' onClick={goToStudentsKahoot}>
+              @studentskahoot
+            </a>
             <br></br>
-            Chat or study together with other students: @JuniorCollegeBot / @JCchatbot /
-            @SecondarySchoolBot
+            Chat or study together with other students:{' '}
+            <a className='text__link' onClick={goToJCBot}>
+              @JuniorCollegeBot
+            </a>{' '}
+            /{' '}
+            <a className='text__link' onClick={goToJCChatBot}>
+              @JCchatbot
+            </a>{' '}
+            /{' '}
+            <a className='text__link' onClick={goToSecondarySchoolBot}>
+              @SecondarySchoolBot
+            </a>
             <br></br>
-            Student Discounts: @ThisCounted
+            Student Discounts:{' '}
+            <a className='text__link' onClick={goToThisCounted}>
+              @ThisCounted
+            </a>
           </p>
         </div>
         <NotesApplication />
