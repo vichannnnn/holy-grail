@@ -15,6 +15,13 @@ export const useNavigation = () => {
   const goToDeveloperPanel = (options = {}) => navigate('/developer', options);
   const goToAccountPage = (options = {}) => navigate('/account', options);
 
+  const goToGP = () => window.open('https://GP.sg', '_blank');
+  const goToStudentsKahoot = () => window.open('https://t.me/studentskahoot', '_blank');
+  const goToJCBot = () => window.open('https://t.me/juniorcollegebot', '_blank');
+  const goToJCChatBot = () => window.open('https://t.me/JCchatbot', '_blank');
+  const goToSecondarySchoolBot = () => window.open('https://t.me/SecondarySchoolBot', '_blank');
+  const goToThisCounted = () => window.open('https://t.me/ThisCounted', '_blank');
+
   return {
     goToHome,
     goToRegister,
@@ -27,5 +34,11 @@ export const useNavigation = () => {
     goToAdminPanel,
     goToDeveloperPanel,
     goToAccountPage,
+    goToGP,
+    goToStudentsKahoot,
+    goToJCBot,
+    goToJCChatBot,
+    goToSecondarySchoolBot,
+    goToThisCounted,
   };
 };
