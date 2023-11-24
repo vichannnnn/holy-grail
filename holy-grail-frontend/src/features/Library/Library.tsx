@@ -4,7 +4,14 @@ import { NotesApplication } from './NotesApplication';
 import './Library.css';
 
 export const Library = () => {
-  const { goToUploadPage } = useNavigation();
+  const {
+    goToUploadPage,
+    goToStudentsKahoot,
+    goToSecondarySchoolBot,
+    goToJCBot,
+    goToJCChatBot,
+    goToThisCounted,
+  } = useNavigation();
 
   return (
     <>
@@ -16,12 +23,14 @@ export const Library = () => {
           have logged in (subjected to approval of administrators).
           <p>
             Check these out on Telegram! Weekly Kahoot (with prizes) based on O/N-Level, A-Level
-            syllabus: @studentskahoot
+            syllabus: <TextLink onClick={goToStudentsKahoot}>@studentskahoot</TextLink>
             <br></br>
-            Chat or study together with other students: @JuniorCollegeBot / @JCchatbot /
-            @SecondarySchoolBot
+            Chat or study together with other students:{' '}
+            <TextLink onClick={goToJCBot}>@JuniorCollegeBot</TextLink> /{' '}
+            <TextLink onClick={goToJCChatBot}>@JCchatbot</TextLink> /{' '}
+            <TextLink onClick={goToSecondarySchoolBot}>@SecondarySchoolBot</TextLink>
             <br></br>
-            Student Discounts: @ThisCounted
+            Student Discounts: <TextLink onClick={goToThisCounted}>@ThisCounted</TextLink>
           </p>
         </div>
         <NotesApplication />
