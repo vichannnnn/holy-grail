@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { sendResetPasswordEmail, ForgotPasswordDetails } from '@api/auth';
-import { AlertToast, AlertProps } from '@components';
+import { AlertToast, AlertProps, Button } from '@components';
 import { ResetPasswordValidation } from '@forms/validation';
 import { useNavigation } from '@utils';
-import { Box, Button, FormControl, TextField, Link, Stack } from '@mui/material';
+import { Box, FormControl, TextField, Link, Stack } from '@mui/material';
 import '../UserAccountForm.css';
 
 export const ForgotPasswordPage = () => {
@@ -40,7 +40,7 @@ export const ForgotPasswordPage = () => {
         </div>
 
         <form className='account-form-text-field' onSubmit={handleSubmit(handleResetPassword)}>
-          <Stack direction='column' spacing={6}>
+          <Stack direction='column' spacing={3}>
             <FormControl id='email'>
               <TextField
                 type='email'
@@ -51,13 +51,13 @@ export const ForgotPasswordPage = () => {
                 required
               />
             </FormControl>
-            <Button type='submit' variant='contained' fullWidth>
-              Reset Password
-            </Button>
+            <div className='account-form-button-container'>
+              <Button type='submit'>Reset Password</Button>
+            </div>
           </Stack>
         </form>
         <Box>
-          <div className='account-formfooter'>
+          <div className='account-form-footer'>
             <div>
               Already a member?{' '}
               <Link onClick={goToLoginPage} underline='always'>
