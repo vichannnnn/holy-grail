@@ -1,12 +1,12 @@
 import { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { getUser, updateEmail, UpdateEmailDetails } from '@api/auth';
 import { AlertProps, AlertToast, Button } from '@components';
 import { ChangeEmailValidation } from '@forms/validation';
 import { AuthContext, MediaQueryContext } from '@providers';
-import { Typography, TextField, FormControl } from '@mui/material';
-import { yupResolver } from '@hookform/resolvers/yup';
-import '../AccountDetails/AccountDetails.css';
+import { TextField, FormControl } from '@mui/material';
+import '../AccountDetails.css';
 
 export const UpdateEmail = () => {
   const [openAlert, setOpenAlert] = useState<boolean>(false);
@@ -48,15 +48,11 @@ export const UpdateEmail = () => {
     <>
       {isDesktop ? (
         <>
-          <form
-            onSubmit={handleSubmit(handleUpdateEmail)}
-            id='emailForm'
-            className='update-outer-div'
-          >
-            <div className='update-grid'>
-              <Typography sx={{ fontWeight: 'bold' }}>Email</Typography>
-              <Typography>{user?.email}</Typography>
-              <Typography sx={{ fontWeight: 'bold' }}>New Email</Typography>
+          <form onSubmit={handleSubmit(handleUpdateEmail)} id='emailForm'>
+            <div className='update-details-grid'>
+              <a className='account-details-title'>Email</a>
+              <a>{user?.email}</a>
+              <a className='account-details-title'>New Email</a>
               <FormControl id='new_email'>
                 <TextField
                   label='Email'
@@ -66,23 +62,12 @@ export const UpdateEmail = () => {
                   required
                 />
               </FormControl>
-              <Typography sx={{ fontWeight: 'bold' }}>Status</Typography>
-              <Typography
-                sx={{
-                  color: user?.verified ? 'green' : 'red',
-                }}
-              >
+              <a className='account-details-title'>Status</a>
+              <a className={`verified-status ${user?.verified ? 'verified' : 'unverified'}`}>
                 {user?.verified ? 'Verified' : 'Unverified'}
-              </Typography>
+              </a>
               <div className='change-email-button-container'>
-                <Button
-                  variant='contained'
-                  color='info'
-                  type='submit'
-                  form='emailForm'
-                  disabled={Object.keys(errors).length !== 0}
-                  sx={{ textTransform: 'capitalize', width: '7vw' }}
-                >
+                <Button type='submit' form='emailForm' disabled={Object.keys(errors).length !== 0}>
                   Save
                 </Button>
               </div>
