@@ -2,10 +2,10 @@ import { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { getUser, updateEmail, UpdateEmailDetails } from '@api/auth';
-import { AlertProps, AlertToast } from '@components';
+import { AlertProps, AlertToast, Button } from '@components';
 import { ChangeEmailValidation } from '@forms/validation';
 import { AuthContext, MediaQueryContext } from '@providers';
-import { Typography, Button, TextField, FormControl } from '@mui/material';
+import { TextField, FormControl } from '@mui/material';
 import './AccountDetails.css';
 
 export const AccountDetails = ({ changeEmailClick }: { changeEmailClick?: () => void }) => {
@@ -45,31 +45,22 @@ export const AccountDetails = ({ changeEmailClick }: { changeEmailClick?: () => 
   };
 
   return (
-    <form onSubmit={handleSubmit(handleUpdateEmail)} id='emailForm' className='update-outer-div'>
+    <form onSubmit={handleSubmit(handleUpdateEmail)} id='emailForm'>
       <div className={isDesktop ? 'update-grid' : 'update-grid-mobile'}>
-        <Typography sx={{ fontWeight: 'bold' }}>Username</Typography>
-        <Typography>{user?.username}</Typography>
-        <Typography sx={{ fontWeight: 'bold' }}>Email</Typography>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Typography>{user?.email}</Typography>
-          {isDesktop ? (
-            <Button
-              variant='contained'
-              color='primary'
-              sx={{ textTransform: 'capitalize' }}
-              onClick={changeEmailClick}
-            >
-              Change Email
-            </Button>
-          ) : null}
+        <a className='account-details-title'>Username</a>
+        <a>{user?.username}</a>
+        <a className='account-details-title'>Email</a>
+        <div className='change-email-button-view'>
+          <a>{user?.email}</a>
+          {isDesktop ? <Button onClick={changeEmailClick}>Change Email</Button> : null}
         </div>
-        <Typography sx={{ fontWeight: 'bold' }}>Status</Typography>
-        <Typography sx={{ color: user?.verified ? 'green' : 'red' }}>
+        <a className='account-details-title'>Status</a>
+        <a className={`verified-status ${user?.verified ? 'verified' : 'unverified'}`}>
           {user?.verified ? 'Verified' : 'Unverified'}
-        </Typography>
+        </a>
         {!isDesktop ? (
           <>
-            <Typography sx={{ fontWeight: 'bold' }}>New Email</Typography>
+            <a>New Email</a>
             <FormControl id='new_email'>
               <TextField
                 label='Email'
@@ -80,14 +71,7 @@ export const AccountDetails = ({ changeEmailClick }: { changeEmailClick?: () => 
               />
             </FormControl>
             <div className='change-email-button-container'>
-              <Button
-                variant='contained'
-                color='info'
-                type='submit'
-                form='emailForm'
-                disabled={Object.keys(errors).length !== 0}
-                sx={{ textTransform: 'capitalize', width: '7vw' }}
-              >
+              <Button type='submit' form='emailForm' disabled={Object.keys(errors).length !== 0}>
                 Save
               </Button>
             </div>
