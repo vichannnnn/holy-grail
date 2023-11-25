@@ -1,0 +1,29 @@
+.developer-page-container {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 48px auto;
+}
+
+.developer-title {
+    font-size: 1.75rem;
+    font-weight: 600;
+}
+
+.developer-subtitle {
+    font-size: 1rem;
+    margin-bottom: 2%;
+}
+
+.developer-panel-table {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+}
+
+.developer {
+    padding-top: 6rem;
+    min-height: calc(70vh - 3rem);
+}

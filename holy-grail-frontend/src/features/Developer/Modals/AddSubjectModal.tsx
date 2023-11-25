@@ -6,7 +6,7 @@ import { AlertToast, AlertProps, Combobox } from '@components';
 import { DeveloperAddModalProps, AddSubjectDetails } from '@features';
 import { Box, Button, Modal, TextField, Stack, Typography } from '@mui/material';
 
-export const DeveloperAddSubjectModal = ({
+export const AddSubjectModal = ({
   isOpen,
   onClose,
   onSuccessfulAdd,

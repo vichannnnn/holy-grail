@@ -5,9 +5,9 @@ import { CategoryType, fetchAllCategories } from '@api/library';
 import { AlertProps, AlertToast } from '@components';
 import { DeveloperEditSubjectModalProps, UpdateSubjectDetails } from '@features';
 import { Box, Button, Modal, Stack, TextField, Typography, MenuItem } from '@mui/material';
-import './developer.css';
+import '../DeveloperPage.css';
 
-export const DeveloperEditSubjectModal = ({
+export const EditSubjectModal = ({
   isOpen,
   onClose,
   onSuccessfulUpdate,

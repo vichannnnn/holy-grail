@@ -1,0 +1,14 @@
+.table-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.developer-table-header {
+    font-family: "Poppins", sans-serif !important;
+    font-weight: 600 !important;
+}
+
+.developer-table-header,
+.table-content {
+    padding-left: 0 !important;
+}
