@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { AdminApproveIcon, Button } from '@components';
+import { Button } from '@components';
 import { MediaQueryContext } from '@providers';
 import { useNavigation } from '@utils';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
