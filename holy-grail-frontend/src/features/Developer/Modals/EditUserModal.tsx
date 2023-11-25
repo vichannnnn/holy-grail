@@ -5,9 +5,9 @@ import { fetchAllUsers } from '@api/library';
 import { RoleEnum, EditUserModalProps, UpdateUserDetails, User } from '@features';
 import { AlertProps, AlertToast } from '@components';
 import { Box, Button, MenuItem, Modal, Select, Stack } from '@mui/material';
-import './developer.css';
+import '../DeveloperPage.css';
 
-export const DeveloperEditUserModal = ({
+export const EditUserModal = ({
   isOpen,
   onClose,
   onSuccessfulUpdate,

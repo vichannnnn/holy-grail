@@ -1,10 +1,9 @@
 import { useState } from 'react';
-import { CategoryType, DocumentType } from '@api/library';
-import { FreeTextCombobox, Pagination } from '@components';
-import { DeveloperAddModal, DeveloperEditModal, TabContentProps } from '@features';
+import { SubjectType } from '@api/library';
+import { Button, FreeTextCombobox, Pagination } from '@components';
+import { AddSubjectModal, TabContentSubjectProps } from '@features';
 import {
   Box,
-  Button,
   Grid,
   Table,
   TableBody,
@@ -14,18 +13,23 @@ import {
   TableRow,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
-import '../Library/Library.css';
+import '../../Library/Library.css';
+import { EditSubjectModal } from '../Modals/EditSubjectModal';
 
-export const TabContent = ({ title, data, type, fetchData }: TabContentProps) => {
+export const TabContentSubjects = ({
+  title,
+  data,
+  fetchData,
+}: Omit<TabContentSubjectProps, 'type'>) => {
   const [query, setQuery] = useState<string>('');
   const [page, setPage] = useState<number>(0);
-  const [chunkSize, setChunkSize] = useState<number>(10);
+  const chunkSize = 20;
 
   const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
-  const [editedItem, setEditedItem] = useState<CategoryType | DocumentType | null>(null);
+  const [editedItem, setEditedItem] = useState<SubjectType | null>(null);
 
-  const handleEdit = (item: CategoryType | DocumentType) => {
+  const handleEdit = (item: SubjectType) => {
     setEditedItem(item);
     setIsEditModalOpen(true);
   };
@@ -36,15 +40,14 @@ export const TabContent = ({ title, data, type, fetchData }: TabContentProps) =>
   };
 
   const handleFilterContent = () => {
-    return (data as Array<CategoryType | DocumentType>).filter(
-      (option: CategoryType | DocumentType) =>
-        option.name.toLowerCase().includes(query.toLowerCase()),
+    return data.filter((option: SubjectType) =>
+      option.name.toLowerCase().includes(query.toLowerCase()),
     );
   };
 
   const handlePaging = () => {
-    const pagedData: Array<Array<CategoryType | DocumentType>> = [];
-    const validData: Array<CategoryType | DocumentType> = handleFilterContent();
+    const pagedData: Array<Array<SubjectType>> = [];
+    const validData: Array<SubjectType> = handleFilterContent();
     for (let i = 0; i < validData.length; i += chunkSize) {
       pagedData.push(validData.slice(i, i + chunkSize));
     }
@@ -52,25 +55,17 @@ export const TabContent = ({ title, data, type, fetchData }: TabContentProps) =>
   };
 
   return (
-    <section className='materials container'>
-      <Box alignItems='center' sx={{ paddingTop: '3%', paddingBottom: '3%' }}>
-        <Grid item xs={12} sm={4}>
-          <Box display='flex' justifyContent='center'>
-            <h2>{title}</h2>
-          </Box>
-        </Grid>
-      </Box>
+    <div>
+      <h2>{title}</h2>
       <Grid item xs={12} sm={4}>
         <Box display='flex' justifyContent='space-between' gap='10%'>
           <FreeTextCombobox
-            label={`Search for ${type}`}
+            label='Search for subjects'
             value={query}
             onChange={(newValue: string) => setQuery(newValue)}
             sx={{ flexGrow: 1 }}
           />
-          <Button variant='contained' onClick={handleAdd}>
-            + Add
-          </Button>
+          <Button onClick={handleAdd}>+ Add</Button>
         </Box>
       </Grid>
 
@@ -80,6 +75,7 @@ export const TabContent = ({ title, data, type, fetchData }: TabContentProps) =>
             <TableRow>
               <TableCell className='table-header'>ID</TableCell>
               <TableCell className='table-header'>Name</TableCell>
+              <TableCell className='table-header'>Category</TableCell>
               <TableCell className='table-header'>Actions</TableCell>
             </TableRow>
           </TableHead>
@@ -92,6 +88,11 @@ export const TabContent = ({ title, data, type, fetchData }: TabContentProps) =>
                 <TableCell className='table-content' component='th' scope='row'>
                   {item.name}
                 </TableCell>
+
+                <TableCell className='table-content' component='th' scope='row'>
+                  {item.category?.name}
+                </TableCell>
+
                 <TableCell className='table-content' component='th' scope='row'>
                   <Button onClick={() => handleEdit(item)}>
                     <EditIcon />
@@ -102,21 +103,19 @@ export const TabContent = ({ title, data, type, fetchData }: TabContentProps) =>
           </TableBody>
         </Table>
       </TableContainer>
+      {isAddModalOpen && (
+        <AddSubjectModal
+          isOpen={isAddModalOpen}
+          onClose={() => setIsAddModalOpen(false)}
+          onSuccessfulAdd={fetchData}
+        />
+      )}
       {isEditModalOpen && editedItem && (
-        <DeveloperEditModal
+        <EditSubjectModal
           isOpen={isEditModalOpen}
           onClose={() => setIsEditModalOpen(false)}
           initialData={editedItem}
-          type={type}
           onSuccessfulUpdate={fetchData}
-        />
-      )}
-      {isAddModalOpen && (
-        <DeveloperAddModal
-          isOpen={isAddModalOpen}
-          onClose={() => setIsAddModalOpen(false)}
-          type={type}
-          onSuccessfulAdd={fetchData}
         />
       )}
       <Pagination
@@ -130,6 +129,6 @@ export const TabContent = ({ title, data, type, fetchData }: TabContentProps) =>
           setPage(newPage - 1);
         }}
       />
-    </section>
+    </div>
   );
 };

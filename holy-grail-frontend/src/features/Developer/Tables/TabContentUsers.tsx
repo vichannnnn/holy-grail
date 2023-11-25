@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { DeveloperEditUserModal, RoleEnum, TabContentUsersProps, User } from '@features';
+import { EditUserModal, RoleEnum, TabContentUsersProps, User } from '@features';
 import {
   Box,
   Button,
@@ -12,7 +12,7 @@ import {
   TableRow,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
-import '../Library/Library.css';
+import '../../Library/Library.css';
 
 export const TabContentUsers = ({ data, fetchData }: TabContentUsersProps) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
@@ -64,7 +64,7 @@ export const TabContentUsers = ({ data, fetchData }: TabContentUsersProps) => {
         </Table>
       </TableContainer>
       {isEditModalOpen && editedItem && (
-        <DeveloperEditUserModal
+        <EditUserModal
           isOpen={isEditModalOpen}
           onClose={() => setIsEditModalOpen(false)}
           initialData={editedItem}
