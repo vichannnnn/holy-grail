@@ -1,7 +1,7 @@
 import { useEffect, useRef, useContext } from 'react';
+import { Button } from '@components';
 import { FileSelectProps } from '@features';
 import { AuthContext, MediaQueryContext } from '@providers';
-import { Button, Typography } from '@mui/material';
 
 export const FileSelect = ({ handleAddNotes }: FileSelectProps) => {
   const dragDropRef = useRef<HTMLDivElement | null>(null);
@@ -54,25 +54,14 @@ export const FileSelect = ({ handleAddNotes }: FileSelectProps) => {
       }}
       ref={dragDropRef}
     >
-      <Typography sx={{ margin: '2%', display: isDesktop ? null : 'none' }}>
+      <a style={{ margin: '2%', display: isDesktop ? null : 'none' }}>
         Drag and drop your PDFs here, or
-      </Typography>
+      </a>
       <Button
         onClick={() => {
           if (fileRef.current) {
             fileRef.current.click();
           }
-        }}
-        sx={{
-          borderColor: 'transparent',
-          backgroundColor: 'rgb(49, 130, 206)',
-          textTransform: 'capitalize',
-          color: 'white',
-          fontWeight: 'bold',
-          borderRadius: '4px',
-          '&:hover': {
-            backgroundColor: 'rgba(49, 130, 206, 0.75)',
-          },
         }}
       >
         Upload Files
