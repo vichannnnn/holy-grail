@@ -7,6 +7,10 @@
     margin: auto;
 }
 
+.account-details-container a.account-details-title {
+    font-weight: bold;
+}
+
 .account-details-main {
     display: flex;
     flex-direction: column;
@@ -24,6 +28,21 @@
     border-top: 2px solid black;
     margin: 5vh 0;
 }
+
+.change-email-button-view {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.verified-status.verified {
+    color: green;
+}
+
+.verified-status.unverified {
+    color: red;
+}
+
 
 .update-grid {
     display: grid;
