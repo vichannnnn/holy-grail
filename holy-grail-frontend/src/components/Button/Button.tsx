@@ -13,14 +13,13 @@ export const Button = forwardRef<HTMLButtonElement, ButtonBaseProps>(
         onClick={onClick}
         className=''
         ref={ref}
-        variant='outlined'
+        variant='contained'
         sx={{
           backgroundColor: '#ffe1f0',
           borderColor: '#ffe1f0',
           color: 'black',
-          textTransform: 'capitalize',
+          textTransform: 'none',
           fontFamily: `'Poppins', 'sans-serif'`,
-          padding: '4px 16px',
           fontSize: '16px',
           borderRadius: '12px',
           '&:hover': {
