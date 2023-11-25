@@ -1,5 +1,6 @@
 .account-details-container {
     width: 75%;
+    min-height: 90vh;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
