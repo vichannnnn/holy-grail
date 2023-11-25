@@ -2,11 +2,11 @@ import { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { updatePassword, UpdatePasswordDetails } from '@api/auth';
-import { AlertProps, AlertToast, PasswordValidation } from '@components';
+import { AlertProps, AlertToast, PasswordValidation, Button } from '@components';
 import { MediaQueryContext } from '@providers';
 import { UpdatePasswordValidation } from '@forms/validation';
 import { useNavigation } from '@utils';
-import { Typography, TextField, Button, FormControl } from '@mui/material';
+import { TextField, FormControl } from '@mui/material';
 import '../AccountDetails.css';
 
 export const UpdatePassword = () => {
@@ -47,7 +47,7 @@ export const UpdatePassword = () => {
     <>
       <form onSubmit={handleSubmit(handleUpdatePassword)}>
         <div className={isDesktop ? 'update-details-grid' : 'update-details-grid-mobile'}>
-          <Typography sx={{ fontWeight: 'bold' }}>Current Password</Typography>
+          <a className='account-details-title'>Current Password</a>
           <FormControl id='before-password'>
             <TextField
               type='password'
@@ -59,7 +59,7 @@ export const UpdatePassword = () => {
             />
           </FormControl>
 
-          <Typography sx={{ fontWeight: 'bold' }}>New Password</Typography>
+          <a className='account-details-title'>New Password</a>
           <FormControl id='password'>
             <TextField
               type='password'
@@ -71,7 +71,7 @@ export const UpdatePassword = () => {
             />
           </FormControl>
 
-          <Typography sx={{ fontWeight: 'bold' }}>Repeat Password</Typography>
+          <a className='account-details-title'>Repeat Password</a>
           <FormControl id='repeat-password'>
             <TextField
               type='password'
@@ -88,14 +88,7 @@ export const UpdatePassword = () => {
             password={watch('password')}
             repeatPassword={watch('repeat_password')}
           />
-          <Button
-            variant='contained'
-            color='info'
-            type='submit'
-            sx={{ textTransform: 'capitalize' }}
-          >
-            Save Password
-          </Button>
+          <Button type='submit'>Save Password</Button>
         </div>
       </form>
       <AlertToast
