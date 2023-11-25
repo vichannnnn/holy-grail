@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { VerticalNav, VerticalNavProps } from '@components';
 import { AccountDetails, UpdatePassword, UpdateEmail } from '@features';
 import { AccountBox as AccountBoxIcon, Password as PasswordIcon, Email } from '@mui/icons-material';
-import './account.css';
+import './Account.css';
 
 export const DesktopAccountPage = () => {
   const [title, setTitle] = useState('Account details');

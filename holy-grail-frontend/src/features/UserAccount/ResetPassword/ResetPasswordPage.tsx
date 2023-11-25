@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { resetPassword } from '@api/auth';
 import { useNavigation } from '@utils';
 import { Link } from '@mui/material';
-import '../SignIn/login.css';
+import '../Login/LoginPage.css';
 
 export const ResetPasswordPage = () => {
   const { goToForgotPassword } = useNavigation();
@@ -39,7 +39,7 @@ export const ResetPasswordPage = () => {
   return (
     <section className='resetPw section container'>
       <div>
-        <div className='login__title'>Reset Password</div>
+        <div className='login-title'>Reset Password</div>
 
         {resetStatus ? (
           <div className='section__subtitle'>{resetStatus}</div>

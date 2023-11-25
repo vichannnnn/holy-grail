@@ -6,7 +6,7 @@ import { sendResetPasswordEmail, ForgotPasswordDetails } from '@api/auth';
 import { AccountForm, AlertToast, AlertProps } from '@components';
 import { ResetPasswordValidation } from '@forms/validation';
 import { Box, Button, FormControl, TextField, Link, Stack } from '@mui/material';
-import '../SignIn/login.css';
+import '../UserAccount/Login/LoginPage.css';
 
 export const ForgotPasswordPage = () => {
   const { goToLoginPage } = useNavigation();
@@ -34,12 +34,12 @@ export const ForgotPasswordPage = () => {
   return (
     <section className='forgotPw section container'>
       <AccountForm>
-        <div className='login__title'>Forgot Password</div>
+        <div className='login-title'>Forgot Password</div>
         <div className='section__subtitle'>
           Please enter the email you registered with to reset your password.
         </div>
 
-        <form className='login__fields' onSubmit={handleSubmit(handleResetPassword)}>
+        <form className='login-text-field' onSubmit={handleSubmit(handleResetPassword)}>
           <Stack direction='column' spacing={6}>
             <FormControl id='email'>
               <TextField
