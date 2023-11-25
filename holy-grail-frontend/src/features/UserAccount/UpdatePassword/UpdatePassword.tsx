@@ -1,14 +1,13 @@
 import { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { updatePassword, UpdatePasswordDetails } from '@api/auth';
-import { AlertProps, AlertToast } from '@components';
-import { PasswordValidationBox } from '@features';
-import { Typography, TextField, Button, FormControl } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { updatePassword, UpdatePasswordDetails } from '@api/auth';
+import { AlertProps, AlertToast, PasswordValidation } from '@components';
+import { MediaQueryContext } from '@providers';
 import { UpdatePasswordValidation } from '@forms/validation';
 import { useNavigation } from '@utils';
-import './account.css';
-import { MediaQueryContext } from '@providers';
+import { Typography, TextField, Button, FormControl } from '@mui/material';
+import '../AccountDetails/Account.css';
 
 export const UpdatePassword = () => {
   const { goToHome } = useNavigation();
@@ -85,7 +84,7 @@ export const UpdatePassword = () => {
           </FormControl>
         </div>
         <div className='change-password-button-container'>
-          <PasswordValidationBox
+          <PasswordValidation
             password={watch('password')}
             repeatPassword={watch('repeat_password')}
           />

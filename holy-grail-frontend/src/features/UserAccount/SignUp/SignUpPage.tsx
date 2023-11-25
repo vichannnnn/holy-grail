@@ -2,13 +2,12 @@ import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { AccountDetails } from '@api/auth';
-import { AccountForm, AlertToast, AlertProps } from '@components';
-import { PasswordValidationBox } from '@features';
+import { AccountForm, AlertToast, AlertProps, PasswordValidation } from '@components';
 import { SignUpValidation } from '@forms/validation';
 import { AuthContext } from '@providers';
 import { useNavigation } from '@utils';
 import { Box, Button, FormControl, TextField, Link, Stack } from '@mui/material';
-import '../SignIn/login.css';
+import '../Login/LoginPage.css';
 
 export const SignUpPage = () => {
   const { goToLoginPage, goToHome } = useNavigation();
@@ -93,10 +92,10 @@ export const SignUpPage = () => {
   return (
     <section className='signup section container' id='signup'>
       <AccountForm>
-        <div className='login__title'>Sign up</div>
+        <div className='login-title'>Sign up</div>
         <div className='section__subtitle'>Create an account to access all features.</div>
 
-        <form className='login__fields' onSubmit={handleSubmit(handleRegister)}>
+        <form className='login-text-field' onSubmit={handleSubmit(handleRegister)}>
           <Stack direction='column' spacing={4}>
             <FormControl id='username'>
               <TextField
@@ -138,7 +137,7 @@ export const SignUpPage = () => {
                 required
               />
             </FormControl>
-            <PasswordValidationBox
+            <PasswordValidation
               password={watch('password')}
               repeatPassword={watch('repeat_password')}
             />

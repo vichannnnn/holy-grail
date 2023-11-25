@@ -7,13 +7,13 @@ export const AccountForm = ({ children }: BoxProps) => {
         sx={{
           display: 'flex',
           flexDirection: 'column',
+          justifyContent: 'center',
           alignItems: 'center',
-          width: '100%',
-          minHeight: '85vh',
-          margin: '10% auto 10% auto',
+          width: '75%',
+          margin: '5% auto 5% auto',
         }}
       >
-        <Box sx={{ textAlign: 'left' }}>{children}</Box>
+        <Box>{children}</Box>
       </Box>
     </>
   );

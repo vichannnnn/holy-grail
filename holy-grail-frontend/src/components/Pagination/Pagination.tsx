@@ -1,6 +1,10 @@
 import { useContext } from 'react';
-import { Button, Stack, Typography } from '@mui/material';
+import { Button } from '../Button';
+import { Stack, Typography } from '@mui/material';
 import { MediaQueryContext } from '@providers';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+
 import debounce from 'lodash/debounce';
 
 interface PaginationProps {
@@ -11,16 +15,6 @@ interface PaginationProps {
 
 export const Pagination = ({ pageInfo, handlePageChange, styles }: PaginationProps) => {
   const debouncedHandlePageChange = debounce(handlePageChange, 100);
-  const buttonStyles = {
-    borderColor: 'transparent',
-    backgroundColor: 'rgb(237, 242, 247)',
-    textTransform: 'capitalize',
-    color: 'black',
-    fontWeight: 'bold',
-    aspectRatio: 1.618,
-    borderRadius: '10%',
-  };
-
   const { isDesktop } = useContext(MediaQueryContext);
   const responsiveMt = isDesktop ? '4%' : '20%';
 
@@ -38,9 +32,8 @@ export const Pagination = ({ pageInfo, handlePageChange, styles }: PaginationPro
         onClick={() => debouncedHandlePageChange(pageInfo.page - 1)}
         disabled={pageInfo.page === 1}
         variant='outlined'
-        sx={buttonStyles}
       >
-        Prev
+        <FontAwesomeIcon icon={faChevronLeft} /> Prev
       </Button>
       <Typography display='flex' alignItems='center'>
         Page {pageInfo.page} of {pageInfo.pages > 0 ? pageInfo.pages : 1}
@@ -49,9 +42,8 @@ export const Pagination = ({ pageInfo, handlePageChange, styles }: PaginationPro
         onClick={() => debouncedHandlePageChange(pageInfo.page + 1)}
         disabled={pageInfo.page === pageInfo.pages || pageInfo.pages === 0}
         variant='outlined'
-        sx={buttonStyles}
       >
-        Next
+        Next <FontAwesomeIcon icon={faChevronRight} />
       </Button>
     </Stack>
   );

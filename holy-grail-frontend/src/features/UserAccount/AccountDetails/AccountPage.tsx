@@ -4,7 +4,7 @@ import { AlertProps } from '@components';
 import { AuthContext, MediaQueryContext } from '@providers';
 import { DesktopAccountPage } from './DesktopAccountPage';
 import { MobileAccountPage } from './MobileAccountPage';
-import './account.css';
+import './Account.css';
 
 export const AccountPage = () => {
   const { isDesktop } = useContext(MediaQueryContext);
