@@ -44,7 +44,7 @@
 }
 
 
-.update-grid {
+.update-details-grid {
     display: grid;
     grid-template-columns: 0.2fr auto;
     grid-column-gap: 5%;
@@ -54,7 +54,7 @@
     width: 90%;
 }
 
-.update-grid-mobile {
+.update-details-grid-mobile {
     display: grid;
     grid-template-columns: 0.2fr auto;
     grid-column-gap: 5%;
@@ -63,10 +63,6 @@
     margin-top: 3vh;
 }
 
-
-.update-outer-div {
-    width: 90%;
-}
 
 .change-password-button-container {
     display: flex;
