@@ -6,7 +6,7 @@ import { AuthContext, LogInDetails } from '@providers';
 import { SignInValidation } from '@forms/validation';
 import { useNavigation } from '@utils';
 import { Box, FormControl, Stack, TextField, Link } from '@mui/material';
-import './LoginPage.css';
+import '../UserAccountForm.css';
 
 export const LoginPage = () => {
   const { goToHome, goToRegister, goToForgotPassword } = useNavigation();
@@ -57,9 +57,9 @@ export const LoginPage = () => {
   return (
     <>
       <div className='account-form-container'>
-        <div className='login-title'>Log in</div>
-        <div className='section__subtitle'>Enter your credentials to access your account.</div>
-        <form className='login-text-field' onSubmit={handleSubmit(handleLogin)}>
+        <div className='account-form-title'>Log in</div>
+        <div className='account-form-subtitle'>Enter your credentials to access your account.</div>
+        <form className='account-form-text-field' onSubmit={handleSubmit(handleLogin)}>
           <Stack direction='column' spacing={3}>
             <FormControl id='username'>
               <TextField
@@ -81,13 +81,13 @@ export const LoginPage = () => {
                 required
               />
             </FormControl>
-            <div className='login-button-container'>
+            <div className='account-form-button-container'>
               <Button type='submit'>Log In</Button>
             </div>
           </Stack>
         </form>
         <Box>
-          <div className='login-footer'>
+          <div className='account-form-footer'>
             <div>
               Forgot your password?{' '}
               <Link onClick={goToForgotPassword} underline='always'>
