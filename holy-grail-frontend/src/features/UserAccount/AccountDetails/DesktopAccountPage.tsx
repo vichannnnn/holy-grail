@@ -2,11 +2,12 @@ import { useState } from 'react';
 import { VerticalNav, VerticalNavProps } from '@components';
 import { AccountDetails, UpdatePassword, UpdateEmail } from '@features';
 import { AccountBox as AccountBoxIcon, Password as PasswordIcon, Email } from '@mui/icons-material';
-import './Account.css';
+import './AccountDetails.css';
+import '../UserAccountForm.css';
 
 export const DesktopAccountPage = () => {
-  const [title, setTitle] = useState('Account details');
-  const [subtitle, setSubtitle] = useState('Change and update your account details here!');
+  const [title, setTitle] = useState('Account Details');
+  const [subtitle, setSubtitle] = useState('Change and update your account details here');
   const [activeElem, setActiveElem] = useState<Array<boolean>>([true, false, false]);
   const changeEmailClick = () => {
     setActiveElem([false, false, true]);
@@ -56,14 +57,14 @@ export const DesktopAccountPage = () => {
   ];
 
   return (
-    <section className='section container account__page'>
+    <div className='account-details-container'>
       <VerticalNav props={navProps} />
-      <div className='account__main'>
-        <div className='section__title'>{title}</div>
-        <div className='section__subtitle'>{subtitle}</div>
-        <hr className='account__divider' />
+      <div className='account-details-main'>
+        <div className='account-form-title'>{title}</div>
+        <div className='account-form-subtitle'>{subtitle}</div>
+        <hr className='account-divider' />
         <>{renderMenuType}</>
       </div>
-    </section>
+    </div>
   );
 };

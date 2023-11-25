@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { AlertProps, AlertToast } from '@components';
 import {
-  AccountPage,
+  AccountDetailsPage,
   AccountVerifyPage,
   ApprovalPage,
   DeveloperPage,
@@ -83,7 +83,7 @@ export function App() {
             <Route path='/forgot-password' element={<ForgotPasswordPage />} />
             <Route path='/reset-password' element={<ResetPasswordPage />} />
             <Route path='/verify-account' element={<AccountVerifyPage />} />
-            <Route path='/account' element={<AccountPage />} />
+            <Route path='/account' element={<AccountDetailsPage />} />
             <Route path='*' element={<NotFound />} />
           </Routes>
           <Footer />

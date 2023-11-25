@@ -7,7 +7,7 @@ import { MediaQueryContext } from '@providers';
 import { UpdatePasswordValidation } from '@forms/validation';
 import { useNavigation } from '@utils';
 import { Typography, TextField, Button, FormControl } from '@mui/material';
-import '../AccountDetails/Account.css';
+import '../AccountDetails/AccountDetails.css';
 
 export const UpdatePassword = () => {
   const { goToHome } = useNavigation();
