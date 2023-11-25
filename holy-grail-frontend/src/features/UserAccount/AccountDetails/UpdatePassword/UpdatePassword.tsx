@@ -7,7 +7,7 @@ import { MediaQueryContext } from '@providers';
 import { UpdatePasswordValidation } from '@forms/validation';
 import { useNavigation } from '@utils';
 import { Typography, TextField, Button, FormControl } from '@mui/material';
-import '../AccountDetails/AccountDetails.css';
+import '../AccountDetails.css';
 
 export const UpdatePassword = () => {
   const { goToHome } = useNavigation();
@@ -45,8 +45,8 @@ export const UpdatePassword = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit(handleUpdatePassword)} className='update-outer-div'>
-        <div className={isDesktop ? 'update-grid' : 'update-grid-mobile'}>
+      <form onSubmit={handleSubmit(handleUpdatePassword)}>
+        <div className={isDesktop ? 'update-details-grid' : 'update-details-grid-mobile'}>
           <Typography sx={{ fontWeight: 'bold' }}>Current Password</Typography>
           <FormControl id='before-password'>
             <TextField

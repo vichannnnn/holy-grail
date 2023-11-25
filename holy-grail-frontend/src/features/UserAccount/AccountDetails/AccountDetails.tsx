@@ -46,7 +46,7 @@ export const AccountDetails = ({ changeEmailClick }: { changeEmailClick?: () => 
 
   return (
     <form onSubmit={handleSubmit(handleUpdateEmail)} id='emailForm'>
-      <div className={isDesktop ? 'update-grid' : 'update-grid-mobile'}>
+      <div className={isDesktop ? 'update-details-grid' : 'update-details-grid-mobile'}>
         <a className='account-details-title'>Username</a>
         <a>{user?.username}</a>
         <a className='account-details-title'>Email</a>
