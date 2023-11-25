@@ -5,7 +5,7 @@ import { AxiosResponse } from 'axios';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { fetchAllSubjects, fetchCategory, fetchLibraryTypes, SubjectType } from '@api/library';
 import { createNote } from '@api/actions';
-import { AlertToast, AlertProps } from '@components';
+import { AlertToast, AlertProps, Button } from '@components';
 import {
   DeleteAlert,
   OptionsProps,
@@ -273,13 +273,13 @@ export const UploadPage = () => {
         ))}
         <FileSelect handleAddNotes={handleAddNotes} />
 
-        <button
+        <Button
           className='upload-notes-submit-button'
           type='submit'
           disabled={isUploading || fields.length === 0}
         >
           Submit
-        </button>
+        </Button>
       </form>
       <DeleteAlert
         isOpen={openDeleteAlert}
