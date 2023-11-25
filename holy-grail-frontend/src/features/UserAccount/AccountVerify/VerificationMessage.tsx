@@ -1,4 +1,5 @@
 import { Link } from '@mui/material';
+import './AccountVerifyPage';
 
 interface VerificationMessageProps {
   resetStatus: string | null;
@@ -12,10 +13,10 @@ export const VerificationMessage = ({
   handleResendVerificationEmail,
 }: VerificationMessageProps) => {
   if (resetStatus) {
-    return <div className='section__subtitle'>{resetStatus}</div>;
+    return <div className='account-form-subtitle'>{resetStatus}</div>;
   } else if (isFailed) {
     return (
-      <div className='section__subtitle'>
+      <div className='account-form-subtitle'>
         The account verification link is invalid or has expired. Please click{' '}
         <Link onClick={handleResendVerificationEmail} underline='always'>
           here
