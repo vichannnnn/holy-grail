@@ -2,12 +2,12 @@ import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { AccountDetails } from '@api/auth';
-import { AccountForm, AlertToast, AlertProps, PasswordValidation } from '@components';
+import { AlertToast, AlertProps, PasswordValidation, Button } from '@components';
 import { SignUpValidation } from '@forms/validation';
 import { AuthContext } from '@providers';
 import { useNavigation } from '@utils';
-import { Box, Button, FormControl, TextField, Link, Stack } from '@mui/material';
-import '../Login/LoginPage.css';
+import { Box, FormControl, TextField, Link, Stack } from '@mui/material';
+import '../UserAccountForm.css';
 
 export const SignUpPage = () => {
   const { goToLoginPage, goToHome } = useNavigation();
@@ -90,13 +90,12 @@ export const SignUpPage = () => {
   };
 
   return (
-    <section className='signup section container' id='signup'>
-      <AccountForm>
-        <div className='login-title'>Sign up</div>
-        <div className='section__subtitle'>Create an account to access all features.</div>
-
-        <form className='login-text-field' onSubmit={handleSubmit(handleRegister)}>
-          <Stack direction='column' spacing={4}>
+    <>
+      <div className='account-form-container'>
+        <div className='account-form-title'>Sign up</div>
+        <div className='account-form-subtitle'>Create an account to access all features.</div>
+        <form className='account-form-text-field' onSubmit={handleSubmit(handleRegister)}>
+          <Stack direction='column' spacing={3}>
             <FormControl id='username'>
               <TextField
                 type='text'
@@ -137,30 +136,33 @@ export const SignUpPage = () => {
                 required
               />
             </FormControl>
-            <PasswordValidation
-              password={watch('password')}
-              repeatPassword={watch('repeat_password')}
-            />
-
-            <Button type='submit' variant='contained' fullWidth>
-              Sign Up
-            </Button>
+            <div className='password-validation-container'>
+              <PasswordValidation
+                password={watch('password')}
+                repeatPassword={watch('repeat_password')}
+              />
+            </div>
+            <div className='account-form-button-container'>
+              <Button type='submit'>Sign Up</Button>
+            </div>
           </Stack>
         </form>
         <Box>
-          <div className='login__footer'>
-            Already a member?{' '}
-            <Link onClick={goToLoginPage} underline='always'>
-              Log in here.
-            </Link>
+          <div className='account-form-footer'>
+            <div>
+              Already a member?{' '}
+              <Link onClick={goToLoginPage} underline='always'>
+                Log in here.
+              </Link>
+            </div>
           </div>
         </Box>
-      </AccountForm>
+      </div>
       <AlertToast
         openAlert={openAlert}
         onClose={() => setOpenAlert(false)}
         alertContent={alertContent}
       />
-    </section>
+    </>
   );
 };
