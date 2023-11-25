@@ -1,14 +1,12 @@
 import { useContext, useState } from 'react';
-import { updateEmail } from '@api/auth';
-import { getUser } from '@api/auth';
-import { UpdateEmailDetails } from '@api/auth';
-import { Typography, Button, TextField, FormControl } from '@mui/material';
-import { AuthContext, MediaQueryContext } from '@providers';
-import { AlertProps, AlertToast } from '@components';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { ChangeEmailValidation } from '@forms/validation';
 import { useForm } from 'react-hook-form';
-import './account.css';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { getUser, updateEmail, UpdateEmailDetails } from '@api/auth';
+import { AlertProps, AlertToast } from '@components';
+import { ChangeEmailValidation } from '@forms/validation';
+import { AuthContext, MediaQueryContext } from '@providers';
+import { Typography, Button, TextField, FormControl } from '@mui/material';
+import './Account.css';
 
 export const AccountDetails = ({ changeEmailClick }: { changeEmailClick?: () => void }) => {
   const [openAlert, setOpenAlert] = useState<boolean>(false);

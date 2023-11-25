@@ -1,20 +1,19 @@
 import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { AccountForm, AlertToast, AlertProps } from '@components';
+import { AlertToast, AlertProps, Button } from '@components';
 import { AuthContext, LogInDetails } from '@providers';
 import { SignInValidation } from '@forms/validation';
 import { useNavigation } from '@utils';
-import { Box, Button, FormControl, Stack, TextField, Link } from '@mui/material';
-import './login.css';
-import { useNavigate } from 'react-router-dom';
+import { Box, FormControl, Stack, TextField, Link } from '@mui/material';
+import './LoginPage.css';
 
 export const LoginPage = () => {
   const { goToHome, goToRegister, goToForgotPassword } = useNavigation();
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
   const { user, isLoading, login } = useContext(AuthContext);
-  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -30,7 +29,7 @@ export const LoginPage = () => {
   useEffect(() => {
     if (!isLoading) {
       if (user) {
-        navigate('/');
+        goToHome();
       }
     }
   }, [isLoading, user]);
@@ -56,12 +55,12 @@ export const LoginPage = () => {
   };
 
   return (
-    <section className='login section container' id='login'>
-      <AccountForm>
-        <div className='login__title'>Log in</div>
+    <>
+      <div className='account-form-container'>
+        <div className='login-title'>Log in</div>
         <div className='section__subtitle'>Enter your credentials to access your account.</div>
-        <form className='login__fields' onSubmit={handleSubmit(handleLogin)}>
-          <Stack direction='column' spacing={6}>
+        <form className='login-text-field' onSubmit={handleSubmit(handleLogin)}>
+          <Stack direction='column' spacing={3}>
             <FormControl id='username'>
               <TextField
                 label='Username'
@@ -82,31 +81,33 @@ export const LoginPage = () => {
                 required
               />
             </FormControl>
-            <Button type='submit' variant='contained' fullWidth>
-              Log In
-            </Button>
+            <div className='login-button-container'>
+              <Button type='submit'>Log In</Button>
+            </div>
           </Stack>
         </form>
         <Box>
-          <div className='login__footer'>
-            Forgot your password?{' '}
-            <Link onClick={goToForgotPassword} underline='always'>
-              Click here.
-            </Link>
-          </div>
-          <div className='login__footer'>
-            Not a member?{' '}
-            <Link onClick={goToRegister} underline='always'>
-              Register now.
-            </Link>
+          <div className='login-footer'>
+            <div>
+              Forgot your password?{' '}
+              <Link onClick={goToForgotPassword} underline='always'>
+                Click here.
+              </Link>
+            </div>
+            <div>
+              Not a member?{' '}
+              <Link onClick={goToRegister} underline='always'>
+                Register now.
+              </Link>
+            </div>
           </div>
         </Box>
-      </AccountForm>
+      </div>
       <AlertToast
         openAlert={openAlert}
         onClose={() => setOpenAlert(false)}
         alertContent={alertContent}
       />
-    </section>
+    </>
   );
 };

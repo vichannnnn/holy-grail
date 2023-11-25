@@ -1,7 +1,8 @@
 import { useContext } from 'react';
-import { Button } from '@components';
+import { AdminApproveIcon, Button } from '@components';
 import { MediaQueryContext } from '@providers';
 import { useNavigation } from '@utils';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import './Hero.css';
 
 export const Hero = () => {
@@ -28,7 +29,9 @@ export const Hero = () => {
               the relevant summary notes and practice papers for GCE 'O' Levels, GCE 'A' Levels and
               International Baccalaureate.
             </p>
-            <Button onClick={goToLibrary}>Click here to access the library!</Button>
+            <Button onClick={goToLibrary}>
+              Head to the Library <ArrowForwardIcon style={{ verticalAlign: 'middle' }} />
+            </Button>
           </div>
         </div>
         {isDesktop && (

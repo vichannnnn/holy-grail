@@ -1,5 +1,5 @@
 import { AccountDetails, UpdatePassword, UpdateEmail } from '@features';
-import './account.css';
+import './Account.css';
 
 export const MobileAccountPage = () => {
   return (
