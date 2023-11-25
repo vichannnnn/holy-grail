@@ -4,9 +4,9 @@ import { updateCategory, updateDocumentType } from '@api/actions';
 import { AlertProps, AlertToast } from '@components';
 import { DeveloperEditModalProps, singularDataType, UpdateTypeDetails } from '@features';
 import { Box, Button, Modal, Stack, TextField, Typography } from '@mui/material';
-import './developer.css';
+import '../DeveloperPage.css';
 
-export const DeveloperEditModal = ({
+export const EditModal = ({
   isOpen,
   onClose,
   type,

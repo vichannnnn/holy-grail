@@ -4,14 +4,9 @@ import { createCategory, createDocumentType } from '@api/actions';
 import { AlertProps, AlertToast } from '@components';
 import { DeveloperAddModalProps, singularDataType, AddTypeDetails } from '@features';
 import { Box, Button, Modal, Stack, TextField, Typography } from '@mui/material';
-import './developer.css';
+import '../DeveloperPage.css';
 
-export const DeveloperAddModal = ({
-  isOpen,
-  onClose,
-  onSuccessfulAdd,
-  type,
-}: DeveloperAddModalProps) => {
+export const AddModal = ({ isOpen, onClose, onSuccessfulAdd, type }: DeveloperAddModalProps) => {
   const singularType = type && singularDataType[type];
   const { register, handleSubmit } = useForm<AddTypeDetails>();
   const [openAlert, setOpenAlert] = useState<boolean>(false);
