@@ -5,38 +5,36 @@
     margin: auto;
 }
 
-.login-button-container {
+.account-form-button-container {
     display: flex;
     justify-content: center;
     margin: auto;
 }
 
-.login-title {
+.account-form-title {
     font-size: 2.625rem;
     font-weight: 600;
     margin-top: 48px;
 }
 
-.login-subtitle {
+.account-form-subtitle {
     font-size: 1rem;
     margin-bottom: 2%;
 }
 
-.login-text-field {
+.account-form-text-field {
     margin-top: 16px;
 }
 
-.login-footer {
+.account-form-footer {
     display: flex;
     flex-direction: column;
     justify-content: center;
     margin: 24px auto 48px;
 }
 
-.resetPw {
+.password-validation-container {
     display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 @media screen and (max-width: 913px) {

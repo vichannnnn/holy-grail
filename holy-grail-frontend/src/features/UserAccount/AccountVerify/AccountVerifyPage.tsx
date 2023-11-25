@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { resendVerificationEmail, verifyAccount } from '@api/auth';
 import { AlertToast, AlertProps } from '@components';
-import '../UserAccount/Login/LoginPage.css';
+import '../Login/LoginPage.css';
 import './verifyAccountPageContainer.css';
 import { AuthContext } from '@providers';
 import { VerificationMessage } from './VerificationMessage';

@@ -6,7 +6,7 @@ import { sendResetPasswordEmail, ForgotPasswordDetails } from '@api/auth';
 import { AccountForm, AlertToast, AlertProps } from '@components';
 import { ResetPasswordValidation } from '@forms/validation';
 import { Box, Button, FormControl, TextField, Link, Stack } from '@mui/material';
-import '../UserAccount/Login/LoginPage.css';
+import '../Login/LoginPage.css';
 
 export const ForgotPasswordPage = () => {
   const { goToLoginPage } = useNavigation();
