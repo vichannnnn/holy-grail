@@ -2,10 +2,10 @@ import { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { resendVerificationEmail, verifyAccount } from '@api/auth';
 import { AlertToast, AlertProps } from '@components';
-import '../Login/LoginPage.css';
-import './verifyAccountPageContainer.css';
 import { AuthContext } from '@providers';
 import { VerificationMessage } from './VerificationMessage';
+import '../UserAccountForm.css';
+import './verifyAccountPageContainer.css';
 
 export const AccountVerifyPage = () => {
   const { user, updateUser } = useContext(AuthContext);
@@ -62,20 +62,18 @@ export const AccountVerifyPage = () => {
   };
 
   return (
-    <section className='resetPw section container verifyAccountPageContainer'>
-      <div>
-        <div className='login-title'>Account Verification</div>
-        <VerificationMessage
-          resetStatus={resetStatus}
-          isFailed={isFailed}
-          handleResendVerificationEmail={handleResendVerificationEmail}
-        />
-        <AlertToast
-          openAlert={openAlert}
-          onClose={() => setOpenAlert(false)}
-          alertContent={alertContent}
-        />
-      </div>
-    </section>
+    <div>
+      <div className='login-title'>Account Verification</div>
+      <VerificationMessage
+        resetStatus={resetStatus}
+        isFailed={isFailed}
+        handleResendVerificationEmail={handleResendVerificationEmail}
+      />
+      <AlertToast
+        openAlert={openAlert}
+        onClose={() => setOpenAlert(false)}
+        alertContent={alertContent}
+      />
+    </div>
   );
 };

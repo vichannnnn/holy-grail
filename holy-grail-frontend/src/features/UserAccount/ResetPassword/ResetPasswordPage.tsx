@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { resetPassword } from '@api/auth';
 import { useNavigation } from '@utils';
 import { Link } from '@mui/material';
-import '../Login/LoginPage.css';
+import '../UserAccountForm.css';
 
 export const ResetPasswordPage = () => {
   const { goToForgotPassword } = useNavigation();
@@ -37,22 +37,19 @@ export const ResetPasswordPage = () => {
   }, [location.search]);
 
   return (
-    <section className='resetPw section container'>
-      <div>
-        <div className='login-title'>Reset Password</div>
-
-        {resetStatus ? (
-          <div className='section__subtitle'>{resetStatus}</div>
-        ) : isFailed ? (
-          <div className='section__subtitle '>
-            The password reset link is invalid or has expired. Please click{' '}
-            <Link onClick={goToForgotPassword} underline='always'>
-              here
-            </Link>{' '}
-            to reset your password again.
-          </div>
-        ) : null}
-      </div>
-    </section>
+    <div>
+      <div className='account-form-title'>Reset Password</div>
+      {resetStatus ? (
+        <div className='account-form-subtitle'>{resetStatus}</div>
+      ) : isFailed ? (
+        <div className='account-form-subtitle '>
+          The password reset link is invalid or has expired. Please click{' '}
+          <Link onClick={goToForgotPassword} underline='always'>
+            here
+          </Link>{' '}
+          to reset your password again.
+        </div>
+      ) : null}
+    </div>
   );
 };

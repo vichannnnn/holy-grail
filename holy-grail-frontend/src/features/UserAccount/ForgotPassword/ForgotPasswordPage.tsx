@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useNavigation } from '@utils';
 import { sendResetPasswordEmail, ForgotPasswordDetails } from '@api/auth';
-import { AccountForm, AlertToast, AlertProps } from '@components';
+import { AlertToast, AlertProps } from '@components';
 import { ResetPasswordValidation } from '@forms/validation';
+import { useNavigation } from '@utils';
 import { Box, Button, FormControl, TextField, Link, Stack } from '@mui/material';
-import '../Login/LoginPage.css';
+import '../UserAccountForm.css';
 
 export const ForgotPasswordPage = () => {
   const { goToLoginPage } = useNavigation();
@@ -32,14 +32,14 @@ export const ForgotPasswordPage = () => {
   };
 
   return (
-    <section className='forgotPw section container'>
-      <AccountForm>
-        <div className='login-title'>Forgot Password</div>
-        <div className='section__subtitle'>
+    <>
+      <div className='account-form-container'>
+        <div className='account-form-title'>Forgot Password</div>
+        <div className='account-form-subtitle'>
           Please enter the email you registered with to reset your password.
         </div>
 
-        <form className='login-text-field' onSubmit={handleSubmit(handleResetPassword)}>
+        <form className='account-form-text-field' onSubmit={handleSubmit(handleResetPassword)}>
           <Stack direction='column' spacing={6}>
             <FormControl id='email'>
               <TextField
@@ -57,19 +57,21 @@ export const ForgotPasswordPage = () => {
           </Stack>
         </form>
         <Box>
-          <div className='login__footer'>
-            Already a member?{' '}
-            <Link onClick={goToLoginPage} underline='always'>
-              Log in here.
-            </Link>
+          <div className='account-formfooter'>
+            <div>
+              Already a member?{' '}
+              <Link onClick={goToLoginPage} underline='always'>
+                Log in here.
+              </Link>
+            </div>
           </div>
         </Box>
-      </AccountForm>
+      </div>
       <AlertToast
         openAlert={openAlert}
         onClose={() => setOpenAlert(false)}
         alertContent={alertContent}
       />
-    </section>
+    </>
   );
 };
