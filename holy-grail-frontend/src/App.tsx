@@ -49,6 +49,14 @@ const customMuiTheme = {
         },
       },
     },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#fcfbf8',
+          borderRadius: '16px',
+        },
+      },
+    },
   },
 };
 
