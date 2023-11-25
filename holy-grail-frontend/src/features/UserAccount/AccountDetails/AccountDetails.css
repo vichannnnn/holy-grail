@@ -1,27 +1,25 @@
-.account__page {
-    padding-top: 6rem;
-    min-height: calc(80vh - 3rem);
+.account-details-container {
+    width: 75%;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     align-items: flex-start;
+    margin: auto;
 }
 
-.account__main {
+.account-details-main {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
     flex-grow: 1;
 }
 
-.account__divider {
+.account-divider {
     width: 100%;
     border-top: 2px solid black;
     margin: 2vh 0;
 }
 
-.account__divider__mobile {
+.account-divider-mobile {
     width: 100%;
     border-top: 2px solid black;
     margin: 5vh 0;
@@ -68,7 +66,7 @@
 }
 
 @media screen and (min-width: 913px) {
-    .account__main {
+    .account-details-main {
         margin: 2rem;
     }
 
