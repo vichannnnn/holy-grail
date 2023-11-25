@@ -1,4 +1,4 @@
 export * from './AccountDetails';
-export * from './AccountPage';
+export * from './AccountDetailsPage';
 export * from './DesktopAccountPage';
 export * from './MobileAccountPage';

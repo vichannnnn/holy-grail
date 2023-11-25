@@ -6,7 +6,7 @@ import { ChangeEmailValidation } from '@forms/validation';
 import { AuthContext, MediaQueryContext } from '@providers';
 import { Typography, TextField, FormControl } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
-import '../AccountDetails/Account.css';
+import '../AccountDetails/AccountDetails.css';
 
 export const UpdateEmail = () => {
   const [openAlert, setOpenAlert] = useState<boolean>(false);

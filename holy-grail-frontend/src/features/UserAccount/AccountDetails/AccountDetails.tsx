@@ -6,7 +6,7 @@ import { AlertProps, AlertToast } from '@components';
 import { ChangeEmailValidation } from '@forms/validation';
 import { AuthContext, MediaQueryContext } from '@providers';
 import { Typography, Button, TextField, FormControl } from '@mui/material';
-import './Account.css';
+import './AccountDetails.css';
 
 export const AccountDetails = ({ changeEmailClick }: { changeEmailClick?: () => void }) => {
   const [openAlert, setOpenAlert] = useState<boolean>(false);

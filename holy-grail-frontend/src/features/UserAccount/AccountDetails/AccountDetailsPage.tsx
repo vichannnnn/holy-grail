@@ -4,9 +4,8 @@ import { AlertProps } from '@components';
 import { AuthContext, MediaQueryContext } from '@providers';
 import { DesktopAccountPage } from './DesktopAccountPage';
 import { MobileAccountPage } from './MobileAccountPage';
-import './Account.css';
 
-export const AccountPage = () => {
+export const AccountDetailsPage = () => {
   const { isDesktop } = useContext(MediaQueryContext);
   const { user, isLoading } = useContext(AuthContext);
   const navigate = useNavigate();
