@@ -9,10 +9,12 @@ export const MobileHamburger = ({ user, isDesktop, logout }: DropdownRenderProps
   const open = Boolean(anchorEl);
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = (event: MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
     setAnchorEl(null);
   };
 
@@ -36,6 +38,7 @@ export const MobileHamburger = ({ user, isDesktop, logout }: DropdownRenderProps
         MenuListProps={{
           'aria-labelledby': 'mobile-hamburger-button',
         }}
+        disableScrollLock={true}
       >
         <Dropdown user={user} isDesktop={isDesktop} logout={logout} />
       </Menu>

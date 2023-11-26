@@ -41,7 +41,7 @@ export const Dropdown = ({ user, isDesktop, logout }: DropdownRenderProps) => {
         {
           label: 'Home',
           icon: <HomeIcon />,
-          callback: () => {
+          onClick: () => {
             const homeElement = document.querySelector('#home');
             window.scrollTo({ top: 0, behavior: 'smooth' });
             if (homeElement) {
@@ -54,7 +54,7 @@ export const Dropdown = ({ user, isDesktop, logout }: DropdownRenderProps) => {
         {
           label: 'Library',
           icon: <LibraryBooksIcon />,
-          callback: () => {
+          onClick: () => {
             const libraryElement = document.querySelector('#library');
             if (libraryElement) {
               libraryElement.scrollIntoView({ behavior: 'smooth' });
@@ -66,7 +66,7 @@ export const Dropdown = ({ user, isDesktop, logout }: DropdownRenderProps) => {
         {
           label: 'FAQ',
           icon: <HelpIcon />,
-          callback: () => {
+          onClick: () => {
             const faqElement = document.querySelector('#faq');
             if (faqElement) {
               faqElement.scrollIntoView({ behavior: 'smooth' });
@@ -78,7 +78,7 @@ export const Dropdown = ({ user, isDesktop, logout }: DropdownRenderProps) => {
         {
           label: 'Contribute',
           icon: <PublishIcon />,
-          callback: () => {
+          onClick: () => {
             const contributeElement = document.querySelector('#contribute');
             if (contributeElement) {
               contributeElement.scrollIntoView({ behavior: 'smooth' });
@@ -94,32 +94,32 @@ export const Dropdown = ({ user, isDesktop, logout }: DropdownRenderProps) => {
       children.push({
         label: 'My Account',
         icon: <AccountCircle />,
-        callback: () => goToAccountPage(),
+        onClick: () => goToAccountPage(),
       });
       if (!user.verified) {
         children.push({
           label: 'Resend Verification Email',
           icon: <MailOutline />,
-          callback: handleResendVerificationEmail,
+          onClick: handleResendVerificationEmail,
         });
       }
       if (user.role > 1) {
         children.push({
           label: 'Admin Panel',
           icon: <Settings />,
-          callback: () => goToAdminPanel(),
+          onClick: () => goToAdminPanel(),
         });
       }
       if (user.role > 2) {
         children.push({
           label: 'Developer Panel',
           icon: <DeveloperMode />,
-          callback: () => goToDeveloperPanel(),
+          onClick: () => goToDeveloperPanel(),
         });
       }
-      children.push({ label: 'Log Out', icon: <ExitToApp />, callback: handleLogout });
+      children.push({ label: 'Log Out', icon: <ExitToApp />, onClick: handleLogout });
     } else {
-      children.push({ label: 'Log In', icon: <VpnKey />, callback: () => goToLoginPage() });
+      children.push({ label: 'Log In', icon: <VpnKey />, onClick: () => goToLoginPage() });
     }
 
     setMenuItems(children);
@@ -165,7 +165,7 @@ export const Dropdown = ({ user, isDesktop, logout }: DropdownRenderProps) => {
             key={index}
             label={item.label}
             icon={item.icon}
-            onClick={item.callback}
+            onClick={item.onClick}
           />
         ))}
       </div>
