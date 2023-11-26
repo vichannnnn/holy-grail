@@ -7,11 +7,11 @@ from app.utils.limiter import conditional_rate_limit
 router = APIRouter()
 
 
-@router.post("/new_day")
-@conditional_rate_limit("1/23hour")
-async def new_day(request: Request, session: CurrentSession):
-    await AdAnalytics.new_day(session)
-    return {"status": "success"}
+# @router.post("/new_day")
+# @conditional_rate_limit("1/23hour")
+# async def new_day(request: Request, session: CurrentSession):
+#     await AdAnalytics.new_day(session)
+#     return {"status": "success"}
 
 
 @router.patch("/ad_click")

@@ -1,17 +1,10 @@
-import os
-
-import requests
+import asyncio
+from app.models.ad_analytics import AdAnalytics
+from app.db.database import async_session
 
 from app.utils.worker import celery_app
 
 
 @celery_app.task(name="ad_analytics_loop")
 def ad_analytics_loop() -> None:
-    resp = requests.post(
-        f"http://{os.environ['BACKEND_CONTAINER_URL']}/ad_analytics/new_day"
-    )
-
-    return resp.json()
-
-
-ad_analytics_loop()
+    asyncio.get_event_loop().run_until_complete(AdAnalytics.new_day(async_session()))
