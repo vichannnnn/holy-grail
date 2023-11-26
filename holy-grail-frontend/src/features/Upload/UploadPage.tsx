@@ -9,11 +9,11 @@ import { AlertToast, AlertProps, Button } from '@components';
 import {
   DeleteAlert,
   OptionsProps,
-  UploadNote,
   FileSelect,
   NoteInfoProps,
   NotesFormData,
   UploadError,
+  UploadNote,
 } from '@features';
 import { UploadNotesValidation } from '@forms/validation';
 import { AuthContext } from '@providers';
@@ -245,42 +245,44 @@ export const UploadPage = () => {
   };
 
   return (
-    <section className='upload section container'>
-      <div className='section__title'>Upload Materials</div>
-      <div className='section__subtitle' style={{ textAlign: 'center' }}>
-        Upload your materials here! All submitted materials will be reviewed before being published
-        to the Holy Grail.
+    <>
+      <div className='upload-page-container'>
+        <div className='upload-page-title'>Upload Materials</div>
+        <div className='upload-page-subtitle'>
+          Upload your materials here! All submitted materials will be reviewed before being
+          published to the Holy Grail.
+        </div>
+
+        <form onSubmit={handleSubmit(handleSubmitUpload)} className='upload-multi-container'>
+          {fields.map((field, index) => (
+            <UploadNote
+              key={field.id}
+              control={control}
+              errors={errors.notes && (errors.notes[index] as FieldErrors<NoteInfoProps>)}
+              field={field}
+              options={options}
+              index={index}
+              watch={watch}
+              deleteNote={() => {
+                setOpenDeleteAlert(true);
+                setDeleteAlertKey(index);
+              }}
+              mirrorNote={() => handleMirrorNotes(index)}
+              resetSubject={() => resetSubjectForNote(index)}
+              totalNotesCount={fields.length}
+            />
+          ))}
+          <FileSelect handleAddNotes={handleAddNotes} />
+
+          <Button
+            className='upload-notes-submit-button'
+            type='submit'
+            disabled={isUploading || fields.length === 0}
+          >
+            Submit
+          </Button>
+        </form>
       </div>
-
-      <form onSubmit={handleSubmit(handleSubmitUpload)} className='upload__multiContainer'>
-        {fields.map((field, index) => (
-          <UploadNote
-            key={field.id}
-            control={control}
-            errors={errors.notes && (errors.notes[index] as FieldErrors<NoteInfoProps>)}
-            field={field}
-            options={options}
-            index={index}
-            watch={watch}
-            deleteNote={() => {
-              setOpenDeleteAlert(true);
-              setDeleteAlertKey(index);
-            }}
-            mirrorNote={() => handleMirrorNotes(index)}
-            resetSubject={() => resetSubjectForNote(index)}
-            totalNotesCount={fields.length}
-          />
-        ))}
-        <FileSelect handleAddNotes={handleAddNotes} />
-
-        <Button
-          className='upload-notes-submit-button'
-          type='submit'
-          disabled={isUploading || fields.length === 0}
-        >
-          Submit
-        </Button>
-      </form>
       <DeleteAlert
         isOpen={openDeleteAlert}
         onClose={() => {
@@ -297,6 +299,6 @@ export const UploadPage = () => {
         onClose={() => setOpenAlert(false)}
         alertContent={alertContent}
       />
-    </section>
+    </>
   );
 };

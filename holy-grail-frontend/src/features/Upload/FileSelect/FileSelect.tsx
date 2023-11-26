@@ -2,6 +2,7 @@ import { useEffect, useRef, useContext } from 'react';
 import { Button } from '@components';
 import { FileSelectProps } from '@features';
 import { AuthContext, MediaQueryContext } from '@providers';
+import './FileSelect.css';
 
 export const FileSelect = ({ handleAddNotes }: FileSelectProps) => {
   const dragDropRef = useRef<HTMLDivElement | null>(null);
@@ -41,22 +42,11 @@ export const FileSelect = ({ handleAddNotes }: FileSelectProps) => {
   };
 
   return (
-    <div
-      style={{
-        width: isDesktop ? '60vw' : '0px',
-        padding: '4%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexFlow: 'column nowrap',
-        border: isDesktop ? '2px #c3c3c3 dashed' : 'none',
-        borderRadius: '12px',
-      }}
-      ref={dragDropRef}
-    >
-      <a style={{ margin: '2%', display: isDesktop ? null : 'none' }}>
-        Drag and drop your PDFs here, or
-      </a>
+    <div className={`file-select-container ${isDesktop ? 'desktop' : 'mobile'}`} ref={dragDropRef}>
+      <div className={`upload-notes-description ${isDesktop ? 'desktop' : 'mobile'}`}>
+        <a>Drag and drop your PDFs here, or</a>
+      </div>
+
       <Button
         onClick={() => {
           if (fileRef.current) {
