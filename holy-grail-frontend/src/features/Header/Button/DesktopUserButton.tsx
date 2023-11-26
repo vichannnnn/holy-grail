@@ -38,7 +38,11 @@ export const DesktopUserButton = ({ user, isDesktop, logout }: DropdownRenderPro
         }}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'left',
+          horizontal: 'right',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
         }}
       >
         <Dropdown user={user} isDesktop={isDesktop} logout={logout} />

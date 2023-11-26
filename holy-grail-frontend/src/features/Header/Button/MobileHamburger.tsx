@@ -43,6 +43,10 @@ export const MobileHamburger = ({ user, isDesktop, logout }: DropdownRenderProps
           vertical: 'bottom',
           horizontal: 'left',
         }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
       >
         <Dropdown user={user} isDesktop={isDesktop} logout={logout} />
       </Menu>
