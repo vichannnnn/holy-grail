@@ -39,13 +39,9 @@ export const MobileHamburger = ({ user, isDesktop, logout }: DropdownRenderProps
           'aria-labelledby': 'mobile-hamburger-button',
         }}
         disableScrollLock={true}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
         transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
+          vertical: 0,
+          horizontal: 140,
         }}
       >
         <Dropdown user={user} isDesktop={isDesktop} logout={logout} />
