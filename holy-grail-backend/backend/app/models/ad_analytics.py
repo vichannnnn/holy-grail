@@ -65,7 +65,7 @@ class AdAnalytics(Base, CRUD["ad_analytics"]):
 
     @classmethod
     async def get_latest_ad_analytics(cls, session: AsyncSession) -> ModelType:
-        stmt = select(cls).order_by(cls.timestamp.desc()).limit(1)
+        stmt = select(cls).order_by(cls.timestamp.desc()).limit(2)
         result = await session.execute(stmt)
         instance = result.scalar()
 
