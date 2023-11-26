@@ -4,9 +4,10 @@ FROM base AS build
 
 WORKDIR /app
 COPY package.json bun.lockb ./
+ENV NODE_ENV=one
 RUN bun install --frozen-lockfile
 COPY . .
-RUN bun run build-one
+RUN bun run build
 
 FROM caddy:2.6.2-alpine AS deploy
 EXPOSE 443

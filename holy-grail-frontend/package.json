@@ -5,10 +5,7 @@
   "type": "module",
   "scripts": {
     "local": "bunx --bun vite --mode custom --host 0.0.0.0 --port 5175",
-    "build-one": "bunx --bun vite build --mode one",
-    "build-two": "bunx --bun vite build --mode two",
-    "dev-build": "bunx --bun vite build --mode development",
-    "build": "bunx --bun vite build --mode production",
+    "build": "bunx --bun vite build",
     "test": "react-scripts test",
     "lint": "eslint .",
     "format": "prettier --write \"src/**/*.{ts,tsx}\" \"../holy-grail-backend/backend/app/email_templates/*.html\"",
