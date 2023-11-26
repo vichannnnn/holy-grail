@@ -54,7 +54,7 @@ button {
 .section__subtitle {
   display: block;
   font-size: 1rem;
-  margin-bottom: 2%;
+  margin-bottom: 24px;
 }
 
 .sub-section__title {

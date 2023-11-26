@@ -8,7 +8,7 @@ export const Footer = () => {
   const { user } = useContext(AuthContext);
 
   return (
-    <>
+    <div className='footer-with-ads'>
       <Ads />
       <footer className='footer'>
         <div className='footer-logo-section'>
@@ -54,6 +54,6 @@ export const Footer = () => {
           &#169; 2023 Holy Grail Team • Questions? Contact us at grail@himaa.me
         </div>
       </footer>
-    </>
+    </div>
   );
 };
