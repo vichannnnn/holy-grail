@@ -1,69 +1,37 @@
 .mobile-upload-note-container {
-    width: 60vw;
-    display: flex;
-    flex-direction: row;
+    width: 90vw;
 }
 
-
-.grid-container {
+.file-name-header-container {
+    margin-left: 24px;
+    margin-top: 24px;
+    margin-bottom: 24px;
     display: flex;
     flex-direction: row;
-    align-items: center;
-    padding-right: 0 !important;
-    gap: 2%;
     justify-content: space-between;
-    margin: 1%;
-    position: relative;
 }
 
-.grid-container-collapsed {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding: 10px 0 !important;
-    gap: 2%;
-    justify-content: space-between;
-    margin: 1%;
-    position: relative;
+.file-name-header-container a {
+    max-width: 80%;
+    word-wrap: break-word;
+    display: inline-block;
 }
 
-.document-name-grid-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    padding-right: 0 !important;
-    margin-bottom: 12px !important;
-}
-
-.document-name-text-field {
-    flex-grow: 1
-}
-
-.combobox-container-desktop {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding-right: 0 !important;
-    gap: 1vh;
-    justify-content: space-evenly;
+.single-note-container {
+    border: 1px solid black;
+    border-radius: 10px;
 }
 
 .combobox-container-mobile {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-right: 0 !important;
-    gap: 1vh;
-    justify-content: space-evenly;
 }
 
 .note-combobox {
-    flex: 1 1 0;
-    width: 100%;
-    margin-bottom: 16px;
+    width: 90%;
+    margin-bottom: 8px;
 }
-
 
 .upload-note-container  .file-name-expanded {
     font-weight: 500;
@@ -72,46 +40,16 @@
     margin-bottom: 2%;
 }
 
-
-@media screen and (max-width: 913px) {
-    .upload-note-container .file-name-expanded {
-        margin-bottom: 4%;
-    }
-}
-
-
-
 .upload-note-container  .file-name-collapsed {
     font-weight: 500;
     margin-left: 3%;
 }
-
-
-.upload-note-container .error-text {
-    font-size: 100%;
-}
-
 
 .collapsible-grid {
     padding: 0 2% 2% 2%;
     flex-grow: 1;
     display: flex;
     flex-direction: row;
-}
-
-.outer-note-box {
-    display: flex;
-    flex-direction: row;
-}
-
-.inner-note-box {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1
-}
-
-.note-form-box {
-    margin-left: 24px;
 }
 
 .upload-item-options {
