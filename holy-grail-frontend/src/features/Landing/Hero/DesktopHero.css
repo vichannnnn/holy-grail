@@ -1,0 +1,50 @@
+.desktop-outer-hero-container {
+    display: flex;
+    flex-direction: column;
+    gap: 128px;
+}
+
+.desktop-inner-hero-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: auto;
+    width: 80%;
+}
+
+.desktop-left-hero, .desktop-right-hero {
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+}
+
+
+.desktop-left-hero h1 {
+    font-size: 64px;
+    margin: 20px 0;
+}
+
+.desktop-right-hero h1 {
+    font-size: 64px;
+    margin: 0 20px;
+}
+
+.desktop-left-hero p {
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+.desktop-right-hero p {
+    font-size: 18px;
+    margin: 20px 20px 30px;
+}
+
+.desktop-right-hero button {
+    margin: 0 20px;
+}
+
+.desktop-left-hero img, .desktop-right-hero img {
+    max-width: 100%;
+    height: auto;
+}

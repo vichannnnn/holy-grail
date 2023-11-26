@@ -1,27 +1,22 @@
-import { useContext } from 'react';
 import { Button } from '@components';
-import { MediaQueryContext } from '@providers';
 import { useNavigation } from '@utils';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import './Hero.css';
+import './MobileHero.css';
 
-export const Hero = () => {
+export const MobileHero = () => {
   const { goToLibrary, goToRegister } = useNavigation();
-  const { isDesktop } = useContext(MediaQueryContext);
 
   return (
-    <div className='outer-hero-container'>
-      <div className='inner-hero-container'>
-        {!isDesktop && (
-          <div className='right-hero'>
-            <img
-              src='https://document.grail.moe/grail-chan-studying.png'
-              alt='Studying'
-              width='450'
-            />
-          </div>
-        )}
-        <div className='left-hero'>
+    <div className='mobile-outer-hero-container'>
+      <div className='mobile-inner-hero-container'>
+        <div className='mobile-right-hero'>
+          <img
+            src='https://document.grail.moe/grail-chan-studying.png'
+            alt='Studying'
+            width='450'
+          />
+        </div>
+        <div className='mobile-left-hero'>
           <div>
             <h1>Access your notes you need in just a click.</h1>
             <p>
@@ -34,25 +29,16 @@ export const Hero = () => {
             </Button>
           </div>
         </div>
-        {isDesktop && (
-          <div className='right-hero'>
-            <img
-              src='https://document.grail.moe/grail-chan-studying.png'
-              alt='Studying'
-              width='450'
-            />
-          </div>
-        )}
       </div>
-      <div className='inner-hero-container'>
-        <div className='left-hero'>
+      <div className='mobile-inner-hero-container'>
+        <div className='mobile-left-hero'>
           <img
             src='https://document.grail.moe/grail-chan-sparkling.png'
             alt='Sparkling'
             width='450'
           />
         </div>
-        <div className='right-hero'>
+        <div className='mobile-right-hero'>
           <div>
             <h1>Want to contribute?</h1>
             <p>
