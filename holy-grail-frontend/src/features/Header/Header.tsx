@@ -2,7 +2,6 @@ import { useContext, useState } from 'react';
 import { HashLink } from 'react-router-hash-link';
 import { Link as RouterLink } from 'react-router-dom';
 import { AuthContext, MediaQueryContext } from '@providers';
-
 import { ButtonView } from './Button';
 import './Header.css';
 
@@ -13,18 +12,18 @@ export const Header = () => {
 
   return (
     <header className='header'>
-      <nav className='nav container grid'>
-        <RouterLink className='nav__logo' to='/'>
+      <div className='header-container'>
+        <RouterLink to='/'>
           <img
-            className='nav__logo__image'
+            className='header-logo'
             src='https://document.grail.moe/grail-chan-happy.png'
             alt=''
           />
         </RouterLink>
         {isDesktop ? (
-          <div className='nav__menu'>
-            <ul className='nav__list grid'>
-              <li className='nav__item'>
+          <div>
+            <ul className='header-items-section'>
+              <li>
                 <HashLink
                   to='/'
                   scroll={(el: HTMLElement) => el.scrollIntoView({ behavior: 'smooth' })}
@@ -33,39 +32,49 @@ export const Header = () => {
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
                 >
-                  <a className={activeNav === '#home' ? 'nav__link active-link' : 'nav__link'}>
+                  <a
+                    className={activeNav === '#home' ? 'header-links active-link' : 'header-links'}
+                  >
                     Home
                   </a>
                 </HashLink>
               </li>
-              <li className='nav__item'>
+              <li>
                 <HashLink
                   to='/library'
                   scroll={(el: HTMLElement) => el.scrollIntoView({ behavior: 'smooth' })}
                   onClick={() => setActiveNav('#library')}
                 >
-                  <a className={activeNav === '#library' ? 'nav__link active-link' : 'nav__link'}>
+                  <a
+                    className={
+                      activeNav === '#library' ? 'header-links active-link' : 'header-links'
+                    }
+                  >
                     Library
                   </a>
                 </HashLink>
               </li>
-              <li className='nav__item'>
+              <li>
                 <HashLink
                   to='/#faq'
                   scroll={(el: HTMLElement) => el.scrollIntoView({ behavior: 'smooth' })}
                   onClick={() => setActiveNav('#faq')}
                 >
-                  <a className={activeNav === '#faq' ? 'nav__link active-link' : 'nav__link'}>
+                  <a className={activeNav === '#faq' ? 'header-links active-link' : 'header-links'}>
                     FAQ
                   </a>
                 </HashLink>
               </li>
-              <li className='nav__item'>
+              <li>
                 <RouterLink
                   to='/upload'
                   onClick={() => setActiveNav(user?.verified ? '#upload' : '#home')}
                 >
-                  <a className={activeNav === '#upload' ? 'nav__link active-link' : 'nav__link'}>
+                  <a
+                    className={
+                      activeNav === '#upload' ? 'header-links active-link' : 'header-links'
+                    }
+                  >
                     Contribute
                   </a>
                 </RouterLink>
@@ -76,7 +85,7 @@ export const Header = () => {
         <div className='right-section' style={{ display: 'flex', gap: '30px' }}>
           <ButtonView />
         </div>
-      </nav>
+      </div>
     </header>
   );
 };
