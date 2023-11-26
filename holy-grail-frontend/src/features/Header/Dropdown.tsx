@@ -165,7 +165,7 @@ export const Dropdown = ({ user, isDesktop, logout }: DropdownRenderProps) => {
             key={index}
             label={item.label}
             icon={item.icon}
-            callback={item.callback}
+            onClick={item.callback}
           />
         ))}
       </div>

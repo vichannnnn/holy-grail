@@ -1,14 +1,13 @@
 import { ReactNode } from 'react';
-import { MenuItem, Stack } from '@mui/material';
+import { MenuItem, MenuItemProps, Stack } from '@mui/material';
 import './DropdownMenuItem.css';
 
-export interface DropdownMenuItemProps {
+export interface DropdownMenuItemProps extends MenuItemProps {
   label: string;
-  icon: ReactNode;
-  callback: () => void;
+  icon?: ReactNode;
 }
 
-export const DropdownMenuItem = ({ label, icon, callback }: DropdownMenuItemProps) => {
+export const DropdownMenuItem = ({ label, icon, ...props }: DropdownMenuItemProps) => {
   return (
     <>
       <MenuItem
@@ -19,7 +18,7 @@ export const DropdownMenuItem = ({ label, icon, callback }: DropdownMenuItemProp
             backgroundColor: '#e9e9e9',
           },
         }}
-        onClick={callback}
+        {...props}
       >
         <div className='dropdown-menu-item'>
           <Stack direction='row' alignItems='center' gap={1}>
