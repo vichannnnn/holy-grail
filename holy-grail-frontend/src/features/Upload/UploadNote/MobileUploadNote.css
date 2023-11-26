@@ -1,7 +1,9 @@
-.upload-note-div {
+.mobile-upload-note-container {
+    width: 60vw;
     display: flex;
     flex-direction: row;
 }
+
 
 .grid-container {
     display: flex;
@@ -23,19 +25,6 @@
     justify-content: space-between;
     margin: 1%;
     position: relative;
-}
-
-.expand-icon {
-    cursor: pointer;
-    position: absolute;
-    right: 8px;
-}
-
-.collapse-icon {
-    cursor: pointer;
-    position: absolute;
-    top: 8px;
-    right: 8px;
 }
 
 .document-name-grid-container {
@@ -76,7 +65,7 @@
 }
 
 
-.upload-note-div  .file-name-expanded {
+.upload-note-container  .file-name-expanded {
     font-weight: 500;
     margin-left: 3%;
     margin-top: 2%;
@@ -85,20 +74,20 @@
 
 
 @media screen and (max-width: 913px) {
-    .upload-note-div .file-name-expanded {
+    .upload-note-container .file-name-expanded {
         margin-bottom: 4%;
     }
 }
 
 
 
-.upload-note-div  .file-name-collapsed {
+.upload-note-container  .file-name-collapsed {
     font-weight: 500;
     margin-left: 3%;
 }
 
 
-.upload-note-div .error-text {
+.upload-note-container .error-text {
     font-size: 100%;
 }
 
@@ -122,19 +111,19 @@
 }
 
 .note-form-box {
-    margin-left: 2%;
+    margin-left: 24px;
 }
 
 .upload-item-options {
-  margin: 3px !important;
-  background-color: transparent !important;
-  border-radius: 8px !important;
-  box-sizing: border-box !important;
-  outline: 1px solid transparent !important;
-  transition: all 0.2s ease !important;
+    margin: 3px !important;
+    background-color: transparent !important;
+    border-radius: 8px !important;
+    box-sizing: border-box !important;
+    outline: 1px solid transparent !important;
+    transition: all 0.2s ease !important;
 }
 
 .upload-item-options:hover {
-  background-color: #e9e9e9 !important;
-  outline-color: transparent;
+    background-color: #e9e9e9 !important;
+    outline-color: transparent;
 }
