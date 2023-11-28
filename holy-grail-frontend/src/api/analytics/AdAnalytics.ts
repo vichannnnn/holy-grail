@@ -5,5 +5,9 @@ export const adClick = async () => {
 };
 
 export const adImpression = async () => {
-  await apiClient.post('/ad_analytics/ad_view');
+  try {
+    await apiClient.post('/ad_analytics/ad_view');
+  } finally {
+    // Ignore because of intended rate limit
+  }
 };
