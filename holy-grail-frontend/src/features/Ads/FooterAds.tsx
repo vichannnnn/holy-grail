@@ -1,5 +1,5 @@
-import { useContext } from 'react';
-import { adClick } from '@api/analytics';
+import { useContext, useRef, useEffect } from 'react';
+import { adClick, adImpression } from '@api/analytics';
 import { MediaQueryContext } from '@providers';
 import { useNavigation } from '@utils';
 import Tooltip from '@mui/material/Tooltip';
@@ -55,6 +55,7 @@ const InfoButton = ({ isDesktop }: InfoButtonProps) => {
 export const FooterAds = () => {
   const { isDesktop } = useContext(MediaQueryContext);
   const { goToGP } = useNavigation();
+  const adsRef = useRef(null);
 
   const handleAdsClick = async () => {
     try {
@@ -64,8 +65,35 @@ export const FooterAds = () => {
     }
   };
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(async (entry) => {
+          if (entry.isIntersecting) {
+            await adImpression();
+          }
+        });
+      },
+      {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1,
+      },
+    );
+
+    if (adsRef.current) {
+      observer.observe(adsRef.current);
+    }
+
+    return () => {
+      if (adsRef.current) {
+        observer.unobserve(adsRef.current);
+      }
+    };
+  }, [adsRef]);
+
   return (
-    <div className='ads-container'>
+    <div className='ads-container' ref={adsRef}>
       <div className='ads-image'>
         <a onClick={handleAdsClick} style={{ cursor: 'pointer' }}>
           <img alt='GP Ads here!' src={ADS_IMAGE_URL} width={isDesktop ? '468' : '320'}></img>
