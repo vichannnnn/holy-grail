@@ -1,15 +1,14 @@
 import { useContext } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { AuthContext } from '@providers';
-import { Ads } from './Ads';
-import './Footer.css';
+import { FooterAds } from '@features';
 
 export const Footer = () => {
   const { user } = useContext(AuthContext);
 
   return (
     <div className='footer-with-ads'>
-      <Ads />
+      <FooterAds />
       <footer className='footer'>
         <div className='footer-logo-section'>
           <img

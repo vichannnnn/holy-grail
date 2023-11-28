@@ -1,10 +1,10 @@
 import { useContext } from 'react';
 import { MediaQueryContext } from '@providers';
+import { useNavigation } from '@utils';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import InfoIcon from '@mui/icons-material/Info';
-import './Ads.css';
-import { useNavigation } from '@utils';
+import './FooterAds.css';
 
 const ADS_IMAGE_URL = 'https://document.grail.moe/General+Paper+Ad.png';
 
@@ -51,7 +51,7 @@ const InfoButton = ({ isDesktop }: InfoButtonProps) => {
   );
 };
 
-export const Ads = () => {
+export const FooterAds = () => {
   const { isDesktop } = useContext(MediaQueryContext);
   const { goToGP } = useNavigation();
 
