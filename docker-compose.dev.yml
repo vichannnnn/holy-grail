@@ -2,21 +2,6 @@
 version: '3.8'
 
 services:
-  holy-grail-frontend:
-    container_name: holy-grail-frontend
-    networks:
-      - holy-grail-network
-    image: ghcr.io/vichannnnn/holy-grail/holy-grail-frontend-dev:latest
-    depends_on:
-      - holy-grail-backend
-    environment:
-      VITE_APP_API_URL: ${VITE_APP_API_URL}
-      VITE_APP_AWS_S3_BUCKET_URL: ${VITE_APP_AWS_S3_BUCKET_URL}
-    ports:
-      - "5175:5175"
-    restart:
-      always
-
   holy-grail-backend:
     container_name: holy-grail-backend
     networks:
