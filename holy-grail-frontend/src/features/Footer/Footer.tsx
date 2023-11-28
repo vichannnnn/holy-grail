@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { AuthContext } from '@providers';
 import { FooterAds } from '@features';
+import './Footer.css';
 
 export const Footer = () => {
   const { user } = useContext(AuthContext);
