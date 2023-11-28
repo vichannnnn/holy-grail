@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import { adClick } from '@api/analytics';
 import { MediaQueryContext } from '@providers';
 import { useNavigation } from '@utils';
 import Tooltip from '@mui/material/Tooltip';
@@ -55,10 +56,18 @@ export const FooterAds = () => {
   const { isDesktop } = useContext(MediaQueryContext);
   const { goToGP } = useNavigation();
 
+  const handleAdsClick = async () => {
+    try {
+      await adClick();
+    } finally {
+      goToGP();
+    }
+  };
+
   return (
     <div className='ads-container'>
       <div className='ads-image'>
-        <a onClick={goToGP} style={{ cursor: 'pointer' }}>
+        <a onClick={handleAdsClick} style={{ cursor: 'pointer' }}>
           <img alt='GP Ads here!' src={ADS_IMAGE_URL} width={isDesktop ? '468' : '320'}></img>
         </a>
         <InfoButton isDesktop={isDesktop} />

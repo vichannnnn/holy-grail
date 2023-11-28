@@ -1,21 +1,38 @@
+import { MouseEventHandler } from 'react';
 import { TextLink } from '@components';
 import { useNavigation } from '@utils';
+import { adClick } from '@api/analytics';
 
 export const TextAds = () => {
   const { goToStudentsKahoot, goToSecondarySchoolBot, goToJCBot, goToJCChatBot, goToThisCounted } =
     useNavigation();
 
+  const handleAdsClick = async (navigate: () => void) => {
+    try {
+      await adClick();
+    } finally {
+      navigate();
+    }
+  };
+
+  const handleClick = (navigate: () => void): MouseEventHandler<HTMLAnchorElement> => {
+    return (event) => {
+      event.preventDefault();
+      handleAdsClick(navigate);
+    };
+  };
+
   return (
     <p>
       Check these out on Telegram! Weekly Kahoot (with prizes) based on O/N-Level, A-Level syllabus:{' '}
-      <TextLink onClick={goToStudentsKahoot}>@studentskahoot</TextLink>
+      <TextLink onClick={handleClick(goToStudentsKahoot)}>@studentskahoot</TextLink>
       <br></br>
       Chat or study together with other students:{' '}
-      <TextLink onClick={goToJCBot}>@JuniorCollegeBot</TextLink> /{' '}
-      <TextLink onClick={goToJCChatBot}>@JCchatbot</TextLink> /{' '}
-      <TextLink onClick={goToSecondarySchoolBot}>@SecondarySchoolBot</TextLink>
+      <TextLink onClick={handleClick(goToJCBot)}>@JuniorCollegeBot</TextLink> /{' '}
+      <TextLink onClick={handleClick(goToJCChatBot)}>@JCchatbot</TextLink> /{' '}
+      <TextLink onClick={handleClick(goToSecondarySchoolBot)}>@SecondarySchoolBot</TextLink>
       <br></br>
-      Student Discounts: <TextLink onClick={goToThisCounted}>@ThisCounted</TextLink>
+      Student Discounts: <TextLink onClick={handleClick(goToThisCounted)}>@ThisCounted</TextLink>
     </p>
   );
 };
