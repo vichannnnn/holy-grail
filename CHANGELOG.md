@@ -1,148 +1,196 @@
 # CHANGELOG
 
-## [v1.0.3](https://github.com/vichannnnn/holy-grail/releases/tag/v1.0.3) - 2023-08-06 10:15:20
+## [v1.0.5](https://github.com/vichannnnn/holy-grail/releases/tag/v1.0.5) - 2023-11-28 12:26:54
 
-## What's Changed
-* hotfix for header by @vichannnnn in https://github.com/vichannnnn/holy-grail/pull/78
-* Feature/form by @vichannnnn in https://github.com/vichannnnn/holy-grail/pull/85
-* Feature/form by @vichannnnn in https://github.com/vichannnnn/holy-grail/pull/86
-* convert all the form html in components to react-hook-form by @vichannnnn in https://github.com/vichannnnn/holy-grail/pull/87
-* Feat/hook form by @jasmine454 in https://github.com/vichannnnn/holy-grail/pull/88
-* merge conflict check by @vichannnnn in https://github.com/vichannnnn/holy-grail/pull/79
-* fix(login-page): mismatch payload from frontend for register account by @chew01 in https://github.com/vichannnnn/holy-grail/pull/89
-* fix(auth): update regex validation by @chew01 in https://github.com/vichannnnn/holy-grail/pull/90
-* pr conflict check by @jasmine454 in https://github.com/vichannnnn/holy-grail/pull/93
-
-## New Contributors
-* @chew01 made their first contribution in https://github.com/vichannnnn/holy-grail/pull/89
-
-**Full Changelog**: https://github.com/vichannnnn/holy-grail/compare/v1.0.2...v1.0.3
+- Adhering frontend components to SRP, separating many common reused components such as Button as well as modularizing the view component. 
+- Added ad analytics features.
 
 ### Feature
 
-- admin-page:
-  - add year edit function into existing notes ([324a815](https://github.com/vichannnnn/holy-grail/commit/324a815540a3680ca9b9c0b9ad0461852121aea0)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-
-- library:
-  - add year filter to library ([519bc50](https://github.com/vichannnnn/holy-grail/commit/519bc50e133b1f3652ab6fb76e3704a839af6497)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-
-- notes-table:
-  - implement sorting by upload date ([4b20367](https://github.com/vichannnnn/holy-grail/commit/4b20367fec3560c1c7a35e2dbc8d88211dd57c1a)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-
-- change-email-page:
-  - update logic for change email ([412b619](https://github.com/vichannnnn/holy-grail/commit/412b619d753e808538d7202023d45b8b1419955e)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-
 - general:
-  - implement email endpoint and UI ([9eda706](https://github.com/vichannnnn/holy-grail/commit/9eda706c34272ec7ebe411e710feb6752f8d09c4)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-  - mobile rendering & change email button logic ([89f7dfb](https://github.com/vichannnnn/holy-grail/commit/89f7dfb574882d517fbde9086361253f8ab6b519)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-  - validate pw ([a297bca](https://github.com/vichannnnn/holy-grail/commit/a297bca26f467de67acc76b623ee4f266a745eeb)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-  - validate email ([46617ce](https://github.com/vichannnnn/holy-grail/commit/46617cee332873730cba14d52d7c5cc02a94e1c7)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-  - add profile page ([27ac8a6](https://github.com/vichannnnn/holy-grail/commit/27ac8a6dc0e24870636394e6544960ca6e80549b)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-  - initial creation of /account ([ed5aee2](https://github.com/vichannnnn/holy-grail/commit/ed5aee25b480ec3f1383b232f28ee033049581d8)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-
-- landing-page:
-  - update scroll behavior ([fd6e1df](https://github.com/vichannnnn/holy-grail/commit/fd6e1dffc4ab749b5bc50fedab42a6e47065b5a2)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-
-- auth:
-  - update user state after email verification ([7962f89](https://github.com/vichannnnn/holy-grail/commit/7962f89e2a1f0062bab84351af8837e0f29fc751)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-  - update update password, sign in logic ([259663a](https://github.com/vichannnnn/holy-grail/commit/259663a30e749794a0399545062517c0bb9ef3e1)) ([#87](https://github.com/vichannnnn/holy-grail/pull/87))
-  - log out user on refresh when their jwt expires & handling user session more gracefully ([d338f00](https://github.com/vichannnnn/holy-grail/commit/d338f008c6b22bb4430988e59c8768f486eec08b)) ([#85](https://github.com/vichannnnn/holy-grail/pull/85))
-
-- upload-page:
-  - update styling ([3bef702](https://github.com/vichannnnn/holy-grail/commit/3bef702a0116c444f77755c14c1de201d9f1834e)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-
-- dev-panel:
-  - update add modal ([dfa937d](https://github.com/vichannnnn/holy-grail/commit/dfa937da414dbd030c6ba2bcecc9dcd90a8a3a7e)) ([#87](https://github.com/vichannnnn/holy-grail/pull/87))
-  - update user panel and modal ([a17a9da](https://github.com/vichannnnn/holy-grail/commit/a17a9da49560887448ef001a5badf5cb68c18f07)) ([#87](https://github.com/vichannnnn/holy-grail/pull/87))
-  - update edit subject modal and logic ([682081b](https://github.com/vichannnnn/holy-grail/commit/682081b4408cd35ef84c019d14864157a410883b)) ([#87](https://github.com/vichannnnn/holy-grail/pull/87))
-
-- create-subject:
-  - update error handling for add subject ([a1b9ccf](https://github.com/vichannnnn/holy-grail/commit/a1b9ccf212e0806a4f2e16e4b9c4ebcf13408eae)) ([#87](https://github.com/vichannnnn/holy-grail/pull/87))
-
-- forgot-passowrd-page:
-  - update forgot password page to react hook forms ([b3ed672](https://github.com/vichannnnn/holy-grail/commit/b3ed672c1d2dbac79bf15a55552460427218f61f)) ([#87](https://github.com/vichannnnn/holy-grail/pull/87))
-
-- sign-in-page:
-  - update sign up page with react hook forms ([0bbec04](https://github.com/vichannnnn/holy-grail/commit/0bbec04cb94ef3ed28275bb304cbbd20542c7463)) ([#87](https://github.com/vichannnnn/holy-grail/pull/87))
-
-- forms:
-  - update sign up form to use react-hook-form ([35b6349](https://github.com/vichannnnn/holy-grail/commit/35b6349140080369fc064379f4497ebe45c54c2d)) ([#86](https://github.com/vichannnnn/holy-grail/pull/86))
-
-- update-password:
-  - convert update password page from chakra to <UI ([e2c44ae](https://github.com/vichannnnn/holy-grail/commit/e2c44ae479b09468bff54629f7c7230dbd1fb865)) ([#85](https://github.com/vichannnnn/holy-grail/pull/85))
-
-- login-page:
-  - update chakra to MUI for the log in form ([419b3b1](https://github.com/vichannnnn/holy-grail/commit/419b3b1bd8ef4c5d0994631705afede36ff3c02e)) ([#85](https://github.com/vichannnnn/holy-grail/pull/85))
+  - add some margin top on header ([dfaa81c](https://github.com/vichannnnn/holy-grail/commit/dfaa81cc6a049e9f70652a05065e2d65b2d3a470))
+  - update README to reflect new changes as well as some housekeeping ([859cff3](https://github.com/vichannnnn/holy-grail/commit/859cff3f3dfbb0084e2426596ccd75d283eafd79))
+  - update rate limit for ad view ([3564050](https://github.com/vichannnnn/holy-grail/commit/356405063ef9d3b8d940017293e248bb53e75396))
+  - update ads click analytics function ([9a9ab06](https://github.com/vichannnnn/holy-grail/commit/9a9ab06d6d8119d2f51a139d2b0b6642661754de))
+  - update ad analytics endpoints ([79564a1](https://github.com/vichannnnn/holy-grail/commit/79564a12facff60b4b974e226811fa4fa581963e))
+  - add ratelimits, auth for ad analytics ([da66e80](https://github.com/vichannnnn/holy-grail/commit/da66e8006e0e05d4b2059229468757ca2ca947b7))
+  - add scheduler ([b7e0397](https://github.com/vichannnnn/holy-grail/commit/b7e0397750a0492c3aa3e44a942fe12dec6dd145))
+  - add ad analytics ([aba86c1](https://github.com/vichannnnn/holy-grail/commit/aba86c1536b9d55b4b7c0741316670ece6686ae0))
+  - add fade in ([dc4c55e](https://github.com/vichannnnn/holy-grail/commit/dc4c55e9badd4b059aa0a8ee8a7362251048c8c8))
+  - update anchorOrigin and transformOrigin ([14302db](https://github.com/vichannnnn/holy-grail/commit/14302db004c097763746f758ab2039a59ff3a7cc))
+  - update hero component ([4165535](https://github.com/vichannnnn/holy-grail/commit/4165535d9a58c4ba140a9d124fe165cee341cbe5)) ([#150](https://github.com/vichannnnn/holy-grail/pull/150))
+  - separate hero component view & update Header ([21404e7](https://github.com/vichannnnn/holy-grail/commit/21404e7a544458649069e489c53219c181837bcc)) ([#150](https://github.com/vichannnnn/holy-grail/pull/150))
+  - update footer margin spacing between ads ([1d81a33](https://github.com/vichannnnn/holy-grail/commit/1d81a330a5f041c5ef83165bae703b67ad177c59)) ([#150](https://github.com/vichannnnn/holy-grail/pull/150))
+  - update mobile design for upload page ([0a7ad1a](https://github.com/vichannnnn/holy-grail/commit/0a7ad1a7d8f5b3e8199e8e750b26de45e10eacc3)) ([#150](https://github.com/vichannnnn/holy-grail/pull/150))
+  - update upload page components ([419364b](https://github.com/vichannnnn/holy-grail/commit/419364beeff6a8dec249c35079d27979eb03160e)) ([#150](https://github.com/vichannnnn/holy-grail/pull/150))
+  - update developer component & file structure ([4aefe51](https://github.com/vichannnnn/holy-grail/commit/4aefe5168bd0a4a5abb157afa31aadaa7e22f594)) ([#150](https://github.com/vichannnnn/holy-grail/pull/150))
+  - update hero description ([c9ec974](https://github.com/vichannnnn/holy-grail/commit/c9ec974d471b029dca68ec5f7e226290a99075b8)) ([#150](https://github.com/vichannnnn/holy-grail/pull/150))
+  - update dropdown and dropdown items styling ([435b799](https://github.com/vichannnnn/holy-grail/commit/435b799ab6f18832da2be5a8eaab5a778fcca998)) ([#150](https://github.com/vichannnnn/holy-grail/pull/150))
+  - update account details min height ([0f75e10](https://github.com/vichannnnn/holy-grail/commit/0f75e104280bb39f189364f646fc8926888a4665)) ([#150](https://github.com/vichannnnn/holy-grail/pull/150))
+  - update update email account details component ([091e6c6](https://github.com/vichannnnn/holy-grail/commit/091e6c6b3689f79a51aa3bf990c0a989e3fb4b80)) ([#150](https://github.com/vichannnnn/holy-grail/pull/150))
+  - update account details component ([3790eca](https://github.com/vichannnnn/holy-grail/commit/3790eca1a0bbed7ad7ca7060b16e35c8d693632a)) ([#150](https://github.com/vichannnnn/holy-grail/pull/150))
+  - update account details component for desktop ([3bc4181](https://github.com/vichannnnn/holy-grail/commit/3bc41810c6669ff2f2db3bedaf0bd27ae24f2582)) ([#150](https://github.com/vichannnnn/holy-grail/pull/150))
+  - update forgot password page component ([2ec87e6](https://github.com/vichannnnn/holy-grail/commit/2ec87e63bade9d716e8b344353a33d9944882c1a)) ([#150](https://github.com/vichannnnn/holy-grail/pull/150))
+  - remove AccountForm component and update user account components ([8a835f8](https://github.com/vichannnnn/holy-grail/commit/8a835f89e62c19adb3ccab6032563522a92a156a)) ([#150](https://github.com/vichannnnn/holy-grail/pull/150))
+  - modularise account form css and update sign up page form component ([63b2a93](https://github.com/vichannnnn/holy-grail/commit/63b2a933b156695393bbc093598cc27122b4b074)) ([#150](https://github.com/vichannnnn/holy-grail/pull/150))
+  - update button base styling ([923de39](https://github.com/vichannnnn/holy-grail/commit/923de395c993fdc2af9fa9a19c4a7d6992e0d037)) ([#150](https://github.com/vichannnnn/holy-grail/pull/150))
+  - update TextLink component and update library text-based ads ([b39bf9f](https://github.com/vichannnnn/holy-grail/commit/b39bf9fafa1c7661c058af19eed084eecb86bf9c)) ([#150](https://github.com/vichannnnn/holy-grail/pull/150))
+  - rewrite footer css ([978f3f5](https://github.com/vichannnnn/holy-grail/commit/978f3f5e302ed05a294418bf9cba073926bf515b)) ([#150](https://github.com/vichannnnn/holy-grail/pull/150))
+  - update library and approval page css ([3c1caa4](https://github.com/vichannnnn/holy-grail/commit/3c1caa49428f8e2cf09d48be7cf5e7e600eac90a)) ([#150](https://github.com/vichannnnn/holy-grail/pull/150))
+  - separate WelcomeBackHeader to common component and update notes table ([d71c5e5](https://github.com/vichannnnn/holy-grail/commit/d71c5e553ab8118b746203036c94729f13d587ca)) ([#150](https://github.com/vichannnnn/holy-grail/pull/150))
+  - update Hero button to base button component for consistency ([ea83789](https://github.com/vichannnnn/holy-grail/commit/ea837894386db0eb2a2adabc194e1839d517b2c1)) ([#150](https://github.com/vichannnnn/holy-grail/pull/150))
+  - update FAQ css and components ([3c6ed19](https://github.com/vichannnnn/holy-grail/commit/3c6ed1981a8697b01204c0dc4db5cfc3aa06034f)) ([#150](https://github.com/vichannnnn/holy-grail/pull/150))
+  - update header button view & separate components to their own responsibilities ([f95fbb6](https://github.com/vichannnnn/holy-grail/commit/f95fbb6a14498a30d1e6bbd897e1d2b1e48e314c)) ([#150](https://github.com/vichannnnn/holy-grail/pull/150))
+  - update ads with hyperlink ([4f3c3e6](https://github.com/vichannnnn/holy-grail/commit/4f3c3e6ee57062c9919a802efcb1e5bf08e6e14a)) ([#147](https://github.com/vichannnnn/holy-grail/pull/147))
+  - update ad text on library ([be79856](https://github.com/vichannnnn/holy-grail/commit/be7985679db18a3bc59323ee8107c56f2ef082b1)) ([#145](https://github.com/vichannnnn/holy-grail/pull/145))
+  - add info button to ads and update mobile responsiveness ([2ada8f2](https://github.com/vichannnnn/holy-grail/commit/2ada8f2bedbbc291cd9a79ab419c0c3110462006)) ([#132](https://github.com/vichannnnn/holy-grail/pull/132))
+  - add ads banner above footer ([1530fbd](https://github.com/vichannnnn/holy-grail/commit/1530fbd2a4730746945b82f03784a117c468f39b)) ([#131](https://github.com/vichannnnn/holy-grail/pull/131))
+  - add cache headers to uploaded docs ([6e04d7b](https://github.com/vichannnnn/holy-grail/commit/6e04d7b3ecef775e3a5d2e7a7c9171ab65dab339)) ([#129](https://github.com/vichannnnn/holy-grail/pull/129))
+  - update favicons & fix CountUp component ([e977ef9](https://github.com/vichannnnn/holy-grail/commit/e977ef9c40fe31b175348c378d1d6e23adf1705f))
+  - update footer with contact us email ([3a4ac6d](https://github.com/vichannnnn/holy-grail/commit/3a4ac6df62020aad0a43cfd2c7ddebc055f8d8c8))
+  - update count animation to only start when scrolled into viewport ([737355c](https://github.com/vichannnnn/holy-grail/commit/737355c21942f0df5c9edc385d167c696222bc94)) ([#125](https://github.com/vichannnnn/holy-grail/pull/125))
+  - update landing page to add analytics section ([3963519](https://github.com/vichannnnn/holy-grail/commit/39635191d72981ca6487905eee7b94d998f0b4a7)) ([#125](https://github.com/vichannnnn/holy-grail/pull/125))
+  - add analytics endpoint ([976562b](https://github.com/vichannnnn/holy-grail/commit/976562bb41f7f277843ca3bfdb7b3beedc947cb0)) ([#125](https://github.com/vichannnnn/holy-grail/pull/125))
+  - create analytics count feature ([3c27205](https://github.com/vichannnnn/holy-grail/commit/3c27205605129cb179b0628e46269fc41ce4f8b0)) ([#125](https://github.com/vichannnnn/holy-grail/pull/125))
+  - update landing for mobile ([88c58f5](https://github.com/vichannnnn/holy-grail/commit/88c58f55d3a1707123be9ec384c13dd695051fc5)) ([#125](https://github.com/vichannnnn/holy-grail/pull/125))
+  - add auto log out once jwt expires ([fda1511](https://github.com/vichannnnn/holy-grail/commit/fda151195d08a6d135b2a8dfb1afb414a01c3b0f)) ([#125](https://github.com/vichannnnn/holy-grail/pull/125))
+  - update dropdown selection with icon ([6401e4f](https://github.com/vichannnnn/holy-grail/commit/6401e4f29cdd4c7ec50fdd0243d5d14cdcdee4b7)) ([#125](https://github.com/vichannnnn/holy-grail/pull/125))
+  - update approval and developer page to restrict access properly ([3f7f678](https://github.com/vichannnnn/holy-grail/commit/3f7f67864c2fc08bc94a7cc00c488add97853427)) ([#125](https://github.com/vichannnnn/holy-grail/pull/125))
+  - update rate limit for download endpoint to 20/5 minutes to prevent abuse ([6171233](https://github.com/vichannnnn/holy-grail/commit/6171233941c32d7e39d445e73a8d9a00d8fc38d2))
+  - update backend to allow zip files upload and proper download flow ([db74aa5](https://github.com/vichannnnn/holy-grail/commit/db74aa501f10bc24faeb9b2ed5ab39d04ed2d4eb)) ([#118](https://github.com/vichannnnn/holy-grail/pull/118))
+  - update to allow developer roles to upload something other than pdf ([b5293f3](https://github.com/vichannnnn/holy-grail/commit/b5293f3797e360617d3e6561073ddd3ac94845de)) ([#118](https://github.com/vichannnnn/holy-grail/pull/118))
 
 ### Bug Fixes
 
-- account-page:
-  - remove unused component and adjust mobile css ([9e3e018](https://github.com/vichannnnn/holy-grail/commit/9e3e018f5ba2f753396314b9da5a1fe2e09440f5)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-  - update css styling for account page ([7c7947b](https://github.com/vichannnnn/holy-grail/commit/7c7947b46091c1022bc9d3436c621cb03717262b)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-  - update mobile styling view ([e674691](https://github.com/vichannnnn/holy-grail/commit/e67469155a1162496b9c5aa9a58b58a5aaae9d31)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-
-- update-email:
-  - fix send_verification_email method ([cbad3f3](https://github.com/vichannnnn/holy-grail/commit/cbad3f35609434231e15387da94bc3a38bace6a8)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-
 - general:
-  - svg logo not working in emails ([c0635fb](https://github.com/vichannnnn/holy-grail/commit/c0635fb33fa937d9ce41adb52c30206fdc27ef77)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-  - clear up code smells ([8cc0e74](https://github.com/vichannnnn/holy-grail/commit/8cc0e74d6cce5f4247fb65e056f4f297bf0edd36)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-  - add doctype to email html template & fix padding for collapsed upload container ([7d8216c](https://github.com/vichannnnn/holy-grail/commit/7d8216c82f0b68da1e910d27986037409e3297fc)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-  - mobile new email save button style gap update ([43c46a2](https://github.com/vichannnnn/holy-grail/commit/43c46a2db6913bcded3cf59f294ed83c5103576f)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-  - error handling for update base method ([998497c](https://github.com/vichannnnn/holy-grail/commit/998497cb9741750803ea80137fdb12af56657247)) ([#87](https://github.com/vichannnnn/holy-grail/pull/87))
-  - display of /developer ([9d1a143](https://github.com/vichannnnn/holy-grail/commit/9d1a143237c13c1ccfdb4e1e9669eb474d211f2f)) ([#87](https://github.com/vichannnnn/holy-grail/pull/87))
-  - page not loading ([2016b38](https://github.com/vichannnnn/holy-grail/commit/2016b3850ad5286325d9ed18494bddcefe726a58)) ([#87](https://github.com/vichannnnn/holy-grail/pull/87))
-
-- ci:
-  - try coverage path again ([6c7f3f9](https://github.com/vichannnnn/holy-grail/commit/6c7f3f9927907ed57464e6cfd2b0211ccbf44cea)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-  - try coverage path again ([78b27e5](https://github.com/vichannnnn/holy-grail/commit/78b27e5019ec8535c112cd8140371a130bd3b1ce)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-  - try coverage path again ([1a10559](https://github.com/vichannnnn/holy-grail/commit/1a105596453176265060be9741b0e0b68611c96e)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-  - try coverage path again ([e71bd0d](https://github.com/vichannnnn/holy-grail/commit/e71bd0db9f2c715d07bb10b71f4b0ca7a0f77691)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-  - try coverage path again ([4ca4be4](https://github.com/vichannnnn/holy-grail/commit/4ca4be4094dfcfa0604b6d04c78938f3d8faf2bb)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-  - try coverage path again ([dfe7e36](https://github.com/vichannnnn/holy-grail/commit/dfe7e36be70127b681e3427c5818346ed432e3b1)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-  - try coverage path again ([858106f](https://github.com/vichannnnn/holy-grail/commit/858106fddc18290568d2a039b8f675a5ee1c3196)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-  - try coverage path again ([57c2438](https://github.com/vichannnnn/holy-grail/commit/57c2438bc8d29ed90e3ed92c5de8f887659dcc1e)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-  - try coverage path again ([9beab79](https://github.com/vichannnnn/holy-grail/commit/9beab7936c08411b165d560690211c8858f79103)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-  - try coverage path again ([f88de1f](https://github.com/vichannnnn/holy-grail/commit/f88de1f386f9d40a5c8e817e22474398d20fd204)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-  - try coverage path again ([5320e86](https://github.com/vichannnnn/holy-grail/commit/5320e8699ed5ec2bbd57f132a7d8ab522c595b66)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-  - try coverage path again ([18e5e71](https://github.com/vichannnnn/holy-grail/commit/18e5e7102199066d11c51378918af58936a304d1)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-  - try coverage path again ([e09d3f3](https://github.com/vichannnnn/holy-grail/commit/e09d3f321cdffd4e095dbeee3889e65dc3a1b344)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-  - try coverage path again ([4d4208e](https://github.com/vichannnnn/holy-grail/commit/4d4208eb9a99a9331ecb0c4f3687443795e4cc21)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-  - try coverage path again ([85e3ced](https://github.com/vichannnnn/holy-grail/commit/85e3ced22690f3fd71dbf938455ef5ab5fc07a54)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-  - try coverage path again ([29a9a45](https://github.com/vichannnnn/holy-grail/commit/29a9a45357eea76b237ff792501a7beab78d0e65)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-  - try coverage path again ([751fbe3](https://github.com/vichannnnn/holy-grail/commit/751fbe34a14fcd273f937fda1651df701a4e646b)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-  - try coverage path again ([48cfe82](https://github.com/vichannnnn/holy-grail/commit/48cfe82932d7e3e06db71c3585d10fd7857a4bd3)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-  - try coverage path again ([940a04c](https://github.com/vichannnnn/holy-grail/commit/940a04cbd6a693dfdd5533f096e8196dac7a240f)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-  - try coverage path again ([9046399](https://github.com/vichannnnn/holy-grail/commit/9046399c9c079a507098074d718bc5ccc0b421b3)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-  - try coverage path again ([73a5faa](https://github.com/vichannnnn/holy-grail/commit/73a5faaf0d079f84be670d51842671e0479a75a4)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-  - try coverage path again ([180084d](https://github.com/vichannnnn/holy-grail/commit/180084d2043d98254391b29c5cd7efe41a76e680)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-  - try to see if test coverage can be detected by sonar in ci ([50d4b50](https://github.com/vichannnnn/holy-grail/commit/50d4b50b2dc18cffb463bf5bd6d2bcd7e1b88057)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-  - allow coverage to be reflected on sonarqube ([5c74c7a](https://github.com/vichannnnn/holy-grail/commit/5c74c7aa61c95f850885ec1c3b042556af9fc633)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
-
-- auth:
-  - update regex validation ([23e0462](https://github.com/vichannnnn/holy-grail/commit/23e04622c4ae738132ff84479ebddda11c7cec1b)) ([#90](https://github.com/vichannnnn/holy-grail/pull/90))
-
-- login-page:
-  - mismatch payload from frontend for register account ([5aaf87f](https://github.com/vichannnnn/holy-grail/commit/5aaf87f14c605090d2858a29a2df478a56b16289)) ([#89](https://github.com/vichannnnn/holy-grail/pull/89))
-
-- library:
-  - ignore user logic if unauthorised ([093bbc3](https://github.com/vichannnnn/holy-grail/commit/093bbc35ff0f162573bd72b535318ed017b6dc6f)) ([#87](https://github.com/vichannnnn/holy-grail/pull/87))
-
-- footer:
-  - fix footer logo aligning left ([b02b1e3](https://github.com/vichannnnn/holy-grail/commit/b02b1e3aa4a207a6fa7f8f0eac619f51bbc7d3af)) ([#87](https://github.com/vichannnnn/holy-grail/pull/87))
-
-- developer-panel:
-  - change import to prevent mix up for EditModal ([ffcfe90](https://github.com/vichannnnn/holy-grail/commit/ffcfe90c0f1177ff7c089c0a1afe966452f3a9f8)) ([#86](https://github.com/vichannnnn/holy-grail/pull/86))
-
-### Refactor
-
-- admin-icons:
-  - extract admin icons into jsx ([3f39af4](https://github.com/vichannnnn/holy-grail/commit/3f39af4fc329a0955aac926f4b44aefb99f00902)) ([#93](https://github.com/vichannnnn/holy-grail/pull/93))
+  - trimmed mascot image on landing page ([66706ff](https://github.com/vichannnnn/holy-grail/commit/66706ffe4317935bd09d8a32487c4c29e9dba9b8))
+  - accidentally removed footer css ([c89f386](https://github.com/vichannnnn/holy-grail/commit/c89f3869dd293b92d24ed8dad456fe6c6abcb2c5))
+  - hit db directly with ad analytics cronjob ([03fefcb](https://github.com/vichannnnn/holy-grail/commit/03fefcb89c9af2887e35107b460aecc03bb567f8))
+  - wrong env ([d23058c](https://github.com/vichannnnn/holy-grail/commit/d23058cf535ea4568a26b5c9dde273a84efd88a4))
+  - update env again ([0d3d0ed](https://github.com/vichannnnn/holy-grail/commit/0d3d0ed5f7fcdb861f4fe87970c23506d68709ab))
+  - test env ([ab304f9](https://github.com/vichannnnn/holy-grail/commit/ab304f9bf54a821b8f9bc0b2ad53015636d3a96e))
+  - update bun docker image version ([ede4efd](https://github.com/vichannnnn/holy-grail/commit/ede4efde3e411be6fd79f216ee735b67e0701f39))
+  - downgrade vite version for stability ([fc8723f](https://github.com/vichannnnn/holy-grail/commit/fc8723fd901075ec878fb652c97a526c56557ade))
+  - test origin again ([6f19242](https://github.com/vichannnnn/holy-grail/commit/6f19242acedd05373f57abad56e30052d328bfe3))
+  - update ci ([90b3164](https://github.com/vichannnnn/holy-grail/commit/90b3164aaccf3ae399cdc78d460171385cbe3786))
+  - update menu origin again ([c754f4a](https://github.com/vichannnnn/holy-grail/commit/c754f4a5172790d7bda6610bd56907561e8b6581))
+  - update menu anchor origin ([867dda7](https://github.com/vichannnnn/holy-grail/commit/867dda79cdd74e253c19048ac4dcf7a2bef729d2))
+  - update footer styling ([e635be7](https://github.com/vichannnnn/holy-grail/commit/e635be75766b9161da1ba1c54e206c2c0053c1de)) ([#150](https://github.com/vichannnnn/holy-grail/pull/150))
+  - convert rem in footer css to px and fix gap styling for mobile ([7509a30](https://github.com/vichannnnn/holy-grail/commit/7509a301a758a10ca66cb627a7142b73cd3c8401)) ([#150](https://github.com/vichannnnn/holy-grail/pull/150))
+  - update styling for account details for mobile ([4c7e998](https://github.com/vichannnnn/holy-grail/commit/4c7e99842fe8dc42b46bc1a1ef2c58c22aef0e44)) ([#150](https://github.com/vichannnnn/holy-grail/pull/150))
+  - update button styling for upload page ([1155045](https://github.com/vichannnnn/holy-grail/commit/1155045c563f80beb71ddc12293cf067aef25e23)) ([#150](https://github.com/vichannnnn/holy-grail/pull/150))
+  - update proper foreign key constraint to prevent wrong subject and education combination ([f20fdec](https://github.com/vichannnnn/holy-grail/commit/f20fdec98c4ac1c934046d859486502795a9703b)) ([#142](https://github.com/vichannnnn/holy-grail/pull/142))
+  - fix greenlet issue on note update ([3516d0d](https://github.com/vichannnnn/holy-grail/commit/3516d0d1aed157646d7c77a201b057ac23156de9)) ([#142](https://github.com/vichannnnn/holy-grail/pull/142))
+  - fix greenlet issue on note update ([8b07067](https://github.com/vichannnnn/holy-grail/commit/8b0706706bd005addafcc43c8c13cd9b5553685c)) ([#142](https://github.com/vichannnnn/holy-grail/pull/142))
+  - fix deploy script ([3aad568](https://github.com/vichannnnn/holy-grail/commit/3aad568d13a3079ed24a02334734246224f04246)) ([#142](https://github.com/vichannnnn/holy-grail/pull/142))
+  - update dev ci script ([30979a9](https://github.com/vichannnnn/holy-grail/commit/30979a9d698c5bb8db6eb6394bd3ab33c004d370)) ([#142](https://github.com/vichannnnn/holy-grail/pull/142))
+  - update timezone aware for analytics ([007b020](https://github.com/vichannnnn/holy-grail/commit/007b020dfce869edaa3296f73f43f3bcde9558e7)) ([#137](https://github.com/vichannnnn/holy-grail/pull/137))
+  - update ci dependencies for frontend ([25d7ec6](https://github.com/vichannnnn/holy-grail/commit/25d7ec65d3d1f9c3f084900037384026e1bd38ac)) ([#137](https://github.com/vichannnnn/holy-grail/pull/137))
+  - fix analytics job and update dependencies for backend ([955914f](https://github.com/vichannnnn/holy-grail/commit/955914ff35765754bf4a6ef8f1a2c53293f86bd8)) ([#137](https://github.com/vichannnnn/holy-grail/pull/137))
+  - update package json script ([78c9ec1](https://github.com/vichannnnn/holy-grail/commit/78c9ec1709c57b5d395c5f925c32609014bc7936))
+  - update tooltip for mobile behavior ([c2e74ac](https://github.com/vichannnnn/holy-grail/commit/c2e74acc4f99299346af804cbcaee1dfc472c6d6)) ([#133](https://github.com/vichannnnn/holy-grail/pull/133))
+  - update ci ([bafb83b](https://github.com/vichannnnn/holy-grail/commit/bafb83bebf015fcee678c9bd18508371855d7f91)) ([#134](https://github.com/vichannnnn/holy-grail/pull/134))
+  - update email template logo and hyperlink ([204ba29](https://github.com/vichannnnn/holy-grail/commit/204ba2930f099c344b28bc881e472fe7e66b003c))
+  - temp fix for ipad for tables ([2d36a0d](https://github.com/vichannnnn/holy-grail/commit/2d36a0de7216ca629742b76b7e58364fe2f25e17))
+  - update breakpoint for ipad Air landing display and update apple touch icon ([85237e5](https://github.com/vichannnnn/holy-grail/commit/85237e59f3ccc224708804a64d8e3114e34ee9af))
+  - update analytics task endpoint ([1e531f2](https://github.com/vichannnnn/holy-grail/commit/1e531f253dd9a42f528eb82743e2029f9a89af74)) ([#125](https://github.com/vichannnnn/holy-grail/pull/125))
+  - update divider margin ([457bb5a](https://github.com/vichannnnn/holy-grail/commit/457bb5a3b74e8ee2fc845ba582cec966bd73dde8)) ([#125](https://github.com/vichannnnn/holy-grail/pull/125))
+  - fix an issue with download endpoint missing request parameter ([3fa4a8f](https://github.com/vichannnnn/holy-grail/commit/3fa4a8f040efa80e23b8f4cfff5a4b2b812d6102))
+  - update download url to cloudfront ([db5b2d5](https://github.com/vichannnnn/holy-grail/commit/db5b2d53454b4fd84d04f10c13c7b6e245e0ba9d))
+  - forgot to add cloudfront env on container ([ce5b69f](https://github.com/vichannnnn/holy-grail/commit/ce5b69f31e3716137e1bf5e282f02e8afd4e2c22))
+  - update cloudfront env var for download endpoint ([87113de](https://github.com/vichannnnn/holy-grail/commit/87113de78bb514bc788bc47e46c97479f6b943fb))
+  - remove extra append for extension on notestable ([f311bb0](https://github.com/vichannnnn/holy-grail/commit/f311bb01f80a093093b0781e59a90facee93e9ed))
+  - update migration script to include dot ([b82300c](https://github.com/vichannnnn/holy-grail/commit/b82300c2131bc46a85b51c52ee9175288ac84cca))
+  - fix mobile component not displaying document ([dbc6d52](https://github.com/vichannnnn/holy-grail/commit/dbc6d526f2df8b3abb0da9c133d11fad54943435))
+  - fix a bug where download is forbidden ([62907bc](https://github.com/vichannnnn/holy-grail/commit/62907bcd14470c5a36b351a1841d442406adf828)) ([#122](https://github.com/vichannnnn/holy-grail/pull/122))
+  - remove extra extension on download endpoint ([a3e75c3](https://github.com/vichannnnn/holy-grail/commit/a3e75c3905911e69f81efe72e49dba30220740eb)) ([#122](https://github.com/vichannnnn/holy-grail/pull/122))
+  - update file extension append logic ([71e56a7](https://github.com/vichannnnn/holy-grail/commit/71e56a7527103698f9272eb57b451fda4bb2c51d)) ([#122](https://github.com/vichannnnn/holy-grail/pull/122))
+  - fix issue where downloaded file is in txt ([d17b67a](https://github.com/vichannnnn/holy-grail/commit/d17b67aedf7405fe9a608d3af5d1d02002be6de5)) ([#122](https://github.com/vichannnnn/holy-grail/pull/122))
+  - add extension column to the library table to handle multiple files ([7ca0d44](https://github.com/vichannnnn/holy-grail/commit/7ca0d44b505e917a660211e8d2443541c8f383bb)) ([#122](https://github.com/vichannnnn/holy-grail/pull/122))
+  - fix a bug where download is forbidden ([9f56347](https://github.com/vichannnnn/holy-grail/commit/9f563473cfcc559ec3a0d8b0784fa5a2bf7e06d3)) ([#122](https://github.com/vichannnnn/holy-grail/pull/122))
+  - remove extra extension on download endpoint ([49f3b3d](https://github.com/vichannnnn/holy-grail/commit/49f3b3d1ca34b3938612ae1d2ea343b6b4b7f620)) ([#122](https://github.com/vichannnnn/holy-grail/pull/122))
+  - update file extension append logic ([ae8e425](https://github.com/vichannnnn/holy-grail/commit/ae8e425918d124b9b9342a859e1b5bc8f47723f2)) ([#122](https://github.com/vichannnnn/holy-grail/pull/122))
+  - fix issue where downloaded file is in txt ([e37e786](https://github.com/vichannnnn/holy-grail/commit/e37e7861f3567060e71d27e7f71250f292c0f9b3)) ([#122](https://github.com/vichannnnn/holy-grail/pull/122))
+  - add extension column to the library table to handle multiple files ([0efa905](https://github.com/vichannnnn/holy-grail/commit/0efa905fd5e0d31388da835ab77f35e8f8b3c075)) ([#122](https://github.com/vichannnnn/holy-grail/pull/122))
+  - add descriptive error for more than 25 documents upload ([680c2bc](https://github.com/vichannnnn/holy-grail/commit/680c2bcf1a0a48ea9d656ada2ac8324621499b37)) ([#117](https://github.com/vichannnnn/holy-grail/pull/117))
+  - fix backend validation for upload notes ([5dc3039](https://github.com/vichannnnn/holy-grail/commit/5dc3039438c1c5a2459330b91a136a414812eb39)) ([#117](https://github.com/vichannnnn/holy-grail/pull/117))
 
 ###  Tests
 
-- category:
-  - update category tests ([dc36cae](https://github.com/vichannnnn/holy-grail/commit/dc36cae00a6c0eafbdfefb940e97f7df2e097b4e)) ([#87](https://github.com/vichannnnn/holy-grail/pull/87))
+- general:
+  - tests: add more tests ([71f8949](https://github.com/vichannnnn/holy-grail/commit/71f8949a8d2e3def91b9023e3411e403d39d80fe)) ([#122](https://github.com/vichannnnn/holy-grail/pull/122))
+  - tests: update tests for upload note ([5255a1a](https://github.com/vichannnnn/holy-grail/commit/5255a1a714ad37b032fdfbd88324923741e2295f)) ([#122](https://github.com/vichannnnn/holy-grail/pull/122))
+  - tests: add more tests ([07a43f7](https://github.com/vichannnnn/holy-grail/commit/07a43f7a47241a704284b51af49c1864d74b0b4c)) ([#122](https://github.com/vichannnnn/holy-grail/pull/122))
+  - tests: update tests for upload note ([d54e133](https://github.com/vichannnnn/holy-grail/commit/d54e13338f86ac28d5e580abc63a956ea3e0fa83)) ([#122](https://github.com/vichannnnn/holy-grail/pull/122))
+
+## [v1.0.4](https://github.com/vichannnnn/holy-grail/releases/tag/v1.0.4) - 2023-08-26 07:39:36
+
+Upload QOL Features & bug fixes
+
+### Feature
+
+- general:
+  - remove unique doc name ([8938c1d](https://github.com/vichannnnn/holy-grail/commit/8938c1db1f9f1c1d76baf00ba666ddd41c55e2d6)) ([#109](https://github.com/vichannnnn/holy-grail/pull/109))
+  - if a user navigates directly to /login as a logged in user, they will be redirected back to homepage ([8df2b30](https://github.com/vichannnnn/holy-grail/commit/8df2b30d63a189dd6a9fd1f77b467734450971bb)) ([#109](https://github.com/vichannnnn/holy-grail/pull/109))
+  - add upload item popover ([1cebf59](https://github.com/vichannnnn/holy-grail/commit/1cebf59e43a738a00ff532bd129f6df3d429aa19)) ([#109](https://github.com/vichannnnn/holy-grail/pull/109))
+  - optimize api call logic on the frontend ([92c8a77](https://github.com/vichannnnn/holy-grail/commit/92c8a770ad01532d4fa4e52bffd9a877107be924)) ([#97](https://github.com/vichannnnn/holy-grail/pull/97))
+  - implement email endpoint and UI ([52b7888](https://github.com/vichannnnn/holy-grail/commit/52b78881694e6165dc19263401fc1ddc25659210)) ([#97](https://github.com/vichannnnn/holy-grail/pull/97))
+
+- upload-note:
+  - update upload ux to include syncing multiple notes attributes ([43d586d](https://github.com/vichannnnn/holy-grail/commit/43d586d1c5b28d3c4aab11ad74602d7e11d39894)) ([#109](https://github.com/vichannnnn/holy-grail/pull/109))
+  - migrate UploadNote and UploadPage component to react-hook-forms ([bc7373f](https://github.com/vichannnnn/holy-grail/commit/bc7373f0e2ab5aaf49a6443c8a5272a7ecf4567e)) ([#109](https://github.com/vichannnnn/holy-grail/pull/109))
+
+- email:
+  - update email logo and css styling ([03a8499](https://github.com/vichannnnn/holy-grail/commit/03a8499c27fed5ab5d9b83d588a8d481dc6604e3)) ([#106](https://github.com/vichannnnn/holy-grail/pull/106))
+
+- header:
+  - update header css and new logo ([51630c0](https://github.com/vichannnnn/holy-grail/commit/51630c0c219a8e0bcca6549ee545dc7aa796037b)) ([#104](https://github.com/vichannnnn/holy-grail/pull/104))
+
+- footer:
+  - update footer logo ([956152f](https://github.com/vichannnnn/holy-grail/commit/956152f134ab7baff2b5aea4c4bb18af662e92d4)) ([#104](https://github.com/vichannnnn/holy-grail/pull/104))
+
+- library:
+  - add download button ([50ea070](https://github.com/vichannnnn/holy-grail/commit/50ea07060b3b13f701c9b751666284cf3a2d106c)) ([#100](https://github.com/vichannnnn/holy-grail/pull/100))
+
+### Bug Fixes
+
+- general:
+  - combobox moving when there is an error ([32cde79](https://github.com/vichannnnn/holy-grail/commit/32cde794e21d981beb32896cf0feca0002bd4110)) ([#109](https://github.com/vichannnnn/holy-grail/pull/109))
+  - check for verified when uploading ([952b1ae](https://github.com/vichannnnn/holy-grail/commit/952b1aed7ecebb6be1440cc2586f7d50b5637365)) ([#109](https://github.com/vichannnnn/holy-grail/pull/109))
+  - fix 429 error not showing properly to the user when rate limit exceeded for upload ([ad2bfb9](https://github.com/vichannnnn/holy-grail/commit/ad2bfb9c6a8953e758bd56531f2d9adafcaf9c4c)) ([#109](https://github.com/vichannnnn/holy-grail/pull/109))
+  - update submit button for upload note ([033c1fa](https://github.com/vichannnnn/holy-grail/commit/033c1fabc68789fa4239fc921ab66fe020ea4e36)) ([#109](https://github.com/vichannnnn/holy-grail/pull/109))
+  - fix icon css and dropdown for mirroring function ([c7e35fa](https://github.com/vichannnnn/holy-grail/commit/c7e35fa2acfabb397f1049f165543ab84a183085)) ([#109](https://github.com/vichannnnn/holy-grail/pull/109))
+  - fix an issue where non-logged in users are able to access the upload page without being redirected ([b4d141c](https://github.com/vichannnnn/holy-grail/commit/b4d141c7bdf4bd696db6d10a0a87521ff7a0a416)) ([#109](https://github.com/vichannnnn/holy-grail/pull/109))
+  - fix an issue where clearing or changing category doesn't clear the subject field properly in form data ([58b3e2e](https://github.com/vichannnnn/holy-grail/commit/58b3e2ee8dba82f485cc429874c51bc117f1f2a6)) ([#109](https://github.com/vichannnnn/holy-grail/pull/109))
+  - first note not mirroring ([37f5efe](https://github.com/vichannnnn/holy-grail/commit/37f5efee6670da71d4537c4666b5ff75b6cd8f46)) ([#109](https://github.com/vichannnnn/holy-grail/pull/109))
+  - mobile upload spacing ([6785b9e](https://github.com/vichannnnn/holy-grail/commit/6785b9eb16ca89cea514e635122b5149aef3968c)) ([#106](https://github.com/vichannnnn/holy-grail/pull/106))
+  - uncomment login logic ([5019770](https://github.com/vichannnnn/holy-grail/commit/5019770ec13130f469623190511281c837fc3788)) ([#104](https://github.com/vichannnnn/holy-grail/pull/104))
+  - mobile upload spacing ([24ca117](https://github.com/vichannnnn/holy-grail/commit/24ca1179fc4b329ff8e3fd6277fea04654c30477)) ([#104](https://github.com/vichannnnn/holy-grail/pull/104))
+  - uncomment login logic ([77c07f5](https://github.com/vichannnnn/holy-grail/commit/77c07f5cf9e21eaf74c92cf88dba85b837819cf8)) ([#104](https://github.com/vichannnnn/holy-grail/pull/104))
+  - mobile upload spacing ([fa568ab](https://github.com/vichannnnn/holy-grail/commit/fa568ab7da2651fdaeda0c0dafad44064e78099f)) ([#104](https://github.com/vichannnnn/holy-grail/pull/104))
+  - uncomment login logic ([ef8859a](https://github.com/vichannnnn/holy-grail/commit/ef8859ac5d284b18e1335a2ea610138012e09732)) ([#103](https://github.com/vichannnnn/holy-grail/pull/103))
+  - mobile upload spacing ([a96df84](https://github.com/vichannnnn/holy-grail/commit/a96df84cc0d860a8c5fc1f618fdb8b92d38702d1)) ([#103](https://github.com/vichannnnn/holy-grail/pull/103))
+  - update sonar project key ([5b58766](https://github.com/vichannnnn/holy-grail/commit/5b5876684379dfcc4bf8ed73c1f0943d57f914c2)) ([#101](https://github.com/vichannnnn/holy-grail/pull/101))
+
+- upload-note:
+  - fix collapse icon ([00a41fc](https://github.com/vichannnnn/holy-grail/commit/00a41fc22bf4d5a0f72ce09a3b34fab2bb921210)) ([#106](https://github.com/vichannnnn/holy-grail/pull/106))
+
+- auth:
+  - error display when creating account ([c3c8cb2](https://github.com/vichannnnn/holy-grail/commit/c3c8cb2c4296c430734e4f99eb0151712ccaee93)) ([#106](https://github.com/vichannnnn/holy-grail/pull/106))
+
+- email:
+  - update email css layout ([95aa0e3](https://github.com/vichannnnn/holy-grail/commit/95aa0e33f0ca6c9914f1710f901f97d2b3ddea0d)) ([#106](https://github.com/vichannnnn/holy-grail/pull/106))
+
+- library:
+  - update subject icon styling ([b66a019](https://github.com/vichannnnn/holy-grail/commit/b66a01994f647a28dac2b7803e6fe176f53c751b)) ([#106](https://github.com/vichannnnn/holy-grail/pull/106))
+
+- upload-page:
+  - fix mobile styling for upload page ([e6165ef](https://github.com/vichannnnn/holy-grail/commit/e6165effa0024a48100eb6fd363e2b7c6cab0440)) ([#101](https://github.com/vichannnnn/holy-grail/pull/101))
+
+- upload:
+  - fix upload endpoint route ([664f34e](https://github.com/vichannnnn/holy-grail/commit/664f34e57bae074e9550a1e2498f2cf69b232b68)) ([#97](https://github.com/vichannnnn/holy-grail/pull/97))
+
+## [v1.0.3](https://github.com/vichannnnn/holy-grail/releases/tag/v1.0.3) - 2023-08-06 10:15:20
 
 ## [v1.0.2](https://github.com/vichannnnn/holy-grail/releases/tag/v1.0.2) - 2023-07-19 09:03:50
 
