@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "local": "bunx --bun vite --mode custom --host 0.0.0.0 --port 5175",
+    "local": "bunx --bun vite --host 0.0.0.0 --port 5175",
     "build": "bunx --bun vite build",
     "test": "react-scripts test",
     "lint": "eslint .",

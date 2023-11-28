@@ -1,7 +1,11 @@
 export const Studying = () => {
   return (
     <>
-      <img src='https://document.grail.moe/grail-chan-studying.png' alt='Studying' width='450' />
+      <img
+        src='https://image.himaa.me/trimmy-grail-chan-studying-min.png'
+        alt='Studying'
+        width='450'
+      />
     </>
   );
 };
