@@ -5,9 +5,8 @@ import { AxiosResponse } from 'axios';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { fetchAllSubjects, fetchCategory, fetchLibraryTypes, SubjectType } from '@api/library';
 import { createNote } from '@api/actions';
-import { AlertToast, AlertProps, Button } from '@components';
+import { AlertToast, AlertProps, Button, DeleteNoteModal } from '@components';
 import {
-  DeleteAlert,
   OptionsProps,
   FileSelect,
   NoteInfoProps,
@@ -283,7 +282,7 @@ export const UploadPage = () => {
           </Button>
         </form>
       </div>
-      <DeleteAlert
+      <DeleteNoteModal
         isOpen={openDeleteAlert}
         onClose={() => {
           setOpenDeleteAlert(false);

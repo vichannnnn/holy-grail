@@ -10,9 +10,8 @@ import {
   SubjectType,
 } from '@api/library';
 import { deleteNote, updateNote } from '@api/actions';
-import { AdminActions, NotesTable } from '@components';
+import { AdminActions, DeleteNoteModal, UpdateNoteModal, NotesTable } from '@components';
 import { AuthContext } from '@providers';
-import { DeleteAlert, ApprovalEditModal } from '../Approval';
 import './Library.css';
 
 export const NotesApplication = () => {
@@ -171,7 +170,7 @@ export const NotesApplication = () => {
           ) : null
         }
       />
-      <DeleteAlert
+      <DeleteNoteModal
         isOpen={isAlertOpen}
         onClose={() => setIsAlertOpen(false)}
         onConfirm={() => {
@@ -180,7 +179,7 @@ export const NotesApplication = () => {
           }
         }}
       />
-      <ApprovalEditModal
+      <UpdateNoteModal
         isOpen={isEditOpen}
         onClose={() => setIsEditOpen(false)}
         onConfirm={(
@@ -201,14 +200,13 @@ export const NotesApplication = () => {
           ).then(() => filterNotes());
         }}
         categories={categories.map((c) => ({ id: c.id, name: c.name }))}
-        subjects={subjects.map((s) => ({ id: s.id, name: s.name }))}
         types={types.map((t) => ({ id: t.id, name: t.name }))}
         years={years.map((y) => ({ id: y.id, name: y.name }))}
         category={noteInitialProperties ? noteInitialProperties.category : ''}
         subject={noteInitialProperties ? noteInitialProperties.subject : ''}
         type={noteInitialProperties ? noteInitialProperties.type : ''}
-        documentName={noteInitialProperties ? noteInitialProperties.document_name : ''}
         year={noteInitialProperties ? noteInitialProperties.year : ''}
+        documentName={noteInitialProperties ? noteInitialProperties.document_name : ''}
       />
     </>
   );

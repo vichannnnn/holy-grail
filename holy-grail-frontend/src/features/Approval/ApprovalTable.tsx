@@ -10,8 +10,7 @@ import {
   SubjectType,
 } from '@api/library';
 import { approveNote, deleteNote, updateNote } from '@api/actions';
-import { AdminActions, NotesTable } from '@components';
-import { ApprovalEditModal, DeleteAlert } from '@features';
+import { AdminActions, DeleteNoteModal, UpdateNoteModal, NotesTable } from '@components';
 import { AuthContext } from '@providers';
 
 export const ApprovalTable = () => {
@@ -152,7 +151,7 @@ export const ApprovalTable = () => {
           ) : null
         }
       />
-      <DeleteAlert
+      <DeleteNoteModal
         isOpen={isAlertOpen}
         onClose={() => setIsAlertOpen(false)}
         onConfirm={() => {
@@ -162,7 +161,7 @@ export const ApprovalTable = () => {
         }}
       />
 
-      <ApprovalEditModal
+      <UpdateNoteModal
         isOpen={isEditOpen}
         onClose={() => setIsEditOpen(false)}
         onConfirm={(
@@ -183,7 +182,6 @@ export const ApprovalTable = () => {
           ).then(() => filterNotes());
         }}
         categories={categories.map((c) => ({ id: c.id, name: c.name }))}
-        subjects={subjects.map((s) => ({ id: s.id, name: s.name }))}
         types={types.map((t) => ({ id: t.id, name: t.name }))}
         years={years.map((y) => ({ id: y.id, name: y.name }))}
         category={noteInitialProperties ? noteInitialProperties.category : ''}

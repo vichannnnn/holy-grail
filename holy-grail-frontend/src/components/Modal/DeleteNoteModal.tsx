@@ -1,7 +1,12 @@
 import { Button, Modal } from '@components';
-import { DeleteAlertProps } from '@features';
 
-export const DeleteAlert = ({ isOpen, onClose, onConfirm }: DeleteAlertProps) => {
+interface DeleteAlertProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+}
+
+export const DeleteNoteModal = ({ isOpen, onClose, onConfirm }: DeleteAlertProps) => {
   return (
     <Modal
       open={isOpen}
