@@ -3,9 +3,7 @@
 }
 
 .footer {
-    background-color: #FFFFFF;
     margin-top: 48px;
-    border-top: 1px solid rgba(0,0,0,0.1);
     display: flex;
     flex-direction: column;
     padding: 32px;

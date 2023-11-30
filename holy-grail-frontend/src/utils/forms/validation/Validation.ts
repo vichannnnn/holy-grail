@@ -83,3 +83,12 @@ const UploadNoteValidation = Yup.object<NoteInfoProps>().shape({
 export const UploadNotesValidation = Yup.object<NotesFormData>().shape({
   notes: Yup.array<NoteInfoProps>().of(UploadNoteValidation).required(),
 });
+
+export const DeveloperAddTypeValidation = Yup.object().shape({
+  name: Yup.string().required('Field is required'),
+});
+
+export const DeveloperAddSubjectValidation = Yup.object().shape({
+  category_id: Yup.number().required('Field is required'),
+  name: Yup.string().required('Field is required'),
+});

@@ -63,14 +63,6 @@ export const AddSubjectModal = ({
               Please select the type and enter the name of the new subject.
             </Typography>
             <Stack direction='column' spacing={2}>
-              <TextField
-                {...register('name', { required: true })}
-                autoFocus
-                margin='dense'
-                label={<span style={{ textTransform: 'capitalize' }}>Subjects</span>}
-                type='text'
-                fullWidth
-              />
               <Controller
                 name='category_id'
                 control={control}
@@ -82,6 +74,14 @@ export const AddSubjectModal = ({
                     value={field.value}
                   />
                 )}
+              />
+              <TextField
+                {...register('name', { required: true })}
+                autoFocus
+                margin='dense'
+                label={<span style={{ textTransform: 'capitalize' }}>Subjects</span>}
+                type='text'
+                fullWidth
               />
             </Stack>
             <Stack direction='row' spacing={2} justifyContent='center' marginTop='5%'>
