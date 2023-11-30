@@ -22,10 +22,12 @@ export const EditSubjectForm = forwardRef<HTMLFormElement, EditSubjectFormProps>
       register,
       control,
       handleSubmit,
-      setValue,
       formState: { errors },
-      watch,
     } = useForm<UpdateSubjectDetails>({
+      defaultValues: {
+        name: initialData.name,
+        category_id: initialData.category.id,
+      },
       resolver: yupResolver(DeveloperAddSubjectValidation),
     });
     const [categories, setCategories] = useState<CategoryType[]>([]);
@@ -38,12 +40,6 @@ export const EditSubjectForm = forwardRef<HTMLFormElement, EditSubjectFormProps>
       getAllCategories();
     }, []);
 
-    useEffect(() => {
-      setValue('name', initialData.name);
-      setValue('category_id', initialData.category.id);
-    }, [initialData.name, initialData.category.id, setValue]);
-
-    console.log(watch('category_id'));
     return (
       <form
         onSubmit={handleSubmit(onSubmit)}

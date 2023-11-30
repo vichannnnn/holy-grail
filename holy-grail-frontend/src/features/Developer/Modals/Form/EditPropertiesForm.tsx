@@ -1,4 +1,4 @@
-import { useEffect, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { UpdateTypeDetails, DataTypeEnum } from '@features';
@@ -19,15 +19,13 @@ export const EditPropertiesForm = forwardRef<HTMLFormElement, EditPropertiesForm
     const {
       register,
       handleSubmit,
-      setValue,
       formState: { errors },
     } = useForm<UpdateTypeDetails>({
+      defaultValues: {
+        name: initialData.name,
+      },
       resolver: yupResolver(DeveloperAddTypeValidation),
     });
-
-    useEffect(() => {
-      setValue('name', initialData.name);
-    }, [initialData.name, setValue]);
 
     return (
       <form
