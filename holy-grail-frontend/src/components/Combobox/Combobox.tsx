@@ -39,7 +39,7 @@ export const Combobox = ({
     <Autocomplete
       value={options.find((option) => option.id === value) || null}
       options={options}
-      onChange={(event: SyntheticEvent<Element, Event>, newValue: string | CommonType | null) => {
+      onChange={(_: SyntheticEvent<Element, Event>, newValue: string | CommonType | null) => {
         if (typeof newValue === 'string' || newValue === null) {
           onChange('');
         } else {

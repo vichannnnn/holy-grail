@@ -24,11 +24,8 @@ export const EditSubjectForm = forwardRef<HTMLFormElement, EditSubjectFormProps>
       handleSubmit,
       setValue,
       formState: { errors },
+      watch,
     } = useForm<UpdateSubjectDetails>({
-      defaultValues: {
-        name: initialData.name,
-        category_id: initialData.category.id,
-      },
       resolver: yupResolver(DeveloperAddSubjectValidation),
     });
     const [categories, setCategories] = useState<CategoryType[]>([]);
@@ -43,8 +40,10 @@ export const EditSubjectForm = forwardRef<HTMLFormElement, EditSubjectFormProps>
 
     useEffect(() => {
       setValue('name', initialData.name);
-    }, [initialData.name, setValue]);
+      setValue('category_id', initialData.category.id);
+    }, [initialData.name, initialData.category.id, setValue]);
 
+    console.log(watch('category_id'));
     return (
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -71,7 +70,9 @@ export const EditSubjectForm = forwardRef<HTMLFormElement, EditSubjectFormProps>
               fullWidth
             >
               {categories.map((category) => (
-                <DropdownMenuItem label={category.name} key={category.id} />
+                <DropdownMenuItem key={category.id} value={category.id}>
+                  {category.name}
+                </DropdownMenuItem>
               ))}
             </TextField>
           )}
