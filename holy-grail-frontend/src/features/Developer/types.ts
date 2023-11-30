@@ -2,6 +2,13 @@ import { CategoryType, DocumentType, SubjectType } from '@api/library';
 
 export type DataTypeKey = 'categories' | 'subjects' | 'types' | 'users';
 
+export enum DataTypeEnum {
+  CATEGORY = 'category',
+  SUBJECT = 'subject',
+  TYPE = 'type',
+  USER = 'user',
+}
+
 export const singularDataType: Record<DataTypeKey, string> = {
   categories: 'category',
   subjects: 'subject',

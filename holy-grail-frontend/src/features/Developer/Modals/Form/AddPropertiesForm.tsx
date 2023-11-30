@@ -1,13 +1,13 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { singularDataType, AddTypeDetails, DataTypeKey } from '@features';
+import { AddTypeDetails, DataTypeEnum } from '@features';
 import { DeveloperAddTypeValidation } from '@forms/validation';
 import { TextField } from '@mui/material';
 import { forwardRef } from 'react';
 
 interface AddPropertiesFormProps {
   onSubmit: SubmitHandler<AddTypeDetails>;
-  type: DataTypeKey | null;
+  type: DataTypeEnum;
 }
 
 export const AddPropertiesForm = forwardRef<HTMLFormElement, AddPropertiesFormProps>(

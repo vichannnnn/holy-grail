@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { SubjectType } from '@api/library';
 import { Button, FreeTextCombobox, Pagination } from '@components';
-import { AddSubjectModal, TabContentSubjectProps } from '@features';
+import { AddModal, AddSubjectModal, TabContentSubjectProps } from '@features';
 import {
   Box,
   Grid,
@@ -104,12 +104,20 @@ export const TabContentSubjects = ({
         </Table>
       </TableContainer>
       {isAddModalOpen && (
-        <AddSubjectModal
+        <AddModal
           isOpen={isAddModalOpen}
           onClose={() => setIsAddModalOpen(false)}
+          type='subjects'
           onSuccessfulAdd={fetchData}
         />
       )}
+      {/*{isAddModalOpen && (*/}
+      {/*  <AddSubjectModal*/}
+      {/*    isOpen={isAddModalOpen}*/}
+      {/*    onClose={() => setIsAddModalOpen(false)}*/}
+      {/*    onSuccessfulAdd={fetchData}*/}
+      {/*  />*/}
+      {/*)}*/}
       {isEditModalOpen && editedItem && (
         <EditSubjectModal
           isOpen={isEditModalOpen}
