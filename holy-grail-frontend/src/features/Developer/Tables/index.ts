@@ -1,3 +1,1 @@
-export * from './TabContent';
-export * from './TabContentSubjects';
-export * from './TabContentUsers';
+export * from './DeveloperTable';

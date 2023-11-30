@@ -68,6 +68,7 @@ export interface DocumentType {
   id: number;
   name: string;
 }
+
 export interface SubjectType {
   id: number;
   name: string;

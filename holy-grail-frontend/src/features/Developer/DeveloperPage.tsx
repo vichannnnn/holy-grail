@@ -1,13 +1,22 @@
-import { useEffect, useState, SyntheticEvent, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { SyntheticEvent, useContext, useEffect, useState } from 'react';
 import { CategoryType, DocumentType, fetchLibraryTypes, SubjectType } from '@api/library';
 import { AlertProps, WelcomeBackHeader } from '@components';
-import { User, TabContent, TabContentSubjects, TabContentUsers } from '@features';
+import { DataTypeEnum, DeveloperTable, User } from '@features';
 import { Tab, Tabs } from '@mui/material';
 import { AuthContext } from '@providers';
+import { useNavigation } from '@utils';
 import './DeveloperPage.css';
 
+type TabMappingType<T> = {
+  [key: number]: {
+    title: string;
+    type: DataTypeEnum;
+    data: T[];
+  };
+};
+
 export const DeveloperPage = () => {
+  type T = CategoryType | SubjectType | DocumentType | User;
   const { user, isLoading } = useContext(AuthContext);
   const [value, setValue] = useState(0);
   const [data, setData] = useState<{
@@ -16,20 +25,14 @@ export const DeveloperPage = () => {
     types: DocumentType[];
     users: User[];
   }>({ categories: [], subjects: [], types: [], users: [] });
-  const navigate = useNavigate();
+  const { goToLoginPage } = useNavigation();
 
-  useEffect(() => {
-    if (!isLoading) {
-      if (!user) {
-        const alertContentRedirect: AlertProps = {
-          title: 'You are not allowed here!',
-          description: 'Please log in as an administrator or developer to access this page.',
-          severity: 'error',
-        };
-        navigate('/login', { state: { alertContent: alertContentRedirect } });
-      }
-    }
-  }, [isLoading, user]);
+  const tabMapping: TabMappingType<T> = {
+    0: { title: 'Categories', type: DataTypeEnum.CATEGORY, data: data.categories },
+    1: { title: 'Subjects', type: DataTypeEnum.SUBJECT, data: data.subjects },
+    2: { title: 'Types', type: DataTypeEnum.TYPE, data: data.types },
+    3: { title: 'Users', type: DataTypeEnum.USER, data: data.users },
+  };
 
   const handleChange = (_: SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -39,6 +42,19 @@ export const DeveloperPage = () => {
     const newData = await fetchLibraryTypes(null, true);
     setData(newData);
   };
+
+  useEffect(() => {
+    if (!isLoading) {
+      if (!user) {
+        const alertContentRedirect: AlertProps = {
+          title: 'You are not allowed here!',
+          description: 'Please log in as an administrator or developer to access this page.',
+          severity: 'error',
+        };
+        goToLoginPage({ state: { alertContent: alertContentRedirect } });
+      }
+    }
+  }, [isLoading, user]);
 
   useEffect(() => {
     fetchLibraryTypes(null, true).then(setData);
@@ -64,30 +80,12 @@ export const DeveloperPage = () => {
           </Tabs>
         </div>
         <div>
-          {value === 0 && (
-            <TabContent
-              title='Categories'
-              type='categories'
-              data={data.categories}
-              fetchData={fetchDataAndUpdateState}
-            />
-          )}
-          {value === 1 && (
-            <TabContentSubjects
-              title='Subjects'
-              data={data.subjects}
-              fetchData={fetchDataAndUpdateState}
-            />
-          )}
-          {value === 2 && (
-            <TabContent
-              title='Types'
-              type='types'
-              data={data.types}
-              fetchData={fetchDataAndUpdateState}
-            />
-          )}
-          {value === 3 && <TabContentUsers data={data.users} fetchData={fetchDataAndUpdateState} />}
+          <DeveloperTable
+            title={tabMapping[value].title}
+            data={tabMapping[value].data}
+            type={tabMapping[value].type}
+            fetchData={fetchDataAndUpdateState}
+          />
         </div>
       </div>
     </div>

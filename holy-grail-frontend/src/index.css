@@ -32,9 +32,18 @@ body {
 }
 
 h1 {
+  font-family: "Poppins", sans-serif;
   font-size: 3.2em;
   line-height: 1.1;
   color: black;
+}
+
+h2 {
+  font-family: "Poppins", sans-serif;
+}
+
+h3 {
+  font-family: "Poppins", sans-serif;
 }
 
 ul {

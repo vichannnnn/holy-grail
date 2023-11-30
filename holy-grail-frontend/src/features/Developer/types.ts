@@ -1,5 +1,3 @@
-import { CategoryType, DocumentType, SubjectType } from '@api/library';
-
 export enum DataTypeEnum {
   CATEGORY = 'category',
   SUBJECT = 'subject',
@@ -13,37 +11,16 @@ export enum RoleEnum {
   DEVELOPER = 3,
 }
 
-export type DataTypeKey = 'categories' | 'subjects' | 'types' | 'users';
-
-export const singularDataType: Record<DataTypeKey, string> = {
-  categories: 'category',
-  subjects: 'subject',
-  types: 'type',
-  users: 'user',
+export const RoleEnumMapping = {
+  1: 'User',
+  2: 'Admin',
+  3: 'Developer',
 };
 
 export interface User {
   user_id: number;
   username: string;
   role: RoleEnum;
-}
-
-export interface TabContentProps {
-  title: string;
-  data: CategoryType[] | DocumentType[];
-  type: DataTypeKey;
-  fetchData: () => void;
-}
-
-export interface TabContentSubjectProps {
-  title: string;
-  data: SubjectType[];
-  fetchData: () => void;
-}
-
-export interface TabContentUsersProps {
-  data: User[];
-  fetchData: () => void;
 }
 
 export interface AddTypeDetails {

@@ -4,11 +4,9 @@ import { updateCategory, updateDocumentType, updateSubject, updateUserRole } fro
 import { AlertProps, AlertToast, Button, Modal } from '@components';
 import {
   DataTypeEnum,
-  DataTypeKey,
   EditPropertiesForm,
   EditSubjectForm,
   EditUserForm,
-  singularDataType,
   UpdateSubjectDetails,
   UpdateTypeDetails,
   UpdateUserDetails,
@@ -36,7 +34,7 @@ interface SubjectInitialData {
 interface EditPropertiesModalProps {
   isOpen: boolean;
   onClose: () => void;
-  type: DataTypeKey;
+  type: DataTypeEnum;
   initialData: SubjectInitialData | PropertiesInitialData | User;
   onSuccessfulUpdate: () => void;
 }
@@ -48,24 +46,23 @@ export const EditPropertiesModal = ({
   initialData,
   onSuccessfulUpdate,
 }: EditPropertiesModalProps) => {
-  const singularType = type && (singularDataType[type] as DataTypeEnum);
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
   const formRef = useRef<HTMLFormElement>(null);
 
   const subjectInitialData =
-    singularType === DataTypeEnum.SUBJECT ? (initialData as SubjectInitialData) : undefined;
+    type === DataTypeEnum.SUBJECT ? (initialData as SubjectInitialData) : undefined;
   const propertiesInitialData =
-    singularType === DataTypeEnum.CATEGORY || singularType === DataTypeEnum.TYPE
+    type === DataTypeEnum.CATEGORY || type === DataTypeEnum.TYPE
       ? (initialData as PropertiesInitialData)
       : undefined;
-  const userInitialData = singularType === DataTypeEnum.USER ? (initialData as User) : undefined;
+  const userInitialData = type === DataTypeEnum.USER ? (initialData as User) : undefined;
 
   const handleUpdateProperties = async (formData: UpdateTypeDetails) => {
     try {
-      if (singularType === DataTypeEnum.CATEGORY) {
+      if (type === DataTypeEnum.CATEGORY) {
         await updateCategory((initialData as PropertiesInitialData).id, formData);
-      } else if (singularType === DataTypeEnum.TYPE) {
+      } else if (type === DataTypeEnum.TYPE) {
         await updateDocumentType((initialData as PropertiesInitialData).id, formData);
       }
       onClose();
@@ -73,8 +70,8 @@ export const EditPropertiesModal = ({
     } catch (err) {
       setAlertContent({
         severity: 'error',
-        title: `Failed to update ${singularType}`,
-        description: `The name of the ${singularType} already exists.`,
+        title: `Failed to update ${type}`,
+        description: `The name of the ${type} already exists.`,
       });
       setOpenAlert(true);
     }
@@ -128,26 +125,26 @@ export const EditPropertiesModal = ({
         }
       >
         <>
-          <h2>Update {singularType}</h2>
-          <p>Please enter the new name of the {singularType}.</p>
+          <h2>Update {type}</h2>
+          <p>Please enter the new name of the {type}.</p>
           <Stack direction='column' spacing={2}>
-            {singularType === DataTypeEnum.SUBJECT && subjectInitialData ? (
+            {type === DataTypeEnum.SUBJECT && subjectInitialData ? (
               <EditSubjectForm
                 ref={formRef}
                 onSubmit={handleUpdateSubject}
                 initialData={subjectInitialData}
               />
             ) : null}
-            {(singularType === DataTypeEnum.TYPE || singularType === DataTypeEnum.CATEGORY) &&
+            {(type === DataTypeEnum.TYPE || type === DataTypeEnum.CATEGORY) &&
             propertiesInitialData ? (
               <EditPropertiesForm
                 ref={formRef}
                 onSubmit={handleUpdateProperties}
-                type={singularType}
+                type={type}
                 initialData={propertiesInitialData}
               />
             ) : null}
-            {singularType === DataTypeEnum.USER && userInitialData ? (
+            {type === DataTypeEnum.USER && userInitialData ? (
               <EditUserForm
                 ref={formRef}
                 onSubmit={handleUpdateUser}

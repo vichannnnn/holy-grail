@@ -40,6 +40,10 @@ export const EditSubjectForm = forwardRef<HTMLFormElement, EditSubjectFormProps>
       getAllCategories();
     }, []);
 
+    if (categories.length === 0) {
+      return <></>;
+    }
+
     return (
       <form
         onSubmit={handleSubmit(onSubmit)}

@@ -7,8 +7,6 @@ import {
   AddSubjectForm,
   AddTypeDetails,
   DataTypeEnum,
-  DataTypeKey,
-  singularDataType,
 } from '@features';
 import { Stack } from '@mui/material';
 
@@ -16,7 +14,7 @@ interface AddPropertiesModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccessfulAdd: () => void;
-  type: DataTypeKey;
+  type: DataTypeEnum;
 }
 
 export const AddPropertiesModal = ({
@@ -25,7 +23,6 @@ export const AddPropertiesModal = ({
   onSuccessfulAdd,
   type,
 }: AddPropertiesModalProps) => {
-  const singularType = type && (singularDataType[type] as DataTypeEnum);
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);
   const formRef = useRef<HTMLFormElement>(null);
@@ -33,9 +30,9 @@ export const AddPropertiesModal = ({
   const handleAddProperties = async (formData: AddTypeDetails) => {
     if (type !== null) {
       try {
-        if (type === 'categories') {
+        if (type === DataTypeEnum.CATEGORY) {
           await createCategory(formData);
-        } else if (type === 'types') {
+        } else if (type === DataTypeEnum.TYPE) {
           await createDocumentType(formData);
         }
 
@@ -44,8 +41,8 @@ export const AddPropertiesModal = ({
       } catch (err) {
         setAlertContent({
           severity: 'error',
-          title: `Failed to add ${singularType}`,
-          description: `The name of the ${singularType} already exists.`,
+          title: `Failed to add ${type}`,
+          description: `The name of the ${type} already exists.`,
         });
         setOpenAlert(true);
       }
@@ -85,13 +82,13 @@ export const AddPropertiesModal = ({
         }
       >
         <>
-          <h2>Add {singularType}</h2>
-          <p>Please enter the name of the {singularType}.</p>
+          <h2>Add {type}</h2>
+          <p>Please enter the name of the {type}.</p>
           <Stack direction='column' spacing={2}>
-            {singularType === DataTypeEnum.CATEGORY || singularType === DataTypeEnum.TYPE ? (
-              <AddPropertiesForm ref={formRef} onSubmit={handleAddProperties} type={singularType} />
+            {type === DataTypeEnum.CATEGORY || type === DataTypeEnum.TYPE ? (
+              <AddPropertiesForm ref={formRef} onSubmit={handleAddProperties} type={type} />
             ) : null}
-            {singularType === DataTypeEnum.SUBJECT ? (
+            {type === DataTypeEnum.SUBJECT ? (
               <AddSubjectForm ref={formRef} onSubmit={handleAddSubject} />
             ) : null}
           </Stack>
