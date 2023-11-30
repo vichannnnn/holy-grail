@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { EditUserModal, RoleEnum, TabContentUsersProps, User } from '@features';
+import { EditPropertiesModal, RoleEnum, TabContentUsersProps, User } from '@features';
 import {
   Box,
   Button,
@@ -64,10 +64,11 @@ export const TabContentUsers = ({ data, fetchData }: TabContentUsersProps) => {
         </Table>
       </TableContainer>
       {isEditModalOpen && editedItem && (
-        <EditUserModal
+        <EditPropertiesModal
           isOpen={isEditModalOpen}
           onClose={() => setIsEditModalOpen(false)}
           initialData={editedItem}
+          type={'users'}
           onSuccessfulUpdate={fetchData}
         />
       )}

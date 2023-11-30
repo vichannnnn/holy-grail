@@ -1,13 +1,19 @@
 import { CategoryType, DocumentType, SubjectType } from '@api/library';
 
-export type DataTypeKey = 'categories' | 'subjects' | 'types' | 'users';
-
 export enum DataTypeEnum {
   CATEGORY = 'category',
   SUBJECT = 'subject',
   TYPE = 'type',
   USER = 'user',
 }
+
+export enum RoleEnum {
+  USER = 1,
+  ADMIN = 2,
+  DEVELOPER = 3,
+}
+
+export type DataTypeKey = 'categories' | 'subjects' | 'types' | 'users';
 
 export const singularDataType: Record<DataTypeKey, string> = {
   categories: 'category',
@@ -20,41 +26,6 @@ export interface User {
   user_id: number;
   username: string;
   role: RoleEnum;
-}
-
-export enum RoleEnum {
-  USER = 1,
-  ADMIN = 2,
-  DEVELOPER = 3,
-}
-
-export interface DeveloperEditModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  type: DataTypeKey;
-  initialData: {
-    id: number;
-    name: string;
-  };
-  onSuccessfulUpdate: () => void;
-}
-
-export interface DeveloperEditSubjectModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  initialData: {
-    id: number;
-    name: string;
-    category: CategoryType;
-  };
-  onSuccessfulUpdate: () => void;
-}
-
-export interface EditUserModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  initialData: User;
-  onSuccessfulUpdate: () => void;
 }
 
 export interface TabContentProps {

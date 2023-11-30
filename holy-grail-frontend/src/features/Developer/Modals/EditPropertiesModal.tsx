@@ -1,18 +1,20 @@
 import { useRef, useState } from 'react';
 import { CategoryType } from '@api/library';
-import { updateCategory, updateDocumentType, updateSubject } from '@api/actions';
+import { updateCategory, updateDocumentType, updateSubject, updateUserRole } from '@api/actions';
 import { AlertProps, AlertToast, Button, Modal } from '@components';
 import {
   DataTypeEnum,
   DataTypeKey,
   EditPropertiesForm,
   EditSubjectForm,
+  EditUserForm,
   singularDataType,
   UpdateSubjectDetails,
   UpdateTypeDetails,
+  UpdateUserDetails,
+  User,
 } from '@features';
 import { Stack } from '@mui/material';
-import '../DeveloperPage.css';
 
 interface PropertiesInitialData {
   id: number;
@@ -25,11 +27,17 @@ interface SubjectInitialData {
   category: CategoryType;
 }
 
+interface SubjectInitialData {
+  id: number;
+  name: string;
+  category: CategoryType;
+}
+
 interface EditPropertiesModalProps {
   isOpen: boolean;
   onClose: () => void;
   type: DataTypeKey;
-  initialData: SubjectInitialData | PropertiesInitialData;
+  initialData: SubjectInitialData | PropertiesInitialData | User;
   onSuccessfulUpdate: () => void;
 }
 
@@ -48,14 +56,17 @@ export const EditPropertiesModal = ({
   const subjectInitialData =
     singularType === DataTypeEnum.SUBJECT ? (initialData as SubjectInitialData) : undefined;
   const propertiesInitialData =
-    singularType !== DataTypeEnum.SUBJECT ? (initialData as PropertiesInitialData) : undefined;
+    singularType === DataTypeEnum.CATEGORY || singularType === DataTypeEnum.TYPE
+      ? (initialData as PropertiesInitialData)
+      : undefined;
+  const userInitialData = singularType === DataTypeEnum.USER ? (initialData as User) : undefined;
 
   const handleUpdateProperties = async (formData: UpdateTypeDetails) => {
     try {
-      if (type === 'categories') {
-        await updateCategory(initialData.id, formData);
-      } else if (type === 'types') {
-        await updateDocumentType(initialData.id, formData);
+      if (singularType === DataTypeEnum.CATEGORY) {
+        await updateCategory((initialData as PropertiesInitialData).id, formData);
+      } else if (singularType === DataTypeEnum.TYPE) {
+        await updateDocumentType((initialData as PropertiesInitialData).id, formData);
       }
       onClose();
       onSuccessfulUpdate();
@@ -71,7 +82,7 @@ export const EditPropertiesModal = ({
 
   const handleUpdateSubject = async (formData: UpdateSubjectDetails) => {
     try {
-      await updateSubject(initialData.id, formData);
+      await updateSubject((initialData as SubjectInitialData).id, formData);
       onSuccessfulUpdate();
       onClose();
     } catch (err) {
@@ -79,6 +90,21 @@ export const EditPropertiesModal = ({
         severity: 'error',
         title: `Failed to update subject`,
         description: `The name and category of the subject already exists.`,
+      });
+      setOpenAlert(true);
+    }
+  };
+
+  const handleUpdateUser = async (formData: UpdateUserDetails) => {
+    try {
+      await updateUserRole((initialData as User).user_id, formData);
+      onSuccessfulUpdate();
+      onClose();
+    } catch (err) {
+      setAlertContent({
+        severity: 'error',
+        title: `Failed to update user`,
+        description: `The user's role couldn't be updated.`,
       });
       setOpenAlert(true);
     }
@@ -119,6 +145,13 @@ export const EditPropertiesModal = ({
                 onSubmit={handleUpdateProperties}
                 type={singularType}
                 initialData={propertiesInitialData}
+              />
+            ) : null}
+            {singularType === DataTypeEnum.USER && userInitialData ? (
+              <EditUserForm
+                ref={formRef}
+                onSubmit={handleUpdateUser}
+                initialData={userInitialData}
               />
             ) : null}
           </Stack>

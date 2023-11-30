@@ -1,11 +1,11 @@
 import { useEffect, forwardRef, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { DropdownMenuItem } from '@components';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { CategoryType, fetchAllCategories } from '@api/library';
+import { DropdownMenuItem } from '@components';
 import { UpdateSubjectDetails } from '@features';
 import { DeveloperAddSubjectValidation } from '@forms/validation';
 import { TextField } from '@mui/material';
-import { CategoryType, fetchAllCategories } from '@api/library';
 
 interface EditSubjectFormProps {
   onSubmit: SubmitHandler<UpdateSubjectDetails>;

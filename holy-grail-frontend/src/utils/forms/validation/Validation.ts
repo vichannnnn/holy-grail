@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import { NoteInfoProps, NotesFormData } from '@features';
+import { NoteInfoProps, NotesFormData, RoleEnum } from '@features';
 
 const SUPPORTED_FORMATS = ['application/pdf', 'application/zip'];
 const SOME_SIZE_LIMIT = 1048576000;
@@ -91,4 +91,8 @@ export const DeveloperAddTypeValidation = Yup.object().shape({
 export const DeveloperAddSubjectValidation = Yup.object().shape({
   category_id: Yup.number().required('Field is required'),
   name: Yup.string().required('Field is required'),
+});
+
+export const DeveloperAddUserValidation = Yup.object().shape({
+  role: Yup.number<RoleEnum>().required('Field is required'),
 });
