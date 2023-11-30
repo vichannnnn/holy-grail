@@ -28,13 +28,6 @@ export enum RoleEnum {
   DEVELOPER = 3,
 }
 
-export interface DeveloperAddModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSuccessfulAdd: () => void;
-  type: DataTypeKey | null;
-}
-
 export interface DeveloperEditModalProps {
   isOpen: boolean;
   onClose: () => void;

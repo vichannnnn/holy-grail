@@ -50,6 +50,9 @@ export const AddSubjectForm = forwardRef<HTMLFormElement, AddSubjectFormProps>(
               options={categoryData}
               onChange={(newValue) => field.onChange(newValue)}
               value={field.value}
+              error={Boolean(errors && errors.category_id)}
+              helperText={errors && errors.category_id ? errors.category_id.message : ''}
+              fullWidth
             />
           )}
         />

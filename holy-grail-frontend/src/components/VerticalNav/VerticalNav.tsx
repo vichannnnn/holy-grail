@@ -14,7 +14,7 @@ export const VerticalNav = ({ props }: { props: VerticalNavProps[] }) => {
         justifyContent: 'space-around',
       }}
     >
-      {props.map((child, idx) => {
+      {props.map((child, _) => {
         return (
           <>
             <div

@@ -3,15 +3,13 @@ import { MenuItem, MenuItemProps, Stack } from '@mui/material';
 import './DropdownMenuItem.css';
 
 export interface DropdownMenuItemProps extends MenuItemProps {
-  label: string;
   icon?: ReactNode;
 }
 
-export const DropdownMenuItem = ({ label, icon, ...props }: DropdownMenuItemProps) => {
+export const DropdownMenuItem = ({ icon, ...props }: DropdownMenuItemProps) => {
   return (
     <>
       <MenuItem
-        key={label}
         sx={{
           transition: 'all 0.2s ease',
           '&:hover': {
@@ -23,7 +21,7 @@ export const DropdownMenuItem = ({ label, icon, ...props }: DropdownMenuItemProp
         <div className='dropdown-menu-item'>
           <Stack direction='row' alignItems='center' gap={1}>
             {icon && <div className='icon'>{icon}</div>}
-            {label}
+            {props.children}
           </Stack>
         </div>
       </MenuItem>

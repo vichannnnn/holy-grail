@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { CategoryType, DocumentType } from '@api/library';
 import { Button, FreeTextCombobox, Pagination } from '@components';
-import { AddModal, EditModal, TabContentProps } from '@features';
+import { AddPropertiesModal, EditPropertiesModal, TabContentProps } from '@features';
 import {
   Box,
   Grid,
@@ -94,7 +94,7 @@ export const TabContent = ({ title, data, type, fetchData }: TabContentProps) =>
         </Table>
       </TableContainer>
       {isEditModalOpen && editedItem && (
-        <EditModal
+        <EditPropertiesModal
           isOpen={isEditModalOpen}
           onClose={() => setIsEditModalOpen(false)}
           initialData={editedItem}
@@ -103,7 +103,7 @@ export const TabContent = ({ title, data, type, fetchData }: TabContentProps) =>
         />
       )}
       {isAddModalOpen && (
-        <AddModal
+        <AddPropertiesModal
           isOpen={isAddModalOpen}
           onClose={() => setIsAddModalOpen(false)}
           type={type}

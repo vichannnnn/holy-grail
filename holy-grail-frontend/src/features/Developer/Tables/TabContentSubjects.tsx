@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { SubjectType } from '@api/library';
 import { Button, FreeTextCombobox, Pagination } from '@components';
-import { AddModal, AddSubjectModal, TabContentSubjectProps } from '@features';
+import { AddPropertiesModal, EditPropertiesModal, TabContentSubjectProps } from '@features';
 import {
   Box,
   Grid,
@@ -14,7 +14,6 @@ import {
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import '../../Library/Library.css';
-import { EditSubjectModal } from '../Modals/EditSubjectModal';
 
 export const TabContentSubjects = ({
   title,
@@ -104,7 +103,7 @@ export const TabContentSubjects = ({
         </Table>
       </TableContainer>
       {isAddModalOpen && (
-        <AddModal
+        <AddPropertiesModal
           isOpen={isAddModalOpen}
           onClose={() => setIsAddModalOpen(false)}
           type='subjects'
@@ -119,9 +118,10 @@ export const TabContentSubjects = ({
       {/*  />*/}
       {/*)}*/}
       {isEditModalOpen && editedItem && (
-        <EditSubjectModal
+        <EditPropertiesModal
           isOpen={isEditModalOpen}
           onClose={() => setIsEditModalOpen(false)}
+          type='subjects'
           initialData={editedItem}
           onSuccessfulUpdate={fetchData}
         />

@@ -199,23 +199,27 @@ export const DesktopUploadNote = ({
         }}
       >
         <DropdownMenuItem
-          label='Mirror properties to all other notes'
+          key='Mirror properties to all other notes'
           disabled={totalNotesCount <= 1}
           className='upload-item-options'
           onClick={() => {
             mirrorNote();
             setAnchorEl(null);
           }}
-        />
+        >
+          Mirror properties to all other notes
+        </DropdownMenuItem>
 
         <DropdownMenuItem
-          label='Delete this field'
+          key='Delete this field'
           className='upload-item-options'
           onClick={() => {
             deleteNote();
             setAnchorEl(null);
           }}
-        />
+        >
+          Delete this field
+        </DropdownMenuItem>
       </Menu>
     </div>
   );

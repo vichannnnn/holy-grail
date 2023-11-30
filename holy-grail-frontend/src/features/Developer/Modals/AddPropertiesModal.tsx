@@ -12,14 +12,19 @@ import {
 } from '@features';
 import { Stack } from '@mui/material';
 
-interface DeveloperAddModalProps {
+interface AddPropertiesModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccessfulAdd: () => void;
   type: DataTypeKey;
 }
 
-export const AddModal = ({ isOpen, onClose, onSuccessfulAdd, type }: DeveloperAddModalProps) => {
+export const AddPropertiesModal = ({
+  isOpen,
+  onClose,
+  onSuccessfulAdd,
+  type,
+}: AddPropertiesModalProps) => {
   const singularType = type && (singularDataType[type] as DataTypeEnum);
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const [alertContent, setAlertContent] = useState<AlertProps | undefined>(undefined);

@@ -39,7 +39,7 @@ export const Dropdown = ({ user, isDesktop, logout }: DropdownRenderProps) => {
     if (!isDesktop) {
       children.push(
         {
-          label: 'Home',
+          children: 'Home',
           icon: <HomeIcon />,
           onClick: () => {
             const homeElement = document.querySelector('#home');
@@ -52,7 +52,7 @@ export const Dropdown = ({ user, isDesktop, logout }: DropdownRenderProps) => {
           },
         },
         {
-          label: 'Library',
+          children: 'Library',
           icon: <LibraryBooksIcon />,
           onClick: () => {
             const libraryElement = document.querySelector('#library');
@@ -64,7 +64,7 @@ export const Dropdown = ({ user, isDesktop, logout }: DropdownRenderProps) => {
           },
         },
         {
-          label: 'FAQ',
+          children: 'FAQ',
           icon: <HelpIcon />,
           onClick: () => {
             const faqElement = document.querySelector('#faq');
@@ -76,7 +76,7 @@ export const Dropdown = ({ user, isDesktop, logout }: DropdownRenderProps) => {
           },
         },
         {
-          label: 'Contribute',
+          children: 'Contribute',
           icon: <PublishIcon />,
           onClick: () => {
             const contributeElement = document.querySelector('#contribute');
@@ -92,34 +92,34 @@ export const Dropdown = ({ user, isDesktop, logout }: DropdownRenderProps) => {
 
     if (user) {
       children.push({
-        label: 'My Account',
+        children: 'My Account',
         icon: <AccountCircle />,
         onClick: () => goToAccountPage(),
       });
       if (!user.verified) {
         children.push({
-          label: 'Resend Verification Email',
+          children: 'Resend Verification Email',
           icon: <MailOutline />,
           onClick: handleResendVerificationEmail,
         });
       }
       if (user.role > 1) {
         children.push({
-          label: 'Admin Panel',
+          children: 'Admin Panel',
           icon: <Settings />,
           onClick: () => goToAdminPanel(),
         });
       }
       if (user.role > 2) {
         children.push({
-          label: 'Developer Panel',
+          children: 'Developer Panel',
           icon: <DeveloperMode />,
           onClick: () => goToDeveloperPanel(),
         });
       }
-      children.push({ label: 'Log Out', icon: <ExitToApp />, onClick: handleLogout });
+      children.push({ children: 'Log Out', icon: <ExitToApp />, onClick: handleLogout });
     } else {
-      children.push({ label: 'Log In', icon: <VpnKey />, onClick: () => goToLoginPage() });
+      children.push({ children: 'Log In', icon: <VpnKey />, onClick: () => goToLoginPage() });
     }
 
     setMenuItems(children);
@@ -161,12 +161,9 @@ export const Dropdown = ({ user, isDesktop, logout }: DropdownRenderProps) => {
     <div>
       <div className='dropdown-view'>
         {menuItems.map((item, index) => (
-          <DropdownMenuItem
-            key={index}
-            label={item.label}
-            icon={item.icon}
-            onClick={item.onClick}
-          />
+          <DropdownMenuItem key={index} icon={item.icon} onClick={item.onClick}>
+            {item.children}
+          </DropdownMenuItem>
         ))}
       </div>
       <AlertToast
