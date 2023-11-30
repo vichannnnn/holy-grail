@@ -152,7 +152,7 @@ export const DeveloperTable = <T extends DeveloperTableData>({
             onChange={(newValue: string) => setQuery(newValue)}
             sx={{ flexGrow: 1 }}
           />
-          <Button onClick={handleAdd}>+ Add</Button>
+          {type !== DataTypeEnum.USER && <Button onClick={handleAdd}>+ Add</Button>}
         </Box>
       </Grid>
 
