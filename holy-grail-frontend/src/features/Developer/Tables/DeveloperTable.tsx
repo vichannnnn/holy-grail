@@ -114,7 +114,7 @@ export const DeveloperTable = <T extends DeveloperTableData>({
         {isSubjectType(type, item) && <TableCell>{item.category.name}</TableCell>}
         {isUserType(type, item) && <TableCell>{RoleEnumMapping[item.role]}</TableCell>}
 
-        <TableCell>
+        <TableCell align='right'>
           <Button onClick={() => handleEdit(item)}>
             <EditIcon />
           </Button>

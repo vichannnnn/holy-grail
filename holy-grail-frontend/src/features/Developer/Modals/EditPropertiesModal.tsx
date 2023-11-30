@@ -126,7 +126,11 @@ export const EditPropertiesModal = ({
       >
         <>
           <h2>Update {type}</h2>
-          <p>Please enter the new name of the {type}.</p>
+          {type === DataTypeEnum.USER ? (
+            <p>Please select the new role of the user.</p>
+          ) : (
+            <p>Please enter the new name of the {type}.</p>
+          )}
           <Stack direction='column' spacing={2}>
             {type === DataTypeEnum.SUBJECT && subjectInitialData ? (
               <EditSubjectForm

@@ -33,6 +33,22 @@ export const EditUserForm = forwardRef<HTMLFormElement, EditUserFormProps>(
           justifyContent: 'center',
         }}
       >
+        <TextField
+          value={initialData.user_id}
+          margin='dense'
+          label={<span style={{ textTransform: 'capitalize' }}>User ID</span>}
+          type='text'
+          disabled
+          fullWidth
+        />
+        <TextField
+          value={initialData.username}
+          margin='dense'
+          label={<span style={{ textTransform: 'capitalize' }}>Username</span>}
+          type='text'
+          disabled
+          fullWidth
+        />
         <Controller
           name='role'
           control={control}
