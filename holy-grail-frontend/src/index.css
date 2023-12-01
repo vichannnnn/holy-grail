@@ -16,18 +16,19 @@
   -webkit-text-size-adjust: 100%;
 }
 
-a {
-  font-weight: 500;
-  text-decoration: inherit;
-  color: black;
-}
-
 
 body {
   margin: 0;
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  color: black;
+}
+
+a {
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  text-decoration: inherit;
   color: black;
 }
 

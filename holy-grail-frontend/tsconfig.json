@@ -22,6 +22,7 @@
       "@api/actions": ["src/api/actions/"],
       "@api/analytics": ["src/api/analytics/"],
       "@api/library": ["src/api/library/"],
+      "@api/scoreboard": ["src/api/scoreboard/"],
       "@components": ["src/components/"],
       "@features": ["src/features/"],
       "@providers": ["src/providers/"],

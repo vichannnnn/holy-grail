@@ -11,6 +11,7 @@ export default ({ mode }) => {
         '@api/actions': path.resolve(__dirname, 'src/api/actions/'),
         '@api/analytics': path.resolve(__dirname, 'src/api/analytics/'),
         '@api/library': path.resolve(__dirname, 'src/api/library/'),
+        '@api/scoreboard': path.resolve(__dirname, 'src/api/scoreboard/'),
         '@apiClient': path.resolve(__dirname, 'src/api/apiClient.ts'),
         '@components': path.resolve(__dirname, 'src/components/'),
         '@features': path.resolve(__dirname, 'src/features/'),

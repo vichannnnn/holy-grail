@@ -14,6 +14,7 @@ export const useNavigation = () => {
   const goToAdminPanel = (options = {}) => navigate('/admin', options);
   const goToDeveloperPanel = (options = {}) => navigate('/developer', options);
   const goToAccountPage = (options = {}) => navigate('/account', options);
+  const goToScoreboard = (options = {}) => navigate('/scoreboard', options);
 
   const goToGP = () => window.open('https://GP.sg', '_blank');
   const goToStudentsKahoot = () => window.open('https://t.me/studentskahoot', '_blank');
@@ -40,5 +41,6 @@ export const useNavigation = () => {
     goToJCChatBot,
     goToSecondarySchoolBot,
     goToThisCounted,
+    goToScoreboard,
   };
 };
