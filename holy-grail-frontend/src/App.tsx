@@ -14,6 +14,7 @@ import {
   LoginPage,
   NotFound,
   ResetPasswordPage,
+  Scoreboard,
   SignUpPage,
   UploadPage,
 } from '@features';
@@ -112,6 +113,7 @@ export function App() {
             <Route path='/reset-password' element={<ResetPasswordPage />} />
             <Route path='/verify-account' element={<AccountVerifyPage />} />
             <Route path='/account' element={<AccountDetailsPage />} />
+            <Route path='/scoreboard' element={<Scoreboard />} />
             <Route path='*' element={<NotFound />} />
           </Routes>
           <Footer />

@@ -13,6 +13,7 @@ import Settings from '@mui/icons-material/Settings';
 import DeveloperMode from '@mui/icons-material/DeveloperMode';
 import ExitToApp from '@mui/icons-material/ExitToApp';
 import VpnKey from '@mui/icons-material/VpnKey';
+import ScoreboardIcon from '@mui/icons-material/Scoreboard';
 
 import { DropdownRenderProps } from './Button/types';
 import './Dropdown.css';
@@ -27,6 +28,7 @@ export const Dropdown = ({ user, isDesktop, logout }: DropdownRenderProps) => {
     goToAdminPanel,
     goToDeveloperPanel,
     goToLoginPage,
+    goToScoreboard,
   } = useNavigation();
 
   const [openAlert, setOpenAlert] = useState<boolean>(false);
@@ -84,6 +86,18 @@ export const Dropdown = ({ user, isDesktop, logout }: DropdownRenderProps) => {
               contributeElement.scrollIntoView({ behavior: 'smooth' });
             } else {
               goToUploadPage();
+            }
+          },
+        },
+        {
+          children: 'Leaderboard',
+          icon: <ScoreboardIcon />,
+          onClick: () => {
+            const scoreboardElement = document.querySelector('#scoreboard');
+            if (scoreboardElement) {
+              scoreboardElement.scrollIntoView({ behavior: 'smooth' });
+            } else {
+              goToScoreboard();
             }
           },
         },

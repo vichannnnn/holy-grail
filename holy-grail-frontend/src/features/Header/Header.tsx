@@ -79,6 +79,17 @@ export const Header = () => {
                   </a>
                 </RouterLink>
               </li>
+              <li>
+                <RouterLink to='/scoreboard' onClick={() => setActiveNav('#scoreboard')}>
+                  <a
+                    className={
+                      activeNav === '#scoreboard' ? 'header-links active-link' : 'header-links'
+                    }
+                  >
+                    Leaderboard
+                  </a>
+                </RouterLink>
+              </li>
             </ul>
           </div>
         ) : null}

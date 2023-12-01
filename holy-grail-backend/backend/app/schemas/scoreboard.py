@@ -9,3 +9,7 @@ class User(BaseModel):
 class ScoreboardUser(BaseModel):
     user: User
     upload_count: int
+
+
+class AuthenticatedScoreboardUser(ScoreboardUser):
+    rank: int

@@ -6,5 +6,6 @@ export * from './Footer';
 export * from './Header';
 export * from './Landing';
 export * from './Library';
+export * from './Scoreboard';
 export * from './Upload';
 export * from './UserAccount';

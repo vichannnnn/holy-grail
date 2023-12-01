@@ -1,0 +1,19 @@
+.scoreboard-container {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    margin: auto;
+}
+
+@media screen and (max-width: 913px) {
+    .scoreboard-container {
+        width: 90%;
+    }
+}
+
+.scoreboard-table {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-top: 24px;
+}

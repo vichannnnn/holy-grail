@@ -142,8 +142,6 @@ export const DeveloperTable = <T extends DeveloperTableData>({
     return handleFilterContent().slice(startIndex, endIndex);
   };
 
-  console.log(getCurrentPageData());
-
   return (
     <div className='table-container'>
       <h2>{title}</h2>
