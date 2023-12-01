@@ -57,6 +57,26 @@ const customMuiTheme = {
         },
       },
     },
+    MuiTextField: {
+      styleOverrides: {
+        root: { fontFamily: '"Poppins", sans-serif' },
+      },
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: { fontFamily: '"Poppins", sans-serif' },
+      },
+    },
+    MuiInputBase: {
+      styleOverrides: {
+        input: { fontFamily: '"Poppins", sans-serif' },
+      },
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        notchedOutline: { fontSize: '18px' },
+      },
+    },
   },
 };
 

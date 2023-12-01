@@ -20,6 +20,7 @@ import {
   FreeTextCombobox,
   FreeTextComboboxProps,
   DownloadIcon,
+  DropdownMenuItem,
 } from '@components';
 import { MediaQueryContext } from '@providers';
 import MenuItem from '@mui/material/MenuItem';
@@ -257,23 +258,23 @@ export const NotesTable = ({
                                 aria-labelledby='composition-button'
                                 onKeyDown={handleListKeyDown}
                               >
-                                <MenuItem disabled>Sort By</MenuItem>
-                                <MenuItem
+                                <DropdownMenuItem disabled>Sort By</DropdownMenuItem>
+                                <DropdownMenuItem
                                   onClick={(event) => {
                                     onSortOrderChange('asc');
                                     handleClose(event);
                                   }}
                                 >
                                   Ascending
-                                </MenuItem>
-                                <MenuItem
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
                                   onClick={(event) => {
                                     onSortOrderChange('desc');
                                     handleClose(event);
                                   }}
                                 >
                                   Descending
-                                </MenuItem>
+                                </DropdownMenuItem>
                               </MenuList>
                             </ClickAwayListener>
                           </Paper>

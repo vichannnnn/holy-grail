@@ -93,6 +93,9 @@ export const DeveloperTable = <T extends DeveloperTableData>({
             <h3>Category</h3>
           </TableCell>
         )}
+        <TableCell align='right'>
+          <h3>Actions</h3>
+        </TableCell>
       </TableHead>
     );
   };

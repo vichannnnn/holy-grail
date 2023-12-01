@@ -1,6 +1,7 @@
 import { Autocomplete, AutocompleteProps, TextField, Typography } from '@mui/material';
 import { SyntheticEvent } from 'react';
 import { CommonType } from '@api/library';
+import { DropdownMenuItem } from '../DropdownMenuItem';
 
 export interface ComboboxProps
   extends Omit<
@@ -39,6 +40,11 @@ export const Combobox = ({
     <Autocomplete
       value={options.find((option) => option.id === value) || null}
       options={options}
+      renderOption={(props, option: CommonType | string, { selected }) => (
+        <DropdownMenuItem {...props} selected={selected}>
+          {typeof option === 'string' ? option : option.name}
+        </DropdownMenuItem>
+      )}
       onChange={(_: SyntheticEvent<Element, Event>, newValue: string | CommonType | null) => {
         if (typeof newValue === 'string' || newValue === null) {
           onChange('');
