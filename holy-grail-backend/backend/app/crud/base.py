@@ -77,6 +77,27 @@ class CRUD(Generic[ModelType]):
         return updated_instance
 
     @classmethod
+    async def upsert(  # type: ignore
+        cls: Type[ModelType],
+        session: AsyncSession,
+        id: int,  # pylint: disable=W0622
+        data: Dict[str, Any],
+    ) -> ModelType:
+        stmt = update(cls).returning(cls).where(cls.id == id).values(**data)
+
+        res = await session.execute(stmt)
+        instance = res.scalar()
+
+        if instance is None:
+            await session.rollback()
+            data["id"] = id
+            instance = await cls.create(session, data)
+
+        else:
+            await session.commit()
+        return instance
+
+    @classmethod
     async def delete(  # type: ignore
         cls: Type[ModelType],
         session: AsyncSession,

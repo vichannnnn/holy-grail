@@ -57,3 +57,8 @@ class NoteSchema(BaseModel):
     doc_subject: SubjectSchema
     account: UploaderSchema
     extension: str
+
+
+class UserUploadCount(BaseModel):
+    uploaded_by: int
+    upload_count: int
