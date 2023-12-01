@@ -9,6 +9,7 @@ from slowapi.errors import RateLimitExceeded
 
 from app.api.api import api_router
 from app.tasks.fetch_google_analytics import fetch_google_analytics
+from app.tasks.update_scoreboard_users import update_scoreboard_users
 from app.utils.limiter import limiter
 from app.utils.starlette_validation_uploadfile import ValidateUploadFileMiddleware
 
@@ -37,3 +38,4 @@ Instrumentator().instrument(app)
 # Force runs the google analytics job once on app start up.
 
 fetch_google_analytics.delay()
+update_scoreboard_users.delay()

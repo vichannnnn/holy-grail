@@ -32,6 +32,7 @@ from app.utils.exceptions import AppError
 
 if TYPE_CHECKING:
     from app.models.library import Library
+    from app.models.scoreboard import Scoreboard
 
 BACKEND_URL = environ["BACKEND_URL"]
 FRONTEND_URL = environ["FRONTEND_URL"]
@@ -52,11 +53,15 @@ class Account(Base, CRUD["Account"]):
     username: Mapped[str] = mapped_column(nullable=False, index=True, unique=True)
     email: Mapped[str] = mapped_column(nullable=True, unique=True)
     password: Mapped[str] = mapped_column(nullable=False)
-    documents: Mapped["Library"] = relationship(back_populates="account", uselist=True)
     role: Mapped[int] = mapped_column(nullable=False, server_default=text("1"))
     verified: Mapped[bool] = mapped_column(nullable=False, server_default="f")
     email_verification_token: Mapped[str] = mapped_column(nullable=True)
     reset_password_token: Mapped[str] = mapped_column(nullable=True)
+
+    scoreboard: Mapped["Scoreboard"] = relationship(
+        "Scoreboard", back_populates="account", uselist=False
+    )
+    documents: Mapped["Library"] = relationship(back_populates="account", uselist=True)
 
     id: Mapped[int] = synonym("user_id")
 

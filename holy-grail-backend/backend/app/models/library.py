@@ -30,6 +30,7 @@ from app.schemas.library import (
     NoteInsertSchema,
     NoteSchema,
     NoteUpdateSchema,
+    UserUploadCount,
 )
 from app.utils.exceptions import AppError
 from app.utils.file_handler import (
@@ -404,3 +405,16 @@ class Library(Base, CRUD["Library"]):
         await session.execute(stmt)
         await session.commit()
         return deleted_note
+
+    @classmethod
+    async def get_latest_scoreboard_users_stats(
+        cls, session: AsyncSession
+    ) -> List[UserUploadCount]:
+        stmt = (
+            select(cls.uploaded_by, func.count(cls.id).label("upload_count"))
+            .where(cls.approved == True)
+            .group_by(cls.uploaded_by)
+        )
+
+        res = await session.execute(stmt)
+        return [UserUploadCount(**row._asdict()) for row in res]
