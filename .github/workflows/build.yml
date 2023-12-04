@@ -66,17 +66,6 @@ jobs:
           fail_ci_if_error: true
           verbose: true
 
-      - name: Define tag suffix and Dockerfile for Backend
-        if: steps.path-filter.outputs.backend == 'true'
-        run: |
-          if [[ "${{ github.ref }}" == 'refs/heads/master' ]]; then
-            echo "BACKEND_TAG_SUFFIX=" >> $GITHUB_ENV
-            echo "BACKEND_DOCKERFILE=Dockerfile.prod" >> $GITHUB_ENV
-          else
-            echo "BACKEND_TAG_SUFFIX=-dev" >> $GITHUB_ENV
-            echo "BACKEND_DOCKERFILE=Dockerfile.dev" >> $GITHUB_ENV
-          fi
-
       - name: Build and push Backend Docker image
         if: steps.path-filter.outputs.backend == 'true'
         uses: docker/build-push-action@v2
