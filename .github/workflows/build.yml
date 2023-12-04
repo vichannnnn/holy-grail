@@ -71,7 +71,6 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./holy-grail-backend/backend
-          file: ./holy-grail-backend/backend/${{ env.BACKEND_DOCKERFILE }}
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/holy-grail-backend${{ env.BACKEND_TAG_SUFFIX }}:latest
 
@@ -80,7 +79,6 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./holy-grail-backend/backend
-          file: ./holy-grail-backend/backend/${{ env.BACKEND_DOCKERFILE }}
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/holy-grail-scheduler${{ env.BACKEND_TAG_SUFFIX }}:latest
 
