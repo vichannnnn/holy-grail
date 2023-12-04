@@ -61,25 +61,25 @@ button {
 }
 
 
-.section__title {
+.section-title {
   font-size: 2.25rem;
   font-weight: 600;
 }
 
-.section__subtitle {
+.section-subtitle {
   display: block;
   font-size: 1rem;
   margin-bottom: 24px;
 }
 
-.sub-section__title {
+.sub-section-title {
   font-size: 1.75rem;
   font-weight: 600;
 }
 
-.section__title,
-.section__subtitle,
-.sub-section__title {
+.section-title,
+.section-subtitle,
+.sub-section-title {
   text-align: left;
 }
 

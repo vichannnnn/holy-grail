@@ -212,7 +212,7 @@ export const NotesTable = ({
         </Box>
         {isDesktop768 ? (
           <TableContainer>
-            <Table className='table__notes'>
+            <Table className='table-notes'>
               <TableHead>
                 <TableRow>
                   <TableCell className='table-header'>Document Name</TableCell>

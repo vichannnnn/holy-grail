@@ -6,7 +6,7 @@
     color: steelblue;
 }
 
-.text__link:hover {
+.text-link:hover {
     text-decoration: underline;
     cursor: pointer;
 }

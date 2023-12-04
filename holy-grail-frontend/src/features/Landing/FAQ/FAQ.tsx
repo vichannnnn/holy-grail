@@ -52,7 +52,7 @@ export const FAQ = () => {
           <div className='faq-question'>How do I use the Holy Grail?</div>
           <p className='faq-answer'>
             You can access the resources uploaded at the{' '}
-            <RouterLink to='/library' className='text__link'>
+            <RouterLink to='/library' className='text-link'>
               Library
             </RouterLink>{' '}
             above this section. Anyone is able to freely access these resources even without having
@@ -63,7 +63,7 @@ export const FAQ = () => {
           <div className='faq-question'>How can I contribute my materials?</div>
           <p className='faq-answer'>
             You can upload the notes that you want to share over{' '}
-            <a onClick={handleUploadButtonClick} className='text__link'>
+            <a onClick={handleUploadButtonClick} className='text-link'>
               here
             </a>
             . Do note that you can only upload PDF files and you will need an account to start

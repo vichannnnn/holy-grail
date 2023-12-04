@@ -3,17 +3,17 @@
     min-height: calc(80vh - 3rem);
 }
 
-.not-found__content {
+.not-found-content {
     margin-top: 3rem;
     font-size: calc(1.75rem / 1.6);
 }
 
-.not-found__list {
+.not-found-list {
     padding-left: 3%;
     list-style-type: disc;
     width: 95%;
 }
 
-li.not-found__listItems:not(:last-child) {
+li.not-found-listItems:not(:last-child) {
     margin-bottom: 1rem;
 }
