@@ -70,7 +70,8 @@ export const FileSelect = ({ handleAddNotes }: FileSelectProps) => {
         ref={fileRef}
         type='file'
         accept={user && user.role === 3 ? 'application/pdf, application/zip' : 'application/pdf'}
-        // , text/plain, application/vnd.openxmlformats-officedocument.wordprocessingml.document
+        // , text/plain,
+        // application/vnd.openxmlformats-officedocument.wordprocessingml.document
         onChange={(event) => {
           if (event.target.files) {
             handleAddNotes(event.target.files);
