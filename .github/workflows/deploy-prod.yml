@@ -3,8 +3,7 @@ name: Production deployment
 on:
   workflow_run:
     workflows:
-      - "Frontend build"
-      - "Backend build"
+      - "Build Docker Images"
     branches:
       - master
     types:

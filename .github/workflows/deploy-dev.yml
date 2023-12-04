@@ -3,8 +3,7 @@ name: Dev deployment
 on:
   workflow_run:
     workflows:
-      - "Frontend build"
-      - "Backend build"
+      - "Build Docker Images"
     branches:
       - dev
     types:
