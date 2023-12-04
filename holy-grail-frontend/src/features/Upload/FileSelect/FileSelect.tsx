@@ -2,7 +2,20 @@ import { useEffect, useRef, useContext } from 'react';
 import { Button } from '@components';
 import { FileSelectProps } from '@features';
 import { AuthContext, MediaQueryContext } from '@providers';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import './FileSelect.css';
+
+const VisuallyHiddenInput = styled('input')({
+  clip: 'rect(0 0 0 0)',
+  clipPath: 'inset(50%)',
+  height: 1,
+  overflow: 'hidden',
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  whiteSpace: 'nowrap',
+  width: 1,
+});
 
 export const FileSelect = ({ handleAddNotes }: FileSelectProps) => {
   const dragDropRef = useRef<HTMLDivElement | null>(null);
@@ -47,14 +60,9 @@ export const FileSelect = ({ handleAddNotes }: FileSelectProps) => {
         <a>Drag and drop your PDFs here, or</a>
       </div>
 
-      <Button
-        onClick={() => {
-          if (fileRef.current) {
-            fileRef.current.click();
-          }
-        }}
-      >
+      <Button component='label' startIcon={<CloudUploadIcon />}>
         Upload Files
+        <VisuallyHiddenInput type='file' />
       </Button>
       <input
         multiple

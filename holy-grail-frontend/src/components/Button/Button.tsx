@@ -11,7 +11,6 @@ export const Button = forwardRef<HTMLButtonElement, ButtonBaseProps>(
     return (
       <ButtonBase
         onClick={onClick}
-        className=''
         ref={ref}
         variant='contained'
         sx={{
@@ -33,6 +32,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonBaseProps>(
           },
           ...sx,
         }}
+        disableRipple={true}
         {...props}
       >
         <div>{children}</div>
