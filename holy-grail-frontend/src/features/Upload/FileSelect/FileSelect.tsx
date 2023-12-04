@@ -2,6 +2,7 @@ import { useEffect, useRef, useContext } from 'react';
 import { Button } from '@components';
 import { FileSelectProps } from '@features';
 import { AuthContext, MediaQueryContext } from '@providers';
+import { styled } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import './FileSelect.css';
 
