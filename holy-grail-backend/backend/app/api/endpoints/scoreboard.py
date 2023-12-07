@@ -11,7 +11,9 @@ router = APIRouter()
 
 @router.get("")
 async def top_approved_note_users(session: CurrentSession) -> List[ScoreboardUser]:
-    resp = await Scoreboard.get_top_n_approved_users(session, top_n=10)
+    resp = await Scoreboard.get_top_n_approved_users(
+        session, top_n=20, exclude_ids=[1, 4, 9]
+    )
     return resp
 
 

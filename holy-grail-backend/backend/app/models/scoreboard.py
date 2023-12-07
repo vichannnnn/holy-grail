@@ -1,5 +1,7 @@
+from typing import List
+
 from fastapi import Response as FastAPIResponse
-from sqlalchemy import ForeignKey, select, func
+from sqlalchemy import ForeignKey, select, func, not_
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Mapped, mapped_column, synonym, relationship, selectinload
 from sqlalchemy.sql.expression import text
@@ -35,10 +37,13 @@ class Scoreboard(Base, CRUD["Scoreboard"]):
         return FastAPIResponse(status_code=204)
 
     @classmethod
-    async def get_top_n_approved_users(cls, session: AsyncSession, top_n: int):
+    async def get_top_n_approved_users(
+        cls, session: AsyncSession, top_n: int, exclude_ids: List[int]
+    ):
         stmt = (
             select(cls.user_id, cls.upload_count, Account.username)
             .join(Account, cls.user_id == Account.user_id)
+            .where(not_(cls.user_id.in_(exclude_ids)))
             .group_by(cls.user_id, Account.username)
             .order_by(cls.upload_count.desc())
             .limit(top_n)
