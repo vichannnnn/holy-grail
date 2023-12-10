@@ -12,7 +12,7 @@ interface UpdateNoteModalProps {
     newCategory: number | '',
     newSubject: number | '',
     newType: number | '',
-    newDocName: string | '',
+    newDocName: string,
     newYear: number | '',
   ) => void;
   categories: ComboboxProps['options'];

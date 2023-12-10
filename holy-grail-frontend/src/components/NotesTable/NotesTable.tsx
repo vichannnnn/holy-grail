@@ -23,7 +23,6 @@ import {
   DropdownMenuItem,
 } from '@components';
 import { MediaQueryContext } from '@providers';
-import MenuItem from '@mui/material/MenuItem';
 import { ExpandMore } from '@mui/icons-material';
 import { Pagination } from '../Pagination';
 import { NotesIcon } from './NotesIcon';

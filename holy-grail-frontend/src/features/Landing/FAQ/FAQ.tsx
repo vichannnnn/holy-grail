@@ -63,7 +63,7 @@ export const FAQ = () => {
           <div className='faq-question'>How can I contribute my materials?</div>
           <p className='faq-answer'>
             You can upload the notes that you want to share over{' '}
-            <a onClick={handleUploadButtonClick} className='text-link'>
+            <a role='button' onClick={handleUploadButtonClick} className='text-link'>
               here
             </a>
             . Do note that you can only upload PDF files and you will need an account to start

@@ -96,6 +96,7 @@ export const FooterAds = () => {
     <div className='ads-container' ref={adsRef}>
       <div className='ads-image'>
         <a
+          role='button'
           onClick={handleAdsClick}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
