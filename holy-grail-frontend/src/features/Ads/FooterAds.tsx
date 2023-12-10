@@ -67,12 +67,12 @@ export const FooterAds = () => {
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(async (entry) => {
+      async (entries) => {
+        for (const entry of entries) {
           if (entry.isIntersecting) {
             await adImpression();
           }
-        });
+        }
       },
       {
         root: null,
@@ -95,7 +95,15 @@ export const FooterAds = () => {
   return (
     <div className='ads-container' ref={adsRef}>
       <div className='ads-image'>
-        <a onClick={handleAdsClick} style={{ cursor: 'pointer' }}>
+        <a
+          onClick={handleAdsClick}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              handleAdsClick().then((r) => null);
+            }
+          }}
+          style={{ cursor: 'pointer' }}
+        >
           <img alt='GP Ads here!' src={ADS_IMAGE_URL} width={isDesktop ? '468' : '320'}></img>
         </a>
         <InfoButton isDesktop={isDesktop} />
