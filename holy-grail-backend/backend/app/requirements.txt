@@ -1,13 +1,13 @@
-alembic==1.11.1
-asyncpg==0.28.0
-fastapi==0.104.1
+alembic==1.13.1
+asyncpg==0.29.0
+fastapi==0.109.0
 fastapi-pagination==0.12.5
 passlib==1.7.4
 python-dotenv==1.0.0
 python-jose==3.3.0
-uvicorn==0.24.0.post1
-sqlalchemy==2.0.18
-sqlalchemy[mypy]==2.0.18
+uvicorn==0.26.0
+sqlalchemy==2.0.25
+sqlalchemy[mypy]==2.0.25
 pytest==7.4.0
 pytest-asyncio==0.21.0
 httpx==0.25.2
@@ -37,7 +37,7 @@ googleapis-common-protos==1.61.0
 
 # LINTING
 mypy==1.3.0
-ruff==0.1.5
+ruff==0.1.13
 
 # REQUIRED FOR LINTING SQLALCHEMY
 types-python-jose
@@ -48,7 +48,7 @@ pre-commit==3.5.0
 coverage
 
 # celery
-celery==5.3.4
-psycopg==3.1.8
-psycopg-binary==3.1.8
+celery==5.3.6
+psycopg==3.1.17
+psycopg-binary==3.1.17
 redis==4.5.5

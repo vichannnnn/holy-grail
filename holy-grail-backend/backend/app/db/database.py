@@ -26,10 +26,19 @@ SQLALCHEMY_DATABASE_URL_WITHOUT_DB = PostgresDsn.build(
     port="5432",
 )
 
+engine_config = {
+    "url": SQLALCHEMY_DATABASE_URL,
+    "future": True,
+}
 
-engine = create_async_engine(
-    SQLALCHEMY_DATABASE_URL, future=True, poolclass=NullPool if TESTING else None
-)
+if TESTING:
+    engine_config["poolclass"] = NullPool
+else:
+    engine_config["pool_size"] = 5
+    engine_config["max_overflow"] = 10
+
+engine = create_async_engine(**engine_config)
+
 async_session = async_sessionmaker(
     bind=engine, expire_on_commit=False, autoflush=False, class_=AsyncSession
 )
