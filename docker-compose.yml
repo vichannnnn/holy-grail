@@ -42,6 +42,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./holy-grail-backend/backend:/app
+      - ./holy-grail-402514-f862e946664e.json:/app/holy-grail-402514-f862e946664e.json
 
   holy-grail-db:
     container_name: holy-grail-db
@@ -112,6 +113,7 @@ services:
       test: [ "CMD-SHELL", "celery inspect ping" ]
     volumes:
       - ./holy-grail-backend/backend:/app
+      - ./holy-grail-402514-f862e946664e.json:/app/holy-grail-402514-f862e946664e.json
 
   holy-grail-scheduler-gui:
     networks:
