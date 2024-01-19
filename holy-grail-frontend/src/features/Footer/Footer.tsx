@@ -1,11 +1,11 @@
 import { useContext } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { AuthContext } from '@providers';
-import { FooterShowcase } from '@features';
 import './Footer.css';
 
 export const Footer = () => {
   const { user } = useContext(AuthContext);
+  const currentYear = new Date().getFullYear();
 
   return (
     // <div className='footer-with-showcase'>
@@ -51,7 +51,7 @@ export const Footer = () => {
         </div>
       </div>
       <div className='footer-copyright-section'>
-        &#169; 2023 Holy Grail Team • Questions? Contact us at grail@himaa.me
+        &#169; 2023 - {currentYear} Holy Grail Team • Questions? Contact us at grail@himaa.me
       </div>
     </footer>
     // </div>

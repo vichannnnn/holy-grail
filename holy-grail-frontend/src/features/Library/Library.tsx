@@ -1,6 +1,5 @@
 import { useNavigation } from '@utils';
 import { WelcomeBackHeader, TextLink } from '@components';
-import { TextShowcase } from '@features';
 import { NotesApplication } from './NotesApplication';
 import './Library.css';
 
