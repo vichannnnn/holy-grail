@@ -3,8 +3,6 @@
 [![codecov](https://codecov.io/gh/vichannnnn/holy-grail/branch/dev/graph/badge.svg)](https://codecov.io/gh/vichannnnn/holy-grail/tree/dev)
 [![Python](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/)
 [![Docker](https://img.shields.io/badge/built%20with-Docker-blue)](https://www.docker.com/)
-[![Backend](https://github.com/vichannnnn/holy-grail/actions/workflows/backend.yml/badge.svg)](https://github.com/vichannnnn/holy-grail/actions)
-[![Frontend](https://github.com/vichannnnn/holy-grail/actions/workflows/frontend.yml/badge.svg)](https://github.com/vichannnnn/holy-grail/actions)
 [![Deploy](https://github.com/vichannnnn/holy-grail/actions/workflows/deploy-dev.yml/badge.svg)](https://github.com/vichannnnn/holy-grail/actions)
 [![Deploy](https://github.com/vichannnnn/holy-grail/actions/workflows/deploy-prod.yml/badge.svg)](https://github.com/vichannnnn/holy-grail/actions)
 
