@@ -28,7 +28,7 @@ jobs:
           script: |
             cd ./holy-grail
             docker compose pull
-            docker compose up -d
+            docker compose restart
             make migrate
             rm -r ../api-gateway/holy-grail-dev
             docker cp holy-grail-frontend:/usr/share/caddy/holy-grail-dev ../api-gateway/holy-grail-dev/
