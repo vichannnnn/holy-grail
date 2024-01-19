@@ -1,11 +1,11 @@
-.ads-container {
+.showcase-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 16px;
 }
 
-.ads-image {
+.showcase-image {
     position: relative;
     display: flex;
     margin: auto;

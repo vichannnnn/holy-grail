@@ -5,7 +5,7 @@ import { useNavigation } from '@utils';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import InfoIcon from '@mui/icons-material/Info';
-import './FooterAds.css';
+import './FooterShowcase.css';
 
 const ADS_IMAGE_URL = 'https://document.grail.moe/General+Paper+Ad.png';
 
@@ -52,12 +52,12 @@ const InfoButton = ({ isDesktop }: InfoButtonProps) => {
   );
 };
 
-export const FooterAds = () => {
+export const FooterShowcase = () => {
   const { isDesktop } = useContext(MediaQueryContext);
   const { goToGP } = useNavigation();
-  const adsRef = useRef(null);
+  const showcaseRef = useRef(null);
 
-  const handleAdsClick = async () => {
+  const handleShowcaseClick = async () => {
     try {
       await adClick();
     } finally {
@@ -81,22 +81,22 @@ export const FooterAds = () => {
       },
     );
 
-    if (adsRef.current) {
-      observer.observe(adsRef.current);
+    if (showcaseRef.current) {
+      observer.observe(showcaseRef.current);
     }
 
     return () => {
-      if (adsRef.current) {
-        observer.unobserve(adsRef.current);
+      if (showcaseRef.current) {
+        observer.unobserve(showcaseRef.current);
       }
     };
-  }, [adsRef]);
+  }, [showcaseRef]);
 
   return (
-    <div className='ads-container' ref={adsRef}>
-      <div className='ads-image'>
-        <a onClick={handleAdsClick} style={{ cursor: 'pointer' }}>
-          <img alt='GP Ads here!' src={ADS_IMAGE_URL} width={isDesktop ? '468' : '320'}></img>
+    <div className='showcase-container' ref={showcaseRef}>
+      <div className='showcase-image'>
+        <a onClick={handleShowcaseClick} style={{ cursor: 'pointer' }}>
+          <img alt='GP Showcase here!' src={ADS_IMAGE_URL} width={isDesktop ? '468' : '320'}></img>
         </a>
         <InfoButton isDesktop={isDesktop} />
       </div>

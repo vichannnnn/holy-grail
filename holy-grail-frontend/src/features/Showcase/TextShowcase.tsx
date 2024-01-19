@@ -3,11 +3,11 @@ import { TextLink } from '@components';
 import { useNavigation } from '@utils';
 import { adClick } from '@api/analytics';
 
-export const TextAds = () => {
+export const TextShowcase = () => {
   const { goToStudentsKahoot, goToSecondarySchoolBot, goToJCBot, goToJCChatBot, goToThisCounted } =
     useNavigation();
 
-  const handleAdsClick = async (navigate: () => void) => {
+  const handleShowcaseClick = async (navigate: () => void) => {
     try {
       await adClick();
     } finally {
@@ -18,7 +18,7 @@ export const TextAds = () => {
   const handleClick = (navigate: () => void): MouseEventHandler<HTMLAnchorElement> => {
     return (event) => {
       event.preventDefault();
-      handleAdsClick(navigate);
+      handleShowcaseClick(navigate);
     };
   };
 
