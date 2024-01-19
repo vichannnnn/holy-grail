@@ -1,4 +1,4 @@
-export * from './Ads';
+export * from './Showcase';
 export * from './Approval';
 export * from './Common';
 export * from './Developer';
