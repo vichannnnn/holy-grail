@@ -14,3 +14,4 @@ RUN pip install --no-cache-dir --upgrade pip
 RUN pip install --no-cache-dir --default-timeout=100 -r ./app/requirements.txt
 
 COPY . .
+
