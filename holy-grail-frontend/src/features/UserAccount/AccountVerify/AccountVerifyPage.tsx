@@ -4,8 +4,7 @@ import { resendVerificationEmail, verifyAccount } from '@api/auth';
 import { AlertToast, AlertProps } from '@components';
 import { AuthContext } from '@providers';
 import { VerificationMessage } from './VerificationMessage';
-import '../UserAccountForm.css';
-import './verifyAccountPageContainer.css';
+import './AccountVerify.css';
 
 export const AccountVerifyPage = () => {
   const { user, updateUser } = useContext(AuthContext);
@@ -62,13 +61,15 @@ export const AccountVerifyPage = () => {
   };
 
   return (
-    <div>
-      <div className='login-title'>Account Verification</div>
-      <VerificationMessage
-        resetStatus={resetStatus}
-        isFailed={isFailed}
-        handleResendVerificationEmail={handleResendVerificationEmail}
-      />
+    <div className='account-verify-container'>
+      <div className='account-verify-title'>Account Verification</div>
+      <div>
+        <VerificationMessage
+          resetStatus={resetStatus}
+          isFailed={isFailed}
+          handleResendVerificationEmail={handleResendVerificationEmail}
+        />
+      </div>
       <AlertToast
         openAlert={openAlert}
         onClose={() => setOpenAlert(false)}
