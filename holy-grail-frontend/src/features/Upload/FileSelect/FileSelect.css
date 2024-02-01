@@ -30,3 +30,7 @@
     margin: 16px;
     display: none;
 }
+
+.upload-file-html-button {
+    display: none;
+}

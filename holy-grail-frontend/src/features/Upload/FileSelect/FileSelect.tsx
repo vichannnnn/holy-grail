@@ -2,21 +2,8 @@ import { useEffect, useRef, useContext } from 'react';
 import { Button } from '@components';
 import { FileSelectProps } from '@features';
 import { AuthContext, MediaQueryContext } from '@providers';
-import { styled } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import './FileSelect.css';
-
-const VisuallyHiddenInput = styled('input')({
-  clip: 'rect(0 0 0 0)',
-  clipPath: 'inset(50%)',
-  height: 1,
-  overflow: 'hidden',
-  position: 'absolute',
-  bottom: 0,
-  left: 0,
-  whiteSpace: 'nowrap',
-  width: 1,
-});
 
 export const FileSelect = ({ handleAddNotes }: FileSelectProps) => {
   const dragDropRef = useRef<HTMLDivElement | null>(null);
@@ -63,24 +50,25 @@ export const FileSelect = ({ handleAddNotes }: FileSelectProps) => {
 
       <Button component='label' startIcon={<CloudUploadIcon />}>
         Upload Files
-        <VisuallyHiddenInput type='file' />
+        <input
+          className='upload-file-html-button'
+          multiple
+          ref={fileRef}
+          type='file'
+          accept={user && user.role === 3 ? 'application/pdf, application/zip' : 'application/pdf'}
+          // , text/plain,
+          // application/vnd.openxmlformats-officedocument.wordprocessingml.document
+          onChange={(event) => {
+            console.log('add notes');
+            if (event.target.files) {
+              console.log('add note');
+              handleAddNotes(event.target.files);
+              const clearValue = new DataTransfer();
+              (fileRef.current as HTMLInputElement).files = clearValue.files;
+            }
+          }}
+        />
       </Button>
-      <input
-        multiple
-        ref={fileRef}
-        type='file'
-        accept={user && user.role === 3 ? 'application/pdf, application/zip' : 'application/pdf'}
-        // , text/plain,
-        // application/vnd.openxmlformats-officedocument.wordprocessingml.document
-        onChange={(event) => {
-          if (event.target.files) {
-            handleAddNotes(event.target.files);
-            const clearValue = new DataTransfer();
-            (fileRef.current as HTMLInputElement).files = clearValue.files;
-          }
-        }}
-        style={{ display: 'none' }}
-      />
     </div>
   );
 };
