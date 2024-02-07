@@ -19,7 +19,7 @@ jobs:
           DEV_API_USERNAME: ${{ secrets.DEV_API_USERNAME }}
           DEV_API_PASSWORD: ${{ secrets.DEV_API_PASSWORD }}
         run: |
-          RESPONSE=$(curl -s -X POST "https://api.lambda.dev,grail.moe/api/v1/login" \
+          RESPONSE=$(curl -s -X POST "https://api.lambda.dev.grail.moe/api/v1/login" \
           -H "Content-Type: application/json" \
           -d '{"username": "${{ env.DEV_API_USERNAME }}", "password": "${{ env.DEV_API_PASSWORD }}"}')
 
