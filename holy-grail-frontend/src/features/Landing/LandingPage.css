@@ -1,3 +1,10 @@
 .landing-page {
     margin-top: 48px;
 }
+
+.illume-landing-page-showcase {
+    width: 75%;
+    display: flex;
+    margin: auto;
+    margin-top: 48px;
+}
