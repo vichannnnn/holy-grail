@@ -37,6 +37,13 @@ run:
 down:
 	$(DC_COMMAND) down
 
+runbackend:
+	@LOKI_STATUS=$$(docker plugin ls --format "{{.Name}} {{.Enabled}}" | awk '/loki/{print $$2}'); \
+    if [ "$$LOKI_STATUS" != "true" ]; then \
+        docker plugin enable loki; \
+    fi
+	docker compose -f docker-compose.yml up -d --build
+
 runserver:
 	docker exec -it $(backend_container_name) uvicorn app.main:app --port 9005 --host 0.0.0.0 --reload
 

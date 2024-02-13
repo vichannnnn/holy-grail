@@ -1,19 +1,31 @@
----
+x-logging: &default-logging
+  driver: loki
+  options:
+    loki-url: 'http://localhost:3100/api/prom/push'
+    loki-pipeline-stages: |
+      - multiline:
+          firstline: '^\d{4}-\d{2}-\d{2} \d{1,2}:\d{2}:\d{2}'
+          max_wait_time: 3s
+      - regex:
+          expression: '^(?P<time>\d{4}-\d{2}-\d{2} \d{1,2}:\d{2}:\d{2},d{3}) (?P<message>(?s:.*))$$'
+      
+
 version: '3.8'
 
 services:
   holy-grail-backend:
     container_name: holy-grail-backend
     build: ./holy-grail-backend/backend
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8005 --reload
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
     ports:
-      - "8005:8005"
-      - "9005:9005"
+      - "8000:8000"
+      - "9000:9000"
     networks:
       - holy-grail-network
     depends_on:
       - holy-grail-db
       - holy-grail-scheduler
+      - loki
     environment:
       FRONTEND_URL: ${FRONTEND_URL}
       BACKEND_URL: ${BACKEND_URL}
@@ -38,7 +50,9 @@ services:
       AWS_CLOUDFRONT_URL: ${AWS_CLOUDFRONT_URL}
       MAILTRAP_BEARER_TOKEN: ${MAILTRAP_BEARER_TOKEN}
       MAILTRAP_API_KEY: ${MAILTRAP_API_KEY}
+      API_KEY: ${API_KEY}
       PRODUCTION: ${PRODUCTION}
+    logging: *default-logging
     restart: unless-stopped
     volumes:
       - ./holy-grail-backend/backend:/app
@@ -129,6 +143,72 @@ services:
         condition: service_healthy
     image: mher/flower:1.2.0
     restart: unless-stopped
+
+  loki:
+    networks:
+      - holy-grail-network
+    image: grafana/loki:2.9.3
+    command: -config.file=/etc/loki/local-config.yaml
+    ports:
+      - "3100:3100"
+    volumes:
+      - loki_data:/loki
+    restart: unless-stopped
+
+
+  prometheus:
+    networks:
+      - holy-grail-network
+    image: prom/prometheus:v2.48.1
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./holy-grail-backend/etc/prometheus:/workspace
+      - prometheus_data:/prometheus
+    command:
+      - --config.file=/workspace/prometheus.yml
+      - --enable-feature=exemplar-storage
+    depends_on:
+      - loki
+    logging: *default-logging
+    restart: unless-stopped
+
+
+  tempo:
+    networks:
+      - holy-grail-network
+    image: grafana/tempo:2.3.1
+    command: [ "--target=all", "--storage.trace.backend=local", "--storage.trace.local.path=/var/tempo", "--auth.enabled=false" ]
+    ports:
+      - "4317:4317"
+      - "4318:4318"
+    depends_on:
+      - loki
+    logging: *default-logging
+    restart: unless-stopped
+
+  grafana:
+    networks:
+      - holy-grail-network
+    image: grafana/grafana:10.2.3
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GF_SECURITY_ADMIN_USER}
+      GF_SECURITY_ADMIN_PASSWORD: ${GF_SECURITY_ADMIN_PASSWORD}
+    volumes:
+      - ./holy-grail-backend/etc/grafana/:/etc/grafana/provisioning/datasources
+      - ./holy-grail-backend/etc/dashboards.yaml:/etc/grafana/provisioning/dashboards/dashboards.yaml
+      - ./holy-grail-backend/etc/dashboards:/etc/grafana/dashboards
+    depends_on:
+      - loki
+      - prometheus
+    logging: *default-logging
+    restart: unless-stopped
+
+volumes:
+  prometheus_data: {}
+  loki_data: {}
 
 
 networks:

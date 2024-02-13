@@ -7,10 +7,10 @@ services:
     networks:
       - holy-grail-network
     build: ./holy-grail-backend/backend
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8005 --reload
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
     ports:
-      - "8005:8005"
-      - "9005:9005"
+      - "8000:8000"
+      - "9000:9000"
     depends_on:
       - holy-grail-db
       - holy-grail-scheduler

@@ -70,7 +70,7 @@ make sure you re-add and commit the changed files.
 
 ## Usage
 
-Go to `http://localhost:8005/docs` to access the endpoints from the Swagger UI.
+Go to `http://localhost:8000/docs` to access the endpoints from the Swagger UI.
 Go to `http://localhost:5173/` or `http://localhost:5175/` (most likely 5175 unless you set something else) to access
 the web application.
 
