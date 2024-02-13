@@ -89,7 +89,7 @@ export const NotesTable = ({
   renderAdminActions,
   isAdmin,
 }: NotesTableProps) => {
-  const { isDesktop768 } = useContext(MediaQueryContext);
+  const { isDesktop } = useContext(MediaQueryContext);
   const [isCategorySelected, setIsCategorySelected] = useState(false);
   const [subjectsData, setSubjectsData] = useState<{ id: number; name: string }[]>([]);
   const [open, setOpen] = useState(false);
@@ -125,7 +125,7 @@ export const NotesTable = ({
       <Box display='flex' flexDirection='column' alignItems='center'>
         <Box
           display='flex'
-          flexDirection={isDesktop768 ? 'row' : 'column'}
+          flexDirection={isDesktop ? 'row' : 'column'}
           gap={2}
           marginBottom={2}
           sx={{ width: '100%' }}
@@ -159,7 +159,7 @@ export const NotesTable = ({
               }
             }}
             options={categories}
-            style={{ width: isDesktop768 ? '15%' : '100%' }}
+            style={{ width: isDesktop ? '15%' : '100%' }}
           />
           <Combobox
             label='Subject'
@@ -171,7 +171,7 @@ export const NotesTable = ({
               handlePageChange(1);
             }}
             options={isCategorySelected ? subjectsData : subjects}
-            style={{ width: isDesktop768 ? '15%' : '100%', opacity: isCategorySelected ? 1 : 0.5 }}
+            style={{ width: isDesktop ? '15%' : '100%', opacity: isCategorySelected ? 1 : 0.5 }}
             disabled={!isCategorySelected}
           />
           <Combobox
@@ -184,7 +184,7 @@ export const NotesTable = ({
               handlePageChange(1);
             }}
             options={types}
-            style={{ width: isDesktop768 ? '15%' : '100%' }}
+            style={{ width: isDesktop ? '15%' : '100%' }}
           />
           <FreeTextCombobox
             label='Document Name'
@@ -195,7 +195,7 @@ export const NotesTable = ({
               }
               handlePageChange(1);
             }}
-            style={{ width: isDesktop768 ? '15%' : '100%' }}
+            style={{ width: isDesktop ? '15%' : '100%' }}
           />
           <Combobox
             label='Year'
@@ -207,10 +207,10 @@ export const NotesTable = ({
               handlePageChange(1);
             }}
             options={yearOptions}
-            style={{ width: isDesktop768 ? '15%' : '100%' }}
+            style={{ width: isDesktop ? '15%' : '100%' }}
           />
         </Box>
-        {isDesktop768 ? (
+        {isDesktop ? (
           <TableContainer>
             <Table className='table-notes'>
               <TableHead>

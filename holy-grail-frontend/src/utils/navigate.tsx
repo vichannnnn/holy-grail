@@ -23,6 +23,8 @@ export const useNavigation = () => {
   const goToSecondarySchoolBot = () => window.open('https://t.me/SecondarySchoolBot', '_blank');
   const goToThisCounted = () => window.open('https://t.me/ThisCounted', '_blank');
 
+  const goToIllume = () => window.open('https://illum.education/', '_blank');
+
   return {
     goToHome,
     goToRegister,
@@ -42,5 +44,6 @@ export const useNavigation = () => {
     goToSecondarySchoolBot,
     goToThisCounted,
     goToScoreboard,
+    goToIllume,
   };
 };

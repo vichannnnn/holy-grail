@@ -7,5 +7,6 @@ export * from './Header';
 export * from './Landing';
 export * from './Library';
 export * from './Scoreboard';
+export * from './Showcase';
 export * from './Upload';
 export * from './UserAccount';
