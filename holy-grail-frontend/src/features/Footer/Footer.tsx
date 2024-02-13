@@ -14,7 +14,7 @@ export const Footer = () => {
       <div className='footer-logo-section'>
         <img
           className='footer-logo-image'
-          src='https://document.grail.moe/grail-chan-happy.png'
+          src='https://image.himaa.me/trimmy-illume-grail-chan-happy.png'
           alt=''
         />
       </div>
