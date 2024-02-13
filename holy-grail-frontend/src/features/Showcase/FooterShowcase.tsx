@@ -10,11 +10,11 @@ import './FooterShowcase.css';
 const ADS_IMAGE_URL = 'https://document.grail.moe/General+Paper+Ad.png';
 
 interface InfoButtonProps {
-  isDesktop: boolean;
+  isMobile: boolean;
 }
 
-const InfoButton = ({ isDesktop }: InfoButtonProps) => {
-  const iconButtonTop = isDesktop ? '12px' : '4px';
+export const InfoButton = ({ isMobile }: InfoButtonProps) => {
+  const iconButtonTop = isMobile ? '12px' : '4px';
 
   return (
     <Tooltip
@@ -39,7 +39,7 @@ const InfoButton = ({ isDesktop }: InfoButtonProps) => {
           position: 'absolute',
           top: iconButtonTop,
           left: 0,
-          padding: '8px 4px 4px 4px',
+          padding: '4px 4px',
           backgroundColor: 'transparent',
           opacity: 0.9,
           '&:focus': { outline: 'none' },

@@ -2,20 +2,23 @@ import { createContext, ReactNode, useMemo } from 'react';
 import { useMediaQuery } from '@mui/material';
 
 export const MediaQueryContext = createContext({
+  isMobile: false,
+  isTablet: false,
   isDesktop: false,
-  isDesktop768: false,
 });
 
 export const MediaQueryProvider = ({ children }: { children: ReactNode }) => {
-  const isDesktop = useMediaQuery('(min-width: 913px)');
-  const isDesktop768 = useMediaQuery('(min-width: 768px)');
+  const isMobile = useMediaQuery('(max-width: 768px)');
+  const isTablet = useMediaQuery('(min-width: 769px) and (max-width: 1024px)');
+  const isDesktop = useMediaQuery('(min-width: 1025px)');
 
   const combinedValue = useMemo(
     () => ({
+      isMobile,
+      isTablet,
       isDesktop,
-      isDesktop768,
     }),
-    [isDesktop, isDesktop768],
+    [isMobile, isTablet, isDesktop],
   );
 
   return <MediaQueryContext.Provider value={combinedValue}>{children}</MediaQueryContext.Provider>;

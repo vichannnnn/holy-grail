@@ -1,0 +1,15 @@
+.illume-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.illume-showcase-image {
+    position: relative;
+    display: flex;
+    margin: auto;
+}
+
+
