@@ -53,7 +53,7 @@ export const IllumeShowcase = () => {
         <a onClick={handleShowcaseClick} style={{ cursor: 'pointer' }}>
           <img alt='Illume Showcase here!' src={ADS_IMAGE_URL} width='100%'></img>
         </a>
-        <InfoButton isDesktop={isMobile} />
+        <InfoButton isMobile={isMobile} />
       </div>
     </div>
   );

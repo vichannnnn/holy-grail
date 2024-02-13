@@ -53,7 +53,7 @@ export const InfoButton = ({ isMobile }: InfoButtonProps) => {
 };
 
 export const FooterShowcase = () => {
-  const { isDesktop } = useContext(MediaQueryContext);
+  const { isMobile } = useContext(MediaQueryContext);
   const { goToGP } = useNavigation();
   const showcaseRef = useRef(null);
 
@@ -96,9 +96,9 @@ export const FooterShowcase = () => {
     <div className='showcase-container' ref={showcaseRef}>
       <div className='showcase-image'>
         <a onClick={handleShowcaseClick} style={{ cursor: 'pointer' }}>
-          <img alt='GP Showcase here!' src={ADS_IMAGE_URL} width={isDesktop ? '468' : '320'}></img>
+          <img alt='GP Showcase here!' src={ADS_IMAGE_URL} width={isMobile ? '468' : '320'}></img>
         </a>
-        <InfoButton isDesktop={isDesktop} />
+        <InfoButton isMobile={isMobile} />
       </div>
     </div>
   );
