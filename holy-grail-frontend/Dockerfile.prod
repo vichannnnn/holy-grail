@@ -8,6 +8,7 @@ COPY package.json bun.lockb ./
 ENV VITE_APP_API_URL="https://api.grail.moe/api/v1/"
 ENV VITE_APP_AWS_S3_BUCKET_URL="https://document.grail.moe"
 ENV VITE_APP_GOOGLE_ANALYTICS_ID=G-8BR5B4XCFE
+ENV NODE_ENV=production
 
 RUN bun install --frozen-lockfile
 COPY . .
@@ -15,4 +16,5 @@ RUN bun run build
 
 FROM caddy:2.6.2-alpine AS deploy
 EXPOSE 443
+
 COPY --from=build /app/dist /usr/share/caddy
