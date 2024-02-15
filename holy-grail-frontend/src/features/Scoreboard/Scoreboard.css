@@ -3,12 +3,25 @@
     flex-direction: column;
     width: 50%;
     margin: auto;
+
 }
 
 @media screen and (max-width: 913px) {
     .scoreboard-container {
         width: 90%;
     }
+}
+
+.scoreboard-title {
+    font-size: 1.75rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.scoreboard-subtitle {
+    font-size: 1rem;
+    margin-bottom: 24px;
+    text-align: center;
 }
 
 .scoreboard-table {

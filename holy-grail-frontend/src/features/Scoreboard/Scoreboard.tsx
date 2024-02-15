@@ -53,8 +53,8 @@ export const Scoreboard = () => {
 
   return (
     <div className='scoreboard-container'>
-      <div className='library-title'>Top Contributors</div>
-      <div className='library-subtitle'>
+      <div className='scoreboard-title'>Top Contributors</div>
+      <div className='scoreboard-subtitle'>
         These are the top contributors that has contributed resource materials such as practice
         papers or notes to the Holy Grail.
       </div>
