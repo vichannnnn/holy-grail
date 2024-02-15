@@ -37,7 +37,7 @@ export const ResetPasswordPage = () => {
   }, [location.search]);
 
   return (
-    <div>
+    <div className='account-form-container'>
       <div className='account-form-title'>Reset Password</div>
       {resetStatus ? (
         <div className='account-form-subtitle'>{resetStatus}</div>

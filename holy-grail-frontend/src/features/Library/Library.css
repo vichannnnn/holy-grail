@@ -3,6 +3,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     margin: 48px auto;
 }
 
@@ -14,4 +15,5 @@
 .library-subtitle {
     font-size: 1rem;
     margin-bottom: 24px;
+    text-align: center;
 }
