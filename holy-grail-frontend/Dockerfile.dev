@@ -8,6 +8,7 @@ COPY package.json bun.lockb ./
 ENV VITE_APP_API_URL="https://api.dev.grail.moe/api/v1/"
 ENV VITE_APP_AWS_S3_BUCKET_URL="https://dev.document.grail.moe"
 ENV VITE_APP_GOOGLE_ANALYTICS_ID=G-7H1BG8E209
+ENV NODE_ENV=production
 
 RUN bun install --frozen-lockfile
 COPY . .
