@@ -48,7 +48,11 @@ export const IllumeShowcase = () => {
   }, [showcaseRef]);
 
   return (
-    <div className='illume-container' ref={showcaseRef}>
+    <div
+      className='illume-container'
+      ref={showcaseRef}
+      style={{ width: isMobile ? '100%' : '60%' }}
+    >
       <div className='illume-showcase-image'>
         <a onClick={handleShowcaseClick} style={{ cursor: 'pointer' }}>
           <img alt='Illume Showcase here!' src={ADS_IMAGE_URL} width='100%'></img>
