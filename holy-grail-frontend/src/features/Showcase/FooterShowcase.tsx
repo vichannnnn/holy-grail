@@ -14,7 +14,7 @@ interface InfoButtonProps {
 }
 
 export const InfoButton = ({ isMobile }: InfoButtonProps) => {
-  const iconButtonTop = isMobile ? '12px' : '4px';
+  const iconButtonTop = isMobile ? '0px' : '4px';
 
   return (
     <Tooltip
