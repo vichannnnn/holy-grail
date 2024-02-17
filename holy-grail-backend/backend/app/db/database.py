@@ -11,23 +11,23 @@ TESTING = environ.get("TESTING")
 
 SQLALCHEMY_DATABASE_URL = PostgresDsn.build(
     scheme="postgresql+asyncpg",
-    user=environ["POSTGRES_USER"] if not TESTING else "postgres",
+    username=environ["POSTGRES_USER"] if not TESTING else "postgres",
     password=environ["POSTGRES_PASSWORD"] if not TESTING else "postgres",
     host=environ["POSTGRES_HOST"],
-    port="5432",
-    path="/" + environ["POSTGRES_DB"] if not TESTING else "/test",
+    port=5432,
+    path=environ["POSTGRES_DB"] if not TESTING else "test",
 )
 
 SQLALCHEMY_DATABASE_URL_WITHOUT_DB = PostgresDsn.build(
     scheme="postgresql+asyncpg",
-    user=environ["POSTGRES_USER"] if not TESTING else "postgres",
+    username=environ["POSTGRES_USER"] if not TESTING else "postgres",
     password=environ["POSTGRES_PASSWORD"] if not TESTING else "postgres",
     host=environ["POSTGRES_HOST"],
-    port="5432",
+    port=5432,
 )
 
 engine_config = {
-    "url": SQLALCHEMY_DATABASE_URL,
+    "url": str(SQLALCHEMY_DATABASE_URL),
     "future": True,
 }
 
@@ -43,5 +43,5 @@ async_session = async_sessionmaker(
     bind=engine, expire_on_commit=False, autoflush=False, class_=AsyncSession
 )
 
-sync_engine = create_engine(SQLALCHEMY_DATABASE_URL, pool_pre_ping=True)
+sync_engine = create_engine(str(SQLALCHEMY_DATABASE_URL), pool_pre_ping=True)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=sync_engine)

@@ -1,14 +1,17 @@
 from enum import IntEnum
-from typing import Optional
-
-from pydantic import constr, EmailStr
-
+from typing import Optional, Annotated
+from pydantic import StringConstraints, EmailStr
 from app.schemas.base import CustomBaseModel as BaseModel
 
-password_validator = constr(  # pylint: disable=C0103
-    regex=r"^(?=.*[A-Z])(?=.*\W)[^\s]{8,30}$"  # pylint: disable= W1401
-)  # pylint: disable=C0103
-username_validator = constr(regex="^[a-zA-Z0-9]{4,20}$")  # pylint: disable=C0103, W1401
+valid_username = Annotated[
+    str, StringConstraints(strip_whitespace=True, pattern="^[a-zA-Z0-9]{4," "20}$")
+]
+valid_password = Annotated[
+    str,
+    StringConstraints(
+        strip_whitespace=True, pattern=r"^(?=.*[A-Z])(?=.*\W)[^\s]{8,20}$"
+    ),
+]
 
 
 class RoleEnum(IntEnum):
@@ -18,22 +21,22 @@ class RoleEnum(IntEnum):
 
 
 class AccountRegisterSchema(BaseModel):
-    username: username_validator  # type: ignore
+    username: valid_username  # type: ignore
     email: EmailStr  # type: ignore
-    password: password_validator  # type: ignore
-    repeat_password: password_validator  # type: ignore
+    password: valid_password  # type: ignore
+    repeat_password: valid_password  # type: ignore
 
 
 class AccountCreateSchema(BaseModel):
-    username: username_validator  # type: ignore
+    username: valid_username  # type: ignore
     password: str
     email: EmailStr
 
 
 class AccountUpdatePasswordSchema(BaseModel):
-    before_password: password_validator  # type: ignore
-    password: password_validator  # type: ignore
-    repeat_password: password_validator  # type: ignore
+    before_password: valid_password  # type: ignore
+    password: valid_password  # type: ignore
+    repeat_password: valid_password  # type: ignore
 
 
 class AccountUpdateEmailSchema(BaseModel):
@@ -41,20 +44,20 @@ class AccountUpdateEmailSchema(BaseModel):
 
 
 class AccountSchema(AccountRegisterSchema):
-    user_id: Optional[int]
-    repeat_password: Optional[str]
+    user_id: Optional[int] = None
+    repeat_password: Optional[valid_password]
 
 
 class CurrentUserSchema(BaseModel):
     user_id: int
-    email: Optional[EmailStr]  # type: ignore
-    username: username_validator  # type: ignore
+    email: Optional[EmailStr] = None  # type: ignore
+    username: valid_username  # type: ignore
     role: RoleEnum
     verified: bool
 
 
 class UpdateUserRoleSchema(BaseModel):
-    role: Optional[RoleEnum]
+    role: Optional[RoleEnum] = None
 
 
 class CurrentUserWithJWTSchema(BaseModel):
@@ -65,13 +68,13 @@ class CurrentUserWithJWTSchema(BaseModel):
 
 
 class AuthSchema(BaseModel):
-    username: username_validator  # type: ignore
-    password: password_validator  # type: ignore
+    username: valid_username  # type: ignore
+    password: valid_password  # type: ignore
 
 
 class UploaderSchema(BaseModel):
     user_id: int
-    username: username_validator
+    username: valid_username
 
 
 class SendPasswordResetEmailSchema(BaseModel):

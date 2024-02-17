@@ -44,7 +44,7 @@ def event_loop():
 
 @pytest.fixture(scope="session", autouse=True)
 async def create_test_database():
-    postgres_engine = create_async_engine(SQLALCHEMY_DATABASE_URL_WITHOUT_DB)
+    postgres_engine = create_async_engine(str(SQLALCHEMY_DATABASE_URL_WITHOUT_DB))
 
     async with postgres_engine.connect() as conn:
         await conn.execute(text("COMMIT"))
