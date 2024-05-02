@@ -17,7 +17,7 @@ export const useNavigation = () => {
   const goToScoreboard = (options = {}) => navigate('/scoreboard', options);
 
   const goToGP = () => window.open('https://GP.sg', '_blank');
-  const goToStudentsKahoot = () => window.open('https://t.me/studentskahoot', '_blank');
+  const goToInstagram = () => window.open('https://instagram.com/generalpaper', '_blank');
   const goToJCBot = () => window.open('https://t.me/juniorcollegebot', '_blank');
   const goToJCChatBot = () => window.open('https://t.me/JCchatbot', '_blank');
   const goToSecondarySchoolBot = () => window.open('https://t.me/SecondarySchoolBot', '_blank');
@@ -38,7 +38,7 @@ export const useNavigation = () => {
     goToDeveloperPanel,
     goToAccountPage,
     goToGP,
-    goToStudentsKahoot,
+    goToInstagram,
     goToJCBot,
     goToJCChatBot,
     goToSecondarySchoolBot,

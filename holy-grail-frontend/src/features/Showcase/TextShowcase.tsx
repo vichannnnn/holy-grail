@@ -4,7 +4,7 @@ import { useNavigation } from '@utils';
 import { adClick } from '@api/analytics';
 
 export const TextShowcase = () => {
-  const { goToStudentsKahoot, goToSecondarySchoolBot, goToJCBot, goToJCChatBot, goToThisCounted } =
+  const { goToInstagram, goToSecondarySchoolBot, goToJCBot, goToJCChatBot, goToThisCounted } =
     useNavigation();
 
   const handleShowcaseClick = async (navigate: () => void) => {
@@ -24,10 +24,10 @@ export const TextShowcase = () => {
 
   return (
     <p>
-      Check these out on Telegram! Weekly Kahoot (with prizes) based on O/N-Level, A-Level syllabus:{' '}
-      <TextLink onClick={handleClick(goToStudentsKahoot)}>@studentskahoot</TextLink>
+      General Paper resources / tuition sign-up:{' '}
+      <TextLink onClick={handleClick(goToInstagram)}>instagram.com/generalpaper</TextLink>
       <br></br>
-      Chat or study together with other students:{' '}
+      Chat or study together with other students (Random/Anon on Telegram):{' '}
       <TextLink onClick={handleClick(goToJCBot)}>@JuniorCollegeBot</TextLink> /{' '}
       <TextLink onClick={handleClick(goToJCChatBot)}>@JCchatbot</TextLink> /{' '}
       <TextLink onClick={handleClick(goToSecondarySchoolBot)}>@SecondarySchoolBot</TextLink>
