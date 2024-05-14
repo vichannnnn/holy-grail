@@ -39,10 +39,13 @@ export const InfoButton = ({ isMobile }: InfoButtonProps) => {
           position: 'absolute',
           top: iconButtonTop,
           left: 0,
-          padding: '4px 4px',
+          padding: isMobile ? '12px 4px' : '16px 4px',
           backgroundColor: 'transparent',
           opacity: 0.9,
           '&:focus': { outline: 'none' },
+          '&:hover': {
+            backgroundColor: 'transparent',
+          },
         }}
         disableRipple
       >
@@ -96,7 +99,7 @@ export const FooterShowcase = () => {
     <div className='showcase-container' ref={showcaseRef}>
       <div className='showcase-image'>
         <a onClick={handleShowcaseClick} style={{ cursor: 'pointer' }}>
-          <img alt='GP Showcase here!' src={ADS_IMAGE_URL} width={isMobile ? '468' : '320'}></img>
+          <img alt='GP Showcase here!' src={ADS_IMAGE_URL} width={isMobile ? '320' : '468'}></img>
         </a>
         <InfoButton isMobile={isMobile} />
       </div>
