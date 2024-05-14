@@ -1,7 +1,7 @@
 import { MouseEventHandler } from 'react';
 import { TextLink } from '@components';
-import { useNavigation } from '@utils';
 import { adClick } from '@api/analytics';
+import { useNavigation } from '@utils';
 
 export const TextShowcase = () => {
   const { goToInstagram, goToSecondarySchoolBot, goToJCBot, goToJCChatBot, goToThisCounted } =
