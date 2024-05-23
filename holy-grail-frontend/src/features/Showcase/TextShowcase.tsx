@@ -4,8 +4,14 @@ import { adClick } from '@api/analytics';
 import { useNavigation } from '@utils';
 
 export const TextShowcase = () => {
-  const { goToInstagram, goToSecondarySchoolBot, goToJCBot, goToJCChatBot, goToThisCounted } =
-    useNavigation();
+  const {
+    goToInstagram,
+    goToSecondarySchoolBot,
+    goToJCBot,
+    goToJCChatBot,
+    goToThisCounted,
+    goToGP,
+  } = useNavigation();
 
   const handleShowcaseClick = async (navigate: () => void) => {
     try {
@@ -25,6 +31,7 @@ export const TextShowcase = () => {
   return (
     <p>
       General Paper resources / tuition sign-up:{' '}
+      <TextLink onClick={handleClick(goToGP)}>GP.sg</TextLink> |
       <TextLink onClick={handleClick(goToInstagram)}>instagram.com/generalpaper</TextLink>
       <br></br>
       Chat or study together with other students (Random/Anon on Telegram):{' '}
