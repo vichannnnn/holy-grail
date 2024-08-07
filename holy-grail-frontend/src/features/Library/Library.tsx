@@ -16,7 +16,7 @@ export const Library = () => {
           View materials or contribute <TextLink onClick={goToUploadPage}>here</TextLink> after you
           have logged in (subjected to approval of administrators).
           {/*<IllumeShowcase />*/}
-          <TextShowcase />
+          {/*<TextShowcase />*/}
         </div>
         <NotesApplication />
       </div>
