@@ -1,14 +1,19 @@
 from enum import IntEnum
-from typing import Optional
+from typing import Optional, Annotated
 
-from pydantic import constr, EmailStr
+from pydantic import EmailStr, StringConstraints
 
 from app.schemas.base import CustomBaseModel as BaseModel
 
-password_validator = constr(  # pylint: disable=C0103
-    regex=r"^(?=.*[A-Z])(?=.*\W)[^\s]{8,30}$"  # pylint: disable= W1401
-)  # pylint: disable=C0103
-username_validator = constr(regex="^[a-zA-Z0-9]{4,20}$")  # pylint: disable=C0103, W1401
+password_validator = Annotated[
+    str,
+    StringConstraints(
+        strip_whitespace=True, pattern=r"^(?=.*[A-Z])(?=.*\W)[^\s]{8,30}$"
+    ),
+]
+username_validator = Annotated[
+    str, StringConstraints(strip_whitespace=True, pattern="^[a-zA-Z0-9]{4,20}$")
+]
 
 
 class RoleEnum(IntEnum):
@@ -22,6 +27,11 @@ class AccountRegisterSchema(BaseModel):
     email: EmailStr  # type: ignore
     password: password_validator  # type: ignore
     repeat_password: password_validator  # type: ignore
+
+
+class AccountSchema(AccountRegisterSchema):
+    user_id: Optional[int] = None
+    repeat_password: Optional[str] = None
 
 
 class AccountCreateSchema(BaseModel):
@@ -40,11 +50,6 @@ class AccountUpdateEmailSchema(BaseModel):
     new_email: EmailStr  # type: ignore
 
 
-class AccountSchema(AccountRegisterSchema):
-    user_id: Optional[int]
-    repeat_password: Optional[str]
-
-
 class CurrentUserSchema(BaseModel):
     user_id: int
     email: Optional[EmailStr]  # type: ignore
@@ -54,7 +59,7 @@ class CurrentUserSchema(BaseModel):
 
 
 class UpdateUserRoleSchema(BaseModel):
-    role: Optional[RoleEnum]
+    role: Optional[RoleEnum] = None
 
 
 class CurrentUserWithJWTSchema(BaseModel):

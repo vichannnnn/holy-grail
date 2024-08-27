@@ -9,6 +9,7 @@ from app.api.endpoints import (
     admin,
     dev,
     ad_analytics,
+    analytics,
     scoreboard,
 )
 
@@ -17,6 +18,7 @@ api_router.include_router(
     ad_analytics.router, tags=["Ad Analytics"], prefix="/ad_analytics"
 )
 api_router.include_router(admin.router, tags=["Admin"], prefix="/admin")
+api_router.include_router(analytics.router, tags=["Analytics"], prefix="/analytics")
 api_router.include_router(auth.router, tags=["Authentication"], prefix="/auth")
 api_router.include_router(categories.router, tags=["Categories"])
 api_router.include_router(dev.router, tags=["Dev"], prefix="/dev")

@@ -1,6 +1,6 @@
 alembic==1.13.1
 asyncpg==0.29.0
-fastapi==0.109.0
+fastapi==0.112.2
 fastapi-pagination==0.12.5
 passlib==1.7.4
 python-dotenv==1.0.0
@@ -12,8 +12,8 @@ pytest==7.4.0
 pytest-asyncio==0.21.0
 httpx==0.25.2
 requests==2.31.0
-pydantic==1.10.11
-pydantic[email]==1.10.11
+pydantic==2.8.2
+pydantic[email]==2.8.2
 python-multipart
 types-requests==2.31.0.0
 PyJWT==2.7.0
