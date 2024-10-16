@@ -15,3 +15,14 @@
     font-size: 1rem;
     margin-bottom: 24px;
 }
+
+.library-showcase {
+    width: 80%;
+    margin: 16px auto 0 auto;
+}
+
+@media screen and (max-width: 913px) {
+    .library-showcase {
+        width: 100%;
+    }
+}

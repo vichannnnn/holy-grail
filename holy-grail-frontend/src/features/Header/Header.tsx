@@ -16,7 +16,7 @@ export const Header = () => {
         <RouterLink to='/'>
           <img
             className='header-logo'
-            src='https://image.himaa.me/trimmy-grail-chan-happy-min.png'
+            src='https://image.himaa.me/grail-chan-happy-v1.webp'
             alt=''
           />
         </RouterLink>

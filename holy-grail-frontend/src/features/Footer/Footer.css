@@ -7,6 +7,11 @@
     display: flex;
     flex-direction: column;
     padding: 32px;
+    align-items: center;
+}
+
+.footer-showcase-image {
+    width: 80%;
 }
 
 .footer-container {

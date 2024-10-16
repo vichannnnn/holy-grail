@@ -1,6 +1,7 @@
 import { useNavigation } from '@utils';
 import { WelcomeBackHeader, TextLink } from '@components';
-import { TextShowcase } from '@features';
+// import { TextShowcase } from '@features';
+import { FooterShowcase } from '@features';
 import { NotesApplication } from './NotesApplication';
 import './Library.css';
 
@@ -17,6 +18,9 @@ export const Library = () => {
           have logged in (subjected to approval of administrators).
           {/*<IllumeShowcase />*/}
           {/*<TextShowcase />*/}
+          <div className='library-showcase'>
+            <FooterShowcase />
+          </div>
         </div>
         <NotesApplication />
       </div>

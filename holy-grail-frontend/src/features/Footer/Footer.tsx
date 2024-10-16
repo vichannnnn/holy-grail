@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { FooterShowcase } from '../Showcase';
+import { FooterShowcase } from '@features';
 import { AuthContext } from '@providers';
 import './Footer.css';
 
@@ -10,12 +10,14 @@ export const Footer = () => {
 
   return (
     <div className='footer-with-showcase'>
-      {/*<FooterShowcase />*/}
       <footer className='footer'>
+        <div className='footer-showcase-image'>
+          <FooterShowcase />
+        </div>
         <div className='footer-logo-section'>
           <img
             className='footer-logo-image'
-            src='https://image.himaa.me/trimmy-grail-chan-happy-min.png'
+            src='https://image.himaa.me/grail-chan-happy-v1.webp'
             alt=''
           />
         </div>
