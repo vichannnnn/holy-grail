@@ -1,6 +1,3 @@
----
-version: '3.8'
-
 services:
   holy-grail-backend:
     container_name: holy-grail-backend

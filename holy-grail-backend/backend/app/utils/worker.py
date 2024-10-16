@@ -5,11 +5,11 @@ from celery import Celery  # type: ignore
 celery_app = Celery(
     "tasks",
     include=[
+        "app.tasks.fetch_google_analytics",
         "app.tasks.health_check",
         "app.tasks.verify_email",
         "app.tasks.reset_password_email",
         "app.tasks.new_password_email",
-        "app.tasks.fetch_google_analytics",
         "app.tasks.update_scoreboard_users",
     ],
 )
@@ -26,7 +26,6 @@ celery_app.conf.beat_schedule = {
     "fetch_google_analytics": {
         "task": "fetch_google_analytics",
         "schedule": 86400.0,
-        "options": {"countdown": 0},
     },
     "update_scoreboard_users": {
         "task": "update_scoreboard_users",

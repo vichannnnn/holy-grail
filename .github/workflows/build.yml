@@ -3,7 +3,6 @@ name: Build Docker Images
 on:
   push:
     branches:
-      - dev
       - master
 
 env:
@@ -15,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Path filter
         id: path-filter
@@ -33,7 +32,7 @@ jobs:
 
       - name: Cache Docker layers
         if: steps.path-filter.outputs.frontend == 'true' || steps.path-filter.outputs.backend == 'true'
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: /tmp/.buildx-cache
           key: ${{ runner.os }}-buildx-${{ github.sha }}
@@ -60,7 +59,7 @@ jobs:
 
       - name: Upload coverage to Codecov
         if: steps.path-filter.outputs.backend == 'true'
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: true
@@ -68,7 +67,7 @@ jobs:
 
       - name: Build and push Backend Docker image
         if: steps.path-filter.outputs.backend == 'true'
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v6
         with:
           context: ./holy-grail-backend/backend
           push: true
@@ -76,7 +75,7 @@ jobs:
 
       - name: Build and push Scheduler Docker image
         if: steps.path-filter.outputs.backend == 'true'
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v6
         with:
           context: ./holy-grail-backend/backend
           push: true
@@ -95,7 +94,7 @@ jobs:
 
       - name: Build and push Frontend Docker image
         if: steps.path-filter.outputs.frontend == 'true'
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v6
         with:
           context: ./holy-grail-frontend
           file: ./holy-grail-frontend/${{ env.FRONTEND_DOCKERFILE }}

@@ -15,7 +15,7 @@ class NoteCreateSchema(BaseModel):
     category: int
     subject: int
     type: int
-    year: Optional[int]
+    year: Optional[int] = None
     document_name: DocumentNameStr
 
 
@@ -23,7 +23,7 @@ class NoteInsertSchema(BaseModel):
     category: int
     subject: int
     type: int
-    year: Optional[int]
+    year: Optional[int] = None
     document_name: str
     uploaded_by: int
     file_name: str
@@ -31,13 +31,13 @@ class NoteInsertSchema(BaseModel):
 
 
 class NoteUpdateSchema(BaseModel):
-    category: Optional[int]
-    document_name: Optional[DocumentNameStr]
-    subject: Optional[int]
-    type: Optional[int]
-    year: Optional[int]
-    uploaded_by: Optional[int]
-    extension: Optional[str]
+    category: Optional[int] = None
+    document_name: Optional[DocumentNameStr] = None
+    subject: Optional[int] = None
+    type: Optional[int] = None
+    year: Optional[int] = None
+    uploaded_by: Optional[int] = None
+    extension: Optional[str] = None
 
 
 class NoteSchema(BaseModel):
@@ -45,7 +45,7 @@ class NoteSchema(BaseModel):
     category: int
     subject: int
     type: int
-    year: Optional[int]
+    year: Optional[int] = None
     document_name: str
     file_name: str
     uploaded_by: int

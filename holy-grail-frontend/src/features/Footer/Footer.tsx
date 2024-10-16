@@ -10,7 +10,7 @@ export const Footer = () => {
 
   return (
     <div className='footer-with-showcase'>
-      <FooterShowcase />
+      {/*<FooterShowcase />*/}
       <footer className='footer'>
         <div className='footer-logo-section'>
           <img

@@ -31,12 +31,12 @@ class DocumentTypeSchema(DocumentTypeCreateSchema):
 
 
 class SubjectUpdateSchema(SubjectCreateSchema):
-    name: Optional[str]
+    name: Optional[str] = None
 
 
 class CategoryUpdateSchema(CategoryCreateSchema):
-    name: Optional[str]
+    name: Optional[str] = None
 
 
 class DocumentTypeUpdateSchema(DocumentTypeCreateSchema):
-    name: Optional[str]
+    name: Optional[str] = None

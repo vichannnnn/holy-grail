@@ -7,6 +7,6 @@ export interface AnalyticsResponse {
 }
 
 export const getAnalytics = async (): Promise<AnalyticsResponse> => {
-  const response = await apiClient.get('/analytics');
+  const response = await apiClient.get('/analytics/get_latest_analytics');
   return response.data;
 };

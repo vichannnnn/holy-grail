@@ -11,8 +11,3 @@ router = APIRouter()
 async def sanity_check():
     return {"Hello": "World!"}
 
-
-@router.get("/analytics", response_model=AnalyticsResponse)
-async def get_analytics(session: CurrentSession):
-    response = await Analytics.get_latest_analytics(session)
-    return response
