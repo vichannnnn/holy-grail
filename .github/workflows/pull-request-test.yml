@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Copy .env.example to .env
         run: cp .env.example .env
@@ -23,7 +23,7 @@ jobs:
         run: make generate_xml version="dev"
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: true
@@ -31,7 +31,7 @@ jobs:
 
   check:
     if: always()
-    needs: [ Test ]
+    needs: [ test ]
     runs-on: ubuntu-latest
     steps:
       - name: All jobs result
