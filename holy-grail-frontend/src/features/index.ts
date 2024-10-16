@@ -1,4 +1,3 @@
-export * from './Showcase';
 export * from './Approval';
 export * from './Common';
 export * from './Developer';
@@ -7,6 +6,6 @@ export * from './Header';
 export * from './Landing';
 export * from './Library';
 export * from './Scoreboard';
-export * from './Showcase';
+// export * from './Showcase';
 export * from './Upload';
 export * from './UserAccount';
