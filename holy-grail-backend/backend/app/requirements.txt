@@ -15,7 +15,7 @@ requests==2.32.3
 pydantic==2.8.2
 pydantic[email]==2.8.2
 python-multipart
-types-requests==2.32.3
+types-requests==2.32.0.20241016
 PyJWT==2.7.0
 slowapi
 boto3==1.28.1

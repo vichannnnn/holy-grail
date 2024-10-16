@@ -33,7 +33,7 @@ jobs:
 
       - name: Cache Docker layers
         if: steps.path-filter.outputs.frontend == 'true' || steps.path-filter.outputs.backend == 'true'
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: /tmp/.buildx-cache
           key: ${{ runner.os }}-buildx-${{ github.sha }}
@@ -68,7 +68,7 @@ jobs:
 
       - name: Build and push Backend Docker image
         if: steps.path-filter.outputs.backend == 'true'
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v6
         with:
           context: ./holy-grail-backend/backend
           push: true
@@ -76,7 +76,7 @@ jobs:
 
       - name: Build and push Scheduler Docker image
         if: steps.path-filter.outputs.backend == 'true'
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v6
         with:
           context: ./holy-grail-backend/backend
           push: true
@@ -95,7 +95,7 @@ jobs:
 
       - name: Build and push Frontend Docker image
         if: steps.path-filter.outputs.frontend == 'true'
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v6
         with:
           context: ./holy-grail-frontend
           file: ./holy-grail-frontend/${{ env.FRONTEND_DOCKERFILE }}
