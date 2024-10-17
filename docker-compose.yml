@@ -36,6 +36,7 @@ services:
       MAILTRAP_BEARER_TOKEN: ${MAILTRAP_BEARER_TOKEN}
       MAILTRAP_API_KEY: ${MAILTRAP_API_KEY}
       PRODUCTION: ${PRODUCTION}
+      LOGFIRE_TOKEN: ${LOGFIRE_TOKEN}
     restart: unless-stopped
     volumes:
       - ./holy-grail-backend/backend:/app

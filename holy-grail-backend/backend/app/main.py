@@ -1,9 +1,9 @@
 import ast
 import os
-
+import logfire
 from fastapi import FastAPI
 from fastapi.middleware import cors
-from prometheus_fastapi_instrumentator import Instrumentator
+
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 
@@ -33,7 +33,8 @@ app.add_middleware(
 )
 
 app.include_router(api_router)
-Instrumentator().instrument(app)
+logfire.configure()
+logfire.instrument_fastapi(app)
 
 # Force runs the google analytics and update scoreboard job once on app start up.
 
