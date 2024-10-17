@@ -33,8 +33,10 @@ app.add_middleware(
 )
 
 app.include_router(api_router)
-logfire.configure()
-logfire.instrument_fastapi(app)
+
+if os.getenv("PRODUCTION") in ["true", "dev"]:
+    logfire.configure()
+    logfire.instrument_fastapi(app)
 
 # Force runs the google analytics and update scoreboard job once on app start up.
 
