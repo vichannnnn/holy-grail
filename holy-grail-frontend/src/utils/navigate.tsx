@@ -25,7 +25,7 @@ export const useNavigation = () => {
   //
   // const goToIllume = () => window.open('https://illum.education/', '_blank');
 
-  const goToToriSoup = () => (window.location.href = 'https://tori.sg');
+  const goToToriSoup = () => (window.location.href = 'https://gp.sg');
 
   return {
     goToHome,

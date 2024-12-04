@@ -4,13 +4,12 @@
     justify-content: center;
     align-items: center;
     gap: 16px;
-
 }
 
 .showcase-image {
+    width: 50%;
     position: relative;
     display: flex;
-
 }
 
 .info-button-header {
