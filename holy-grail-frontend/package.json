@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "cp .env .env.local && bunx --bun vite --host 0.0.0.0 --port 5175",
+    "dev": "cp .env .env.local && bunx --bun vite --host 0.0.0.0 --port 5173",
     "build-dev":"cp .env.dev .env.local && bunx --bun vite build",
     "build-prod":"cp .env.prod .env.local && bunx --bun vite build",
     "build": "bunx --bun vite build",
