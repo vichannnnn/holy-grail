@@ -169,3 +169,37 @@ variable "BUCKET_DOMAIN_NAME" {
   description = "S3 Bucket Custom Domain Name"
   type        = string
 }
+
+variable "CELERY_BROKER_URL" {
+  description = "URL for the Celery broker (e.g., Redis or RabbitMQ)."
+  type        = string
+}
+
+variable "CELERY_RESULT_BACKEND" {
+  description = "Backend for Celery task results."
+  type        = string
+}
+
+variable "DATABASE_URL" {
+  description = "Full database URL for the primary application database."
+  type        = string
+  sensitive   = true
+}
+
+variable "GOOGLE_APPLICATION_CREDENTIALS" {
+  description = "Path to the Google application credentials JSON file."
+  type        = string
+  sensitive   = true
+}
+
+variable "GOOGLE_APPLICATION_PROPERTY_ID" {
+  description = "Google application property ID."
+  type        = string
+}
+
+variable "TASK_RUNNER_DATABASE_URL" {
+  description = "Full database URL for task runner services."
+  type        = string
+  sensitive   = true
+}
+

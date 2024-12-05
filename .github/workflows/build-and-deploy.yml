@@ -339,7 +339,7 @@ jobs:
         working-directory: ./terraform
         env:
           TF_TOKEN_app_terraform_io: ${{ secrets.TFC_TOKEN }}
-        run: terraform init
+        run: terraform validate
 
       - name: Archive Terraform Configurations
         run: tar -czf config.tar.gz ./terraform

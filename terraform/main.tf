@@ -71,17 +71,22 @@ module "ecs" {
   POSTGRES_USER     = var.POSTGRES_USER
   POSTGRES_HOST     = module.rds.rds_endpoint
 
-  ACCESS_TOKEN_EXPIRE_MINUTES       = var.ACCESS_TOKEN_EXPIRE_MINUTES
-  ALGORITHM                         = var.ALGORITHM
-  AWS_CLOUDFRONT_URL                = var.AWS_CLOUDFRONT_URL
-  PRODUCTION                        = var.PRODUCTION
-  S3_BUCKET_NAME                    = var.S3_BUCKET_NAME
-  S3_KEY                            = var.S3_KEY
-  S3_KEY_ID                         = var.S3_KEY_ID
-  SECRET_KEY                        = var.SECRET_KEY
-  LOGFIRE_TOKEN                     = var.LOGFIRE_TOKEN
-  MAILTRAP_API_KEY                  = var.MAILTRAP_API_KEY
-  MAILTRAP_BEARER_TOKEN             = var.MAILTRAP_BEARER_TOKEN
-  REDIS_URL                         = var.REDIS_URL
-  REDIS_BROKER_URL                  = var.REDIS_BROKER_URL
+  ACCESS_TOKEN_EXPIRE_MINUTES    = var.ACCESS_TOKEN_EXPIRE_MINUTES
+  ALGORITHM                      = var.ALGORITHM
+  AWS_CLOUDFRONT_URL             = var.AWS_CLOUDFRONT_URL
+  PRODUCTION                     = var.PRODUCTION
+  S3_BUCKET_NAME                 = var.S3_BUCKET_NAME
+  S3_KEY                         = var.S3_KEY
+  S3_KEY_ID                      = var.S3_KEY_ID
+  SECRET_KEY                     = var.SECRET_KEY
+  LOGFIRE_TOKEN                  = var.LOGFIRE_TOKEN
+  MAILTRAP_API_KEY               = var.MAILTRAP_API_KEY
+  MAILTRAP_BEARER_TOKEN          = var.MAILTRAP_BEARER_TOKEN
+  REDIS_URL                      = var.REDIS_URL
+  CELERY_BROKER_URL              = var.CELERY_BROKER_URL
+  CELERY_RESULT_BACKEND          = var.CELERY_BROKER_URL
+  DATABASE_URL                   = var.DATABASE_URL
+  GOOGLE_APPLICATION_CREDENTIALS = var.GOOGLE_APPLICATION_CREDENTIALS
+  GOOGLE_APPLICATION_PROPERTY_ID = var.GOOGLE_APPLICATION_PROPERTY_ID
+  TASK_RUNNER_DATABASE_URL       = var.TASK_RUNNER_DATABASE_URL
 }
