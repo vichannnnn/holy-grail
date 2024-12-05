@@ -161,7 +161,7 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.CICD_TOKEN }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push Backend Docker image
         uses: docker/build-push-action@v2
@@ -242,7 +242,7 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.CICD_TOKEN }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push Celery Docker image
         uses: docker/build-push-action@v2
