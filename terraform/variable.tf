@@ -160,30 +160,9 @@ variable "REDIS_URL" {
   type        = string
 }
 
-variable "REDIS_BROKER_URL" {
-  description = "Redis Broker URL"
-  type        = string
-}
-
 variable "BUCKET_DOMAIN_NAME" {
   description = "S3 Bucket Custom Domain Name"
   type        = string
-}
-
-variable "CELERY_BROKER_URL" {
-  description = "URL for the Celery broker (e.g., Redis or RabbitMQ)."
-  type        = string
-}
-
-variable "CELERY_RESULT_BACKEND" {
-  description = "Backend for Celery task results."
-  type        = string
-}
-
-variable "DATABASE_URL" {
-  description = "Full database URL for the primary application database."
-  type        = string
-  sensitive   = true
 }
 
 variable "GOOGLE_APPLICATION_CREDENTIALS" {
