@@ -71,8 +71,8 @@ module "ecs" {
   POSTGRES_USER     = var.POSTGRES_USER
   POSTGRES_HOST     = module.rds.rds_endpoint
 
-  DATABASE_URL             = "postgresql+asyncpg://${var.POSTGRES_USER}:${var.POSTGRES_PASSWORD}@${POSTGRES_HOST}:5432/${var.POSTGRES_DB}"
-  TASK_RUNNER_DATABASE_URL = "postgresql://${var.POSTGRES_USER}:${var.POSTGRES_PASSWORD}@${POSTGRES_HOST}:5432/${var.POSTGRES_DB}"
+  DATABASE_URL             = "postgresql+asyncpg://${var.POSTGRES_USER}:${var.POSTGRES_PASSWORD}@${var.POSTGRES_HOST}:5432/${var.POSTGRES_DB}"
+  TASK_RUNNER_DATABASE_URL = "postgresql://${var.POSTGRES_USER}:${var.POSTGRES_PASSWORD}@${var.POSTGRES_HOST}:5432/${var.POSTGRES_DB}"
 
 
   ACCESS_TOKEN_EXPIRE_MINUTES    = var.ACCESS_TOKEN_EXPIRE_MINUTES
