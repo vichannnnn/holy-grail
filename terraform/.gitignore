@@ -1,0 +1,14 @@
+*.venv
+*__pycache__
+*.env
+*.env.sh
+.DS_Store
+.idea/
+*.terraform*
+
+#  Terraform State and variable files
+
+terraform.tfstate.backup
+terraform.tfstate
+*.terraform.tfvars
+terraform.tfvars

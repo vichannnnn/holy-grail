@@ -1,0 +1,48 @@
+# AWS Project Settings
+region         = "ap-southeast-1"
+aws_access_key = "<YOUR_AWS_ACCESS_KEY>" # Update this value
+aws_secret_key = "<YOUR_AWS_SECRET_KEY>" # Update this value
+app_name       = "fastapi-app"
+
+# Docker Container Images
+backend_image  = "<YOUR_BACKEND_IMAGE>"
+frontend_image = "<YOUR_FRONTEND_IMAGE>"
+celery_image   = "<YOUR_CELERY_IMAGE>"
+
+backend_image_hash  = "<YOUR_BACKEND_IMAGE_HASH>"
+frontend_image_hash = "<YOUR_FRONTEND_IMAGE_HASH>"
+celery_image_hash   = "<YOUR_CELERY_IMAGE_HASH>"
+
+# Domain Names
+root_domain_name        = "<YOUR_ROOT_DOMAIN_NAME>"
+backend_subdomain_name  = "<YOUR_BACKEND_SUBDOMAIN_NAME>"
+frontend_subdomain_name = "<YOUR_FRONTEND_SUBDOMAIN_NAME>"
+
+# GitHub credentials to access Docker Images in GitHub Container Registry
+github_username              = "<YOUR_GITHUB_USERNAME>"
+github_personal_access_token = "<YOUR_GITHUB_PERSONAL_ACCESS_TOKEN>"
+
+# Postgres credentials
+POSTGRES_PASSWORD = "<YOUR_POSTGRES_PASSWORD>"
+POSTGRES_DB       = "<YOUR_POSTGRES_DB>"
+POSTGRES_USER     = "<YOUR_POSTGRES_USER>"
+POSTGRES_HOST     = "<YOUR_POSTGRES_HOST>"
+
+# Environment variables for backend containers
+ACCESS_TOKEN_EXPIRE_MINUTES       = "1440"
+ALGORITHM                         = "<YOUR_ALGORITHM>"
+SECRET_KEY                        = "<YOUR_SECRET_KEY>"
+AWS_CLOUDFRONT_URL                = "<YOUR_AWS_CLOUDFRONT_URL>"
+S3_BUCKET_NAME                    = "<YOUR_S3_BUCKET_NAME>"
+S3_KEY                            = "<YOUR_S3_KEY>"
+S3_KEY_ID                         = "<YOUR_S3_KEY_ID>"
+
+MAILTRAP_API_KEY                  = "<YOUR_MAILTRAP_API_KEY>"
+MAILTRAP_BEARER_TOKEN             = "<YOUR_MAILTRAP_BEARER_TOKEN>"
+
+REDIS_URL                         = "<YOUR_REDIS_URL>"
+REDIS_BROKER_URL                  = "<YOUR_REDIS_BROKER_URL>"
+
+PRODUCTION                        = "true"
+LOGFIRE_TOKEN                     = "<YOUR_LOGFIRE_TOKEN>"
+
