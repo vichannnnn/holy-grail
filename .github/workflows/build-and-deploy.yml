@@ -166,7 +166,7 @@ jobs:
       - name: Build and push Backend Docker image
         uses: docker/build-push-action@v2
         with:
-          context: ./holy-grail-backend
+          context: ./holy-grail-backend/backend
           push: true
           tags: |
             ${{ env.REGISTRY }}/${{ github.ref == 'refs/heads/dev' && env.DEV_IMAGE_NAME || env.PROD_IMAGE_NAME}}/${{
@@ -247,7 +247,7 @@ jobs:
       - name: Build and push Celery Docker image
         uses: docker/build-push-action@v2
         with:
-          context: ./holy-grail-backend
+          context: ./holy-grail-backend/backend
           push: true
           tags: |
             ${{ env.REGISTRY }}/${{ github.ref == 'refs/heads/dev' && env.DEV_IMAGE_NAME || env
