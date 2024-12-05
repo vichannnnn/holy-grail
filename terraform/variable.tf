@@ -197,9 +197,3 @@ variable "GOOGLE_APPLICATION_PROPERTY_ID" {
   type        = string
 }
 
-variable "TASK_RUNNER_DATABASE_URL" {
-  description = "Full database URL for task runner services."
-  type        = string
-  sensitive   = true
-}
-
