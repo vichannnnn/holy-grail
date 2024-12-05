@@ -101,18 +101,6 @@ variable "POSTGRES_HOST" {
   type        = string
 }
 
-variable "DATABASE_URL" {
-  description = "Full database URL for the primary application database."
-  type        = string
-  sensitive   = true
-}
-
-variable "TASK_RUNNER_DATABASE_URL" {
-  description = "Full database URL for task runner services."
-  type        = string
-  sensitive   = true
-}
-
 variable "ACCESS_TOKEN_EXPIRE_MINUTES" {
   description = "Expiration time for access tokens in minutes."
   type        = string

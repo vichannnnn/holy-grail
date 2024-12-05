@@ -32,8 +32,10 @@ resource "aws_ecs_task_definition" "backend" {
         { name = "POSTGRES_USER", value = var.POSTGRES_USER },
         { name = "POSTGRES_PASSWORD", value = var.POSTGRES_PASSWORD },
         { name = "POSTGRES_HOST", value = var.POSTGRES_HOST },
-        { name = "DATABASE_URL", value = var.DATABASE_URL },
-        { name = "TASK_RUNNER_DATABASE_URL", value = var.TASK_RUNNER_DATABASE_URL },
+        { name = "DATABASE_URL", value = "postgresql+asyncpg://${var.POSTGRES_USER}:${var
+        .POSTGRES_PASSWORD}@${var.POSTGRES_HOST}:5432/${var.POSTGRES_DB}" },
+        { name = "TASK_RUNNER_DATABASE_URL", value = "postgresql://${var.POSTGRES_USER}:${var
+        .POSTGRES_PASSWORD}@${var.POSTGRES_HOST}:5432/${var.POSTGRES_DB}" },
         { name = "ACCESS_TOKEN_EXPIRE_MINUTES", value = var.ACCESS_TOKEN_EXPIRE_MINUTES },
         { name = "ALGORITHM", value = var.ALGORITHM },
         { name = "SECRET_KEY", value = var.SECRET_KEY },

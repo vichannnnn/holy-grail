@@ -41,7 +41,6 @@ MAILTRAP_API_KEY                  = "<YOUR_MAILTRAP_API_KEY>"
 MAILTRAP_BEARER_TOKEN             = "<YOUR_MAILTRAP_BEARER_TOKEN>"
 
 REDIS_URL                         = "<YOUR_REDIS_URL>"
-REDIS_BROKER_URL                  = "<YOUR_REDIS_BROKER_URL>"
 
 PRODUCTION                        = "true"
 LOGFIRE_TOKEN                     = "<YOUR_LOGFIRE_TOKEN>"
