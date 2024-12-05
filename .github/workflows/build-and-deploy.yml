@@ -1,0 +1,402 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - dev
+      - master
+
+env:
+  REGISTRY: ghcr.io
+  DEV_IMAGE_NAME: vichannnnn/holy-grail-dev
+  PROD_IMAGE_NAME: vichannnnn/holy-grail
+  FRONTEND_IMAGE_NAME: frontend
+  BACKEND_IMAGE_NAME: backend
+  CELERY_IMAGE_NAME: celery
+  FRONTEND_VARIABLE_HASH_NAME: frontend_image_hash
+  BACKEND_VARIABLE_HASH_NAME: backend_image_hash
+  CELERY_VARIABLE_HASH_NAME: celery_image_hash
+  HASH: ${{ github.sha }}
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      backend: ${{ steps.path-filter.outputs.backend }}
+      celery: ${{ steps.path-filter.outputs.celery }}
+      frontend: ${{ steps.path-filter.outputs.frontend }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Path filter
+        id: path-filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            backend:
+              - 'holy-grail-backend/**'
+            celery:
+              - 'holy-grail-backend/**'
+            frontend:
+              - 'holy-grail-frontend/**'
+             
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Cache Docker layers
+        uses: actions/cache@v4
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+  frontend:
+    needs: setup
+    runs-on: ubuntu-latest
+    if: needs.setup.outputs.frontend == 'true'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Frontend Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: ./frontend
+          file: ${{ github.ref == 'refs/heads/dev' && './holy-grail-frontend/Dockerfile.dev' || './holy-grail-frontend/Dockerfile.prod' }}
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ github.ref == 'refs/heads/dev' && env.DEV_IMAGE_NAME || env.PROD_IMAGE_NAME}}/${{
+            env.FRONTEND_IMAGE_NAME }}:${{ env.HASH }}
+
+      - name: Update Terraform Cloud variable for Docker Image hash
+        env:
+          TFC_TOKEN: ${{ secrets.TFC_TOKEN }}
+          DEV_WORKSPACE_ID: ${{ secrets.DEV_WORKSPACE_ID }}
+        run: |
+          VARIABLES=$(curl -s \
+            --header "Authorization: Bearer $TFC_TOKEN" \
+            --header "Content-Type: application/vnd.api+json" \
+            --request GET \
+            "https://app.terraform.io/api/v2/workspaces/$DEV_WORKSPACE_ID/vars")
+          
+          # Extract the ID of the variable matching the given key
+          EXISTING_VAR=$(echo "$VARIABLES" | jq -r --arg key "${{ env.FRONTEND_VARIABLE_HASH_NAME }}" '.data[] | select(
+          .attributes.key == $key) | .id')
+          
+          # Check if the variable exists
+          if [[ -n "$EXISTING_VAR" ]]; then
+            echo "Updating existing variable: $EXISTING_VAR"
+            curl -s \
+              --header "Authorization: Bearer $TFC_TOKEN" \
+              --header "Content-Type: application/vnd.api+json" \
+              --request PATCH \
+              --data '{
+                "data": {
+                  "type": "vars",
+                  "id": "'"$EXISTING_VAR"'",
+                  "attributes": {
+                    "key": "'"${{ env.FRONTEND_VARIABLE_HASH_NAME }}"'",
+                    "value": "'"${{ env.HASH }}"'",
+                    "category": "terraform",
+                    "hcl": false,
+                    "sensitive": false
+                  }
+                }
+              }' \
+              "https://app.terraform.io/api/v2/vars/$EXISTING_VAR"
+          else
+            curl -s \
+              --header "Authorization: Bearer $TFC_TOKEN" \
+              --header "Content-Type: application/vnd.api+json" \
+              --request POST \
+              --data '{
+                "data": {
+                  "type": "vars",
+                  "attributes": {
+                    "key": "'"${{ env.FRONTEND_VARIABLE_HASH_NAME }}"'",
+                    "value": "'"${{ env.HASH }}"'",
+                    "category": "terraform",
+                    "hcl": false,
+                    "sensitive": false
+                  }
+                }
+              }' \
+              "https://app.terraform.io/api/v2/workspaces/$DEV_WORKSPACE_ID/vars"
+          fi
+
+  backend:
+    needs: setup
+    runs-on: ubuntu-latest
+    if: needs.setup.outputs.backend == 'true'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Update package lists
+        run: sudo apt-get update
+
+      - name: Install jq
+        run: sudo apt-get install -y jq
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.CICD_TOKEN }}
+
+      - name: Build and push Backend Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: ./backend
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ github.ref == 'refs/heads/dev' && env.DEV_IMAGE_NAME || env.PROD_IMAGE_NAME}}/${{
+            env.BACKEND_IMAGE_NAME }}:${{ env.HASH }}
+
+      - name: Update Terraform Cloud variable for Docker Image hash
+        env:
+          TFC_TOKEN: ${{ secrets.TFC_TOKEN }}
+          DEV_WORKSPACE_ID: ${{ secrets.DEV_WORKSPACE_ID }}
+
+        run: |
+          VARIABLES=$(curl -s \
+            --header "Authorization: Bearer $TFC_TOKEN" \
+            --header "Content-Type: application/vnd.api+json" \
+            --request GET \
+            "https://app.terraform.io/api/v2/workspaces/$DEV_WORKSPACE_ID/vars")
+
+          # Extract the ID of the variable matching the given key
+          EXISTING_VAR=$(echo "$VARIABLES" | jq -r --arg key "${{ env.BACKEND_VARIABLE_HASH_NAME }}" '.data[] | select(
+          .attributes.key == $key) | .id')
+
+          # Check if the variable exists
+          if [[ -n "$EXISTING_VAR" ]]; then
+            echo "Updating existing variable: $EXISTING_VAR"
+            curl -s \
+              --header "Authorization: Bearer $TFC_TOKEN" \
+              --header "Content-Type: application/vnd.api+json" \
+              --request PATCH \
+              --data '{
+                "data": {
+                  "type": "vars",
+                  "id": "'"$EXISTING_VAR"'",
+                  "attributes": {
+                    "key": "'"${{ env.BACKEND_VARIABLE_HASH_NAME }}"'",
+                    "value": "'"${{ env.HASH }}"'",
+                    "category": "terraform",
+                    "hcl": false,
+                    "sensitive": false
+                  }
+                }
+              }' \
+              "https://app.terraform.io/api/v2/vars/$EXISTING_VAR"
+          else
+            curl -s \
+              --header "Authorization: Bearer $TFC_TOKEN" \
+              --header "Content-Type: application/vnd.api+json" \
+              --request POST \
+              --data '{
+                "data": {
+                  "type": "vars",
+                  "attributes": {
+                    "key": "'"${{ env.BACKEND_VARIABLE_HASH_NAME }}"'",
+                    "value": "'"${{ env.HASH }}"'",
+                    "category": "terraform",
+                    "hcl": false,
+                    "sensitive": false
+                  }
+                }
+              }' \
+              "https://app.terraform.io/api/v2/workspaces/$DEV_WORKSPACE_ID/vars"
+          fi
+
+  celery:
+    needs: setup
+    runs-on: ubuntu-latest
+    if: needs.setup.outputs.celery == 'true'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.CICD_TOKEN }}
+
+      - name: Build and push Celery Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: ./celery-backend
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ github.ref == 'refs/heads/dev' && env.DEV_IMAGE_NAME || env
+            .PROD_IMAGE_NAME}}/${{env.CELERY_IMAGE_NAME }}:${{ env.HASH }}
+
+      - name: Update Terraform Cloud variable for Docker Image hash
+        env:
+          TFC_TOKEN: ${{ secrets.TFC_TOKEN }}
+          DEV_WORKSPACE_ID: ${{ secrets.DEV_WORKSPACE_ID }}
+        run: |
+          VARIABLES=$(curl -s \
+            --header "Authorization: Bearer $TFC_TOKEN" \
+            --header "Content-Type: application/vnd.api+json" \
+            --request GET \
+            "https://app.terraform.io/api/v2/workspaces/$DEV_WORKSPACE_ID/vars")
+          
+          # Extract the ID of the variable matching the given key
+          EXISTING_VAR=$(echo "$VARIABLES" | jq -r --arg key "${{ env.CELERY_VARIABLE_HASH_NAME }}" '.data[] | select(
+          .attributes.key == $key) | .id')
+          
+          # Check if the variable exists
+          if [[ -n "$EXISTING_VAR" ]]; then
+            echo "Updating existing variable: $EXISTING_VAR"
+            curl -s \
+              --header "Authorization: Bearer $TFC_TOKEN" \
+              --header "Content-Type: application/vnd.api+json" \
+              --request PATCH \
+              --data '{
+                "data": {
+                  "type": "vars",
+                  "id": "'"$EXISTING_VAR"'",
+                  "attributes": {
+                    "key": "'"${{ env.CELERY_VARIABLE_HASH_NAME }}"'",
+                    "value": "'"${{ env.HASH }}"'",
+                    "category": "terraform",
+                    "hcl": false,
+                    "sensitive": false
+                  }
+                }
+              }' \
+              "https://app.terraform.io/api/v2/vars/$EXISTING_VAR"
+          else
+            curl -s \
+              --header "Authorization: Bearer $TFC_TOKEN" \
+              --header "Content-Type: application/vnd.api+json" \
+              --request POST \
+              --data '{
+                "data": {
+                  "type": "vars",
+                  "attributes": {
+                    "key": "'"${{ env.CELERY_VARIABLE_HASH_NAME }}"'",
+                    "value": "'"${{ env.HASH }}"'",
+                    "category": "terraform",
+                    "hcl": false,
+                    "sensitive": false
+                  }
+                }
+              }' \
+              "https://app.terraform.io/api/v2/workspaces/$DEV_WORKSPACE_ID/vars"
+          fi 
+
+  deploy:
+    needs: [frontend, backend, celery]
+    runs-on: ubuntu-latest
+
+    if: |
+      always() &&
+      (needs.frontend.result == 'success' || needs.frontend.result == 'skipped') && 
+      (needs.backend.result == 'success' || needs.backend.result == 'skipped') &&
+      (needs.celery.result == 'success' || needs.celery.result == 'skipped')
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.0
+
+      - name: Terraform Init
+        working-directory: ./terraform
+        run: terraform init
+
+      - name: Validate Terraform
+        working-directory: ./terraform
+        run: terraform validate
+
+      - name: Archive Terraform Configurations
+        run: tar -czf config.tar.gz ./terraform
+
+      - name: Trigger Terraform Apply
+        env:
+          TFC_TOKEN: ${{ secrets.TFC_TOKEN }}
+          DEV_WORKSPACE_ID: ${{ secrets.DEV_WORKSPACE_ID }}
+        run: |
+          RESPONSE=$(curl -s \
+            --request POST \
+            --url "https://app.terraform.io/api/v2/workspaces/$DEV_WORKSPACE_ID/configuration-versions" \
+            --header "Authorization: Bearer $TFC_TOKEN" \
+            --header "Content-Type: application/vnd.api+json" \
+            --data '{
+              "data": {
+                "type": "configuration-versions",
+                "attributes": {
+                  "auto-queue-runs": false
+                }
+              }
+            }')
+          
+
+          CONFIG_VERSION=$(echo "$RESPONSE" | grep -o '"id":"[^"]*' | sed 's/"id":"//')
+          UPLOAD_URL=$(echo "$RESPONSE" | grep -o '"upload-url":"[^"]*' | sed 's/"upload-url":"//')
+
+          curl -s \
+            --request PUT \
+            --url "$UPLOAD_URL" \
+            --header "Content-Type: application/octet-stream" \
+            --data-binary @config.tar.gz
+
+          curl -s \
+            --request POST \
+            --url "https://app.terraform.io/api/v2/runs" \
+            --header "Authorization: Bearer $TFC_TOKEN" \
+            --header "Content-Type: application/vnd.api+json" \
+            --data '{
+              "data": {
+                "attributes": {
+                  "is-destroy": false,
+                  "auto-apply": true,
+                  "message": "Triggered by GitHub Actions"
+                },
+                "type": "runs",
+                "relationships": {
+                  "workspace": {
+                    "data": {
+                      "type": "workspaces",
+                      "id": "'"$DEV_WORKSPACE_ID"'"
+                    }
+                  },
+                  "configuration-version": {
+                    "data": {
+                      "type": "configuration-versions",
+                      "id": "'"$CONFIG_VERSION"'"
+                    }
+                  }
+                }
+              }
+            }' || {
+            echo "Error: Failed to trigger Terraform run."
+            exit 1
+          }
