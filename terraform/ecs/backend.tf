@@ -68,7 +68,8 @@ resource "aws_ecs_task_definition" "backend" {
       }
       environment = [
         { name = "FRONTEND_URL", value = "${var.frontend_subdomain_name}.${var.root_domain_name}" },
-        { name = "BACKEND_URL", value = "${var.backend_subdomain_name}.${var.root_domain_name}" },
+        { name = "BACKEND_URL", value = "http://localhost:8000" },
+        { name = "BACKEND_CONTAINER_URL", value = "${var.backend_subdomain_name}.${var.root_domain_name}" },
         { name = "GOOGLE_APPLICATION_PROPERTY_ID", value = var.GOOGLE_APPLICATION_PROPERTY_ID },
         { name = "GOOGLE_APPLICATION_CREDENTIALS", value = var.GOOGLE_APPLICATION_CREDENTIALS },
         { name = "CELERY_BROKER_URL", value = var.CELERY_BROKER_URL },

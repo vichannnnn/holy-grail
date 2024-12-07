@@ -14,7 +14,6 @@ from app.utils.limiter import limiter
 from app.utils.starlette_validation_uploadfile import ValidateUploadFileMiddleware
 
 app = FastAPI(
-    root_path="/api/v1" if os.getenv("PRODUCTION") in ["true", "dev"] else None,
     docs_url=None if os.getenv("PRODUCTION") == "true" else "/docs",
     redoc_url=None if os.getenv("PRODUCTION") == "true" else "/redoc",
 )

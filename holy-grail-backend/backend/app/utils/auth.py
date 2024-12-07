@@ -34,7 +34,7 @@ def generate_password():
 
 class Authenticator:
     pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-    oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
+    oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
     @classmethod
     def create_access_token(cls, data: Dict[str, Any]) -> str:
