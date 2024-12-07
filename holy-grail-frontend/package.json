@@ -4,10 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "cp .env .env.local && bunx --bun vite --host 0.0.0.0 --port 5173",
-    "build-dev":"cp .env.dev .env.local && bunx --bun vite build",
-    "build-prod":"cp .env.prod .env.local && bunx --bun vite build",
-    "build": "bunx --bun vite build",
+    "dev": "bunx --bun vite --host 0.0.0.0 --port 3000",
+    "build":"bunx --bun vite build",
     "start": "vite preview",
     "format": "prettier --write \"src/**/*.{ts,tsx}\" \"../holy-grail-backend/backend/app/email_templates/*.html\""
   },
