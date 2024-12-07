@@ -17,7 +17,7 @@ resource "aws_ecs_task_definition" "frontend" {
       }
       portMappings = [
         {
-          containerPort = 4173
+          containerPort = 3000
           protocol      = "tcp"
         }
       ]
@@ -50,7 +50,7 @@ resource "aws_ecs_service" "frontend" {
   load_balancer {
     target_group_arn = aws_lb_target_group.frontend.arn
     container_name   = "frontend"
-    container_port   = 4173
+    container_port   = 3000
   }
 
   lifecycle {
@@ -65,12 +65,12 @@ resource "aws_ecs_service" "frontend" {
 resource "aws_lb_target_group" "frontend" {
   name        = "${var.app_name}-frontend-tg"
   vpc_id      = var.vpc_id
-  port        = 4173
+  port        = 3000
   protocol    = "HTTP"
   target_type = "ip"
 
   health_check {
-    port                = 4173
+    port                = 3000
     path                = "/"
     interval            = 30
     protocol            = "HTTP"

@@ -18,4 +18,4 @@ COPY package.json .
 COPY --from=build /app/dist /app
 
 
-CMD ["bun", "run", "start"]
+CMD ["serve", "-s", "dist", "-l", "3000"]

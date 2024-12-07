@@ -8,9 +8,8 @@
     "build-dev":"cp .env.dev .env.local && bunx --bun vite build",
     "build-prod":"cp .env.prod .env.local && bunx --bun vite build",
     "build": "bunx --bun vite build",
-    "start": "bun run serve",
-    "format": "prettier --write \"src/**/*.{ts,tsx}\" \"../holy-grail-backend/backend/app/email_templates/*.html\"",
-    "serve": "vite preview"
+    "start": "vite preview",
+    "format": "prettier --write \"src/**/*.{ts,tsx}\" \"../holy-grail-backend/backend/app/email_templates/*.html\""
   },
   "dependencies": {
     "@emotion/cache": "11.11.0",
@@ -41,15 +40,15 @@
     "typescript": "5.3.2",
     "@types/node": "20.10.0",
     "@types/react": "18.2.38",
-    "@types/react-dom": "18.2.17"
+    "@types/react-dom": "18.2.17",
+    "vite": "5.1.8",
+    "@vitejs/plugin-react": "4.2.0"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.57.1",
     "@typescript-eslint/parser": "^5.57.1",
-    "@vitejs/plugin-react": "4.2.0",
     "eslint": "^8.38.0",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.3.4",
-    "vite": "5.1.8"
+    "eslint-plugin-react-refresh": "^0.3.4"
   }
 }
