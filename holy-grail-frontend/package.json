@@ -8,6 +8,7 @@
     "build-dev":"cp .env.dev .env.local && bunx --bun vite build",
     "build-prod":"cp .env.prod .env.local && bunx --bun vite build",
     "build": "bunx --bun vite build",
+    "start": "bun run serve",
     "format": "prettier --write \"src/**/*.{ts,tsx}\" \"../holy-grail-backend/backend/app/email_templates/*.html\"",
     "serve": "vite preview"
   },
