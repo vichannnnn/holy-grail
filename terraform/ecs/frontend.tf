@@ -15,6 +15,13 @@ resource "aws_ecs_task_definition" "frontend" {
       repositoryCredentials = {
         credentialsParameter = aws_secretsmanager_secret.ghcr_token.arn
       }
+      portMappings = [
+        {
+          containerPort = 4173
+          protocol      = "tcp"
+        }
+      ]
+      essential = true
       logConfiguration = {
         logDriver = "awslogs"
         options = {
@@ -23,13 +30,6 @@ resource "aws_ecs_task_definition" "frontend" {
           awslogs-stream-prefix = "ecs"
         }
       }
-      portMappings = [
-        {
-          containerPort = 4173
-          hostPort      = 4173
-          protocol      = "tcp"
-        }
-      ]
     }
   ])
 }
