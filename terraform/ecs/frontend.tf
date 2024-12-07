@@ -66,7 +66,7 @@ resource "aws_ecs_service" "frontend" {
 }
 
 resource "aws_lb_target_group" "frontend" {
-  name        = "${var.app_name}-frontend-tg"
+  name        = "${var.app_name}-frontend-tg-${substr(uuid(), 0, 3)}"
   vpc_id      = var.vpc_id
   port        = 3000
   protocol    = "HTTP"
@@ -81,6 +81,10 @@ resource "aws_lb_target_group" "frontend" {
     unhealthy_threshold = 2
     matcher             = 200
   }
+
+  lifecycle {
+      create_before_destroy = true
+    }
 
   depends_on = [var.vpc]
 }

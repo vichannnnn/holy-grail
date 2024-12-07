@@ -152,7 +152,7 @@ resource "aws_ecs_service" "backend" {
 
 
 resource "aws_lb_target_group" "backend" {
-  name        = "${var.app_name}-backend-tg"
+  name        = "${var.app_name}-backend-tg-${substr(uuid(), 0, 3)}"
   vpc_id      = var.vpc_id
   port        = 8000
   protocol    = "HTTP"
@@ -168,6 +168,9 @@ resource "aws_lb_target_group" "backend" {
     matcher             = 200
   }
 
+  lifecycle {
+      create_before_destroy = true
+    }
 
   depends_on = [var.vpc]
 }
