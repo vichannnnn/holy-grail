@@ -10,8 +10,8 @@ resource "aws_ecs_task_definition" "frontend" {
 
   container_definitions = jsonencode([
     {
-      name    = "frontend"
-      image   = "${var.frontend_image}:${var.frontend_image_hash}"
+      name  = "frontend"
+      image = "${var.frontend_image}:${var.frontend_image_hash}"
       repositoryCredentials = {
         credentialsParameter = aws_secretsmanager_secret.ghcr_token.arn
       }
@@ -25,8 +25,8 @@ resource "aws_ecs_task_definition" "frontend" {
       }
       portMappings = [
         {
-          containerPort = 3000
-          hostPort      = 3000
+          containerPort = 4173
+          hostPort      = 4173
           protocol      = "tcp"
         }
       ]
@@ -50,7 +50,7 @@ resource "aws_ecs_service" "frontend" {
   load_balancer {
     target_group_arn = aws_lb_target_group.frontend.arn
     container_name   = "frontend"
-    container_port   = 3000
+    container_port   = 4173
   }
 
   lifecycle {
@@ -65,12 +65,12 @@ resource "aws_ecs_service" "frontend" {
 resource "aws_lb_target_group" "frontend" {
   name        = "${var.app_name}-frontend-tg"
   vpc_id      = var.vpc_id
-  port        = 3000
+  port        = 4173
   protocol    = "HTTP"
   target_type = "ip"
 
   health_check {
-    port                = 3000
+    port                = 4173
     path                = "/"
     interval            = 30
     protocol            = "HTTP"

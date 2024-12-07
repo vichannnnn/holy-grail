@@ -14,6 +14,8 @@ RUN bun run build-prod
 FROM oven/bun:1.0.26-slim AS deploy
 WORKDIR /app
 
+COPY package.json .
 COPY --from=build /app/dist /app
+
 
 CMD ["bun", "run", "start"]

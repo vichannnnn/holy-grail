@@ -67,10 +67,32 @@ resource "aws_ecs_task_definition" "backend" {
         credentialsParameter = aws_secretsmanager_secret.ghcr_token.arn
       }
       environment = [
+        { name = "FRONTEND_URL", value = "${var.frontend_subdomain_name}.${var.root_domain_name}" },
+        { name = "BACKEND_URL", value = "${var.backend_subdomain_name}.${var.root_domain_name}" },
+        { name = "GOOGLE_APPLICATION_PROPERTY_ID", value = var.GOOGLE_APPLICATION_PROPERTY_ID },
+        { name = "GOOGLE_APPLICATION_CREDENTIALS", value = var.GOOGLE_APPLICATION_CREDENTIALS },
         { name = "CELERY_BROKER_URL", value = var.CELERY_BROKER_URL },
         { name = "CELERY_RESULT_BACKEND", value = var.CELERY_RESULT_BACKEND },
+        { name = "POSTGRES_DB", value = var.POSTGRES_DB },
+        { name = "POSTGRES_USER", value = var.POSTGRES_USER },
+        { name = "POSTGRES_PASSWORD", value = var.POSTGRES_PASSWORD },
+        { name = "POSTGRES_HOST", value = var.POSTGRES_HOST },
+        { name = "DATABASE_URL", value = "postgresql+asyncpg://${var.POSTGRES_USER}:${var
+        .POSTGRES_PASSWORD}@${var.POSTGRES_HOST}:5432/${var.POSTGRES_DB}" },
+        { name = "TASK_RUNNER_DATABASE_URL", value = "postgresql://${var.POSTGRES_USER}:${var
+        .POSTGRES_PASSWORD}@${var.POSTGRES_HOST}:5432/${var.POSTGRES_DB}" },
+        { name = "ACCESS_TOKEN_EXPIRE_MINUTES", value = var.ACCESS_TOKEN_EXPIRE_MINUTES },
+        { name = "ALGORITHM", value = var.ALGORITHM },
+        { name = "SECRET_KEY", value = var.SECRET_KEY },
+        { name = "AWS_CLOUDFRONT_URL", value = var.AWS_CLOUDFRONT_URL },
+        { name = "AWS_S3_BUCKET_NAME", value = var.S3_BUCKET_NAME },
+        { name = "AWS_S3_ACCESS_KEY_ID", value = var.S3_KEY_ID },
+        { name = "AWS_S3_SECRET_ACCESS_KEY", value = var.S3_KEY },
+        { name = "AWS_CLOUDFRONT_URL", value = var.S3_KEY },
         { name = "MAILTRAP_BEARER_TOKEN", value = var.MAILTRAP_BEARER_TOKEN },
         { name = "MAILTRAP_API_KEY", value = var.MAILTRAP_API_KEY },
+        { name = "PRODUCTION", value = var.PRODUCTION },
+        { name = "LOGFIRE_TOKEN", value = var.LOGFIRE_TOKEN }
       ]
       essential = true
       logConfiguration = {
