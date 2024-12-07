@@ -59,7 +59,10 @@ resource "aws_ecs_service" "frontend" {
     ]
   }
 
-  depends_on = [aws_lb_listener_rule.frontend_rule]
+  depends_on = [
+    aws_lb_target_group.frontend,
+    aws_lb_listener_rule.frontend_rule
+  ]
 }
 
 resource "aws_lb_target_group" "frontend" {
@@ -99,17 +102,13 @@ resource "aws_lb_listener_rule" "frontend_rule" {
 }
 
 resource "null_resource" "post_apply_frontend_script" {
-  depends_on = [
-    aws_lb.app_alb,
-    aws_ecs_service.frontend
-  ]
-
   provisioner "local-exec" {
     # ALB domain, root domain, subdomain
     command = "./porkbun.sh ${aws_lb.app_alb.dns_name} ${var.root_domain_name} ${var.frontend_subdomain_name}"
   }
 
-  triggers = {
-    always_run = timestamp()
-  }
+  depends_on = [
+    aws_lb.app_alb,
+    aws_ecs_service.frontend
+  ]
 }
