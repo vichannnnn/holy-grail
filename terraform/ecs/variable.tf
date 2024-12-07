@@ -55,7 +55,6 @@ variable "root_domain_name" {
 
 variable "vpc" {
   description = "VPC where the ECS will be hosted."
-  type        = string
 }
 
 variable "vpc_id" {
