@@ -155,7 +155,12 @@ variable "MAILTRAP_BEARER_TOKEN" {
   sensitive   = true
 }
 
-variable "REDIS_URL" {
+variable "CELERY_RESULT_BACKEND" {
+  description = "Redis URL"
+  type        = string
+}
+
+variable "CELERY_BROKER_URL" {
   description = "Redis URL"
   type        = string
 }

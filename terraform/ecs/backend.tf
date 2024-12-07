@@ -27,7 +27,7 @@ resource "aws_ecs_task_definition" "backend" {
         { name = "GOOGLE_APPLICATION_PROPERTY_ID", value = var.GOOGLE_APPLICATION_PROPERTY_ID },
         { name = "GOOGLE_APPLICATION_CREDENTIALS", value = var.GOOGLE_APPLICATION_CREDENTIALS },
         { name = "CELERY_BROKER_URL", value = var.CELERY_BROKER_URL },
-        { name = "CELERY_RESULT_BACKEND", value = var.CELERY_BROKER_URL },
+        { name = "CELERY_RESULT_BACKEND", value = var.CELERY_RESULT_BACKEND },
         { name = "POSTGRES_DB", value = var.POSTGRES_DB },
         { name = "POSTGRES_USER", value = var.POSTGRES_USER },
         { name = "POSTGRES_PASSWORD", value = var.POSTGRES_PASSWORD },
@@ -67,8 +67,8 @@ resource "aws_ecs_task_definition" "backend" {
         credentialsParameter = aws_secretsmanager_secret.ghcr_token.arn
       }
       environment = [
-        { name = "CELERY_BROKER_URL", value = var.REDIS_URL },
-        { name = "CELERY_RESULT_BACKEND", value = var.REDIS_URL },
+        { name = "CELERY_BROKER_URL", value = var.CELERY_BROKER_URL },
+        { name = "CELERY_RESULT_BACKEND", value = var.CELERY_RESULT_BACKEND },
         { name = "MAILTRAP_BEARER_TOKEN", value = var.MAILTRAP_BEARER_TOKEN },
         { name = "MAILTRAP_API_KEY", value = var.MAILTRAP_API_KEY },
       ]

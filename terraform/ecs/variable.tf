@@ -173,17 +173,12 @@ variable "GOOGLE_APPLICATION_CREDENTIALS" {
   sensitive   = true
 }
 
-variable "CELERY_BROKER_URL" {
-  description = "URL for the Celery broker (e.g., Redis or RabbitMQ)."
-  type        = string
-}
-
 variable "CELERY_RESULT_BACKEND" {
-  description = "Backend for Celery task results."
+  description = "Redis URL"
   type        = string
 }
 
-variable "REDIS_URL" {
-  description = "Redis URL."
+variable "CELERY_BROKER_URL" {
+  description = "Redis URL"
   type        = string
 }
