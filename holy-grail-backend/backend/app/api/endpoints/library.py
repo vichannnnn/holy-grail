@@ -1,16 +1,16 @@
-from typing import Optional, List
+from typing import List, Optional
 
 from fastapi import APIRouter, Query, Request
 from fastapi_pagination import Page
 
 from app.api.deps import (
+    CurrentSession,
+    SessionAdmin,
     SessionBucket,
     SessionVerifiedUser,
-    SessionAdmin,
-    CurrentSession,
 )
 from app.models.library import Library
-from app.schemas.library import NoteUpdateSchema, NoteSchema
+from app.schemas.library import NoteSchema, NoteUpdateSchema
 from app.utils.limiter import conditional_rate_limit
 
 router = APIRouter()

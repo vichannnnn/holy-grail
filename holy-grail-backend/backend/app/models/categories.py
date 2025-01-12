@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING, List
 
-from sqlalchemy import Integer, ForeignKey, select, UniqueConstraint
+from sqlalchemy import ForeignKey, Integer, UniqueConstraint, select
 from sqlalchemy import exc as SQLAlchemyExceptions
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Mapped, mapped_column, relationship

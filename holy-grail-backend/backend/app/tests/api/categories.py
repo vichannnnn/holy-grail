@@ -1,6 +1,10 @@
+from typing import Tuple
+
+import pytest
 from fastapi import status
-from fastapi.testclient import TestClient
 from fastapi.encoders import jsonable_encoder
+from fastapi.testclient import TestClient
+
 from app import schemas
 from app.models import CategoryLevel
 from app.tests.conftest import (
@@ -8,8 +12,6 @@ from app.tests.conftest import (
     override_get_current_user,
     override_get_developer,
 )
-from typing import Tuple
-import pytest
 
 SUBJECT_URL = "/subject"
 DOCUMENT_TYPE_URL = "/document_type"

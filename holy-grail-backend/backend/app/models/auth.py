@@ -5,24 +5,23 @@ from uuid import uuid4
 import jwt
 from fastapi import Response as FastAPIResponse
 from pydantic import EmailStr
-from sqlalchemy import Index, asc, func
+from sqlalchemy import Index, asc, func, select, update
 from sqlalchemy import exc as SQLAlchemyExceptions
-from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import relationship, Mapped, mapped_column, synonym
+from sqlalchemy.orm import Mapped, mapped_column, relationship, synonym
 from sqlalchemy.sql.expression import text
 
 from app.crud.base import CRUD
 from app.db.base_class import Base
 from app.schemas.admin import UpdateRoleSchema
 from app.schemas.auth import (
-    AccountRegisterSchema,
     AccountCreateSchema,
-    AccountUpdatePasswordSchema,
-    CurrentUserSchema,
-    AuthSchema,
-    CurrentUserWithJWTSchema,
+    AccountRegisterSchema,
     AccountUpdateEmailSchema,
+    AccountUpdatePasswordSchema,
+    AuthSchema,
+    CurrentUserSchema,
+    CurrentUserWithJWTSchema,
 )
 from app.tasks.new_password_email import send_new_password_email_task
 from app.tasks.reset_password_email import send_reset_password_email_task

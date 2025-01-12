@@ -19,6 +19,7 @@ resource "aws_lb_listener" "https" {
     type             = "forward"
   }
 
+
   depends_on = [
     aws_acm_certificate_validation.app_alb
   ]

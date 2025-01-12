@@ -4,7 +4,7 @@ from fastapi import APIRouter
 
 from app.api.deps import CurrentSession, SessionUser
 from app.models.scoreboard import Scoreboard
-from app.schemas.scoreboard import ScoreboardUser, AuthenticatedScoreboardUser
+from app.schemas.scoreboard import AuthenticatedScoreboardUser, ScoreboardUser
 
 router = APIRouter()
 

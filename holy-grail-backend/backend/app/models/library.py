@@ -1,21 +1,21 @@
 import datetime
 import uuid
-from typing import TYPE_CHECKING, Optional, Union, Tuple, List
+from typing import TYPE_CHECKING, List, Optional, Tuple, Union
 
 import boto3
 import httpx
-from fastapi import UploadFile, HTTPException, Response
+from fastapi import HTTPException, Response, UploadFile
 from pydantic import ValidationError
-from sqlalchemy import exc as SQLAlchemyExceptions
 from sqlalchemy import (
-    func,
+    DateTime,
     ForeignKey,
+    ForeignKeyConstraint,
+    delete,
+    func,
     select,
     update,
-    delete,
-    DateTime,
-    ForeignKeyConstraint,
 )
+from sqlalchemy import exc as SQLAlchemyExceptions
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Mapped, mapped_column, relationship, selectinload
 from sqlalchemy.sql.expression import text
@@ -34,15 +34,15 @@ from app.schemas.library import (
 )
 from app.utils.exceptions import AppError
 from app.utils.file_handler import (
-    save_file,
+    AWS_CLOUDFRONT_URL,
     accepted_doc_type_extensions,
     developer_accepted_doc_type_extensions,
-    AWS_CLOUDFRONT_URL,
+    save_file,
 )
 from app.utils.upload_errors import UploadError
 
 if TYPE_CHECKING:
-    from app.models.categories import CategoryLevel, Subjects, DocumentTypes
+    from app.models.categories import CategoryLevel, DocumentTypes, Subjects
 
 
 def form_data_note_parser(

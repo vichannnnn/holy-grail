@@ -1,10 +1,17 @@
 resource "aws_acm_certificate" "app_alb" {
-  domain_name               = "*.${var.root_domain_name}"
-  subject_alternative_names = ["${var.frontend_subdomain_name}.${var.root_domain_name}", "${var.backend_subdomain_name}.${var.root_domain_name}"]
-  validation_method         = "DNS"
+  domain_name = "*.${var.root_domain_name}"
+  subject_alternative_names = [
+    var.frontend_subdomain_name != "NONE" ? "${var.frontend_subdomain_name}.${var.root_domain_name}" : var.root_domain_name,
+    var.backend_subdomain_name != "NONE" ? "${var.backend_subdomain_name}.${var.root_domain_name}" : var.root_domain_name
+  ]
+  validation_method = "DNS"
 
   tags = {
     Name = "${var.app_name}-cert"
+  }
+
+  lifecycle {
+    create_before_destroy = true
   }
 }
 

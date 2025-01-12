@@ -1,10 +1,10 @@
-from typing import TypeVar, Generic, Optional, Sequence, Type, Dict, Any, List
+from typing import Any, Dict, Generic, List, Optional, Sequence, Type, TypeVar
 
 from fastapi import Response as FastAPIResponse
-from sqlalchemy import exc as SQLAlchemyExceptions, and_
-from sqlalchemy import update, delete, select, asc
+from sqlalchemy import and_, asc, delete, select, update
+from sqlalchemy import exc as SQLAlchemyExceptions
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import declared_attr, Load
+from sqlalchemy.orm import Load, declared_attr
 
 from app.db.base_class import Base
 from app.utils.exceptions import AppError

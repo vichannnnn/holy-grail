@@ -1,16 +1,16 @@
 from fastapi import APIRouter
 
 from app.api.endpoints import (
-    example,
-    auth,
-    tasks,
-    library,
-    categories,
-    admin,
-    dev,
     ad_analytics,
+    admin,
     analytics,
+    auth,
+    categories,
+    dev,
+    example,
+    library,
     scoreboard,
+    tasks,
 )
 
 api_router = APIRouter()

@@ -1,5 +1,1 @@
-from . import auth
-from . import categories
-from . import library
-from . import admin
-from . import base
+from . import admin, auth, base, categories, library

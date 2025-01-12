@@ -12,21 +12,21 @@ from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 
 from app import schemas
 from app.api.deps import (
-    get_session,
-    get_current_user,
     get_admin,
+    get_current_user,
     get_developer,
+    get_session,
     get_verified_user,
 )
 from app.db.base_class import Base
 from app.db.database import (
-    engine as test_engine,
-    async_session as TestingSessionLocal,
-    SQLALCHEMY_DATABASE_URL_WITHOUT_DB,
+    SQLALCHEMY_DATABASE_URL,
 )
+from app.db.database import async_session as TestingSessionLocal
+from app.db.database import engine as test_engine
 from app.main import app
 from app.models.auth import Account
-from app.models.categories import DocumentTypes, Subjects, CategoryLevel
+from app.models.categories import CategoryLevel, DocumentTypes, Subjects
 from app.schemas.auth import (
     AccountRegisterSchema,
     AccountUpdatePasswordSchema,
@@ -44,7 +44,7 @@ def event_loop():
 
 @pytest.fixture(scope="session", autouse=True)
 async def create_test_database():
-    postgres_engine = create_async_engine(str(SQLALCHEMY_DATABASE_URL_WITHOUT_DB))
+    postgres_engine = create_async_engine(str(SQLALCHEMY_DATABASE_URL))
 
     async with postgres_engine.connect() as conn:
         await conn.execute(text("COMMIT"))

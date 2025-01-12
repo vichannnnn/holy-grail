@@ -2,18 +2,18 @@ import os
 
 from fastapi import APIRouter, Request, status
 
-from app.api.deps import SessionUser, CurrentSession
+from app.api.deps import CurrentSession, SessionUser
 from app.models.auth import Account
 from app.schemas.auth import (
+    AccountRegisterSchema,
+    AccountUpdateEmailSchema,
+    AccountUpdatePasswordSchema,
     AuthSchema,
     CurrentUserSchema,
-    AccountRegisterSchema,
-    AccountUpdatePasswordSchema,
-    SendPasswordResetEmailSchema,
-    SendNewPasswordSchema,
-    VerifyEmailSchema,
     CurrentUserWithJWTSchema,
-    AccountUpdateEmailSchema,
+    SendNewPasswordSchema,
+    SendPasswordResetEmailSchema,
+    VerifyEmailSchema,
 )
 from app.utils.limiter import conditional_rate_limit
 

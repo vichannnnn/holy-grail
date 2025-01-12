@@ -4,8 +4,8 @@ resource "aws_ecs_task_definition" "backend" {
   requires_compatibilities = ["FARGATE"]
   execution_role_arn       = aws_iam_role.ecs_execution_role.arn
   network_mode             = "awsvpc"
-  cpu                      = 1024 # Adjust based on your requirements
-  memory                   = 2048 # Adjust based on your requirements
+  cpu                      = 1024
+  memory                   = 2048
 
   container_definitions = jsonencode([
     {
@@ -22,7 +22,10 @@ resource "aws_ecs_task_definition" "backend" {
         }
       ]
       environment = [
-        { name = "FRONTEND_URL", value = "${var.frontend_subdomain_name}.${var.root_domain_name}" },
+        {
+          name  = "FRONTEND_URL",
+          value = var.frontend_subdomain_name != "NONE" ? "https://${var.frontend_subdomain_name}.${var.root_domain_name}" : "https://${var.root_domain_name}"
+        },
         { name = "BACKEND_URL", value = "${var.backend_subdomain_name}.${var.root_domain_name}" },
         { name = "GOOGLE_APPLICATION_PROPERTY_ID", value = var.GOOGLE_APPLICATION_PROPERTY_ID },
         { name = "GOOGLE_APPLICATION_CREDENTIALS", value = var.GOOGLE_APPLICATION_CREDENTIALS },
@@ -67,7 +70,10 @@ resource "aws_ecs_task_definition" "backend" {
         credentialsParameter = aws_secretsmanager_secret.ghcr_token.arn
       }
       environment = [
-        { name = "FRONTEND_URL", value = "${var.frontend_subdomain_name}.${var.root_domain_name}" },
+        {
+          name  = "FRONTEND_URL",
+          value = var.frontend_subdomain_name != "NONE" ? "https://${var.frontend_subdomain_name}.${var.root_domain_name}" : "https://${var.root_domain_name}"
+        },
         { name = "BACKEND_URL", value = "${var.backend_subdomain_name}.${var.root_domain_name}" },
         { name = "BACKEND_CONTAINER_URL", value = "localhost:8000" },
         { name = "GOOGLE_APPLICATION_PROPERTY_ID", value = var.GOOGLE_APPLICATION_PROPERTY_ID },
@@ -170,8 +176,8 @@ resource "aws_lb_target_group" "backend" {
   }
 
   lifecycle {
-      create_before_destroy = true
-    }
+    create_before_destroy = true
+  }
 
   depends_on = [var.vpc]
 }

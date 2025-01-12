@@ -1,8 +1,10 @@
 import re
-from typing import List, Dict, Any, Optional
+from typing import Any, Dict, List, Optional
+
 from fastapi import APIRouter
-from app.api.deps import SessionDeveloper
 from prometheus_client import generate_latest
+
+from app.api.deps import SessionDeveloper
 
 router = APIRouter()
 

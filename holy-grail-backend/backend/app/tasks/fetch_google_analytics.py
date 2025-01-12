@@ -1,5 +1,7 @@
 import os
+
 import requests
+
 from app.utils.worker import celery_app
 
 

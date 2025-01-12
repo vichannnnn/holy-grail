@@ -1,14 +1,6 @@
 import datetime
-from typing import Tuple, Optional
-from sqlalchemy import select, DateTime, func
-from sqlalchemy.orm import Mapped, mapped_column
-
-from app.crud.base import CRUD, ModelType
-from app.db.base_class import Base
-from app.db.database import AsyncSession
-from app.utils.exceptions import AppError
-
 import os
+from typing import Optional, Tuple
 
 import pytz
 from google.analytics.data_v1beta import BetaAnalyticsDataClient
@@ -19,8 +11,14 @@ from google.analytics.data_v1beta.types import (
     RunReportRequest,
     RunReportResponse,
 )
+from sqlalchemy import DateTime, func, select
+from sqlalchemy.orm import Mapped, mapped_column
 
+from app.crud.base import CRUD, ModelType
+from app.db.base_class import Base
+from app.db.database import AsyncSession
 from app.models.auth import Account
+from app.utils.exceptions import AppError
 
 
 def extract_metrics(response: RunReportResponse) -> Tuple[Optional[int], Optional[int]]:

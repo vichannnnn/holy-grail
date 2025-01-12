@@ -1,16 +1,16 @@
 from typing import List
 
 from fastapi import Response as FastAPIResponse
-from sqlalchemy import ForeignKey, select, func, not_
+from sqlalchemy import ForeignKey, func, not_, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import Mapped, mapped_column, synonym, relationship, selectinload
+from sqlalchemy.orm import Mapped, mapped_column, relationship, selectinload, synonym
 from sqlalchemy.sql.expression import text
 
 from app.crud.base import CRUD
 from app.db.base_class import Base
 from app.models.auth import Account
 from app.models.library import Library
-from app.schemas.scoreboard import User, ScoreboardUser, AuthenticatedScoreboardUser
+from app.schemas.scoreboard import AuthenticatedScoreboardUser, ScoreboardUser, User
 
 
 class Scoreboard(Base, CRUD["Scoreboard"]):

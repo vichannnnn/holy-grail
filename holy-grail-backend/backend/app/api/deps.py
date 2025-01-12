@@ -1,5 +1,5 @@
 import os
-from typing import AsyncGenerator, Generator, Annotated
+from typing import Annotated, AsyncGenerator, Generator
 
 import boto3
 from fastapi import Depends
@@ -10,12 +10,12 @@ from sqlalchemy.orm import Session
 
 from app.db.database import SessionLocal, async_session
 from app.models.auth import (
-    Authenticator,
-    AppError,
-    CurrentUserSchema,
     ALGORITHM,
     SECRET_KEY,
     Account,
+    AppError,
+    Authenticator,
+    CurrentUserSchema,
 )
 from app.utils.file_handler import s3_app_client
 

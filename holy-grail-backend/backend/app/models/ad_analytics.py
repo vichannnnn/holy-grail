@@ -2,8 +2,8 @@ import datetime
 
 import pytz
 from fastapi import Response as FastAPIResponse
+from sqlalchemy import Date, func, update
 from sqlalchemy import exc as SQLAlchemyExceptions
-from sqlalchemy import update, func, Date
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.crud.base import CRUD

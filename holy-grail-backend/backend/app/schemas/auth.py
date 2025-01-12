@@ -1,5 +1,5 @@
 from enum import IntEnum
-from typing import Optional, Annotated
+from typing import Annotated, Optional
 
 from pydantic import EmailStr, StringConstraints
 

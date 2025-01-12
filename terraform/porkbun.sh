@@ -9,6 +9,10 @@ ALB_DNS_NAME=$1
 DOMAIN=$2
 SUBDOMAIN=$3
 
+if [[ "$SUBDOMAIN" == "NONE" ]]; then
+  SUBDOMAIN=""
+fi
+
 FULL_DOMAIN="${SUBDOMAIN}.${DOMAIN}"
 
 EXISTING_RECORDS=$(curl -s -X POST "https://porkbun.com/api/json/v3/dns/retrieve/${DOMAIN}" \

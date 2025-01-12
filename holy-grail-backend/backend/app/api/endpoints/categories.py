@@ -4,17 +4,17 @@ from fastapi import APIRouter
 from sqlalchemy.orm import joinedload
 
 from app.api.deps import CurrentSession, SessionDeveloper
-from app.models.categories import Subjects, CategoryLevel, DocumentTypes
+from app.models.categories import CategoryLevel, DocumentTypes, Subjects
 from app.schemas.categories import (
-    CategorySchema,
-    SubjectSchema,
-    DocumentTypeSchema,
-    SubjectCreateSchema,
     CategoryCreateSchema,
-    DocumentTypeCreateSchema,
-    SubjectUpdateSchema,
-    DocumentTypeUpdateSchema,
+    CategorySchema,
     CategoryUpdateSchema,
+    DocumentTypeCreateSchema,
+    DocumentTypeSchema,
+    DocumentTypeUpdateSchema,
+    SubjectCreateSchema,
+    SubjectSchema,
+    SubjectUpdateSchema,
 )
 
 router = APIRouter()

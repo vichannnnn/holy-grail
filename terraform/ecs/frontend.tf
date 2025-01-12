@@ -83,8 +83,8 @@ resource "aws_lb_target_group" "frontend" {
   }
 
   lifecycle {
-      create_before_destroy = true
-    }
+    create_before_destroy = true
+  }
 
   depends_on = [var.vpc]
 }

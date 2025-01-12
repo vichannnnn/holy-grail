@@ -1,6 +1,7 @@
+import os
+
 from slowapi import Limiter
 from starlette.requests import Request
-import os
 
 
 def get_ipaddr(request: Request) -> str:

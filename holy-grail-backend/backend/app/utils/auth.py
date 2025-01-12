@@ -1,13 +1,15 @@
+import random
+import string
 from datetime import datetime, timedelta
 from os import environ  # pylint: disable=E0611
+from typing import Any, Dict
+
 from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from passlib.context import CryptContext
-from typing import Dict, Any
+
 from app.utils.exceptions import AppError
-import random
-import string
 
 ACCESS_TOKEN_EXPIRE_MINUTES = int(environ["ACCESS_TOKEN_EXPIRE_MINUTES"])
 ALGORITHM = environ["ALGORITHM"]
