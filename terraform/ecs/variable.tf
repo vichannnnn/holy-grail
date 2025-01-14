@@ -121,21 +121,21 @@ variable "AWS_CLOUDFRONT_URL" {
   type        = string
 }
 
+variable "AWS_ACCESS_KEY" {
+  description = "AWS Access Key ID."
+  type        = string
+  sensitive   = true
+}
+
+variable "AWS_SECRET_KEY" {
+  description = "AWS Secret Access Key."
+  type        = string
+  sensitive   = true
+}
+
 variable "S3_BUCKET_NAME" {
   description = "Name of the S3 bucket."
   type        = string
-}
-
-variable "S3_KEY_ID" {
-  description = "AWS Access Key ID for S3."
-  type        = string
-  sensitive   = true
-}
-
-variable "S3_KEY" {
-  description = "AWS Secret Access Key for S3."
-  type        = string
-  sensitive   = true
 }
 
 variable "MAILTRAP_BEARER_TOKEN" {

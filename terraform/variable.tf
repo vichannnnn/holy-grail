@@ -8,12 +8,13 @@ variable "app_name" {
   type        = string
 }
 
-variable "aws_access_key" {
+variable "AWS_ACCESS_KEY" {
   description = "AWS Access key"
   type        = string
   sensitive   = true
 }
-variable "aws_secret_key" {
+
+variable "AWS_SECRET_KEY" {
   description = "AWS Secret key"
   type        = string
   sensitive   = true
@@ -118,18 +119,6 @@ variable "AWS_CLOUDFRONT_URL" {
 variable "S3_BUCKET_NAME" {
   description = "Name of the S3 bucket."
   type        = string
-}
-
-variable "S3_KEY" {
-  description = "Key for accessing S3 bucket."
-  type        = string
-  sensitive   = true
-}
-
-variable "S3_KEY_ID" {
-  description = "ID for accessing S3 bucket."
-  type        = string
-  sensitive   = true
 }
 
 variable "PRODUCTION" {

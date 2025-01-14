@@ -1,6 +1,6 @@
 provider "aws" {
-  access_key = var.aws_access_key
-  secret_key = var.aws_secret_key
+  access_key = var.AWS_ACCESS_KEY
+  secret_key = var.AWS_SECRET_KEY
   region     = var.region
 
   default_tags {
@@ -27,8 +27,8 @@ module "s3" {
   source             = "./s3"
   app_name           = var.app_name
   BUCKET_DOMAIN_NAME = var.BUCKET_DOMAIN_NAME
-  aws_access_key     = var.aws_access_key
-  aws_secret_key     = var.aws_secret_key
+  AWS_ACCESS_KEY     = var.AWS_ACCESS_KEY
+  AWS_SECRET_KEY     = var.AWS_SECRET_KEY
   root_domain_name   = var.root_domain_name
 }
 
@@ -66,8 +66,6 @@ module "ecs" {
   AWS_CLOUDFRONT_URL             = var.AWS_CLOUDFRONT_URL
   PRODUCTION                     = var.PRODUCTION
   S3_BUCKET_NAME                 = var.S3_BUCKET_NAME
-  S3_KEY                         = var.S3_KEY
-  S3_KEY_ID                      = var.S3_KEY_ID
   SECRET_KEY                     = var.SECRET_KEY
   LOGFIRE_TOKEN                  = var.LOGFIRE_TOKEN
   MAILTRAP_API_KEY               = var.MAILTRAP_API_KEY
@@ -76,4 +74,6 @@ module "ecs" {
   GOOGLE_APPLICATION_PROPERTY_ID = var.GOOGLE_APPLICATION_PROPERTY_ID
   CELERY_BROKER_URL              = var.CELERY_BROKER_URL
   CELERY_RESULT_BACKEND          = var.CELERY_RESULT_BACKEND
+  AWS_ACCESS_KEY                 = var.AWS_ACCESS_KEY
+  AWS_SECRET_KEY                 = var.AWS_SECRET_KEY
 }

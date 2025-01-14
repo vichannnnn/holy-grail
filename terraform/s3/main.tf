@@ -1,8 +1,8 @@
 
 provider "aws" {
   alias      = "us_east_1"
-  access_key = var.aws_access_key
-  secret_key = var.aws_secret_key
+  access_key = var.AWS_ACCESS_KEY
+  secret_key = var.AWS_SECRET_KEY
   region     = "us-east-1"
 
   default_tags {

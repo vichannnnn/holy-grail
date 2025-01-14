@@ -8,13 +8,13 @@ variable "BUCKET_DOMAIN_NAME" {
   type        = string
 }
 
-variable "aws_access_key" {
+variable "AWS_ACCESS_KEY" {
   description = "AWS Access key"
   type        = string
   sensitive   = true
 }
 
-variable "aws_secret_key" {
+variable "AWS_SECRET_KEY" {
   description = "AWS Secret key"
   type        = string
   sensitive   = true
