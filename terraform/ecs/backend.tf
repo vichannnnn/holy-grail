@@ -35,10 +35,6 @@ resource "aws_ecs_task_definition" "backend" {
         { name = "POSTGRES_USER", value = var.POSTGRES_USER },
         { name = "POSTGRES_PASSWORD", value = var.POSTGRES_PASSWORD },
         { name = "POSTGRES_HOST", value = var.POSTGRES_HOST },
-        { name = "DATABASE_URL", value = "postgresql+asyncpg://${var.POSTGRES_USER}:${var
-        .POSTGRES_PASSWORD}@${var.POSTGRES_HOST}:5432/${var.POSTGRES_DB}" },
-        { name = "TASK_RUNNER_DATABASE_URL", value = "postgresql://${var.POSTGRES_USER}:${var
-        .POSTGRES_PASSWORD}@${var.POSTGRES_HOST}:5432/${var.POSTGRES_DB}" },
         { name = "ACCESS_TOKEN_EXPIRE_MINUTES", value = var.ACCESS_TOKEN_EXPIRE_MINUTES },
         { name = "ALGORITHM", value = var.ALGORITHM },
         { name = "SECRET_KEY", value = var.SECRET_KEY },
@@ -82,16 +78,12 @@ resource "aws_ecs_task_definition" "backend" {
         { name = "POSTGRES_USER", value = var.POSTGRES_USER },
         { name = "POSTGRES_PASSWORD", value = var.POSTGRES_PASSWORD },
         { name = "POSTGRES_HOST", value = var.POSTGRES_HOST },
-        { name = "DATABASE_URL", value = "postgresql+asyncpg://${var.POSTGRES_USER}:${var
-        .POSTGRES_PASSWORD}@${var.POSTGRES_HOST}:5432/${var.POSTGRES_DB}" },
-        { name = "TASK_RUNNER_DATABASE_URL", value = "postgresql://${var.POSTGRES_USER}:${var
-        .POSTGRES_PASSWORD}@${var.POSTGRES_HOST}:5432/${var.POSTGRES_DB}" },
         { name = "ACCESS_TOKEN_EXPIRE_MINUTES", value = var.ACCESS_TOKEN_EXPIRE_MINUTES },
         { name = "ALGORITHM", value = var.ALGORITHM },
         { name = "SECRET_KEY", value = var.SECRET_KEY },
         { name = "AWS_CLOUDFRONT_URL", value = var.AWS_CLOUDFRONT_URL },
-        { name = "AWS_S3_BUCKET_NAME", value = var.S3_BUCKET_NAME },
-         { name = "AWS_ACCESS_KEY", value = var.AWS_ACCESS_KEY },
+        { name = "AWS_S3_BUCKET_NAME", value = var.AWS_S3_BUCKET_NAME },
+        { name = "AWS_ACCESS_KEY", value = var.AWS_ACCESS_KEY },
         { name = "AWS_SECRET_KEY", value = var.AWS_SECRET_KEY },
         { name = "MAILTRAP_BEARER_TOKEN", value = var.MAILTRAP_BEARER_TOKEN },
         { name = "MAILTRAP_API_KEY", value = var.MAILTRAP_API_KEY },

@@ -133,7 +133,7 @@ variable "AWS_SECRET_KEY" {
   sensitive   = true
 }
 
-variable "S3_BUCKET_NAME" {
+variable "AWS_S3_BUCKET_NAME" {
   description = "Name of the S3 bucket."
   type        = string
 }
