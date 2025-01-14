@@ -1,14 +1,3 @@
-terraform {
-  cloud {
-
-    organization = "himari-sg"
-
-    workspaces {
-      name = "holy-grail-development"
-    }
-  }
-}
-
 provider "aws" {
   access_key = var.aws_access_key
   secret_key = var.aws_secret_key
