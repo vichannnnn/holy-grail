@@ -70,12 +70,12 @@ make sure you re-add and commit the changed files.
 
 ## Usage
 
-Go to `http://localhost:8005/docs` to access the endpoints from the Swagger UI.
-Go to `http://localhost:5173/` or `http://localhost:5175/` (most likely 5175 unless you set something else) to access
+Go to `http://localhost:8000/docs` to access the endpoints from the Swagger UI.
+Go to `http://localhost:5173/` to access
 the web application.
 
-You can also run `make runserver` to access the same application connected to the same database in port 9005, this is
-purely for debugging purpose with `pdb`. In this way, you have to access `http://localhost:9005/docs` while allowing
+You can also run `make runserver` to access the same application connected to the same database in port 9000, this is
+purely for debugging purpose with `pdb`. In this way, you have to access `http://localhost:9000/docs` while allowing
 interactive CLI for your debugging purpose.
 
 You can run `make check` to run your code through mypy, ruff and pytest as a pre-hook commit for your own projects.
