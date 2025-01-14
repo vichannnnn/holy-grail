@@ -1,16 +1,16 @@
 services:
-  holy-grail-backend:
-    container_name: holy-grail-backend
+  backend:
+    container_name: backend
     build: ./holy-grail-backend/backend
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8005 --reload
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
     ports:
-      - "8005:8005"
-      - "9005:9005"
+      - "8000:8000"
+      - "9000:9000"
     networks:
       - holy-grail-network
     depends_on:
-      - holy-grail-db
-      - holy-grail-scheduler
+      - db
+      - celery
     environment:
       FRONTEND_URL: ${FRONTEND_URL}
       BACKEND_URL: ${BACKEND_URL}
@@ -35,10 +35,9 @@ services:
     restart: unless-stopped
     volumes:
       - ./holy-grail-backend/backend:/app
-      - ./holy-grail-402514-f862e946664e.json:/app/holy-grail-402514-f862e946664e.json
 
-  holy-grail-db:
-    container_name: holy-grail-db
+  db:
+    container_name: db
     networks:
       - holy-grail-network
     environment:
@@ -58,18 +57,20 @@ services:
       - ./postgres:/var/lib/postgresql/data
       - ./holy-grail-backend/db:/docker-entrypoint-initdb.d/
 
-  holy-grail-redis:
+  redis:
+    container_name: redis
     image: redis:7.0.7-alpine
     networks:
       - holy-grail-network
     ports:
       - "6379"
     depends_on:
-      - holy-grail-db
+      - db
     command: redis-server --loglevel verbose
     restart: unless-stopped
 
-  holy-grail-scheduler:
+  celery:
+    container_name: celery
     networks:
       - holy-grail-network
     environment:
@@ -93,7 +94,7 @@ services:
       MAILTRAP_API_KEY: ${MAILTRAP_API_KEY}
       PRODUCTION: ${PRODUCTION}
     depends_on:
-      - holy-grail-redis
+      - redis
     build:
       context: ./holy-grail-backend/backend
     command: celery -A app.utils.worker worker -B --loglevel=info
@@ -102,23 +103,6 @@ services:
       test: [ "CMD-SHELL", "celery inspect ping" ]
     volumes:
       - ./holy-grail-backend/backend:/app
-      - ./holy-grail-402514-f862e946664e.json:/app/holy-grail-402514-f862e946664e.json
-
-  holy-grail-scheduler-gui:
-    networks:
-      - holy-grail-network
-    environment:
-      CELERY_BROKER_URL: ${REDIS_URL}
-    links:
-      - holy-grail-scheduler
-    ports:
-      - "5555:5555"
-    depends_on:
-      holy-grail-scheduler:
-        condition: service_healthy
-    image: mher/flower:1.2.0
-    restart: unless-stopped
-
 
 networks:
   holy-grail-network:

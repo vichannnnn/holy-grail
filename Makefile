@@ -2,9 +2,9 @@
 
 SHELL := bash
 
-backend_container := holy-grail-backend
-backend_container_name := holy-grail-backend
-frontend_container := holy-grail-frontend
+backend_container := backend
+backend_container_name := backend
+frontend_container := frontend
 
 local_postgres_user := postgres
 local_postgres_db_name := app
