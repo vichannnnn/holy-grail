@@ -89,13 +89,13 @@ jobs:
       - name: Update Terraform Cloud variable for Docker Image hash
         env:
           TFC_TOKEN: ${{ secrets.TFC_TOKEN }}
-          DEV_WORKSPACE_ID: ${{ secrets.DEV_WORKSPACE_ID }}
+          WORKSPACE_ID: ${{ github.ref == 'refs/heads/dev' && secrets.DEV_WORKSPACE_ID || secrets.PROD_WORKSPACE_ID }}
         run: |
           VARIABLES=$(curl -s \
             --header "Authorization: Bearer $TFC_TOKEN" \
             --header "Content-Type: application/vnd.api+json" \
             --request GET \
-            "https://app.terraform.io/api/v2/workspaces/$DEV_WORKSPACE_ID/vars")
+            "https://app.terraform.io/api/v2/workspaces/$WORKSPACE_ID/vars")
           
           # Extract the ID of the variable matching the given key
           EXISTING_VAR=$(echo "$VARIABLES" | jq -r --arg key "${{ env.FRONTEND_VARIABLE_HASH_NAME }}" '.data[] | select(
@@ -139,7 +139,7 @@ jobs:
                   }
                 }
               }' \
-              "https://app.terraform.io/api/v2/workspaces/$DEV_WORKSPACE_ID/vars"
+              "https://app.terraform.io/api/v2/workspaces/$WORKSPACE_ID/vars"
           fi
 
   backend:
@@ -175,14 +175,14 @@ jobs:
       - name: Update Terraform Cloud variable for Docker Image hash
         env:
           TFC_TOKEN: ${{ secrets.TFC_TOKEN }}
-          DEV_WORKSPACE_ID: ${{ secrets.DEV_WORKSPACE_ID }}
+          WORKSPACE_ID: ${{ github.ref == 'refs/heads/dev' && secrets.DEV_WORKSPACE_ID || secrets.PROD_WORKSPACE_ID }}
 
         run: |
           VARIABLES=$(curl -s \
             --header "Authorization: Bearer $TFC_TOKEN" \
             --header "Content-Type: application/vnd.api+json" \
             --request GET \
-            "https://app.terraform.io/api/v2/workspaces/$DEV_WORKSPACE_ID/vars")
+            "https://app.terraform.io/api/v2/workspaces/$WORKSPACE_ID/vars")
 
           # Extract the ID of the variable matching the given key
           EXISTING_VAR=$(echo "$VARIABLES" | jq -r --arg key "${{ env.BACKEND_VARIABLE_HASH_NAME }}" '.data[] | select(
@@ -226,7 +226,7 @@ jobs:
                   }
                 }
               }' \
-              "https://app.terraform.io/api/v2/workspaces/$DEV_WORKSPACE_ID/vars"
+              "https://app.terraform.io/api/v2/workspaces/$WORKSPACE_ID/vars"
           fi
 
   celery:
@@ -256,13 +256,13 @@ jobs:
       - name: Update Terraform Cloud variable for Docker Image hash
         env:
           TFC_TOKEN: ${{ secrets.TFC_TOKEN }}
-          DEV_WORKSPACE_ID: ${{ secrets.DEV_WORKSPACE_ID }}
+          WORKSPACE_ID: ${{ github.ref == 'refs/heads/dev' && secrets.DEV_WORKSPACE_ID || secrets.PROD_WORKSPACE_ID }}
         run: |
           VARIABLES=$(curl -s \
             --header "Authorization: Bearer $TFC_TOKEN" \
             --header "Content-Type: application/vnd.api+json" \
             --request GET \
-            "https://app.terraform.io/api/v2/workspaces/$DEV_WORKSPACE_ID/vars")
+            "https://app.terraform.io/api/v2/workspaces/$WORKSPACE_ID/vars")
           
           # Extract the ID of the variable matching the given key
           EXISTING_VAR=$(echo "$VARIABLES" | jq -r --arg key "${{ env.CELERY_VARIABLE_HASH_NAME }}" '.data[] | select(
@@ -306,7 +306,7 @@ jobs:
                   }
                 }
               }' \
-              "https://app.terraform.io/api/v2/workspaces/$DEV_WORKSPACE_ID/vars"
+              "https://app.terraform.io/api/v2/workspaces/$WORKSPACE_ID/vars"
           fi 
 
   deploy:
@@ -347,11 +347,11 @@ jobs:
       - name: Trigger Terraform Apply
         env:
           TFC_TOKEN: ${{ secrets.TFC_TOKEN }}
-          DEV_WORKSPACE_ID: ${{ secrets.DEV_WORKSPACE_ID }}
+          WORKSPACE_ID: ${{ github.ref == 'refs/heads/dev' && secrets.DEV_WORKSPACE_ID || secrets.PROD_WORKSPACE_ID }}
         run: |
           RESPONSE=$(curl -s \
             --request POST \
-            --url "https://app.terraform.io/api/v2/workspaces/$DEV_WORKSPACE_ID/configuration-versions" \
+            --url "https://app.terraform.io/api/v2/workspaces/$WORKSPACE_ID/configuration-versions" \
             --header "Authorization: Bearer $TFC_TOKEN" \
             --header "Content-Type: application/vnd.api+json" \
             --data '{
@@ -390,7 +390,7 @@ jobs:
                   "workspace": {
                     "data": {
                       "type": "workspaces",
-                      "id": "'"$DEV_WORKSPACE_ID"'"
+                      "id": "'"$WORKSPACE_ID"'"
                     }
                   },
                   "configuration-version": {
