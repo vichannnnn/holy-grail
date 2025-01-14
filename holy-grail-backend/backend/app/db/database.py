@@ -12,7 +12,7 @@ SQLALCHEMY_DATABASE_URL = PostgresDsn.build(
     scheme="postgresql+asyncpg",
     username=os.environ["POSTGRES_USER"] if not TESTING else "postgres",
     password=os.environ["POSTGRES_PASSWORD"] if not TESTING else "postgres",
-    host=os.getenv("POSTGRES_HOST", "localhost"),
+    host=os.getenv("POSTGRES_HOST", "db"),
     port=5432,
     path=os.environ["POSTGRES_DB"] if not TESTING else "",
 )

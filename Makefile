@@ -38,7 +38,7 @@ down:
 	$(DC_COMMAND) down
 
 runserver:
-	docker exec -it $(backend_container_name) uvicorn app.main:app --port 9005 --host 0.0.0.0 --reload
+	docker exec -it $(backend_container_name) uvicorn app.main:app --port 9000 --host 0.0.0.0 --reload
 
 buildbackend:
 	$(DC_COMMAND) up -d --build $(backend_container)
