@@ -90,11 +90,6 @@ variable "POSTGRES_USER" {
   sensitive = true
 }
 
-variable "POSTGRES_HOST" {
-  description = "The RDS endpoint to connect ECS tasks"
-  type        = string
-}
-
 variable "ACCESS_TOKEN_EXPIRE_MINUTES" {
   description = "Token expiration time in minutes."
   type        = string
