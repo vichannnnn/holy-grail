@@ -33,7 +33,6 @@ if TYPE_CHECKING:
     from app.models.library import Library
     from app.models.scoreboard import Scoreboard
 
-BACKEND_URL = environ["BACKEND_URL"]
 FRONTEND_URL = environ["FRONTEND_URL"]
 ACCESS_TOKEN_EXPIRE_MINUTES = int(environ["ACCESS_TOKEN_EXPIRE_MINUTES"])
 ALGORITHM = environ["ALGORITHM"]

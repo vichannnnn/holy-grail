@@ -15,8 +15,8 @@ celery_app = Celery(
 )
 celery_app.conf.timezone = "Asia/Singapore"
 
-celery_app.conf.broker_url = os.environ.get("CELERY_BROKER_URL")
-celery_app.conf.result_backend = os.environ.get("CELERY_RESULT_BACKEND")
+celery_app.conf.broker_url = os.environ.get("CELERY_BROKER_URL", "redis://redis:6379")
+celery_app.conf.result_backend = os.environ.get("CELERY_RESULT_BACKEND", "redis://redis:6379")
 
 celery_app.conf.beat_schedule = {
     "ping": {
