@@ -18,6 +18,7 @@ from app.models.auth import (
     CurrentUserSchema,
 )
 from app.utils.file_handler import s3_app_client
+from app.utils.flags import TESTING_FLAG
 
 
 def get_db() -> Generator[Session, None, None]:
@@ -37,7 +38,7 @@ OAuth2Session = Annotated[
 
 
 def get_s3_client() -> boto3.Session:
-    if os.environ.get("TESTING"):
+    if TESTING_FLAG:
         with mock_s3():
             s3_client = boto3.client("s3", region_name="us-east-1")
             s3_client.create_bucket(Bucket="test-bucket")

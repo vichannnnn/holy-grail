@@ -15,11 +15,12 @@ from app.schemas.auth import (
     SendPasswordResetEmailSchema,
     VerifyEmailSchema,
 )
+from app.utils.flags import PRODUCTION_FLAG, TESTING_FLAG
 from app.utils.limiter import conditional_rate_limit
 
 router = APIRouter()
 
-if os.getenv("PRODUCTION") != "local" or os.getenv("TESTING"):
+if not PRODUCTION_FLAG or TESTING_FLAG:
 
     @router.post("/create", response_model=CurrentUserWithJWTSchema)
     @conditional_rate_limit("10/5minute")

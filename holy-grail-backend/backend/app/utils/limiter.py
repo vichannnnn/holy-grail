@@ -3,6 +3,8 @@ import os
 from slowapi import Limiter
 from starlette.requests import Request
 
+from app.utils.flags import TESTING_FLAG
+
 
 def get_ipaddr(request: Request) -> str:
     if "X-Forwarded-For" in request.headers:
@@ -20,7 +22,7 @@ limiter = Limiter(key_func=get_ipaddr)
 
 def conditional_rate_limit(*args, **kwargs):
     def decorator(func):
-        if os.getenv("TESTING"):
+        if TESTING_FLAG:
             return func
         else:
             return limiter.limit(*args, **kwargs)(func)

@@ -1,7 +1,6 @@
 import ast
 import os
 
-import logfire
 from fastapi import FastAPI
 from fastapi.middleware import cors
 from slowapi import _rate_limit_exceeded_handler
@@ -10,12 +9,13 @@ from slowapi.errors import RateLimitExceeded
 from app.api.api import api_router
 from app.tasks.fetch_google_analytics import fetch_google_analytics
 from app.tasks.update_scoreboard_users import update_scoreboard_users
+from app.utils.flags import PRODUCTION_FLAG
 from app.utils.limiter import limiter
 from app.utils.starlette_validation_uploadfile import ValidateUploadFileMiddleware
 
 app = FastAPI(
-    docs_url=None if os.getenv("PRODUCTION") == "true" else "/docs",
-    redoc_url=None if os.getenv("PRODUCTION") == "true" else "/redoc",
+    docs_url=None if PRODUCTION_FLAG else "/docs",
+    redoc_url=None if PRODUCTION_FLAG else "/redoc",
 )
 app.state.limiter = limiter
 app.add_middleware(ValidateUploadFileMiddleware, app_path="/note/", max_size=1048576000)
@@ -31,7 +31,9 @@ app.add_middleware(
 
 app.include_router(api_router)
 
-if os.getenv("PRODUCTION") in ["true", "dev"]:
+if PRODUCTION_FLAG:
+    import logfire
+
     logfire.configure()
     logfire.instrument_fastapi(app)
 
