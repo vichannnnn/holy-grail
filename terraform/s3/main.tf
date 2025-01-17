@@ -52,6 +52,8 @@ resource "aws_iam_policy" "s3_access_policy" {
       }
     ]
   })
+
+  depends_on = [aws_s3_bucket.bucket]
 }
 
 resource "aws_iam_user_policy_attachment" "s3_user_policy_attachment" {
@@ -77,7 +79,7 @@ resource "aws_s3_bucket_policy" "bucket_policy" {
         Principal = {
           AWS = aws_iam_user.s3_user.arn
         },
-        Action   = ["s3:PutObject", "s3:DeleteObject"],
+        Action   = ["s3:GetObject", "s3:PutObject", "s3:DeleteObject"],
         Resource = "${aws_s3_bucket.bucket.arn}/*"
       }
     ]
