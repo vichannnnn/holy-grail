@@ -9,11 +9,7 @@ frontend_container := frontend
 local_postgres_user := postgres
 local_postgres_db_name := app
 
-ifeq ($(version),)
-	DC_COMMAND := docker compose
-else
-	DC_COMMAND := docker compose -f docker-compose.$(version).yml
-endif
+DC_COMMAND := docker compose
 
 -include ./Makefile.properties
 
@@ -26,25 +22,8 @@ coverage:
 generate_xml:
 	$(DC_COMMAND) run -e TESTING=true --rm $(backend_container) coverage xml -i
 
-build:
-	$(DC_COMMAND) stop && $(DC_COMMAND) build --no-cache && $(DC_COMMAND) up -d
-
-stop:
-	$(DC_COMMAND) stop
-
-run:
-	$(DC_COMMAND) up -d
-down:
-	$(DC_COMMAND) down
-
 runserver:
 	docker exec -it $(backend_container_name) uvicorn app.main:app --port 9000 --host 0.0.0.0 --reload
-
-buildbackend:
-	$(DC_COMMAND) up -d --build $(backend_container)
-
-buildfrontend:
-	$(DC_COMMAND) up -d --build $(frontend_container)
 
 migrate:
 	$(DC_COMMAND) run --rm $(backend_container) alembic upgrade head
@@ -56,7 +35,7 @@ migrations:
 	$(DC_COMMAND) run --rm $(backend_container) alembic revision --autogenerate -m $(name)
 
 ruff:
-	$(DC_COMMAND) run --rm $(backend_container) ruff check .
+	ruff check --fix --select I && ruff format
 
 mypy:
 	$(DC_COMMAND) run --rm $(backend_container) mypy ./app --install-types --strict
@@ -77,11 +56,3 @@ local-dump:
 
 dump:
 	docker exec -i holy-grail-db psql -U $(local_postgres_user) -d $(local_postgres_db_name) < $(sql_file_name).sql
-
-venv:
-	( \
-	  pip install virtualenv; \
-	  virtualenv holy-grail-backend/backend/app/.venv --prompt="holy-grail-py1.0"; \
-      source holy-grail-backend/backend/app/.venv/bin/activate; \
-      pip install -r holy-grail-backend/backend/app/requirements.txt; \
-      )
