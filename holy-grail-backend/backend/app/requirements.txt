@@ -20,11 +20,11 @@ PyJWT==2.7.0
 slowapi
 boto3==1.28.1
 mailtrap
-prometheus-fastapi-instrumentator==6.0.0
 moto[s3]==4.2.13
 requests-toolbelt==1.0.0
 fpdf==1.7.2
 pytz==2023.3.post1
+logfire[fastapi]==1.1.0
 
 # GOOGLE DEPENDENCIES
 google-analytics-data==0.17.2
