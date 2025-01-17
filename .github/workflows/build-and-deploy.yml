@@ -5,6 +5,9 @@ on:
     branches:
       - dev
       - master
+    paths:
+      - 'holy-grail-backend/**'
+      - 'holy-grail-frontend/**'
 
 env:
   REGISTRY: ghcr.io
