@@ -8,6 +8,7 @@ on:
     paths:
       - 'holy-grail-backend/**'
       - 'holy-grail-frontend/**'
+      - 'terraform/**'
 
 env:
   REGISTRY: ghcr.io
