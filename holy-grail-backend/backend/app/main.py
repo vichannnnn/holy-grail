@@ -1,9 +1,9 @@
 import ast
 import os
+
 import logfire
 from fastapi import FastAPI
 from fastapi.middleware import cors
-
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 
@@ -23,12 +23,7 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 app.add_middleware(
     cors.CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://localhost:5173",
-        "https://grail.moe",
-        "https://dev.grail.moe",
-    ],
+    allow_origins=["*"],  # TODO: Placeholder with wildcard for infrastructure testing
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -40,7 +35,7 @@ if os.getenv("PRODUCTION") in ["true", "dev"]:
     logfire.configure()
     logfire.instrument_fastapi(app)
 
-# Force runs the google analytics and update scoreboard job once on app start up.
 
+# Force runs the google analytics and update scoreboard job once on app start up.
 update_scoreboard_users.delay()
 fetch_google_analytics.delay()
