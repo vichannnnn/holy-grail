@@ -55,7 +55,7 @@ echo "Creating CNAME record for $SUBDOMAIN.$DOMAIN pointing to $ALB_DNS_NAME"
 
 
 # Create a CNAME record via Porkbun API
-RESPONSE=$(curl -s -X POST "https://api.porkbun.com/api/json/v3/dns/create/${DOMAIN}" \
+curl -s -X POST "https://api.porkbun.com/api/json/v3/dns/create/${DOMAIN}" \
   -H "Content-Type: application/json" \
   -d '{
     "apikey": "'${PORKBUN_API_KEY}'",
@@ -66,4 +66,4 @@ RESPONSE=$(curl -s -X POST "https://api.porkbun.com/api/json/v3/dns/create/${DOM
     "ttl": 600
   }'
 
-  echo "Created CNAME record for $SUBDOMAIN.$DOMAIN pointing to $ALB_DNS_NAME successfully"
+echo "Created CNAME record for $SUBDOMAIN.$DOMAIN pointing to $ALB_DNS_NAME successfully"
