@@ -154,12 +154,6 @@ variable "BUCKET_DOMAIN_NAME" {
   type        = string
 }
 
-variable "GOOGLE_APPLICATION_CREDENTIALS" {
-  description = "Path to the Google application credentials JSON file."
-  type        = string
-  sensitive   = true
-}
-
 variable "GOOGLE_APPLICATION_PROPERTY_ID" {
   description = "Google application property ID."
   type        = string
