@@ -166,12 +166,6 @@ variable "GOOGLE_APPLICATION_PROPERTY_ID" {
   type        = string
 }
 
-variable "GOOGLE_APPLICATION_CREDENTIALS" {
-  description = "Path to Google application credentials JSON."
-  type        = string
-  sensitive   = true
-}
-
 variable "CELERY_RESULT_BACKEND" {
   description = "Redis URL"
   type        = string
