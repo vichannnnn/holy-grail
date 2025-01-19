@@ -1,4 +1,3 @@
-import os
 from typing import Annotated, AsyncGenerator, Generator
 
 import boto3
@@ -31,12 +30,6 @@ async def get_session() -> AsyncGenerator[AsyncSession, None]:
         yield session
 
 
-CurrentSession = Annotated[AsyncSession, Depends(get_session)]
-OAuth2Session = Annotated[
-    Authenticator.oauth2_scheme, Depends(Authenticator.oauth2_scheme)
-]
-
-
 def get_s3_client() -> boto3.Session:
     if TESTING_FLAG:
         with mock_s3():
@@ -46,6 +39,12 @@ def get_s3_client() -> boto3.Session:
 
     else:
         yield s3_app_client
+
+
+CurrentSession = Annotated[AsyncSession, Depends(get_session)]
+OAuth2Session = Annotated[
+    Authenticator.oauth2_scheme, Depends(Authenticator.oauth2_scheme)
+]
 
 
 async def get_verified_user(

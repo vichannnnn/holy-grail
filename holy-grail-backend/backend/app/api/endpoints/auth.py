@@ -1,5 +1,3 @@
-import os
-
 from fastapi import APIRouter, Request, status
 
 from app.api.deps import CurrentSession, SessionUser
@@ -15,53 +13,49 @@ from app.schemas.auth import (
     SendPasswordResetEmailSchema,
     VerifyEmailSchema,
 )
-from app.utils.flags import PRODUCTION_FLAG, TESTING_FLAG
 from app.utils.limiter import conditional_rate_limit
 
 router = APIRouter()
 
-if not PRODUCTION_FLAG or TESTING_FLAG:
 
-    @router.post("/create", response_model=CurrentUserWithJWTSchema)
-    @conditional_rate_limit("10/5minute")
-    async def create_account(
-        request: Request,  # pylint: disable=W0613
-        session: CurrentSession,
-        data: AccountRegisterSchema,
-    ):
-        created_user = await Account.register(session, data)
-        return created_user
-
-else:
-
-    @router.post("/create", response_model=CurrentUserSchema)
-    @conditional_rate_limit("10/5minute")
-    async def create_account_development(
-        request: Request,  # pylint: disable=W0613
-        session: CurrentSession,
-        data: AccountRegisterSchema,
-    ):
-        created_user = await Account.register_development(session, data)
-        return created_user
+@router.post("/create", response_model=CurrentUserWithJWTSchema)
+@conditional_rate_limit("10/5minute")
+async def create_account(
+    request: Request,  # pylint: disable=W0613
+    session: CurrentSession,
+    data: AccountRegisterSchema,
+):
+    created_user = await Account.register(session=session, data=data)
+    return created_user
 
 
 @router.post("/update_password")
 async def user_update_password(
+    request: Request,  # pylint: disable=W0613
     session: CurrentSession,
     authenticated: SessionUser,
     data: AccountUpdatePasswordSchema,
 ):
-    credentials = await Account.update_password(session, authenticated.user_id, data)
+    credentials = await Account.update_password(
+        session=session,
+        user_id=authenticated.user_id,
+        data=data,
+    )
     return credentials
 
 
 @router.post("/update_email")
 async def user_update_email(
+    request: Request,  # pylint: disable=W0613
     session: CurrentSession,
     authenticated: SessionUser,
     data: AccountUpdateEmailSchema,
 ):
-    credentials = await Account.update_email(session, authenticated.user_id, data)
+    credentials = await Account.update_email(
+        session=session,
+        user_id=authenticated.user_id,
+        data=data,
+    )
     return credentials
 
 
@@ -96,7 +90,9 @@ async def resend_verify_email_token(
     session: CurrentSession,
     authenticated: SessionUser,
 ):
-    await Account.resend_email_verification_token(session, authenticated.user_id)
+    await Account.resend_email_verification_token(
+        session=session, user_id=authenticated.user_id
+    )
     return {"message": "Email verification resent to your email."}
 
 
@@ -107,14 +103,15 @@ async def send_reset_password_mail(
     session: CurrentSession,
     data: SendPasswordResetEmailSchema,
 ):
-    await Account.send_reset_email(session, data.email)
+    await Account.send_reset_email(session=session, email=data.email)
     return {"message": "Password reset mail sent to your email."}
 
 
 @router.post("/reset_password")
 async def reset_password(
+    request: Request,  # pylint: disable=W0613
     session: CurrentSession,
     data: SendNewPasswordSchema,
 ):
-    await Account.reset_password(session, data.token)
+    await Account.reset_password(session=session, token=data.token)
     return status.HTTP_200_OK
