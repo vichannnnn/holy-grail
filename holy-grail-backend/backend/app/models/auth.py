@@ -27,6 +27,7 @@ from app.tasks.new_password_email import send_new_password_email_task
 from app.tasks.reset_password_email import send_reset_password_email_task
 from app.tasks.verify_email import send_verification_email_task
 from app.utils.auth import Authenticator, generate_password
+from app.utils.email_handler import EmailClient
 from app.utils.exceptions import AppError
 
 if TYPE_CHECKING:
@@ -70,27 +71,10 @@ class Account(Base, CRUD["Account"]):
         return result.scalar_one()
 
     @classmethod
-    async def register_development(
-        cls, session: AsyncSession, data: AccountRegisterSchema
-    ) -> CurrentUserSchema:
-        if data.password != data.repeat_password:
-            raise AppError.BAD_REQUEST_ERROR
-        hashed_password = Authenticator.pwd_context.hash(data.password)
-        insert_data = AccountCreateSchema(
-            username=data.username, password=hashed_password, email=data.email
-        )
-        try:
-            res = await super().create(session, insert_data.dict())
-
-        except SQLAlchemyExceptions.IntegrityError as exc:
-            raise AppError.RESOURCES_ALREADY_EXISTS_ERROR from exc
-        await session.refresh(res)
-
-        return CurrentUserSchema(**res.__dict__)
-
-    @classmethod
     async def register(
-        cls, session: AsyncSession, data: AccountRegisterSchema
+        cls,
+        session: AsyncSession,
+        data: AccountRegisterSchema,
     ) -> CurrentUserWithJWTSchema:
         if data.password != data.repeat_password:
             raise AppError.BAD_REQUEST_ERROR
@@ -101,7 +85,7 @@ class Account(Base, CRUD["Account"]):
         )
 
         try:
-            res = await super().create(session, insert_data.dict())
+            res = await super().create(session, insert_data.model_dump())
 
         except SQLAlchemyExceptions.IntegrityError as exc:
             raise AppError.RESOURCES_ALREADY_EXISTS_ERROR from exc
@@ -109,10 +93,12 @@ class Account(Base, CRUD["Account"]):
         await session.refresh(res)
 
         created_user = CurrentUserSchema(**res.__dict__)
-
         email_verification_token = uuid4().hex
-        confirm_url = f"{FRONTEND_URL}/verify-account?token={email_verification_token}"
-        send_verification_email_task.delay(data.email, data.username, confirm_url)
+        send_verification_email_task.delay(
+            email=data.email,
+            username=data.username,
+            confirm_url=f"{FRONTEND_URL}/verify-account?token={email_verification_token}",
+        )
 
         stmt = (
             update(Account)
@@ -266,11 +252,19 @@ class Account(Base, CRUD["Account"]):
 
     @classmethod
     async def send_verification_email(
-        cls, session: AsyncSession, user_id: int, email: EmailStr, username: str
+        cls,
+        session: AsyncSession,
+        user_id: int,
+        email: EmailStr,
+        username: str,
     ):
         email_verification_token = uuid4().hex
-        confirm_url = f"{FRONTEND_URL}/verify-account?token={email_verification_token}"
-        send_verification_email_task.delay(email, username, confirm_url)
+
+        send_verification_email_task.delay(
+            email=email,
+            username=username,
+            confirm_url=f"{FRONTEND_URL}/verify-account?token={email_verification_token}",
+        )
 
         stmt = (
             update(Account)
@@ -287,10 +281,11 @@ class Account(Base, CRUD["Account"]):
 
         if not res.verified:
             email_verification_token = uuid4().hex
-            confirm_url = (
-                f"{FRONTEND_URL}/verify-account?token={email_verification_token}"
+            send_verification_email_task.delay(
+                email=res.email,
+                username=res.username,
+                confirm_url=f"{FRONTEND_URL}/verify-account?token={email_verification_token}",
             )
-            send_verification_email_task.delay(res.email, res.username, confirm_url)
 
             stmt = (
                 update(Account)
@@ -307,16 +302,18 @@ class Account(Base, CRUD["Account"]):
     @classmethod
     async def send_reset_email(cls, session: AsyncSession, email: EmailStr):
         token = uuid4().hex
-        confirm_url = f"{FRONTEND_URL}/reset-password?token={token}"
 
         stmt = select(cls).where(cls.email == email)
         result = await session.execute(stmt)
         account = result.scalar()
 
         try:
-            send_reset_password_email_task.delay(email, account.username, confirm_url)
+            send_reset_password_email_task.delay(
+                email=email,
+                username=account.username,
+                confirm_url=f"{FRONTEND_URL}/reset-password?token={token}",
+            )
         except Exception as e:  # pylint: disable=C0103, W0612, W0703
-            print(str(e))
             return FastAPIResponse(status_code=200)
 
         stmt = (
