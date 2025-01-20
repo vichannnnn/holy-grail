@@ -1,6 +1,3 @@
-import ast
-import os
-
 from fastapi import FastAPI
 from fastapi.middleware import cors
 from slowapi import _rate_limit_exceeded_handler
