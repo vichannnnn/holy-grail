@@ -20,7 +20,6 @@ module "rds" {
   POSTGRES_PASSWORD = var.POSTGRES_PASSWORD
   POSTGRES_USER     = var.POSTGRES_USER
   app_name          = var.app_name
-  region            = var.region
 }
 
 module "s3" {

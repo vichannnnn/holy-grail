@@ -3,11 +3,6 @@ variable "app_name" {
   type        = string
 }
 
-variable "region" {
-  description = "AWS region to deploy the network to."
-  type        = string
-}
-
 variable "POSTGRES_DB" {
   type = string
 }
