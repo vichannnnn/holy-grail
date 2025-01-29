@@ -7,7 +7,7 @@ export const LandingPage = () => {
   return (
     <div className='landing-page'>
       <Hero />
-      <Analytics />
+      {/*<Analytics />*/}
       <FAQ />
     </div>
   );

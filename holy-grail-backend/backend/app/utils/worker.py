@@ -5,7 +5,7 @@ from celery import Celery  # type: ignore
 celery_app = Celery(
     "tasks",
     include=[
-        "app.tasks.fetch_google_analytics",
+        # "app.tasks.fetch_google_analytics",
         "app.tasks.health_check",
         "app.tasks.verify_email",
         "app.tasks.reset_password_email",
@@ -27,10 +27,10 @@ celery_app.conf.beat_schedule = {
         "task": "ping",
         "schedule": 120.0,
     },
-    "fetch_google_analytics": {
-        "task": "fetch_google_analytics",
-        "schedule": 86400.0,
-    },
+    # "fetch_google_analytics": {
+    #     "task": "fetch_google_analytics",
+    #     "schedule": 86400.0,
+    # },
     "update_scoreboard_users": {
         "task": "update_scoreboard_users",
         "schedule": 3600.0,

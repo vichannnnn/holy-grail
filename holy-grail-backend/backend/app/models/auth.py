@@ -39,7 +39,6 @@ ALGORITHM = environ["ALGORITHM"]
 SECRET_KEY = environ["SECRET_KEY"]
 
 
-
 class Account(Base, CRUD["Account"]):
     __tablename__ = "account"
     __table_args__ = (
