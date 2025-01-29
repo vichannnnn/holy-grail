@@ -27,7 +27,6 @@ from app.tasks.new_password_email import send_new_password_email_task
 from app.tasks.reset_password_email import send_reset_password_email_task
 from app.tasks.verify_email import send_verification_email_task
 from app.utils.auth import Authenticator, generate_password
-from app.utils.email_handler import EmailClient
 from app.utils.exceptions import AppError
 
 if TYPE_CHECKING:
@@ -38,6 +37,7 @@ FRONTEND_URL = environ["FRONTEND_URL"]
 ACCESS_TOKEN_EXPIRE_MINUTES = int(environ["ACCESS_TOKEN_EXPIRE_MINUTES"])
 ALGORITHM = environ["ALGORITHM"]
 SECRET_KEY = environ["SECRET_KEY"]
+
 
 
 class Account(Base, CRUD["Account"]):
