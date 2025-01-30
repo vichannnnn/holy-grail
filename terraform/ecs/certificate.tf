@@ -1,5 +1,5 @@
 resource "aws_acm_certificate" "frontend_app_alb" {
-  domain_name = var.frontend_subdomain_name != "NONE" ? "${var.frontend_subdomain_name}.${var.root_domain_name}" : var.root_domain_name
+  domain_name       = var.frontend_subdomain_name != "NONE" ? "${var.frontend_subdomain_name}.${var.root_domain_name}" : var.root_domain_name
   validation_method = "DNS"
 
   tags = {

@@ -7,12 +7,12 @@ resource "aws_lb" "app_alb" {
 }
 
 
-resource "aws_lb_listener" "https" {
+resource "aws_lb_listener" "backend_https" {
   load_balancer_arn = aws_lb.app_alb.arn
   port              = 443
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = aws_acm_certificate.app_alb.arn
+  certificate_arn   = aws_acm_certificate.backend_app_alb.arn
 
   default_action {
     target_group_arn = aws_lb_target_group.backend.arn
@@ -21,7 +21,25 @@ resource "aws_lb_listener" "https" {
 
 
   depends_on = [
-    aws_acm_certificate_validation.app_alb
+    aws_acm_certificate_validation.backend_validation
+  ]
+}
+
+resource "aws_lb_listener" "frontend_https" {
+  load_balancer_arn = aws_lb.app_alb.arn
+  port              = 443
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  certificate_arn   = aws_acm_certificate.frontend_app_alb.arn
+
+  default_action {
+    target_group_arn = aws_lb_target_group.frontend.arn
+    type             = "forward"
+  }
+
+
+  depends_on = [
+    aws_acm_certificate_validation.frontend_validation
   ]
 }
 
