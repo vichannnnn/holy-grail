@@ -170,7 +170,7 @@ resource "aws_lb_target_group" "backend" {
 }
 
 resource "aws_lb_listener_rule" "backend_rule" {
-  listener_arn = aws_lb_listener.https.arn
+  listener_arn = aws_lb_listener.backend_https.arn
   priority     = 10
   action {
     type             = "forward"
@@ -181,7 +181,7 @@ resource "aws_lb_listener_rule" "backend_rule" {
       values = ["${var.backend_subdomain_name}.${var.root_domain_name}"]
     }
   }
-  depends_on = [aws_lb_target_group.backend, aws_lb_listener.https]
+  depends_on = [aws_lb_target_group.backend, aws_lb_listener.backend_https]
 }
 
 resource "null_resource" "post_apply_backend_script" {
@@ -209,10 +209,16 @@ data "aws_secretsmanager_secret_version" "google_credentials_version" {
 }
 
 resource "null_resource" "post_destroy_backend_script" {
-  provisioner "local-exec" {
-    command = "./porkbun_delete.sh ${var.root_domain_name} ${var.backend_subdomain_name} CNAME"
 
-    when = destroy
+  triggers = {
+    root_domain_name  = var.root_domain_name
+    backend_subdomain = var.backend_subdomain_name
+    record_type       = "CNAME"
+  }
+
+  provisioner "local-exec" {
+    command = "./porkbun_delete.sh ${self.triggers.root_domain_name} ${self.triggers.backend_subdomain} ${self.triggers.record_type}"
+    when    = destroy
   }
 
   depends_on = [

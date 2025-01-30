@@ -90,7 +90,7 @@ resource "aws_lb_target_group" "frontend" {
 }
 
 resource "aws_lb_listener_rule" "frontend_rule" {
-  listener_arn = aws_lb_listener.https.arn
+  listener_arn = aws_lb_listener.frontend_https.arn
   priority     = 20
   action {
     type             = "forward"
@@ -102,7 +102,7 @@ resource "aws_lb_listener_rule" "frontend_rule" {
     }
   }
 
-  depends_on = [aws_lb_target_group.frontend, aws_lb_listener.https]
+  depends_on = [aws_lb_target_group.frontend, aws_lb_listener.frontend_https]
 }
 
 resource "null_resource" "post_apply_frontend_script" {
@@ -118,10 +118,16 @@ resource "null_resource" "post_apply_frontend_script" {
 }
 
 resource "null_resource" "post_destroy_frontend_script" {
-  provisioner "local-exec" {
-    command = "./porkbun_delete.sh ${var.root_domain_name} ${var.frontend_subdomain_name} CNAME"
 
-    when = destroy
+  triggers = {
+    root_domain_name   = var.root_domain_name
+    frontend_subdomain = var.frontend_subdomain_name
+    record_type        = "CNAME"
+  }
+
+  provisioner "local-exec" {
+    command = "./porkbun_delete.sh ${self.triggers.root_domain_name} ${self.triggers.frontend_subdomain} ${self.triggers.record_type}"
+    when    = destroy
   }
 
   depends_on = [
