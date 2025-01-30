@@ -207,3 +207,16 @@ data "aws_secretsmanager_secret" "google_credentials" {
 data "aws_secretsmanager_secret_version" "google_credentials_version" {
   secret_id = data.aws_secretsmanager_secret.google_credentials.id
 }
+
+resource "null_resource" "post_destroy_backend_script" {
+  provisioner "local-exec" {
+    command = "./porkbun_delete.sh ${var.root_domain_name} ${var.backend_subdomain_name} CNAME"
+
+    when = destroy
+  }
+
+  depends_on = [
+    aws_lb.app_alb,
+    aws_ecs_service.backend
+  ]
+}
