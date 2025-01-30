@@ -116,3 +116,16 @@ resource "null_resource" "post_apply_frontend_script" {
     aws_ecs_service.frontend
   ]
 }
+
+resource "null_resource" "post_destroy_frontend_script" {
+  provisioner "local-exec" {
+    command = "./porkbun_delete.sh ${var.root_domain_name} ${var.frontend_subdomain_name} CNAME"
+
+    when = destroy
+  }
+
+  depends_on = [
+    aws_lb.app_alb,
+    aws_ecs_service.frontend
+  ]
+}
