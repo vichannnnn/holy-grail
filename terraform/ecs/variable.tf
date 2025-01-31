@@ -161,11 +161,6 @@ variable "LOGFIRE_TOKEN" {
   sensitive   = true
 }
 
-variable "GOOGLE_APPLICATION_PROPERTY_ID" {
-  description = "Google application property ID."
-  type        = string
-}
-
 variable "CELERY_RESULT_BACKEND" {
   description = "Redis URL"
   type        = string

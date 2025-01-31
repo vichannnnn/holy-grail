@@ -154,8 +154,3 @@ variable "BUCKET_DOMAIN_NAME" {
   type        = string
 }
 
-variable "GOOGLE_APPLICATION_PROPERTY_ID" {
-  description = "Google application property ID."
-  type        = string
-}
-
