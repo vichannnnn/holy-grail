@@ -26,8 +26,6 @@ resource "aws_ecs_task_definition" "backend" {
           name  = "FRONTEND_URL",
           value = var.frontend_subdomain_name != "NONE" ? "https://${var.frontend_subdomain_name}.${var.root_domain_name}" : "https://${var.root_domain_name}"
         },
-        { name = "GOOGLE_APPLICATION_PROPERTY_ID", value = var.GOOGLE_APPLICATION_PROPERTY_ID },
-        { name = "GOOGLE_APPLICATION_CREDENTIALS", value = data.aws_secretsmanager_secret_version.google_credentials_version.secret_string },
         { name = "CELERY_BROKER_URL", value = var.CELERY_BROKER_URL },
         { name = "CELERY_RESULT_BACKEND", value = var.CELERY_RESULT_BACKEND },
         { name = "POSTGRES_DB", value = var.POSTGRES_DB },
@@ -68,8 +66,6 @@ resource "aws_ecs_task_definition" "backend" {
           name  = "FRONTEND_URL",
           value = var.frontend_subdomain_name != "NONE" ? "https://${var.frontend_subdomain_name}.${var.root_domain_name}" : "https://${var.root_domain_name}"
         },
-        { name = "GOOGLE_APPLICATION_PROPERTY_ID", value = var.GOOGLE_APPLICATION_PROPERTY_ID },
-        { name = "GOOGLE_APPLICATION_CREDENTIALS", value = data.aws_secretsmanager_secret_version.google_credentials_version.secret_string },
         { name = "CELERY_BROKER_URL", value = var.CELERY_BROKER_URL },
         { name = "CELERY_RESULT_BACKEND", value = var.CELERY_RESULT_BACKEND },
         { name = "POSTGRES_DB", value = var.POSTGRES_DB },
@@ -170,7 +166,7 @@ resource "aws_lb_target_group" "backend" {
 }
 
 resource "aws_lb_listener_rule" "backend_rule" {
-  listener_arn = aws_lb_listener.backend_https.arn
+  listener_arn = aws_lb_listener.https.arn
   priority     = 10
   action {
     type             = "forward"
@@ -181,7 +177,7 @@ resource "aws_lb_listener_rule" "backend_rule" {
       values = ["${var.backend_subdomain_name}.${var.root_domain_name}"]
     }
   }
-  depends_on = [aws_lb_target_group.backend, aws_lb_listener.backend_https]
+  depends_on = [aws_lb_target_group.backend, aws_lb_listener.https]
 }
 
 resource "null_resource" "post_apply_backend_script" {
@@ -198,14 +194,6 @@ resource "null_resource" "post_apply_backend_script" {
   triggers = {
     always_run = timestamp()
   }
-}
-
-data "aws_secretsmanager_secret" "google_credentials" {
-  name = "holy-grail-google-application-credentials"
-}
-
-data "aws_secretsmanager_secret_version" "google_credentials_version" {
-  secret_id = data.aws_secretsmanager_secret.google_credentials.id
 }
 
 resource "null_resource" "post_destroy_backend_script" {

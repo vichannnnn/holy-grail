@@ -91,7 +91,7 @@ resource "aws_lb_target_group" "frontend" {
 }
 
 resource "aws_lb_listener_rule" "frontend_rule" {
-  listener_arn = aws_lb_listener.frontend_https.arn
+  listener_arn = aws_lb_listener.https.arn
   priority     = 20
   action {
     type             = "forward"
@@ -103,7 +103,7 @@ resource "aws_lb_listener_rule" "frontend_rule" {
     }
   }
 
-  depends_on = [aws_lb_target_group.frontend, aws_lb_listener.frontend_https]
+  depends_on = [aws_lb_target_group.frontend, aws_lb_listener.https]
 }
 
 resource "null_resource" "post_apply_frontend_script" {
