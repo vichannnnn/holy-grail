@@ -37,7 +37,7 @@ resource "null_resource" "frontend_dns_validation" {
 
   provisioner "local-exec" {
     command = <<EOT
-      ./porkbun.sh "${each.value.value}" "${var.root_domain_name}" "${each.value.name}"
+      ./porkbun.sh "${each.value.value}" "${var.root_domain_name}" ${replace(each.value.name, ".${var.root_domain_name}", "")}
     EOT
   }
 
@@ -56,7 +56,7 @@ resource "null_resource" "backend_dns_validation" {
 
   provisioner "local-exec" {
     command = <<EOT
-      ./porkbun.sh "${each.value.value}" "${var.root_domain_name}" "${each.value.name}"
+      ./porkbun.sh "${each.value.value}" "${var.root_domain_name}" ${replace(each.value.name, ".${var.root_domain_name}", "")}
     EOT
   }
 
