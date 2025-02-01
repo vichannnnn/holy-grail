@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "bunx --bun vite --host 0.0.0.0 --port 3000",
     "build":"bunx --bun vite build",
-    "start": "vite preview",
+    "start": "vite preview --host 0.0.0.0 --port 3000",
     "format": "prettier --write \"src/**/*.{ts,tsx}\" \"../holy-grail-backend/backend/app/email_templates/*.html\""
   },
   "dependencies": {

@@ -12,6 +12,7 @@ resource "aws_ecs_task_definition" "frontend" {
     {
       name  = "frontend"
       image = "${var.frontend_image}:${var.frontend_image_hash}"
+      command = ["bun", "run", "start"]
       repositoryCredentials = {
         credentialsParameter = aws_secretsmanager_secret.ghcr_token.arn
       }

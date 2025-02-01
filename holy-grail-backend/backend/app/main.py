@@ -1,6 +1,3 @@
-import ast
-import os
-
 from fastapi import FastAPI
 from fastapi.middleware import cors
 from slowapi import _rate_limit_exceeded_handler
@@ -40,4 +37,4 @@ if PRODUCTION_FLAG:
 
 # Force runs the google analytics and update scoreboard job once on app start up.
 update_scoreboard_users.delay()
-fetch_google_analytics.delay()
+# fetch_google_analytics.delay()
