@@ -25,7 +25,7 @@ celery_app.conf.result_backend = os.environ.get(
 celery_app.conf.beat_schedule = {
     "ping": {
         "task": "ping",
-        "schedule": 120.0,
+        "schedule": 3600.0,
     },
     # "fetch_google_analytics": {
     #     "task": "fetch_google_analytics",
@@ -33,7 +33,7 @@ celery_app.conf.beat_schedule = {
     # },
     "update_scoreboard_users": {
         "task": "update_scoreboard_users",
-        "schedule": 3600.0,
+        "schedule": 43200.0,
         "options": {"countdown": 0},
     },
 }
