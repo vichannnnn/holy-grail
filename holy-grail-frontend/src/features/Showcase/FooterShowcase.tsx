@@ -7,8 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import InfoIcon from '@mui/icons-material/Info';
 import './FooterShowcase.css';
 
-// const ADS_IMAGE_URL = 'https://image.himaa.me/tori-soup-banner-v1.png';
-const ADS_IMAGE_URL = 'https://imgur.com/gPLbi7h.png';
+const ADS_IMAGE_URL = 'https://image.himaa.me/tori-soup-banner-v1.png';
 
 interface InfoButtonProps {
   isMobile: boolean;

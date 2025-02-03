@@ -15,17 +15,7 @@ export const useNavigation = () => {
   const goToDeveloperPanel = (options = {}) => navigate('/developer', options);
   const goToAccountPage = (options = {}) => navigate('/account', options);
   const goToScoreboard = (options = {}) => navigate('/scoreboard', options);
-
-  // const goToGP = () => (window.location.href = 'https://GP.sg');
-  // const goToInstagram = () => (window.location.href = 'https://instagram.com/generalpaper');
-  // const goToJCBot = () => (window.location.href = 'https://t.me/juniorcollegebot');
-  // const goToJCChatBot = () => (window.location.href = 'https://t.me/JCchatbot');
-  // const goToSecondarySchoolBot = () => (window.location.href = 'https://t.me/SecondarySchoolBot');
-  // const goToThisCounted = () => (window.location.href = 'https://t.me/ThisCounted');
-  //
-  // const goToIllume = () => window.open('https://illum.education/', '_blank');
-
-  const goToToriSoup = () => (window.location.href = 'https://gp.sg');
+  const goToToriSoup = () => (window.location.href = 'https://tori.sg');
 
   return {
     goToHome,
@@ -40,13 +30,6 @@ export const useNavigation = () => {
     goToDeveloperPanel,
     goToAccountPage,
     goToToriSoup,
-    goToScoreboard,
-    // goToGP,
-    // goToInstagram,
-    // goToJCBot,
-    // goToJCChatBot,
-    // goToSecondarySchoolBot,
-    // goToThisCounted,
-    // goToIllume,
+    goToScoreboard
   };
 };
