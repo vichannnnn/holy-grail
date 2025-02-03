@@ -16,20 +16,12 @@ export const Library = () => {
         <div className='library-subtitle'>
           View materials or contribute <TextLink onClick={goToUploadPage}>here</TextLink> after you
           have logged in (subjected to approval of administrators).
-          {/*<IllumeShowcase />*/}
-          {/*<TextShowcase />*/}
           <p>
-            General Paper December Crash Course / Resources:{' '}
-            <a href="https://gp.sg/tuition" target="_blank" rel="noopener noreferrer">GP.sg/tuition</a> |{' '}
-            <a href="https://instagram.com/generalpaper" target="_blank"
-               rel="noopener noreferrer">instagram.com/generalpaper</a><br />
-            Chat or study together with other students (Random/Anon on Telegram):{' '}
-            <a href="https://t.me/juniorcollegebot" target="_blank" rel="noopener noreferrer">@JuniorCollegeBot</a> /
-            <a href="https://t.me/jcchatbot" target="_blank" rel="noopener noreferrer">@JCchatbot</a> /
-            <a href="https://t.me/SecondarySchoolBot" target="_blank"
-               rel="noopener noreferrer">@SecondarySchoolBot</a><br />
-            Student Discounts:{' '}
-            <a href="https://t.me/ThisCounted" target="_blank" rel="noopener noreferrer">@ThisCounted</a>
+            Are you a tuition centre or freelance tutor looking to expand your reach?
+            <br/>
+            We have one of the largest student-focused audiences in Singapore.
+            <br/>
+            Interested sponsors and advertisers, please contact us at <strong>grail@himaa.me</strong> to explore partnership opportunities.
           </p>
 
           <div className='library-showcase'>
