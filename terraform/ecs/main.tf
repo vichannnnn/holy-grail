@@ -117,9 +117,9 @@ resource "aws_iam_role_policy_attachment" "ecs_execution_role_policy_attach" {
   policy_arn = aws_iam_policy.ecs_execution_policy.arn
 }
 
-# resource "aws_cloudwatch_log_group" "ecs" {
-#   name = "/aws/ecs/${var.app_name}/cluster"
-# }
+resource "aws_cloudwatch_log_group" "ecs" {
+  name = "/aws/ecs/${var.app_name}/cluster"
+}
 
 resource "aws_ecs_cluster" "app_alb" {
   name = "${var.app_name}-cluster"
