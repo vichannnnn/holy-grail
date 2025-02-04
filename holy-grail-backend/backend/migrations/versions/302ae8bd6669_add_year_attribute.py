@@ -20,7 +20,7 @@ depends_on = None
 def populate_year():
     connection = op.get_bind()
 
-    for year in range(2008, 2024):
+    for year in range(2008, 2026):
         query = text(
             """
             UPDATE library

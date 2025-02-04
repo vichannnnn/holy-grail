@@ -63,7 +63,7 @@ function formatDate(dateString: string) {
   return new Date(dateString).toLocaleDateString(undefined, options);
 }
 
-const yearOptions = Array.from({ length: 2024 - 2008 + 1 }, (_, i) => 2008 + i).map((year) => ({
+const yearOptions = Array.from({ length: 2026 - 2008 + 1 }, (_, i) => 2008 + i).map((year) => ({
   id: year,
   name: `${year}`,
 }));
