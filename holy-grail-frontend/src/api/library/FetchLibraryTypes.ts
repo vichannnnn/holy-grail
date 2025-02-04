@@ -38,7 +38,7 @@ export const fetchLibraryTypes = async (
     types,
     subjects,
     users,
-    years: Array.from({ length: 2024 - 2008 + 1 }, (_, i) => 2008 + i).map((year) => ({
+    years: Array.from({ length: 2026 - 2008 + 1 }, (_, i) => 2008 + i).map((year) => ({
       id: year,
       name: `${year}`,
     })),
