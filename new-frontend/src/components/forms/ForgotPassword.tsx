@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { FormControl, Stack } from '@mui/material';
 import { useForm } from 'react-hook-form';
 
-import { SendResetPasswordEmail, sendResetPasswordEmail } from '@api/user';
+import { ForgotPasswordDetails, sendResetPasswordEmail } from '@api/auth';
 
 import { TextField } from '@components/TextField';
 
@@ -15,11 +15,11 @@ export const ForgotPasswordForm = ({ onSubmitSuccess, onSubmitFailure, formId }:
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SendResetPasswordEmail>({
+  } = useForm<ForgotPasswordDetails>({
     resolver: yupResolver(ForgotPasswordValidation),
   });
 
-  const handleSubmitResetPassword = async (formData: SendResetPasswordEmail) => {
+  const handleSubmitResetPassword = async (formData: ForgotPasswordDetails) => {
     try {
       onSubmitFailure(null);
       await sendResetPasswordEmail(formData);

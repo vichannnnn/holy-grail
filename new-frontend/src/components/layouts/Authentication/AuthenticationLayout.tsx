@@ -13,7 +13,7 @@ export const AuthenticationLayout = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (!isLoading && user) {
-      router.navigateTo('/dashboard');
+      router.navigateTo('/');
     }
   }, [user, isLoading]);
 

@@ -1,7 +1,7 @@
 import { Cancel, CheckCircle } from '@mui/icons-material';
 import { AxiosError } from 'axios';
 
-import { resendAccountVerifyEmail } from '@api/user';
+import { resendVerificationEmail } from '@api/auth';
 
 import { useToast } from '@providers/ToastProvider';
 
@@ -10,7 +10,7 @@ export const VerificationSection = ({ verified }: { verified: boolean }) => {
 
   const handleResendVerificationEmail = async () => {
     try {
-      await resendAccountVerifyEmail();
+      await resendVerificationEmail();
       showToast({
         description: 'Please check your email for the verification mail sent to you.',
         severity: 'success',

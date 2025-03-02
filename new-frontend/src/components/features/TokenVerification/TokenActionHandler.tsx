@@ -7,7 +7,7 @@ import { AxiosError } from 'axios';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-import { resendAccountVerifyEmail, resetPassword, verifyEmail } from '@api/user';
+import { resendVerificationEmail, resetPassword, verifyAccount } from '@api/auth';
 
 import { Button } from '@components/Button';
 
@@ -16,8 +16,6 @@ import { useToast } from '@providers/ToastProvider';
 import { useNavigate } from '@utils/navigation';
 
 const ReturnToHomeButton = () => {
-  const router = useNavigate();
-
   return (
     <Link href='/' passHref>
       <Button
@@ -71,7 +69,7 @@ export const TokenActionHandler = ({ action }: TokenActionHandlerProps) => {
 
   const handleResendVerificationEmail = async () => {
     try {
-      await resendAccountVerifyEmail();
+      await resendVerificationEmail();
       showToast({
         description: 'Please check your email for a new verification mail sent to you.',
         severity: 'success',
@@ -103,7 +101,7 @@ export const TokenActionHandler = ({ action }: TokenActionHandlerProps) => {
   const handleAction = async (token: string) => {
     try {
       if (action === TokenActionEnum.VERIFY_EMAIL) {
-        await verifyEmail(token);
+        await verifyAccount(token);
       } else if (action === TokenActionEnum.RESET_PASSWORD) {
         await resetPassword(token);
       }
