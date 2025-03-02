@@ -1,12 +1,14 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Checkbox, FormControl, Stack } from '@mui/material';
+import { FormControl, Stack } from '@mui/material';
 import { AxiosError } from 'axios';
 import { useContext } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
+
+import { AccountDetails } from '@api/auth';
 
 import { PasswordField, TextField } from '@components/TextField';
 
-import { AuthContext, RegisterDetails } from '@providers/AuthProvider';
+import { AuthContext } from '@providers/AuthProvider';
 
 import { RegisterValidation } from '@utils/forms';
 
@@ -20,14 +22,14 @@ export const AccountRegisterForm = ({ onSubmitSuccess, onSubmitFailure, formId }
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<RegisterDetails>({
-    defaultValues: {
-      marketing_consent: false,
-    },
+  } = useForm<AccountDetails>({
+    // defaultValues: {
+    //   marketing_consent: false,
+    // },
     resolver: yupResolver(RegisterValidation),
   });
 
-  const handleRegister = async (formData: RegisterDetails) => {
+  const handleRegister = async (formData: AccountDetails) => {
     try {
       onSubmitFailure(null);
       await registerUserAccount(formData);
@@ -36,17 +38,7 @@ export const AccountRegisterForm = ({ onSubmitSuccess, onSubmitFailure, formId }
       const axiosError = error as AxiosError<{ detail?: string }>;
 
       if (axiosError.response && axiosError.response.status === 409) {
-        if (
-          axiosError.response.data &&
-          axiosError.response.data.detail === 'Username already exists'
-        ) {
-          onSubmitFailure('An account with this username already exists.');
-        } else if (
-          axiosError.response.data &&
-          axiosError.response.data.detail === 'Email already exists'
-        ) {
-          onSubmitFailure('An account with this email already exists.');
-        }
+        onSubmitFailure('An account with this username or email already exists.');
       } else if (axiosError.response && axiosError.response.status === 422) {
         onSubmitFailure('Invalid input. Please check the form fields and try again.');
       } else {
@@ -96,37 +88,37 @@ export const AccountRegisterForm = ({ onSubmitSuccess, onSubmitFailure, formId }
             required
           />
         </FormControl>
-        <div className='flex items-start'>
-          <FormControl id='marketing-consent'>
-            <Controller
-              name='marketing_consent'
-              control={control}
-              render={({ field }) => (
-                <Checkbox
-                  {...field}
-                  disableRipple
-                  checked={field.value}
-                  onChange={(e) => field.onChange(e.target.checked)}
-                  sx={{
-                    color: '#949494',
-                    '&.Mui-checked': {
-                      color: '#949494',
-                    },
-                    '&:hover': {
-                      backgroundColor: 'transparent',
-                    },
-                    padding: 0,
-                    paddingRight: 2,
-                  }}
-                />
-              )}
-            />
-          </FormControl>
-          <h6>
-            I agree to receive emails about FastAPI Boilerplate and related Himari product and
-            feature updates and promotions from FastAPI Boilerplate.
-          </h6>
-        </div>
+        {/*<div className='flex items-start'>*/}
+        {/*  <FormControl id='marketing-consent'>*/}
+        {/*    <Controller*/}
+        {/*      name='marketing_consent'*/}
+        {/*      control={control}*/}
+        {/*      render={({ field }) => (*/}
+        {/*        <Checkbox*/}
+        {/*          {...field}*/}
+        {/*          disableRipple*/}
+        {/*          checked={field.value}*/}
+        {/*          onChange={(e) => field.onChange(e.target.checked)}*/}
+        {/*          sx={{*/}
+        {/*            color: '#949494',*/}
+        {/*            '&.Mui-checked': {*/}
+        {/*              color: '#949494',*/}
+        {/*            },*/}
+        {/*            '&:hover': {*/}
+        {/*              backgroundColor: 'transparent',*/}
+        {/*            },*/}
+        {/*            padding: 0,*/}
+        {/*            paddingRight: 2,*/}
+        {/*          }}*/}
+        {/*        />*/}
+        {/*      )}*/}
+        {/*    />*/}
+        {/*  </FormControl>*/}
+        {/*  <h6>*/}
+        {/*    I agree to receive emails about FastAPI Boilerplate and related Himari product and*/}
+        {/*    feature updates and promotions from FastAPI Boilerplate.*/}
+        {/*  </h6>*/}
+        {/*</div>*/}
         <h6>
           By creating an account, you confirm that you have read and agree to our{' '}
           <a href='/privacy' className='text-inherit'>
