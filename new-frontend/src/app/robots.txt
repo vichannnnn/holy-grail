@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /settings/
+Disallow: /reset-password/
+Disallow: /verify/
+Disallow: /payment/success/
+Disallow: /payment/cancel/
+
+Sitemap: https://tori.sg/sitemap.xml
