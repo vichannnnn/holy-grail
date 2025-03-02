@@ -1,0 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+@import url('../fonts/stylesheet.css');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    line-height: 1.5;
+    font-weight: 400;
+    color-scheme: light dark;
+
+    /*color: #2f3f4f;*/
+    color: theme('colors.hima-dark');
+    background-color: #fcfbf8;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+
+
+}
+
+html.dark {
+    line-height: 1.5;
+    font-weight: 400;
+    color-scheme: light dark;
+
+    color: theme('colors.hima-white');;
+    background-color: #222222;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+}
+
+
+@layer base {
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+}
+
+p a {
+    @apply text-inherit
+}
+
+@layer base {
+    p {
+        font-family: "PlusJakartaSans", sans-serif;
+        font-size: 0.875em;
+        @apply text-hima-dark dark:text-hima-white;
+    }
+
+    h1 {
+        font-family: "PlusJakartaSans", sans-serif;
+        font-size: 2em;
+        line-height: 1.1;
+        @apply text-hima-dark dark:text-hima-white;
+    }
+
+    h2 {
+        font-family: "PlusJakartaSans", sans-serif;
+        font-size: 1.5em;
+        @apply text-hima-dark dark:text-hima-white;
+    }
+
+    h3 {
+        font-family: "PlusJakartaSans", sans-serif;
+        font-size: 1.17em;
+        @apply text-hima-dark dark:text-hima-white;
+    }
+
+    h4 {
+        font-family: "PlusJakartaSans", sans-serif;
+        font-size: 1em;
+        @apply text-hima-dark dark:text-hima-white;
+    }
+
+    h5 {
+        font-family: "PlusJakartaSans", sans-serif;
+        font-size: 0.83em;
+        @apply text-hima-dark dark:text-hima-white;
+    }
+
+    h6 {
+        font-family: "PlusJakartaSans", sans-serif;
+        font-size: 0.75em;
+        @apply text-hima-dark dark:text-hima-white;
+    }
+
+}
+
+
+body {
+    font-family: "PlusJakartaSans", sans-serif;
+    margin: 0;
+    place-items: center;
+    min-width: 320px;
+    min-height: 100vh;
+}
+
+button {
+    cursor: pointer;
+}
