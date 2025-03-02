@@ -4,7 +4,7 @@ import { AxiosError } from 'axios';
 import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { UpdateEmail as UpdateEmailRequest, updateEmail } from '@api/user';
+import { UpdateEmailDetails, updateEmail } from '@api/auth';
 
 import { TextField } from '@components/TextField';
 
@@ -19,11 +19,11 @@ export const UpdateEmail = ({ onSubmitSuccess, onSubmitFailure, formId }: FormPr
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<UpdateEmailRequest>({ resolver: yupResolver(UpdateEmailValidation) });
+  } = useForm<UpdateEmailDetails>({ resolver: yupResolver(UpdateEmailValidation) });
 
   const { fetchUser } = useContext(AuthContext);
 
-  const handleUpdateEmail = async (formData: UpdateEmailRequest) => {
+  const handleUpdateEmail = async (formData: UpdateEmailDetails) => {
     try {
       onSubmitFailure(null);
       await updateEmail(formData);
