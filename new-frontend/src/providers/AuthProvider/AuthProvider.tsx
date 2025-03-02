@@ -1,18 +1,26 @@
 import { AxiosError, AxiosResponse } from 'axios';
 import jwt_decode from 'jwt-decode';
-import { createContext, useCallback, useEffect, useMemo, useState } from 'react';
+import { ReactNode, createContext, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { apiClient } from '@apiClient';
 
-import { AccountDetails, registerAccount } from '@api/auth';
+import { AccountDetails, getUser, registerAccount } from '@api/auth';
 
-import {
-  AuthContextType,
-  AuthProviderProps,
-  CurrentUserWithJWT,
-  LogInDetails,
-  User,
-} from '@providers/AuthProvider';
+import { CurrentUserWithJWT, LogInDetails, User } from '@providers/AuthProvider';
+
+export interface AuthContextType {
+  user: User | null;
+  isLoading: boolean;
+  login: (loginDetails: LogInDetails) => Promise<void>;
+  logout: () => void;
+  updateUser: (updatedUser: User) => void;
+  registerUserAccount: (accountDetails: AccountDetails) => Promise<number>;
+  fetchUser: () => void;
+}
+
+export interface AuthProviderProps {
+  children: ReactNode;
+}
 
 export const AuthContext = createContext<AuthContextType>({
   user: null,
@@ -21,6 +29,7 @@ export const AuthContext = createContext<AuthContextType>({
   logout: () => {},
   updateUser: () => {},
   registerUserAccount: async () => 0,
+  fetchUser: async () => {},
 });
 
 interface DecodedToken {
@@ -30,6 +39,15 @@ interface DecodedToken {
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  const fetchUser = useCallback(async () => {
+    try {
+      const fetchedUser = await getUser();
+      setUser(fetchedUser);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -75,8 +93,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const registerUserAccount = useCallback(
     async (accountDetails: AccountDetails): Promise<number> => {
-      let response: AxiosResponse;
-
       try {
         const response: AxiosResponse = await registerAccount(accountDetails);
         const user: CurrentUserWithJWT = response.data;
@@ -85,11 +101,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         localStorage.setItem('access_token', user.access_token);
         return response.status;
       } catch (error) {
-        const axiosError = error as AxiosError;
-        if (axiosError.response && axiosError.response.status) {
-          return axiosError.response.status;
-        }
-        throw axiosError;
+        throw error as AxiosError;
       }
     },
     [],
@@ -103,8 +115,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       logout,
       updateUser,
       registerUserAccount,
+      fetchUser,
     }),
-    [user, isLoading, login, logout, updateUser, registerUserAccount],
+    [user, isLoading, login, logout, updateUser, registerUserAccount, fetchUser],
   );
 
   return (

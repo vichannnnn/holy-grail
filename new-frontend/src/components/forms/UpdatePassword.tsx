@@ -4,7 +4,7 @@ import { AxiosError } from 'axios';
 import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { UpdatePassword as UpdatePasswordRequest, updatePassword } from '@api/user';
+import { UpdatePasswordDetails as UpdatePasswordRequest, updatePassword } from '@api/auth';
 
 import { TextField } from '@components/TextField';
 

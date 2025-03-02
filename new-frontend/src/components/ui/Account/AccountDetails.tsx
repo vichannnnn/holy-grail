@@ -71,7 +71,7 @@ export const AccountDetails = ({ user }: AccountDetailsProps) => {
         <p className='text-sm text-gray-400 mt-1'>Your username cannot be changed once created.</p>
         <h3 className='mt-4 mb-2'>
           Account verification status
-          <VerificationSection verified={user.is_email_verified} />
+          <VerificationSection verified={user.verified} />
         </h3>
       </SectionBox>
 
