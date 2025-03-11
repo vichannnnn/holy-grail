@@ -1,5 +1,6 @@
-import { Divider } from '@mui/material';
 import Link from 'next/link';
+
+import { Divider } from '@components/Divider';
 
 const LeftSection = () => {
   return (
@@ -70,7 +71,7 @@ export const Footer = () => {
         <RightSection />
       </div>
       <div className='w-full mt-3'>
-        <Divider className='w-full border-t-2 border-t-gray-600 mt-4 mb-2' />
+        <Divider />
         <p>© 2023 - {currentYear} Holy Grail Team • Questions? Contact us at grail@himaa.me</p>
       </div>
     </footer>
