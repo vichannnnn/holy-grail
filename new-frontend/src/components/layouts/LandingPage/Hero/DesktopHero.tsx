@@ -22,7 +22,7 @@ export const DesktopHero = () => {
           <Button
             variant='contained'
             sx={{
-              color: 'black',
+              '& p, & span': { color: '#484b6a' },
               backgroundColor: '#FFA5A5',
               '&:hover': {
                 backgroundColor: '#cc8484',
@@ -49,7 +49,7 @@ export const DesktopHero = () => {
           <Button
             variant='contained'
             sx={{
-              color: 'black',
+              '& p, & span': { color: '#484b6a' },
               backgroundColor: '#FFA5A5',
               '&:hover': {
                 backgroundColor: '#cc8484',
