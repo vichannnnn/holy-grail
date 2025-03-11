@@ -9,7 +9,7 @@ export const MobileHero = () => {
 
   return (
     <div className='flex flex-col w-4/5 m-auto gap-4 items-center text-center'>
-      <img src='https://image.himaa.me/grail-chan-studying-v1.webp' alt='Studying' width='325' />
+      <img src='/trimmy-grail-chan-studying.webp' alt='Studying' width='300' />
       <FadeIn>
         <h1 className='mb-4 text-3xl font-bold'>Access your notes you need in just a click.</h1>
         <p className='mb-4'>
@@ -21,7 +21,7 @@ export const MobileHero = () => {
       <Button
         variant='contained'
         sx={{
-          color: 'black',
+          '& p, & span': { color: '#484b6a' },
           backgroundColor: '#FFA5A5',
           '&:hover': {
             backgroundColor: '#cc8484',
@@ -31,7 +31,7 @@ export const MobileHero = () => {
       >
         Head to the Library <ArrowForwardIcon style={{ verticalAlign: 'middle' }} />
       </Button>
-      <img src='https://image.himaa.me/grail-chan-sparkling-v1.webp' alt='Sparkling' width='325' />
+      <img src='/trimmy-grail-chan-sparkling.webp' alt='Sparkling' width='300' />
       <FadeIn>
         <h1 className='mb-4 text-3xl font-bold'>Want to contribute?</h1>
         <p className='mb-4'>
@@ -43,7 +43,7 @@ export const MobileHero = () => {
       <Button
         variant='contained'
         sx={{
-          color: 'black',
+          '& p, & span': { color: '#484b6a' },
           backgroundColor: '#FFA5A5',
           '&:hover': {
             backgroundColor: '#cc8484',

@@ -30,7 +30,30 @@ const GeneralHeader = () => {
           />
         </Link>
       </div>
-      {isMedium ? <DesktopButton /> : <MobileDropdown />}
+      {isMedium ? (
+        <>
+          <div className='flex flex-row gap-8 font-bold'>
+            <Link href='/' passHref>
+              <p>Home</p>
+            </Link>
+            <Link href='/library' passHref>
+              <p>Library</p>
+            </Link>
+            <Link href='/faq' passHref>
+              <p>FAQ</p>
+            </Link>
+            <Link href='/upload' passHref>
+              <p>Contribute</p>
+            </Link>
+            <Link href='/leaderboard' passHref>
+              <p>Leaderboard</p>
+            </Link>
+          </div>
+          <DesktopButton />
+        </>
+      ) : (
+        <MobileDropdown />
+      )}
     </header>
   );
 };
