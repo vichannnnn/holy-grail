@@ -102,8 +102,8 @@ export function App() {
         <AuthProvider>
           <Header />
           <Routes>
-            <Route path='/' element={<LandingPage />} />
-            <Route path='/library' element={<Library />} />
+            <Route path='/' element={<LandingPage />} /> // Done
+            <Route path='/library' element={<Library />} /> // Later
             <Route path='/login' element={<LoginPage />} />
             <Route path='/register' element={<SignUpPage />} />
             <Route path='/upload' element={<UploadPage />} />
