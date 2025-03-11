@@ -9,7 +9,7 @@ export const DesktopHero = () => {
 
   return (
     <div className='flex flex-col w-4/5 m-auto gap-8'>
-      <div className='flex flex-row'>
+      <div className='flex flex-row gap-16'>
         <div className='m-auto'>
           <FadeIn>
             <h1 className='mb-4 text-3xl font-bold'>Access your notes you need in just a click.</h1>
@@ -33,14 +33,10 @@ export const DesktopHero = () => {
             Head to the Library <ArrowForwardIcon style={{ verticalAlign: 'middle' }} />
           </Button>
         </div>
-        <img src='https://image.himaa.me/grail-chan-studying-v1.webp' alt='Studying' width='450' />
+        <img src='/trimmy-grail-chan-studying.webp' alt='Studying' width='300' />
       </div>
-      <div className='flex flex-row'>
-        <img
-          src='https://image.himaa.me/grail-chan-sparkling-v1.webp'
-          alt='Sparkling'
-          width='450'
-        />
+      <div className='flex flex-row gap-16'>
+        <img src='/trimmy-grail-chan-sparkling.webp' alt='Sparkling' width='300' />
         <div className='m-auto gap-4'>
           <FadeIn>
             <h1 className='mb-4 text-3xl font-bold'>Want to contribute?</h1>

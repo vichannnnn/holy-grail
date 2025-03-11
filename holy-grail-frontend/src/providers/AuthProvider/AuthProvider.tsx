@@ -1,7 +1,7 @@
 import { createContext, useEffect, useMemo, useState, useCallback } from 'react';
 import { AxiosError, AxiosResponse } from 'axios';
 import { apiClient } from '@apiClient';
-import { AccountDetails, registerAccount } from '@api/auth';
+import { AccountDetails, getUser, registerAccount } from '@api/auth';
 import {
   AuthContextType,
   AuthProviderProps,
