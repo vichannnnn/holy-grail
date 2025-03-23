@@ -1,12 +1,13 @@
 'use client';
 
 import { Login, Payment, PersonAdd } from '@mui/icons-material';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LogoutIcon from '@mui/icons-material/ExitToApp';
 import { Menu as BaseMenu, ListItemIcon, MenuItem, MenuProps } from '@mui/material';
 import { useContext } from 'react';
 
 import { AuthContext, User } from '@providers/AuthProvider';
-import { MediaQueryContext } from '@providers/MediaQueryProvider';
+import { DarkModeContext } from '@providers/DarkModeProvider';
 
 import { useNavigate } from '@utils/navigation';
 
@@ -44,10 +45,15 @@ const LoggedOutMenuItems = () => {
 
 const LoggedInMenuItems = () => {
   const { logout } = useContext(AuthContext);
-  const { isMedium } = useContext(MediaQueryContext);
+  const { toggleDarkMode } = useContext(DarkModeContext);
   const router = useNavigate();
 
   const loggedInMenuItems = [
+    {
+      name: 'Toggle Dark Mode',
+      icon: <DarkModeIcon fontSize='small' />,
+      onClick: () => toggleDarkMode(),
+    },
     {
       name: 'Account Settings',
       icon: <Payment fontSize='small' />,
