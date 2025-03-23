@@ -1,17 +1,151 @@
 'use client';
 
 import Link from 'next/link';
-import { useContext } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
+
+import { deleteNote } from '@api/actions';
+import {
+  CategoryType,
+  CommonType,
+  DocumentType,
+  Note,
+  PaginatedNotes,
+  SubjectType,
+  fetchApprovedNotes,
+  fetchLibraryTypes,
+} from '@api/library';
 
 import { Divider } from '@components/Divider';
 
+import { NotesTable } from '@features/Library';
+
 import { AuthContext } from '@providers/AuthProvider';
+import { MediaQueryContext } from '@providers/MediaQueryProvider';
 
 export const Library = () => {
+  const { isMedium } = useContext(MediaQueryContext);
+  const [notes, setNotes] = useState<PaginatedNotes>({
+    items: [],
+    page: 0,
+    pages: 0,
+    size: 0,
+    total: 0,
+  });
   const { user } = useContext(AuthContext);
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
+  const [noteId, setNoteId] = useState<number>(0);
+
+  const [noteInitialProperties, setNoteInitialProperties] = useState<Note | null>(null);
+  const [categories, setCategories] = useState<CategoryType[]>([]);
+  const [subjects, setSubjects] = useState<SubjectType[]>([]);
+  const [types, setTypes] = useState<DocumentType[]>([]);
+  const [years, setYears] = useState<CommonType[]>([]);
+  const [pageInfo, setPageInfo] = useState({
+    page: 1,
+    pages: 1,
+    size: 10,
+    total: 0,
+  });
+
+  const [category, setCategory] = useState<number | ''>(0);
+  const [subject, setSubject] = useState<number | ''>(0);
+  const [type, setType] = useState<number | ''>(0);
+  const [year, setYear] = useState<number | ''>(0);
+  const [keyword, setKeyword] = useState<string>('');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+
+  useEffect(() => {
+    fetchLibraryTypes().then(({ categories, subjects, types, years }) => {
+      setCategories(categories);
+      setSubjects(subjects);
+      setTypes(types);
+      setYears(years);
+    });
+  }, []);
+
+  const filterNotes = useCallback(() => {
+    fetchApprovedNotes({
+      category: category !== 0 ? categories.find((c) => c.id === category)?.name : undefined,
+      subject: subject !== 0 ? subjects.find((s) => s.id === subject)?.name : undefined,
+      doc_type: type !== 0 ? types.find((t) => t.id === type)?.name : undefined,
+      keyword: keyword !== '' ? keyword : '',
+      page: pageInfo.page,
+      size: pageInfo.size,
+      sorted_by_upload_date: sortOrder,
+      year: Number(year),
+    }).then((response) => {
+      setNotes(response);
+      setPageInfo({
+        page: response.page,
+        pages: response.pages,
+        size: response.size,
+        total: response.total,
+      });
+    });
+  }, [
+    category,
+    subject,
+    type,
+    keyword,
+    year,
+    pageInfo.page,
+    pageInfo.size,
+    sortOrder,
+    categories,
+    subjects,
+    types,
+  ]);
+
+  useEffect(() => {
+    if (categories.length && subjects.length && types.length) {
+      filterNotes();
+    }
+  }, [filterNotes, category, subject, type, keyword, year]);
+
+  const handlePageChange = (newPage: number) => {
+    if (newPage >= 1 && newPage <= Math.ceil(pageInfo.total / pageInfo.size)) {
+      setPageInfo({ ...pageInfo, page: newPage });
+    }
+  };
+
+  const handleDelete = async (id: number) => {
+    await deleteNote(id);
+    setIsAlertOpen(false);
+    filterNotes();
+  };
+
+  const handleCategoryChange = (newValue: number | '') => {
+    setCategory(Number(newValue));
+    setPageInfo({ ...pageInfo, page: 1 });
+  };
+
+  const handleSubjectChange = (newValue: number | '') => {
+    setSubject(Number(newValue));
+    setPageInfo({ ...pageInfo, page: 1 });
+  };
+
+  const handleTypeChange = (newValue: number | '') => {
+    setType(Number(newValue));
+    setPageInfo({ ...pageInfo, page: 1 });
+  };
+
+  const handleKeywordChange = (newValue: string | '') => {
+    setKeyword(String(newValue));
+    setPageInfo({ ...pageInfo, page: 1 });
+  };
+
+  const handleYearChange = (newValue: number | '') => {
+    setYear(newValue);
+    setPageInfo({ ...pageInfo, page: 1 });
+  };
+
+  const handleSortOrderChange = (newSortOrder: 'asc' | 'desc') => {
+    setSortOrder(newSortOrder);
+  };
 
   return (
-    <div className='w-4/5'>
+    <div className='w-4/5 flex flex-col gap-2'>
       <h2 className='font-bold'>
         Hello,{' '}
         {user ? `${user.username}, welcome back to the Holy Grail` : 'welcome to the Holy Grail'}
@@ -26,6 +160,26 @@ export const Library = () => {
         </Link>{' '}
         after you have logged in (subjected to approval of administrators).
       </p>
+      <NotesTable
+        notes={notes.items}
+        categories={categories.map((c) => ({ id: c.id, name: c.name }))}
+        subjects={subjects.map((s) => ({ id: s.id, name: s.name }))}
+        types={types.map((t) => ({ id: t.id, name: t.name }))}
+        category={category !== '' ? Number(category) : ''}
+        subject={subject !== '' ? Number(subject) : ''}
+        type={type !== '' ? Number(type) : ''}
+        keyword={keyword !== '' ? String(keyword) : ''}
+        year={year !== 0 ? Number(year) : ''}
+        onCategoryChange={handleCategoryChange}
+        onSubjectChange={handleSubjectChange}
+        onTypeChange={handleTypeChange}
+        onKeywordChange={handleKeywordChange}
+        onYearChange={handleYearChange}
+        onSortOrderChange={handleSortOrderChange}
+        pageInfo={pageInfo}
+        handlePageChange={handlePageChange}
+        isMedium={isMedium}
+      />
     </div>
   );
 };
