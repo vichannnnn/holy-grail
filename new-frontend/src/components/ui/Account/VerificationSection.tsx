@@ -38,7 +38,7 @@ export const VerificationSection = ({ verified }: { verified: boolean }) => {
           <CheckCircle className='mr-2' />
           Verified
         </div>
-        <p className='text-sm text-gray-400 mt-1'>Your account is email verified.</p>
+        <p className='text-sm mt-1'>Your account is email verified.</p>
       </>
     );
   } else {
@@ -48,14 +48,11 @@ export const VerificationSection = ({ verified }: { verified: boolean }) => {
           <Cancel className='mr-2' />
           Unverified
         </div>
-        <p className='text-sm text-gray-400 mt-1'>
+        <p className='text-sm mt-1'>
           Your account is not yet email verified.
           <br />
           Please click{' '}
-          <a
-            className='cursor-pointer font-bold text-sm text-gray-400'
-            onClick={handleResendVerificationEmail}
-          >
+          <a className='cursor-pointer font-bold text-sm' onClick={handleResendVerificationEmail}>
             here
           </a>{' '}
           to send another verification mail to your email.

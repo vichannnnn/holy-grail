@@ -10,13 +10,14 @@ interface ButtonBaseProps extends ButtonProps {
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonBaseProps>(
-  ({ onClick, sx, href, children, ...props }, ref) => {
+  ({ onClick, sx, href, children, className, ...props }, ref) => {
     const theme = useTheme();
     const isDark = theme.palette.mode === 'dark';
 
     // TODO: We can make a parent component for both Button and IconButton since they're using the same logic.
     return (
       <ButtonBase
+        className={className}
         onClick={onClick}
         ref={ref}
         href={href}
@@ -42,9 +43,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonBaseProps>(
         }}
         {...props}
       >
-        <div>
-          <p>{children}</p>
-        </div>
+        {children}
       </ButtonBase>
     );
   },

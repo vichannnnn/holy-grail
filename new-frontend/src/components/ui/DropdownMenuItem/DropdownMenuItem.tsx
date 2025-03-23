@@ -1,5 +1,5 @@
-import { ReactNode } from 'react';
 import { MenuItem, MenuItemProps, Stack } from '@mui/material';
+import { ReactNode } from 'react';
 
 export interface DropdownMenuItemProps extends MenuItemProps {
   icon?: ReactNode;
@@ -20,7 +20,7 @@ export const DropdownMenuItem = ({ icon, ...props }: DropdownMenuItemProps) => {
         <div>
           <Stack direction='row' alignItems='center' gap={1}>
             {icon && <div className='icon'>{icon}</div>}
-            {props.children}
+            <p>{props.children}</p>
           </Stack>
         </div>
       </MenuItem>
