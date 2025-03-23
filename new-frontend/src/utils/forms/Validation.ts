@@ -1,6 +1,10 @@
 import * as Yup from 'yup';
 
+import { NoteInfoProps, NotesFormData } from '@features/Upload/types';
+
 //TODO: Need to do proper validation on username, password, and email based on their conditions
+const SUPPORTED_FORMATS = ['application/pdf', 'application/zip'];
+const SOME_SIZE_LIMIT = 1048576000;
 
 export const SignInValidation = Yup.object().shape({
   username: Yup.string().required('Username is required.'),
@@ -44,4 +48,39 @@ export const UpdatePasswordValidation = Yup.object().shape({
 
 export const ForgotPasswordValidation = Yup.object().shape({
   email: Yup.string().required('Email is a required field'),
+});
+
+const UploadNoteValidation = Yup.object<NoteInfoProps>().shape({
+  name: Yup.string()
+    .required('Document name is required')
+    .min(1, 'Minimum 1 character')
+    .max(100, 'Maximum 100 characters'),
+  subject: Yup.number()
+    .typeError('Subject is required')
+    .required('Subject is required')
+    .notOneOf([0], 'Subject is required'),
+  type: Yup.number()
+    .typeError('Type is required')
+    .required('Type is required')
+    .notOneOf([0], 'Type is required'),
+  category: Yup.number()
+    .typeError('Category is required')
+    .required('Category is required')
+    .notOneOf([0], 'Category is required'),
+  file: Yup.mixed<File>()
+    .required()
+    .test(
+      'fileSize',
+      'File too large',
+      (value) => value instanceof File && value.size <= SOME_SIZE_LIMIT,
+    )
+    .test(
+      'fileType',
+      'Unsupported File Format',
+      (value) => value instanceof File && SUPPORTED_FORMATS.includes(value.type),
+    ),
+});
+
+export const UploadNotesValidation = Yup.object<NotesFormData>().shape({
+  notes: Yup.array<NoteInfoProps>().of(UploadNoteValidation).required(),
 });
