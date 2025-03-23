@@ -67,13 +67,15 @@ const CustomTextFieldStyled = styled(TextFieldBase)(({ theme }) => ({
 }));
 
 const CustomTextField = forwardRef((props: TextFieldProps, ref) => {
-  return <CustomTextFieldStyled {...props} inputRef={ref} />;
+  const { className, ...rest } = props;
+  return <CustomTextFieldStyled className={className} {...rest} inputRef={ref} />;
 });
 
 CustomTextField.displayName = 'CustomTextField';
 
 export const TextField = forwardRef((props: TextFieldProps, ref) => {
-  return <CustomTextField fullWidth variant='outlined' {...props} ref={ref} />;
+  const { className, ...rest } = props;
+  return <CustomTextField fullWidth variant='outlined' className={className} {...rest} ref={ref} />;
 });
 
 TextField.displayName = 'TextField';

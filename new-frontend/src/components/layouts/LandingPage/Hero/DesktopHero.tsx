@@ -30,7 +30,9 @@ export const DesktopHero = () => {
               },
             }}
           >
-            Head to the Library <ArrowForwardIcon style={{ verticalAlign: 'middle' }} />
+            <p>
+              Head to the Library <ArrowForwardIcon style={{ verticalAlign: 'middle' }} />
+            </p>
           </Button>
         </div>
         <img src='/trimmy-grail-chan-studying.webp' alt='Studying' width='300' />
@@ -57,7 +59,7 @@ export const DesktopHero = () => {
               },
             }}
           >
-            Click here to sign up!
+            <p>Click here to sign up!</p>
           </Button>
         </div>
       </div>
