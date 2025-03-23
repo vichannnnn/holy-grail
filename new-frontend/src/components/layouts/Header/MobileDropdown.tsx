@@ -1,6 +1,6 @@
 'use client';
 
-import { UserMenu } from '@layouts/GeneralHeader/Button/User/UserMenu';
+import { UserMenu } from '@layouts/Header/Button/User/UserMenu';
 import MenuIcon from '@mui/icons-material/Menu';
 import { MouseEvent, useContext, useState } from 'react';
 

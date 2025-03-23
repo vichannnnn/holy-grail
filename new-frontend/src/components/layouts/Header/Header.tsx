@@ -1,9 +1,9 @@
 'use client';
 
-import { DesktopButton, MobileDropdown } from '@layouts/GeneralHeader';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useContext } from 'react';
+import { DesktopButton, MobileDropdown } from 'src/components/layouts/Header';
 
 import { MediaQueryContext } from '@providers/MediaQueryProvider';
 
@@ -12,10 +12,10 @@ export const Header = () => {
   const hideHeaderRoutes = ['/account-login', '/create-account', '/forgot-password'];
   const shouldHide = hideHeaderRoutes.some((route) => pathname === route);
 
-  return shouldHide ? null : <GeneralHeader />;
+  return shouldHide ? null : <HeaderLayout />;
 };
 
-const GeneralHeader = () => {
+const HeaderLayout = () => {
   const { isMedium } = useContext(MediaQueryContext);
 
   return (
