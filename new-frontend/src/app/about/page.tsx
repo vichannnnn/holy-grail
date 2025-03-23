@@ -1,12 +1,10 @@
 export async function generateMetadata() {
   return {
-    title: 'About - Hima Boilerplate',
-    description:
-      'Lorem ipsum dolor sit amet.',
+    title: 'About - Holy Grail',
+    description: 'Lorem ipsum dolor sit amet.',
     openGraph: {
-      title: 'About - Hima Boilerplate',
-      description:
-        'Lorem ipsum dolor sit amet.',
+      title: 'About - Holy Grail',
+      description: 'Lorem ipsum dolor sit amet.',
       images: [
         {
           url: '',
