@@ -198,33 +198,36 @@ export const DesktopNotesTable = (props: BaseNotesTableProps) => {
             <TableBody>
               {notes.map((note: Note) => (
                 <TableRow key={note.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                  <TableCell className='table-content' component='th' scope='row'>
+                  <TableCell component='th' scope='row'>
                     <Link
                       href={getDocumentUrl(note.file_name)}
                       target='_blank'
                       rel='noopener noreferrer'
                     >
                       <p>
-                        <NotesIcon docSubject={note.doc_subject} /> {note.document_name}
+                        <NotesIcon docSubject={note.doc_subject} />{' '}
+                        {note.document_name.length > 30
+                          ? `${note.document_name.substring(0, 30)}...`
+                          : note.document_name}
                       </p>
                     </Link>
                   </TableCell>
-                  <TableCell className='table-content'>
+                  <TableCell>
                     <p>{note.doc_category?.name}</p>
                   </TableCell>
-                  <TableCell className='table-content'>
+                  <TableCell>
                     <p>{note.doc_subject?.name}</p>
                   </TableCell>
-                  <TableCell className='table-content'>
+                  <TableCell>
                     <p>{note.doc_type?.name}</p>
                   </TableCell>
-                  <TableCell className='table-content'>
+                  <TableCell>
                     <p>{note.account?.username}</p>
                   </TableCell>
-                  <TableCell className='table-content'>
+                  <TableCell>
                     <p>{note.year ? note.year : 'None'}</p>
                   </TableCell>
-                  <TableCell className='table-content'>
+                  <TableCell>
                     <p>{formatDate(note.uploaded_on)}</p>
                   </TableCell>
                   <TableCell>
