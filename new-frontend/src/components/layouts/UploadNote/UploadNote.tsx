@@ -111,7 +111,7 @@ export const UploadNote = () => {
   useEffect(() => {
     if (!isLoading) {
       if (!user) {
-        router.navigateTo('/account-login');
+        router.navigateTo('/login');
       }
     }
   }, [isLoading, user]);
@@ -207,7 +207,7 @@ export const UploadNote = () => {
       router.navigateTo('/');
     }
     if (response.status === 401) {
-      router.navigateTo('/account-login');
+      router.navigateTo('/login');
     }
 
     if (response.status === 400) {

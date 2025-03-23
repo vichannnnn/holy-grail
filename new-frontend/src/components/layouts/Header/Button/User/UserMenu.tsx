@@ -22,12 +22,12 @@ const LoggedOutMenuItems = () => {
     {
       name: 'Log In',
       icon: <Login fontSize='small' />,
-      onClick: () => router.navigateTo('/account-login'),
+      onClick: () => router.navigateTo('/login'),
     },
     {
       name: 'Register',
       icon: <PersonAdd fontSize='small' />,
-      onClick: () => router.navigateTo('/create-account'),
+      onClick: () => router.navigateTo('/register'),
     },
   ];
 

@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  const hideHeaderRoutes = ['/account-login', '/create-account', '/forgot-password'];
+  const hideHeaderRoutes = ['/login', '/register', '/forgot-password'];
   const shouldHideHeader = hideHeaderRoutes.some((route) => pathname.startsWith(route));
 
   const response = NextResponse.next();

@@ -15,7 +15,7 @@ const FAQPage = () => {
     if (user) {
       router.navigateTo('/upload');
     } else {
-      router.navigateTo('/account-login');
+      router.navigateTo('/login');
     }
   };
 

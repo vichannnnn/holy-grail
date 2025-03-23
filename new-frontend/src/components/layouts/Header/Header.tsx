@@ -9,7 +9,7 @@ import { MediaQueryContext } from '@providers/MediaQueryProvider';
 
 export const Header = () => {
   const pathname = usePathname();
-  const hideHeaderRoutes = ['/account-login', '/create-account', '/forgot-password'];
+  const hideHeaderRoutes = ['/login', '/register', '/forgot-password'];
   const shouldHide = hideHeaderRoutes.some((route) => pathname === route);
 
   return shouldHide ? null : <HeaderLayout />;
