@@ -2,13 +2,13 @@ import Link from 'next/link';
 
 export async function generateMetadata() {
   return {
-    title: 'Terms of Service - Hima Boilerplate',
+    title: 'Terms of Service - Holy Grail',
     description:
-      'Review the Terms of Service for Hima Boilerplate. Learn about the terms for using the platform, including account creation, payment terms, and user responsibilities.',
+      'Review the Terms of Service for Holy Grail. Learn about the terms for using the platform, including account creation, payment terms, and user responsibilities.',
     openGraph: {
-      title: 'Terms of Service - Hima Boilerplate',
+      title: 'Terms of Service - Holy Grail',
       description:
-        'Understand the terms for using Hima Boilerplate. Read about your rights and obligations, payment terms, and how to use the platform responsibly.',
+        'Understand the terms for using Holy Grail. Read about your rights and obligations, payment terms, and how to use the platform responsibly.',
       images: [
         {
           url: '',
@@ -25,16 +25,16 @@ const TermsOfServicePage = () => {
         <h2 className='text-5xl font-semibold mb-6'>Terms of Service</h2>
 
         <p className='text-md leading-relaxed'>
-          Welcome, and thank you for your interest in <strong>HIMARI PTE. LTD.</strong>{' '}
-          (&apos;Himari Inc.,&apos; &apos;we,&apos; or &apos;us&apos;) and our mobile and web
-          application <strong>Hima Boilerplate</strong>, along with our related services (collectively, the
-          &apos;Service&apos;). These Terms of Service, including Himari Inc.&apos;s Privacy Policy
-          (available
+          Welcome, and thank you for your interest in <strong>Holy Grail Team</strong> (&apos;Holy
+          Grail Team,&apos; &apos;we,&apos; or &apos;us&apos;) and our mobile and web application{' '}
+          <strong>Holy Grail</strong>, along with our related services (collectively, the
+          &apos;Service&apos;). These Terms of Service, including Holy Grail Team&apos;s Privacy
+          Policy (available
           <Link href='/privacy' passHref>
             here
           </Link>
-          ), (together, these &apos;Terms&apos;) are a legally binding contract between you and
-          Himari Inc. regarding your use of the Service.
+          ), (together, these &apos;Terms&apos;) are a legally binding contract between you and Holy
+          Grail Team regarding your use of the Service.
         </p>
 
         <p className='text-md leading-relaxed'>
@@ -43,8 +43,8 @@ const TermsOfServicePage = () => {
           ACCESSING OR USING THE SERVICE, YOU AGREE THAT YOU HAVE READ AND UNDERSTOOD, AND, AS A
           CONDITION TO YOUR USE OF THE SERVICE, YOU AGREE TO BE BOUND BY, THESE TERMS. IF YOU ARE
           NOT ELIGIBLE OR DO NOT AGREE TO THESE TERMS, THEN YOU DO NOT HAVE OUR PERMISSION TO USE
-          THE SERVICE. YOUR USE OF THE SERVICE AND HIMARI INC.&apos;S PROVISION OF THE SERVICE TO
-          YOU CONSTITUTES AN AGREEMENT BY BOTH PARTIES TO BE BOUND BY THESE TERMS.
+          THE SERVICE. YOUR USE OF THE SERVICE AND HOLY GRAIL TEAM&apos;S PROVISION OF THE SERVICE
+          TO YOU CONSTITUTES AN AGREEMENT BY BOTH PARTIES TO BE BOUND BY THESE TERMS.
         </p>
 
         <p className='text-md leading-relaxed'>
@@ -59,15 +59,13 @@ const TermsOfServicePage = () => {
         <p className='text-md leading-relaxed'>
           Except for certain disputes described in Section 15, you agree that disputes arising under
           these Terms will be resolved by binding, individual arbitration, and BY ACCEPTING THESE
-          TERMS, YOU AND HIMARI INC. WAIVE THE RIGHT TO A TRIAL BY JURY OR PARTICIPATION IN A CLASS
-          ACTION.
+          TERMS, YOU AND HOLY GRAIL TEAM WAIVE THE RIGHT TO A TRIAL BY JURY OR PARTICIPATION IN A
+          CLASS ACTION.
         </p>
 
-        <h3 className='text-2xl font-semibold mb-4 mt-6'>1. Hima Boilerplate Service Overview</h3>
+        <h3 className='text-2xl font-semibold mb-4 mt-6'>1. Holy Grail&apos;s Service Overview</h3>
         <p className='text-md leading-relaxed'>
-          The Hima Boilerplate platform connects tutors with tutees. Tutors can create listings for their
-          services, and tutees can browse and engage with tutors, exclusively focused on tutoring
-          services and academic lessons.
+          The Holy Grail platform provides free educational resources.
         </p>
 
         <h3 className='text-2xl font-semibold mb-4 mt-6'>2. Eligibility</h3>
@@ -94,7 +92,7 @@ const TermsOfServicePage = () => {
           provide accurate, complete, and current information when registering and to keep this
           information up to date. You are responsible for all activities occurring under your
           account. If you suspect unauthorized use of your account, you must notify us immediately
-          at violet@himari.sg.
+          at grail@himaa.me.
         </p>
 
         <h3 className='text-2xl font-semibold mb-4 mt-6'>4. Payment Terms</h3>
@@ -119,7 +117,7 @@ const TermsOfServicePage = () => {
           subscription will be billed according to the subscription plan you choose, either as a
           lifetime payment or a recurring payment. You must cancel the subscription before the
           renewal date to avoid being charged for the next billing period. For cancellation, please
-          use the billing menu or contact us at violet@himari.sg.
+          use the billing menu or contact us at grail@himaa.me.
         </p>
 
         <h3 className='text-2xl font-semibold mb-4 mt-6'>6. Customer and Usage Data</h3>
@@ -145,9 +143,9 @@ const TermsOfServicePage = () => {
 
         <h3 className='text-2xl font-semibold mb-4 mt-6'>8. Termination</h3>
         <p className='text-md leading-relaxed'>
-          Himari Inc. reserves the right to terminate or suspend your account at any time for any
-          reason, including but not limited to violations of these Terms. Upon termination, you must
-          cease all use of the Service, and any outstanding fees or obligations must be paid.
+          Holy Grail Team reserves the right to terminate or suspend your account at any time for
+          any reason, including but not limited to violations of these Terms. Upon termination, you
+          must cease all use of the Service, and any outstanding fees or obligations must be paid.
         </p>
 
         <h3 className='text-2xl font-semibold mb-4 mt-6'>9. Modifications to the Service</h3>
@@ -159,7 +157,7 @@ const TermsOfServicePage = () => {
 
         <h3 className='text-2xl font-semibold mb-4 mt-6'>10. Indemnity</h3>
         <p className='text-md leading-relaxed'>
-          You agree to indemnify and hold harmless Himari Inc. from and against any claims,
+          You agree to indemnify and hold harmless Holy Grail Team from and against any claims,
           liabilities, damages, losses, and expenses, including legal fees, arising out of or in any
           way connected with your use of the Service or your violation of these Terms.
         </p>
@@ -168,9 +166,9 @@ const TermsOfServicePage = () => {
           11. Disclaimers and Limitation of Liability
         </h3>
         <p className='text-md leading-relaxed'>
-          The Service is provided &quot;as is,&quot; and Himari Inc. disclaims all warranties of any
-          kind. We do not guarantee uninterrupted, secure, or error-free access to the Service. In
-          no event shall Himari Inc. be liable for any indirect, incidental, special, or
+          The Service is provided &quot;as is,&quot; and Holy Grail Team disclaims all warranties of
+          any kind. We do not guarantee uninterrupted, secure, or error-free access to the Service.
+          In no event shall Holy Grail Team be liable for any indirect, incidental, special, or
           consequential damages arising from the use of the Service.
         </p>
 
@@ -200,11 +198,11 @@ const TermsOfServicePage = () => {
         </p>
         <p className='text-md leading-relaxed'>
           <br />
-          <strong>HIMARI PTE. LTD.</strong>
+          <strong>Holy Grail Team</strong>
           <br />
           UEN: 202405173C
           <br />
-          Email: violet@himari.sg
+          Email: grail@himaa.me
         </p>
       </section>
     </div>

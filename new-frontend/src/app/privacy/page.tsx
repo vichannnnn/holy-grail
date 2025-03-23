@@ -1,12 +1,12 @@
 export async function generateMetadata() {
   return {
-    title: 'Privacy Policy - Hima Boilerplate',
+    title: 'Privacy Policy - Holy Grail',
     description:
-      'Learn how Hima Boilerplate collects, uses, and protects your personal information. Our Privacy Policy explains the data we collect, how we use it.',
+      'Learn how Holy Grail collects, uses, and protects your personal information. Our Privacy Policy explains the data we collect, how we use it.',
     openGraph: {
-      title: 'Privacy Policy - Hima Boilerplate',
+      title: 'Privacy Policy - Holy Grail',
       description:
-        'Hima Boilerplate respects your privacy. Read our Privacy Policy to understand how we collect, use, and share personal data on our platform.',
+        'Holy Grail respects your privacy. Read our Privacy Policy to understand how we collect, use, and share personal data on our platform.',
       images: [
         {
           url: '',
@@ -25,15 +25,14 @@ const PrivacyPolicyPage = () => {
         <h2 className='text-3xl font-semibold mb-6'>Introduction</h2>
         <p className='text-md leading-relaxed'>
           This privacy policy (“Privacy Policy”) applies to all visitors and users of the Hima
-          Boilerplate web and mobile applications (collectively, “Hima Boilerplate,” “App,” or
-          “Apps”), which are offered by HIMARI PTE. LTD. (UEN 202405173C) and/or any of its
-          affiliates (“Himari Inc.,” “we,” or “us”). This Privacy Policy describes how we process
-          your personal information, collect information through the use of cookies and related
-          technologies, and how you can access and update your personal information. It also
-          describes the data protection rights that may be available under your country&apos;s or
-          state’s laws. Please read this Privacy Policy carefully. By accessing or using any part of
-          the App, you acknowledge that you have been informed of and consent to our practices with
-          regard to your personal information.
+          Boilerplate web and mobile applications (collectively, “Holy Grail,” “App,” or “Apps”),
+          which are offered by Holy Grail Team and/or any of its affiliates (“we,” or “us”). This
+          Privacy Policy describes how we process your personal information, collect information
+          through the use of cookies and related technologies, and how you can access and update
+          your personal information. It also describes the data protection rights that may be
+          available under your country&apos;s or state’s laws. Please read this Privacy Policy
+          carefully. By accessing or using any part of the App, you acknowledge that you have been
+          informed of and consent to our practices with regard to your personal information.
         </p>
       </section>
 
@@ -58,18 +57,18 @@ const PrivacyPolicyPage = () => {
         <h2 className='text-3xl font-semibold mb-6'>Personal Information We Collect</h2>
         <p className='text-md leading-relaxed'>
           You may choose to interact with our Apps in ways that provide us with your personal
-          information. For example, when creating an account on Hima Boilerplate, we collect
-          information such as your name, email address, and phone number. We will also collect the
-          information you provide with us in connection with creating an account on the App. In each
-          case, FastAPI Boilerplate collects such personal information only insofar as is necessary
-          or appropriate to fulfill the purpose of your interaction with or your request to Hima
+          information. For example, when creating an account on Holy Grail, we collect information
+          such as your name, email address, and phone number. We will also collect the information
+          you provide with us in connection with creating an account on the App. In each case,
+          FastAPI Boilerplate collects such personal information only insofar as is necessary or
+          appropriate to fulfill the purpose of your interaction with or your request to Hima
           Boilerplate. We will not disclose your personal information other than as described in
           this Privacy Policy.
         </p>
         <br />
         <p className='text-md leading-relaxed'>
-          Like most website operators, Hima Boilerplate automatically collects technical information
-          about your device, including your device’s IP address, device type, language settings, and
+          Like most website operators, Holy Grail automatically collects technical information about
+          your device, including your device’s IP address, device type, language settings, and
           general location information. This information is collected using cookies, web beacons,
           and related technologies to help us understand how visitors use our Apps, improve user
           experience, and monitor security.
@@ -83,9 +82,9 @@ const PrivacyPolicyPage = () => {
       </section>
 
       <section className='mb-12'>
-        <h2 className='text-3xl font-semibold mb-6'>Information Himari Inc. Does Not Collect</h2>
+        <h2 className='text-3xl font-semibold mb-6'>Information Holy Grail Does Not Collect</h2>
         <p className='text-md leading-relaxed'>
-          Himari Inc. does not intentionally collect sensitive personal information, such as genetic
+          Holy Grail does not intentionally collect sensitive personal information, such as genetic
           data, biometric data for uniquely identifying a person, health information, or religious
           beliefs.
         </p>
@@ -118,8 +117,8 @@ const PrivacyPolicyPage = () => {
         <ul className='list-disc ml-6 mt-2'>
           <li>
             <p className='text-md leading-relaxed'>
-              To improve and personalize your experience with Hima Boilerplate and our Apps, and to
-              tailor communications to you.
+              To improve and personalize your experience with Holy Grail and our Apps, and to tailor
+              communications to you.
             </p>
           </li>
           <li>
@@ -202,13 +201,13 @@ const PrivacyPolicyPage = () => {
         <p className='text-md leading-relaxed'>
           You may withdraw your consent at any time through the unsubscribe feature provided with
           the relevant marketing email or by contacting us using the details in the &quot;Contacting
-          Himari Inc. About Your Privacy&quot; section of this Privacy Policy.
+          Holy Grail About Your Privacy&quot; section of this Privacy Policy.
         </p>
       </section>
 
       <section className='mb-12'>
         <h3 className='text-3xl font-semibold mb-4 mt-6'>
-          How Himari Inc. Uses and Protects Your Personal Information
+          How Holy Grail Uses and Protects Your Personal Information
         </h3>
         <p className='text-md leading-relaxed'>
           We may share your personal information with third parties in the following circumstances:
@@ -217,14 +216,14 @@ const PrivacyPolicyPage = () => {
         <h4 className='text-xl font-semibold mb-4 mt-6'>Employees, Contractors, and Affiliates</h4>
         <p className='text-md leading-relaxed'>
           We share personal information with our employees, contractors, and affiliated
-          organizations who need to know this information to process it on Himari Inc.’s behalf or
-          to provide services on the App. These parties are bound by confidentiality agreements.
+          organizations who need to know this information to process it on Holy Grail Team’s behalf
+          or to provide services on the App. These parties are bound by confidentiality agreements.
         </p>
 
         <h4 className='text-xl font-semibold mb-4 mt-6'>Service Providers and Partners</h4>
         <p className='text-md leading-relaxed'>
-          Himari Inc. engages the following third-party service providers to manage certain aspects
-          of our business operations:
+          Holy Grail Team engages the following third-party service providers to manage certain
+          aspects of our business operations:
         </p>
         <ul className='list-disc ml-6 mt-2'>
           <li>
@@ -259,8 +258,8 @@ const PrivacyPolicyPage = () => {
         <p className='text-md leading-relaxed'>
           We may disclose your personal information to government authorities if required by law or
           in the good faith belief that such action is necessary to comply with legal obligations,
-          protect the rights and property of Himari Inc., or protect the personal safety of users or
-          the public.
+          protect the rights and property of Holy Grail Team, or protect the personal safety of
+          users or the public.
         </p>
 
         <p className='text-md leading-relaxed'>
@@ -270,7 +269,9 @@ const PrivacyPolicyPage = () => {
       </section>
 
       <section className='mb-12'>
-        <h3 className='text-3xl font-semibold mb-4 mt-6'>Himari Inc. Communications With You</h3>
+        <h3 className='text-3xl font-semibold mb-4 mt-6'>
+          Holy Grail Team Communications With You
+        </h3>
         <p className='text-md leading-relaxed'>
           If you provide your email address during account registration, we may occasionally send
           you communications regarding security updates, new features, and special offers. You may
@@ -330,9 +331,9 @@ const PrivacyPolicyPage = () => {
       <section className='mb-12'>
         <h3 className='text-3xl font-semibold mb-4 mt-6'>Data Retention and Deletion</h3>
         <p className='text-md leading-relaxed'>
-          Himari Inc. will retain your personal information as long as your account is active or as
-          needed to comply with legal obligations and fulfill our contractual commitments. You can
-          access, update, or delete your account information by logging into your account.
+          Holy Grail Team will retain your personal information as long as your account is active or
+          as needed to comply with legal obligations and fulfill our contractual commitments. You
+          can access, update, or delete your account information by logging into your account.
         </p>
         <p className='text-md leading-relaxed'>
           In some cases, we may retain certain personal information indefinitely to maintain
@@ -344,31 +345,31 @@ const PrivacyPolicyPage = () => {
       <section className='mb-12'>
         <h3 className='text-3xl font-semibold mb-4 mt-6'>Privacy Policy Changes</h3>
         <p className='text-md leading-relaxed'>
-          Himari Inc. may update this Privacy Policy from time to time. We will notify you of any
-          significant changes by updating the date of this policy. Your continued use of the App
+          Holy Grail Team may update this Privacy Policy from time to time. We will notify you of
+          any significant changes by updating the date of this policy. Your continued use of the App
           after any changes constitutes your acceptance of the updated Privacy Policy.
         </p>
       </section>
 
       <section className='mb-12'>
         <h3 className='text-3xl font-semibold mb-4 mt-6'>
-          Contacting Himari Inc. About Your Privacy
+          Contacting Holy Grail Team About Your Privacy
         </h3>
         <p className='text-md leading-relaxed'>
           The relevant data controller for any personal information processed in connection with our
-          Apps is Himari Inc.
+          Apps is Holy Grail Team
         </p>
         <br />
         <p className='text-md leading-relaxed'>
           If you have any questions about this Privacy Policy or our privacy and security practices,
           or you wish to make a complaint about our compliance with applicable privacy laws, please
-          feel free to contact us at violet@himari.sg.
+          feel free to contact us at grail@himaa.me.
         </p>
         <br />
         <p className='text-md leading-relaxed'>
           If you have questions or concerns about the way we are handling your personal information,
           or would like to exercise your privacy rights, please email us with the subject line
-          &quot;Privacy Concern&quot; at violet@himari.sg.
+          &quot;Privacy Concern&quot; at grail@himaa.me.
         </p>
         <br />
         <p className='text-md leading-relaxed'>
@@ -382,11 +383,11 @@ const PrivacyPolicyPage = () => {
         </p>
         <p className='text-md leading-relaxed'>
           <br />
-          <strong>HIMARI PTE. LTD.</strong>
+          <strong>Holy Grail Team</strong>
           <br />
           UEN: 202405173C
           <br />
-          Email: violet@himari.sg
+          Email: grail@himaa.me
         </p>
       </section>
     </div>
