@@ -5,3 +5,4 @@ export * from './GeneralHeader';
 export * from './LandingPage';
 export * from './Library';
 export * from './Sidebar';
+export * from './UploadNote';
