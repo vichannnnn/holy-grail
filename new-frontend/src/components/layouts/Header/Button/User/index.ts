@@ -1,2 +1,2 @@
-export * from './ProfilePhotoButton';
+export * from './UserButton';
 export * from './UserMenu';

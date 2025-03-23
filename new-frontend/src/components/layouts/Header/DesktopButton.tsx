@@ -2,7 +2,7 @@
 
 import { DarkModeToggleButton } from '@layouts/Header/Button/DarkModeToggleButton';
 import { RegisterButton } from '@layouts/Header/Button/RegisterButton';
-import { ProfilePhotoButton } from '@layouts/Header/Button/User/ProfilePhotoButton';
+import { UserButton } from '@layouts/Header/Button/User/UserButton';
 import { useContext } from 'react';
 
 import { LogInButton } from './Button/LoginButton';
@@ -24,7 +24,7 @@ export const DesktopButton = () => {
       {user && (
         <div className='flex flex-row gap-4 items-center'>
           <DarkModeToggleButton />
-          <ProfilePhotoButton user={user} />
+          <UserButton user={user} />
         </div>
       )}
     </>
