@@ -36,7 +36,7 @@ export const AccountLogin = () => {
   };
 
   const handleRedirectToRegisterAccountPage = () => {
-    router.navigateTo('/create-account');
+    router.navigateTo('/register');
   };
 
   return (

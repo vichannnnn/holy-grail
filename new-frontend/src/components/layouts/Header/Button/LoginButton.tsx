@@ -15,7 +15,7 @@ export const LogInButton = ({ user }: LogInButtonProps) => {
 
   const handleRedirectAccountLoginPage = () => {
     if (!user) {
-      router.navigateTo('/account-login');
+      router.navigateTo('/login');
     } else {
       window.location.reload();
     }
