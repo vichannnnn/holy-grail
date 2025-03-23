@@ -1,21 +1,17 @@
 'use client';
 
-import { UserMenu } from '@layouts/GeneralHeader';
 import { MouseEvent, useState } from 'react';
+import { UserMenu } from 'src/components/layouts/Header';
 
-import { IconButton } from '@components/Button';
+import { Button } from '@components/Button';
 
 import { User } from '@providers/AuthProvider';
 
 interface ProfilePhotoProps {
-  profilePhotoPreview?: string | undefined;
   user: User | null;
 }
 
-export const ProfilePhotoButton = ({
-  profilePhotoPreview = 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/340px-Default_pfp.svg.png',
-  user,
-}: ProfilePhotoProps) => {
+export const ProfilePhotoButton = ({ user }: ProfilePhotoProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -29,15 +25,15 @@ export const ProfilePhotoButton = ({
 
   return (
     <>
-      <IconButton
+      <Button
         id='user-button'
         aria-controls={open ? 'basic-menu' : undefined}
         aria-haspopup='true'
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
       >
-        <img src={profilePhotoPreview} alt='Profile Preview' className=' rounded-full' />
-      </IconButton>
+        <p>{user?.username}</p>
+      </Button>
       <UserMenu
         id='basic-menu'
         anchorEl={anchorEl}
