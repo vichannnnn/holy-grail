@@ -13,7 +13,7 @@ export const RegisterButton = ({ user }: RegisterButtonProps) => {
 
   const handleRedirectRegisterAccountPage = () => {
     if (!user) {
-      router.navigateTo('/create-account');
+      router.navigateTo('/register');
     } else {
       window.location.reload();
     }

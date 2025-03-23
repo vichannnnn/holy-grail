@@ -32,7 +32,7 @@ export const AccountRegister = () => {
   };
 
   const handleRedirectToAccountLoginPage = () => {
-    router.navigateTo('/account-login');
+    router.navigateTo('/login');
   };
 
   return (

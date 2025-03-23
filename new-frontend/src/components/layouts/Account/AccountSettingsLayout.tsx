@@ -47,7 +47,7 @@ export const AccountSettingsLayout = () => {
 
   useEffect(() => {
     if (user === null && !isLoading) {
-      router.navigateTo('/account-login');
+      router.navigateTo('/login');
     }
   }, [user, isLoading]);
 
