@@ -7,7 +7,8 @@ export type AppRoutes =
   | '/account-login'
   | '/create-account'
   | '/forgot-password'
-  | '/settings/account';
+  | '/settings/account'
+  | '/upload';
 
 export const useNavigate = () => {
   const router = useRouter();
