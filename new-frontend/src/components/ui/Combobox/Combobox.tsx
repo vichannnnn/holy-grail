@@ -1,4 +1,4 @@
-import { Autocomplete, AutocompleteProps, styled } from '@mui/material';
+import { Autocomplete, AutocompleteProps } from '@mui/material';
 import { SyntheticEvent } from 'react';
 
 import { DropdownMenuItem } from '@components/DropdownMenuItem';
@@ -8,64 +8,6 @@ export interface CommonType {
   id: number;
   name: string;
 }
-
-export const CustomAutocomplete = styled(Autocomplete)(({ theme }) => ({
-  '& .MuiAutocomplete-inputRoot': {
-    backgroundColor: '#2d2d2d',
-    borderRadius: '8px',
-    paddingRight: '0',
-
-    '& .MuiOutlinedInput-notchedOutline': {
-      borderColor: '#333333',
-    },
-
-    '&:hover .MuiOutlinedInput-notchedOutline': {
-      borderColor: '#444444',
-    },
-
-    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-      borderColor: '#ffffff',
-    },
-
-    '& .MuiAutocomplete-input': {
-      backgroundColor: '#2d2d2d',
-      borderRadius: '8px',
-    },
-  },
-
-  '& label': {
-    color: '#949494',
-  },
-
-  '& label.Mui-focused': {
-    color: '#949494',
-  },
-
-  '& .Mui-error .MuiOutlinedInput-notchedOutline': {
-    borderColor: theme.palette.error.main,
-    fontFamily: '"Poppins", sans-serif',
-  },
-
-  '&.Mui-focused .MuiOutlinedInput-root.Mui-error fieldset': {
-    borderColor: theme.palette.error.main,
-  },
-
-  '&.Mui-focused .MuiFormLabel-root.Mui-error': {
-    color: theme.palette.error.main,
-  },
-
-  '& .MuiOutlinedInput-root.Mui-error .MuiOutlinedInput-notchedOutline': {
-    borderColor: theme.palette.error.main,
-  },
-
-  '& .MuiFormLabel-root.Mui-error': {
-    color: theme.palette.error.main,
-  },
-
-  '& .MuiFormHelperText-root': {
-    fontFamily: '"Poppins", sans-serif',
-  },
-}));
 
 export interface ComboboxProps
   extends Omit<
