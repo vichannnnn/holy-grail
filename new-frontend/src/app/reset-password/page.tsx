@@ -2,13 +2,13 @@ import { ResetPassword } from '@features/TokenVerification';
 
 export async function generateMetadata() {
   return {
-    title: 'Hima Boilerplate - Reset Password',
+    title: 'Holy Grail - Reset Password',
     description:
-      'Reset your Hima Boilerplate account password securely. Follow the steps to regain access to your account and ensure your personal information stays protected.',
+      'Reset your Holy Grail account password securely. Follow the steps to regain access to your account and ensure your personal information stays protected.',
     openGraph: {
-      title: 'Hima Boilerplate - Reset Password',
+      title: 'Holy Grail - Reset Password',
       description:
-        'Forgot your Hima Boilerplate account password? No worries! Reset it securely and regain access in just a few simple steps.',
+        'Forgot your Holy Grail account password? No worries! Reset it securely and regain access in just a few simple steps.',
       images: [
         {
           url: '',
