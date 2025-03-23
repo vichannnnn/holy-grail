@@ -1,8 +1,8 @@
 import { Footer } from '@layouts/Footer';
-import { Header } from '@layouts/GeneralHeader';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { Inter } from 'next/font/google';
 import { ReactNode, Suspense } from 'react';
+import { Header } from 'src/components/layouts/Header';
 
 import './globals.css';
 import Loading from './loading';
