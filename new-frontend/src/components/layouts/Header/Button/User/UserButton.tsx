@@ -7,11 +7,11 @@ import { Button } from '@components/Button';
 
 import { User } from '@providers/AuthProvider';
 
-interface ProfilePhotoProps {
+interface UserButtonProps {
   user: User | null;
 }
 
-export const ProfilePhotoButton = ({ user }: ProfilePhotoProps) => {
+export const UserButton = ({ user }: UserButtonProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
