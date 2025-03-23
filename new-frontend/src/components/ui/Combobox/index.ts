@@ -1,2 +1,2 @@
 export * from './Combobox';
-export * from './MultiSelectionCombobox';
+export * from './FreeTextCombobox';

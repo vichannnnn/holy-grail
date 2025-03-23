@@ -4,7 +4,7 @@ export const paperComponents = (isDarkMode: boolean) => {
       styleOverrides: {
         root: {
           borderRadius: '8px',
-          backgroundColor: isDarkMode ? '#2d2d2d' : '#e4e5f1',
+          backgroundColor: isDarkMode ? '#2d2d2d' : '#fcfbf8',
         },
       },
     },

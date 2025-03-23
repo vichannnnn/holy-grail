@@ -1,7 +1,13 @@
-import { SyntheticEvent } from 'react';
 import { Autocomplete, AutocompleteProps, styled } from '@mui/material';
-import { TextField } from '@components/TextField';
+import { SyntheticEvent } from 'react';
+
 import { DropdownMenuItem } from '@components/DropdownMenuItem';
+import { TextField } from '@components/TextField';
+
+export interface CommonType {
+  id: number;
+  name: string;
+}
 
 export const CustomAutocomplete = styled(Autocomplete)(({ theme }) => ({
   '& .MuiAutocomplete-inputRoot': {
@@ -61,15 +67,14 @@ export const CustomAutocomplete = styled(Autocomplete)(({ theme }) => ({
   },
 }));
 
-export interface ComboboxProps<T extends Record<string, string>>
+export interface ComboboxProps
   extends Omit<
-    AutocompleteProps<T[keyof T], false, false, boolean>,
+    AutocompleteProps<CommonType, false, false, boolean>,
     | 'onChange'
     | 'value'
     | 'onInputChange'
     | 'options'
     | 'renderInput'
-    | 'getOptionLabel'
     | 'isOptionEqualToValue'
     | 'renderOption'
     | 'renderTags'
@@ -79,55 +84,64 @@ export interface ComboboxProps<T extends Record<string, string>>
     | 'onHighlightChange'
   > {
   label: string;
-  value: T[keyof T] | null;
-  onChange: (newValue: T[keyof T] | null) => void;
+  value: number | '';
+  onChange: (newValue: number | '') => void;
   error?: boolean;
   helperText?: string;
-  options: T[keyof T][];
-  getOptionLabel: (option: T[keyof T]) => string;
-  isOptionEqualToValue: (option: T[keyof T], value: T[keyof T]) => boolean;
+  options: CommonType[];
 }
 
-export const Combobox = <T extends Record<string, string>>({
+export const Combobox = ({
   label,
   value,
   onChange,
   error,
   options,
   helperText,
-  getOptionLabel,
-  isOptionEqualToValue,
   ...props
-}: ComboboxProps<T>) => {
-  // TODO: Need to fix the onChange lint type error
+}: ComboboxProps) => {
   return (
-    <CustomAutocomplete
-      value={value}
+    <Autocomplete
+      ListboxProps={{
+        sx: {
+          '&::-webkit-scrollbar': {
+            width: '8px',
+          },
+          '&::-webkit-scrollbar-thumb': {
+            backgroundColor: 'rgba(0, 0, 0, 0.2)',
+            borderRadius: '4px',
+          },
+          '&::-webkit-scrollbar-track': {
+            backgroundColor: 'transparent',
+          },
+        },
+      }}
+      value={options.find((option) => option.id === value) || null}
       options={options}
-      noOptionsText={
-        <span className='text-[#949494]' style={{ fontFamily: 'Poppins, sans-serif' }}>
-          No options available
-        </span>
-      }
-      renderOption={(props, option, { selected }) => (
-        <DropdownMenuItem {...props} selected={selected}>
-          {getOptionLabel(option as T[keyof T])}
-        </DropdownMenuItem>
-      )}
-      // @ts-ignore
-      onChange={(_: SyntheticEvent<Element, Event>, newValue: string | null) => {
-        onChange(newValue as T[keyof T]);
+      renderOption={(props, option: CommonType | string, { selected }) => {
+        const { key, ...otherProps } = props;
+        return (
+          <DropdownMenuItem key={key} {...otherProps} selected={selected}>
+            {typeof option === 'string' ? option : option.name}
+          </DropdownMenuItem>
+        );
+      }}
+      onChange={(_: SyntheticEvent<Element, Event>, newValue: string | CommonType | null) => {
+        if (typeof newValue === 'string' || newValue === null) {
+          onChange('');
+        } else {
+          onChange(newValue.id);
+        }
       }}
       renderInput={(params) => (
         <TextField {...params} label={label} error={error} helperText={helperText} />
       )}
-      isOptionEqualToValue={(option, value) => {
-        if (value === null || value === undefined) {
-          return false;
-        }
-        return isOptionEqualToValue(option as T[keyof T], value as T[keyof T]);
-      }}
-      getOptionLabel={(option) => getOptionLabel(option as T[keyof T])}
+      isOptionEqualToValue={(option: string | CommonType, value: string | CommonType) =>
+        typeof option !== 'string' && typeof value !== 'string' ? option.id === value.id : false
+      }
+      getOptionLabel={(option: CommonType | string) =>
+        typeof option === 'string' ? option : option.name
+      }
       {...props}
     />
   );
