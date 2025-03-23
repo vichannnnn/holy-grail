@@ -13,7 +13,7 @@ export const SectionBox = ({ icon, title, children }: SectionBoxProps) => {
         {icon}
         {title}
       </h2>
-      <div className='bg-[#2d2d2d] p-6 rounded-lg space-y-4'>{children}</div>
+      <div className='bg-[#F1F2EE] dark:bg-[#2d2d2d] p-6 rounded-lg space-y-4'>{children}</div>
     </>
   );
 };

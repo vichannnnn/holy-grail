@@ -68,7 +68,7 @@ export const AccountDetails = ({ user }: AccountDetailsProps) => {
       <SectionBox icon={<Person className='mr-2' />} title='Account Information'>
         <p>Username</p>
         <TextField className={width} type='text' value={user.username} />
-        <p className='text-sm text-gray-400 mt-1'>Your username cannot be changed once created.</p>
+        <p className='text-sm mt-1'>Your username cannot be changed once created.</p>
         <h3 className='mt-4 mb-2'>
           Account verification status
           <VerificationSection verified={user.verified} />
@@ -76,7 +76,7 @@ export const AccountDetails = ({ user }: AccountDetailsProps) => {
       </SectionBox>
 
       <SectionBox icon={<Mail className='mr-2' />} title='Update your email address'>
-        <p className='text-gray-400'>
+        <p>
           Your current email address is <b>{user.email}</b>.
         </p>
         <UpdateEmailForm
@@ -102,9 +102,7 @@ export const AccountDetails = ({ user }: AccountDetailsProps) => {
       </SectionBox>
 
       <SectionBox icon={<Password className='mr-2' />} title='Change your password'>
-        <p className='text-gray-400'>
-          Enter your current password and the new password you want to change to.
-        </p>
+        <p>Enter your current password and the new password you want to change to.</p>
         <UpdatePasswordForm
           onSubmitSuccess={handleUpdatePasswordSubmitSuccess}
           onSubmitFailure={handleUpdatePasswordSubmitFailure}
