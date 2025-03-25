@@ -4,7 +4,12 @@ import { useRouter } from 'next/navigation';
 
 export type AppRoutes =
   | '/'
+  | '/admin'
+  | '/developer'
+  | '/faq'
+  | '/leaderboard'
   | '/login'
+  | '/library'
   | '/register'
   | '/forgot-password'
   | '/settings/account'
