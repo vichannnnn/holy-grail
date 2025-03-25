@@ -48,6 +48,8 @@ export const DesktopNotesTable = (props: BaseNotesTableProps) => {
     onSortOrderChange,
     pageInfo,
     handlePageChange,
+    renderAdminActions,
+    isAdmin,
   } = props;
 
   const [isCategorySelected, setIsCategorySelected] = useState(false);
@@ -233,6 +235,9 @@ export const DesktopNotesTable = (props: BaseNotesTableProps) => {
                   <TableCell>
                     <DownloadIcon handleDownloadNote={handleDownloadNote} note={note} />
                   </TableCell>
+                  {isAdmin && renderAdminActions && (
+                    <TableCell>{renderAdminActions(note)}</TableCell>
+                  )}
                 </TableRow>
               ))}
             </TableBody>

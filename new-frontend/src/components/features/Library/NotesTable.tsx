@@ -1,3 +1,7 @@
+'use client';
+
+import { ReactElement, useContext } from 'react';
+
 import { Note, SubjectType, fetchAllSubjects, fetchCategory } from '@api/library';
 
 import {
@@ -9,6 +13,8 @@ import {
 
 import { DesktopNotesTable } from '@features/Library/DesktopNotesTable';
 import { MobileNotesTable } from '@features/Library/MobileNotesTable';
+
+import { MediaQueryContext } from '@providers/MediaQueryProvider';
 
 export const NEXT_PUBLIC_AWS_CLOUDFRONT_URL = process.env.NEXT_PUBLIC_AWS_CLOUDFRONT_URL;
 
@@ -47,6 +53,8 @@ export interface BaseNotesTableProps {
   onSortOrderChange: (order: 'asc' | 'desc') => void;
   pageInfo: { page: number; size: number; total: number; pages: number };
   handlePageChange: (page: number) => void;
+  renderAdminActions?: (note: Note) => ReactElement | null;
+  isAdmin?: boolean;
 }
 
 export interface FilterBarProps {
@@ -173,8 +181,8 @@ export const FilterBar = ({
   );
 };
 
-export const NotesTable = (props: BaseNotesTableProps & { isMedium: boolean }) => {
-  const { isMedium, ...tableProps } = props;
+export const NotesTable = (props: BaseNotesTableProps) => {
+  const { isMedium } = useContext(MediaQueryContext);
 
-  return isMedium ? <DesktopNotesTable {...tableProps} /> : <MobileNotesTable {...tableProps} />;
+  return isMedium ? <DesktopNotesTable {...props} /> : <MobileNotesTable {...props} />;
 };

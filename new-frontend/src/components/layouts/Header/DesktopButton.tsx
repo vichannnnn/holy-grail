@@ -12,6 +12,9 @@ import { AuthContext } from '@providers/AuthProvider';
 export const DesktopButton = () => {
   const { user } = useContext(AuthContext);
 
+  // TODO: Need a better approach where one component handles the population of the dropdown based
+  // TODO: on if user is logged in or not, and if they are on mobile mode or not.
+
   return (
     <>
       {!user && (
