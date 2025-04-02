@@ -1,23 +1,8 @@
 import Link from 'next/link';
 
-export async function generateMetadata() {
-  return {
-    title: 'Terms of Service - Holy Grail',
-    description:
-      'Review the Terms of Service for Holy Grail. Learn about the terms for using the platform, including account' +
-      ' creation and user responsibilities.',
-    openGraph: {
-      title: 'Terms of Service - Holy Grail',
-      description:
-        'Understand the terms for using Holy Grail. Read about your rights and obligations, and how to use the platform responsibly.',
-      images: [
-        {
-          url: '',
-        },
-      ],
-    },
-  };
-}
+import { generateTermsOfServiceMetadata } from '@utils/metadata';
+
+export const generateMetadata = generateTermsOfServiceMetadata;
 
 const TermsOfServicePage = () => {
   return (

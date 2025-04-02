@@ -1,24 +1,10 @@
-'use client';
-
 import Link from 'next/link';
-import { useContext } from 'react';
 
-import { AuthContext } from '@providers/AuthProvider';
+import { generateFAQMetadata } from '@utils/metadata';
 
-import { useNavigate } from '@utils/navigation';
+export const generateMetadata = generateFAQMetadata;
 
 const FAQPage = () => {
-  const { user } = useContext(AuthContext);
-  const router = useNavigate();
-
-  const handleUploadButtonClick = () => {
-    if (user) {
-      router.navigateTo('/upload');
-    } else {
-      router.navigateTo('/login');
-    }
-  };
-
   return (
     <div className='container mx-auto px-4 mt-16'>
       <div className='mb-8'>
@@ -75,12 +61,9 @@ const FAQPage = () => {
             <h3 className='font-bold text-lg mb-2'>How can I contribute my materials?</h3>
             <p>
               You can upload the notes that you want to share over{' '}
-              <a
-                onClick={handleUploadButtonClick}
-                className='text-blue-600 hover:underline cursor-pointer'
-              >
-                here
-              </a>
+              <Link href='/upload' passHref>
+                <span className='text-blue-600 hover:underline cursor-pointer'>here</span>
+              </Link>
               . Do note that you can only upload PDF files and you will need an account to start
               uploading your notes. They will only be available to the public after approval.
             </p>
