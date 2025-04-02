@@ -1,3 +1,4 @@
+import { RoleEnum } from '@layouts/Developer';
 import * as Yup from 'yup';
 
 import { NoteInfoProps, NotesFormData } from '@features/Upload/types';
@@ -83,4 +84,17 @@ const UploadNoteValidation = Yup.object<NoteInfoProps>().shape({
 
 export const UploadNotesValidation = Yup.object<NotesFormData>().shape({
   notes: Yup.array<NoteInfoProps>().of(UploadNoteValidation).required(),
+});
+
+export const DeveloperAddTypeValidation = Yup.object().shape({
+  name: Yup.string().required('Field is required'),
+});
+
+export const DeveloperAddSubjectValidation = Yup.object().shape({
+  category_id: Yup.number().required('Field is required'),
+  name: Yup.string().required('Field is required'),
+});
+
+export const DeveloperAddUserValidation = Yup.object().shape({
+  role: Yup.number<RoleEnum>().required('Field is required'),
 });
