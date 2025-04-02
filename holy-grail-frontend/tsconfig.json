@@ -1,35 +1,71 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
-    "useDefineForClassFields": true,
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "allowJs": false,
+    "target": "ES2017",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
     "skipLibCheck": true,
-    "esModuleInterop": false,
-    "allowSyntheticDefaultImports": true,
     "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "module": "ESNext",
-    "moduleResolution": "Node",
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx",
+    "jsx": "preserve",
+    "incremental": true,
     "baseUrl": ".",
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
     "paths": {
-      "@apiClient": ["src/api/apiClient.ts"],
-      "@api/auth": ["src/api/auth/"],
-      "@api/actions": ["src/api/actions/"],
-      "@api/analytics": ["src/api/analytics/"],
-      "@api/library": ["src/api/library/"],
-      "@api/scoreboard": ["src/api/scoreboard/"],
-      "@components": ["src/components/"],
-      "@features": ["src/features/"],
-      "@providers": ["src/providers/"],
-      "@utils": ["src/utils/"],
-      "@forms/*": ["src/utils/forms/*"]
+      "@apiClient": [
+        "src/api/apiClient.ts"
+      ],
+      "@api/*": [
+        "src/api/*"
+      ],
+      "@components/*": [
+        "src/components/ui/*"
+      ],
+      "@forms/*": [
+        "src/components/forms/*"
+      ],
+      "@features/*": [
+        "src/components/features/*"
+      ],
+      "@layouts/*": [
+        "src/components/layouts/*"
+      ],
+      "@loading": [
+        "src/app/loading.tsx"
+      ],
+      "@providers/*": [
+        "src/providers/*"
+      ],
+      "@utils/*": [
+        "src/utils/*"
+      ],
+      "@themes/*": [
+        "src/themes/*"
+      ],
+      "@form-validation/*": [
+        "src/utils/forms/Validation.ts"
+      ]
     }
   },
-  "include": ["src"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
