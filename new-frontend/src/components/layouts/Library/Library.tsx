@@ -16,6 +16,7 @@ import {
 } from '@api/library';
 
 import { Divider } from '@components/Divider';
+import { Showcase } from '@components/Showcase';
 
 import { NotesTable } from '@features/Library';
 
@@ -160,6 +161,15 @@ export const Library = () => {
         </Link>{' '}
         after you have logged in (subjected to approval of administrators).
       </p>
+      <p>
+        Are you a tuition centre or freelance tutor looking to expand your reach?
+        <br />
+        We have one of the largest student-focused audiences in Singapore.
+        <br />
+        Interested sponsors and advertisers, please contact us at <strong>grail@himaa.me</strong> to
+        explore partnership opportunities.
+      </p>
+      <Showcase />
       <NotesTable
         notes={notes.items}
         categories={categories.map((c) => ({ id: c.id, name: c.name }))}
