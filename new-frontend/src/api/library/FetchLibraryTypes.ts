@@ -1,11 +1,13 @@
 import { CategorySearchParams, CategoryType, CommonType, DocumentType, SubjectType } from './types';
+
 import {
   fetchAllCategories,
   fetchAllDocumentTypes,
   fetchAllSubjects,
   fetchAllUsers,
 } from '@api/library';
-import { User } from '@features';
+
+import { User } from '@providers/AuthProvider';
 
 export const fetchLibraryTypes = async (
   searchParams: CategorySearchParams | null = null,

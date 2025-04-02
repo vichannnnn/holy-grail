@@ -1,7 +1,7 @@
 'use client';
 
 import { AddPropertiesModal, EditPropertiesModal } from '@layouts/Developer/Modal';
-import { DataTypeEnum, RoleEnumMapping, User } from '@layouts/Developer/types';
+import { DataTypeEnum, RoleEnumMapping } from '@layouts/Developer/types';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import { useState } from 'react';
 
@@ -11,6 +11,8 @@ import { Button } from '@components/Button';
 import { FreeTextCombobox } from '@components/Combobox';
 
 import { Pagination } from '@features/Library';
+
+import { User } from '@providers/AuthProvider';
 
 type DeveloperTableData = CategoryType | DocumentType | SubjectType | User;
 
