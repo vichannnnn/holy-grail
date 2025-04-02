@@ -4,11 +4,12 @@ export async function generateMetadata() {
   return {
     title: 'Terms of Service - Holy Grail',
     description:
-      'Review the Terms of Service for Holy Grail. Learn about the terms for using the platform, including account creation, payment terms, and user responsibilities.',
+      'Review the Terms of Service for Holy Grail. Learn about the terms for using the platform, including account' +
+      ' creation and user responsibilities.',
     openGraph: {
       title: 'Terms of Service - Holy Grail',
       description:
-        'Understand the terms for using Holy Grail. Read about your rights and obligations, payment terms, and how to use the platform responsibly.',
+        'Understand the terms for using Holy Grail. Read about your rights and obligations, and how to use the platform responsibly.',
       images: [
         {
           url: '',
@@ -88,37 +89,37 @@ const TermsOfServicePage = () => {
 
         <h3 className='text-2xl font-semibold mb-4 mt-6'>3. Accounts and Registration</h3>
         <p className='text-md leading-relaxed'>
-          To access most features of the Service, you must register for an account. You agree to
+          To access some features of the Service, you must register for an account. You agree to
           provide accurate, complete, and current information when registering and to keep this
           information up to date. You are responsible for all activities occurring under your
           account. If you suspect unauthorized use of your account, you must notify us immediately
           at grail@himaa.me.
         </p>
 
-        <h3 className='text-2xl font-semibold mb-4 mt-6'>4. Payment Terms</h3>
-        <p className='text-md leading-relaxed'>
-          Certain features of the Service require payment. Payments are processed exclusively
-          through Stripe, and we do not store your payment details. By agreeing to these Terms, you
-          agree to be bound by Stripe&quot;s terms (available at:
-          <Link href='https://stripe.com/legal' passHref>
-            https://stripe.com/legal
-          </Link>
-          ).
-        </p>
-        <p className='text-md leading-relaxed'>
-          We offer both lifetime payment options and recurring subscription plans. You can review
-          and accept the fees before proceeding with payment. All fees are non-refundable unless
-          otherwise stated by law.
-        </p>
+        {/*<h3 className='text-2xl font-semibold mb-4 mt-6'>4. Payment Terms</h3>*/}
+        {/*<p className='text-md leading-relaxed'>*/}
+        {/*  Certain features of the Service require payment. Payments are processed exclusively*/}
+        {/*  through Stripe, and we do not store your payment details. By agreeing to these Terms, you*/}
+        {/*  agree to be bound by Stripe&quot;s terms (available at:*/}
+        {/*  <Link href='https://stripe.com/legal' passHref>*/}
+        {/*    https://stripe.com/legal*/}
+        {/*  </Link>*/}
+        {/*  ).*/}
+        {/*</p>*/}
+        {/*<p className='text-md leading-relaxed'>*/}
+        {/*  We offer both lifetime payment options and recurring subscription plans. You can review*/}
+        {/*  and accept the fees before proceeding with payment. All fees are non-refundable unless*/}
+        {/*  otherwise stated by law.*/}
+        {/*</p>*/}
 
-        <h3 className='text-2xl font-semibold mb-4 mt-6'>5. Subscription Service</h3>
-        <p className='text-md leading-relaxed'>
-          If you select a subscription service, it will automatically renew unless canceled. Your
-          subscription will be billed according to the subscription plan you choose, either as a
-          lifetime payment or a recurring payment. You must cancel the subscription before the
-          renewal date to avoid being charged for the next billing period. For cancellation, please
-          use the billing menu or contact us at grail@himaa.me.
-        </p>
+        {/*<h3 className='text-2xl font-semibold mb-4 mt-6'>5. Subscription Service</h3>*/}
+        {/*<p className='text-md leading-relaxed'>*/}
+        {/*  If you select a subscription service, it will automatically renew unless canceled. Your*/}
+        {/*  subscription will be billed according to the subscription plan you choose, either as a*/}
+        {/*  lifetime payment or a recurring payment. You must cancel the subscription before the*/}
+        {/*  renewal date to avoid being charged for the next billing period. For cancellation, please*/}
+        {/*  use the billing menu or contact us at grail@himaa.me.*/}
+        {/*</p>*/}
 
         <h3 className='text-2xl font-semibold mb-4 mt-6'>6. Customer and Usage Data</h3>
         <p className='text-md leading-relaxed'>
@@ -199,8 +200,6 @@ const TermsOfServicePage = () => {
         <p className='text-md leading-relaxed'>
           <br />
           <strong>Holy Grail Team</strong>
-          <br />
-          UEN: 202405173C
           <br />
           Email: grail@himaa.me
         </p>
