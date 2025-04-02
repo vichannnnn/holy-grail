@@ -9,12 +9,12 @@ RUN bun install --frozen-lockfile
 
 COPY . .
 
+ENV NODE_ENV=development
+
 RUN bun run build-dev
 
 FROM oven/bun:1.2.8-slim AS runner
 WORKDIR /app
-
-ENV NODE_ENV=development
 
 COPY --from=builder /app ./
 

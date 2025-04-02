@@ -22,7 +22,7 @@ app.add_middleware(
     cors.CORSMiddleware,
     allow_origins=[
         "https://grail.moe"
-    ],  # TODO: Placeholder with wildcard for infrastructure testing
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
