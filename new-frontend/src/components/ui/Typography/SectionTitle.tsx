@@ -7,7 +7,7 @@ interface SectionTitleProps {
 }
 
 export const SectionTitle = ({
-  imageSrc = '/flower.png',
+  imageSrc = '/trimmy-grail-chan-sparkling.webp',
   title,
   description,
 }: SectionTitleProps) => {
