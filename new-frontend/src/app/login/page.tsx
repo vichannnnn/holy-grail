@@ -2,6 +2,10 @@ import { AuthenticationLayout } from '@layouts/Authentication/AuthenticationLayo
 
 import { AccountLogin } from '@components/Authentication';
 
+import { generateLoginMetadata } from '@utils/metadata';
+
+export const generateMetadata = generateLoginMetadata;
+
 const AccountLoginPage = () => {
   return (
     <>

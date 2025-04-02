@@ -2,7 +2,11 @@ import { AuthenticationLayout } from '@layouts/Authentication/AuthenticationLayo
 
 import { AccountRegister } from '@components/Authentication';
 
-const CreateAccountPage = () => {
+import { generateRegisterMetadata } from '@utils/metadata';
+
+export const generateMetadata = generateRegisterMetadata;
+
+const RegisterAccountPage = () => {
   return (
     <>
       <AuthenticationLayout>
@@ -12,4 +16,4 @@ const CreateAccountPage = () => {
   );
 };
 
-export default CreateAccountPage;
+export default RegisterAccountPage;

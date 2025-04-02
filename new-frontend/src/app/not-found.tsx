@@ -2,24 +2,9 @@ import Link from 'next/link';
 
 import { Button } from '@components/Button';
 
-// TODO: Reuse this component
-export async function generateMetadata() {
-  return {
-    title: 'Page Not Found - Holy Grail',
-    description:
-      'The page you are looking for could not be found. Please check the URL or return to the homepage of Holy Grail.',
-    openGraph: {
-      title: '404 - Page Not Found',
-      description:
-        'Oops! The page you are looking for does not exist. Return to the Holy Grail homepage.',
-      images: [
-        {
-          url: 'https://bucket.tori.sg/TORI+LOGO+SECONDARY+FULL+COLOR+BLUE+TEXT%405x.png',
-        },
-      ],
-    },
-  };
-}
+import { generateNotFoundMetadata } from '@utils/metadata';
+
+export { generateNotFoundMetadata };
 
 const ReturnToHomeButton = () => {
   return (
