@@ -8,6 +8,7 @@ export * from './DropdownMenuItem';
 export * from './Modal';
 export * from './Search';
 export * from './Select';
+export * from './Showcase';
 export * from './TextField';
 export * from './Toast';
 export * from './Typography';
