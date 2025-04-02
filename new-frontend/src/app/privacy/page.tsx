@@ -236,9 +236,6 @@ const PrivacyPolicyPage = () => {
               GitHub – Open-source repositories and internal project management tools
             </p>
           </li>
-          <li>
-            <p className='text-md leading-relaxed'>Stripe – Payment processing</p>
-          </li>
         </ul>
 
         <h4 className='text-xl font-semibold mb-4 mt-6'>Professional Advisors</h4>
@@ -384,8 +381,6 @@ const PrivacyPolicyPage = () => {
         <p className='text-md leading-relaxed'>
           <br />
           <strong>Holy Grail Team</strong>
-          <br />
-          UEN: 202405173C
           <br />
           Email: grail@himaa.me
         </p>
