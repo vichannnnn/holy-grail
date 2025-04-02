@@ -1,22 +1,23 @@
 FROM oven/bun:1.2.8-slim AS base
 
-FROM base AS build
-
+FROM base AS builder
 WORKDIR /app
+
 COPY package.json bun.lockb ./
+
+RUN bun install --frozen-lockfile
+
+COPY . .
 
 ENV NODE_ENV=production
 
-RUN bun install --frozen-lockfile
-COPY . .
-RUN bun run build
+RUN bun run build-prod
 
-FROM oven/bun:1.2.8-slim AS deploy
+FROM oven/bun:1.2.8-slim AS runner
 WORKDIR /app
 
-COPY package.json .
-COPY --from=build /app/dist /app/dist
+COPY --from=builder /app ./
 
-RUN bun add serve
+EXPOSE 3000
 
-CMD ["serve", "-s", "dist", "-l", "3000"]
+CMD ["bun", "run", "start"]
