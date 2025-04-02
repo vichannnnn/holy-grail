@@ -1,20 +1,6 @@
-export async function generateMetadata() {
-  return {
-    title: 'Privacy Policy - Holy Grail',
-    description:
-      'Learn how Holy Grail collects, uses, and protects your personal information. Our Privacy Policy explains the data we collect, how we use it.',
-    openGraph: {
-      title: 'Privacy Policy - Holy Grail',
-      description:
-        'Holy Grail respects your privacy. Read our Privacy Policy to understand how we collect, use, and share personal data on our platform.',
-      images: [
-        {
-          url: '',
-        },
-      ],
-    },
-  };
-}
+import { generatePrivacyPolicyMetadata } from '@utils/metadata';
+
+export const generateMetadata = generatePrivacyPolicyMetadata;
 
 const PrivacyPolicyPage = () => {
   return (
