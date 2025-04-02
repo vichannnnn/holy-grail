@@ -20,7 +20,7 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 app.add_middleware(
     cors.CORSMiddleware,
-    allow_origins=["*"],  # TODO: Placeholder with wildcard for infrastructure testing
+    allow_origins=["https://grail.moe"],  # TODO: Placeholder with wildcard for infrastructure testing
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
