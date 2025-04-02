@@ -1,1 +1,1 @@
-export * from './MediaQueryProvider';
+export * from "./MediaQueryProvider";
