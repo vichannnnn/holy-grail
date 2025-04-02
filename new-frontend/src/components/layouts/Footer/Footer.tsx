@@ -1,6 +1,7 @@
 import Link from 'next/link';
 
 import { Divider } from '@components/Divider';
+import { Showcase } from '@components/Showcase';
 
 const LeftSection = () => {
   return (
@@ -65,15 +66,18 @@ export const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className='w-4/5 flex flex-col mx-auto items-center mb-16 mt-16'>
-      <div className='flex flex-col md:flex-row gap-16 md:gap-0 w-full justify-between items-start'>
-        <LeftSection />
-        <RightSection />
-      </div>
-      <div className='w-full mt-3'>
-        <Divider />
-        <p>© 2023 - {currentYear} Holy Grail Team • Questions? Contact us at grail@himaa.me</p>
-      </div>
-    </footer>
+    <div className='mt-8'>
+      <Showcase />
+      <footer className='w-4/5 flex flex-col mx-auto items-center mb-16 mt-8'>
+        <div className='flex flex-col md:flex-row gap-16 md:gap-0 w-full justify-between items-start'>
+          <LeftSection />
+          <RightSection />
+        </div>
+        <div className='w-full mt-3'>
+          <Divider />
+          <p>© 2023 - {currentYear} Holy Grail Team • Questions? Contact us at grail@himaa.me</p>
+        </div>
+      </footer>
+    </div>
   );
 };
