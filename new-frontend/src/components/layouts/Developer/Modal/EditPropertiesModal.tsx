@@ -6,7 +6,6 @@ import {
   UpdateSubjectDetails,
   UpdateTypeDetails,
   UpdateUserDetails,
-  User,
 } from '@layouts/Developer';
 import { Stack } from '@mui/material';
 import { useRef, useState } from 'react';
@@ -17,6 +16,8 @@ import { CategoryType } from '@api/library';
 import { Button } from '@components/Button';
 import { Modal } from '@components/Modal';
 import { AlertProps, AlertToast } from '@components/Toast';
+
+import { User } from '@providers/AuthProvider';
 
 interface PropertiesInitialData {
   id: number;

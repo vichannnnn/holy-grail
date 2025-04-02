@@ -1,12 +1,12 @@
 'use client';
 
 import { DeveloperTable } from '@layouts/Developer/DeveloperTable';
-import { DataTypeEnum, User } from '@layouts/Developer/types';
+import { DataTypeEnum } from '@layouts/Developer/types';
 import { useContext, useEffect, useState } from 'react';
 
 import { CategoryType, DocumentType, SubjectType, fetchLibraryTypes } from '@api/library';
 
-import { AuthContext } from '@providers/AuthProvider';
+import { AuthContext, User } from '@providers/AuthProvider';
 
 import { useNavigate } from '@utils/navigation';
 

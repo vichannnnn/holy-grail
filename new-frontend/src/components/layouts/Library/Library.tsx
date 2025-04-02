@@ -178,7 +178,6 @@ export const Library = () => {
         onSortOrderChange={handleSortOrderChange}
         pageInfo={pageInfo}
         handlePageChange={handlePageChange}
-        isMedium={isMedium}
       />
     </div>
   );
