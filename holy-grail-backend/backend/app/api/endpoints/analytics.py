@@ -1,9 +1,8 @@
-from fastapi import APIRouter, Request
+from fastapi import APIRouter
 
 from app.api.deps import CurrentSession
 from app.models.analytics import Analytics
 from app.schemas.analytics import AnalyticsResponse
-from app.utils.limiter import conditional_rate_limit
 
 router = APIRouter()
 
@@ -15,7 +14,7 @@ router = APIRouter()
 #     return resp
 
 
-# @router.get("/get_latest_analytics", response_model=AnalyticsResponse)
-# async def ad_view(session: CurrentSession):
-#     resp = await Analytics.get_latest_analytics(session)
-#     return resp
+@router.get("/get_latest_analytics", response_model=AnalyticsResponse)
+async def ad_view(session: CurrentSession):
+    resp = await Analytics.get_latest_analytics(session)
+    return resp
