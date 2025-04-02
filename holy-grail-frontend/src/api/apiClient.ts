@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-const VITE_APP_API_URL = import.meta.env.VITE_APP_API_URL;
+const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const apiClient = axios.create({
-  baseURL: VITE_APP_API_URL,
+  baseURL: NEXT_PUBLIC_API_URL,
   headers: {
     'Content-Type': 'application/json',
   },
