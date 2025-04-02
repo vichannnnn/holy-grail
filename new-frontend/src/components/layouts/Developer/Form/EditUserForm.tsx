@@ -1,10 +1,12 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { RoleEnum, UpdateUserDetails, User } from '@layouts/Developer';
+import { RoleEnum, UpdateUserDetails } from '@layouts/Developer';
 import { TextField } from '@mui/material';
 import { forwardRef } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 
 import { DropdownMenuItem } from '@components/DropdownMenuItem';
+
+import { User } from '@providers/AuthProvider';
 
 import { DeveloperAddUserValidation } from '@utils/forms';
 

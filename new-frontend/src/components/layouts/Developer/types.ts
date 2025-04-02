@@ -11,17 +11,11 @@ export enum RoleEnum {
   DEVELOPER = 3,
 }
 
-export const RoleEnumMapping = {
-  1: 'User',
-  2: 'Admin',
-  3: 'Developer',
+export const RoleEnumMapping: Record<number, string> = {
+  [RoleEnum.USER]: 'User',
+  [RoleEnum.ADMIN]: 'Admin',
+  [RoleEnum.DEVELOPER]: 'Developer',
 };
-
-export interface User {
-  user_id: number;
-  username: string;
-  role: RoleEnum;
-}
 
 export interface AddTypeDetails {
   name: string;

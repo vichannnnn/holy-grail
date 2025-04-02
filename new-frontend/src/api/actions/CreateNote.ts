@@ -1,6 +1,8 @@
 import { AxiosError, AxiosResponse } from 'axios';
+
 import { apiClient } from '@apiClient';
-import { NoteInfoProps } from '@features';
+
+import { NoteInfoProps } from '@features/Upload';
 
 export const createNote = async (formData: NoteInfoProps[]): Promise<AxiosResponse> => {
   try {
