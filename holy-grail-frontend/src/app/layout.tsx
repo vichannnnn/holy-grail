@@ -42,13 +42,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en' className='dark'>
-      <body className={inter.className}>
-        <Script
+      <head>
+        <script
           async
           src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3197570153783512'
           crossOrigin='anonymous'
-          strategy='lazyOnload'
-        />
+        ></script>
+        <title>Holy Grail</title>
+      </head>
+      <body className={inter.className}>
         <GoogleAnalytics gaId={NEXT_PUBLIC_GOOGLE_ANALYTICS_ID as string} />
         <Providers>
           <Header />
