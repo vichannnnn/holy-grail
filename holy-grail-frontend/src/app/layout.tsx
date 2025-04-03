@@ -1,6 +1,8 @@
 import { Footer } from '@layouts/Footer';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { Inter } from 'next/font/google';
+import Head from 'next/head';
+import Script from 'next/script';
 import { ReactNode, Suspense } from 'react';
 import { Header } from 'src/components/layouts/Header';
 
@@ -30,7 +32,6 @@ export const metadata = {
   other: {
     'msapplication-TileColor': '#ffffff',
     'msapplication-TileImage': '/ms-icon-144x144.png',
-    'google-adsense-account': 'ca-pub-3197570153783512',
   },
 };
 
@@ -42,6 +43,12 @@ export default function RootLayout({
   return (
     <html lang='en' className='dark'>
       <body className={inter.className}>
+        <Script
+          async
+          src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3197570153783512'
+          crossOrigin='anonymous'
+          strategy='lazyOnload'
+        />
         <GoogleAnalytics gaId={NEXT_PUBLIC_GOOGLE_ANALYTICS_ID as string} />
         <Providers>
           <Header />
