@@ -3,9 +3,20 @@ import FadeIn from 'react-fade-in';
 
 import { Button } from '@components/Button';
 
+import { useNavigate } from '@utils/navigation';
+
 export const MobileHero = () => {
   // TODO: Need to have a component for the landing text and image so that we do not redefine
   // TODO: for mobile and desktop, thoughts?
+  const router = useNavigate();
+
+  const handleRedirectToLibrary = () => {
+    router.navigateTo('/library');
+  };
+
+  const handleRedirectToLogin = () => {
+    router.navigateTo('/login');
+  };
 
   return (
     <div className='flex flex-col w-4/5 m-auto gap-4 items-center text-center'>
@@ -19,6 +30,7 @@ export const MobileHero = () => {
         </p>
       </FadeIn>
       <Button
+        onClick={handleRedirectToLibrary}
         variant='contained'
         sx={{
           '& p, & span': { color: '#484b6a' },
@@ -41,6 +53,7 @@ export const MobileHero = () => {
         </p>
       </FadeIn>
       <Button
+        onClick={handleRedirectToLogin}
         variant='contained'
         sx={{
           '& p, & span': { color: '#484b6a' },

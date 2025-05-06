@@ -3,9 +3,20 @@ import FadeIn from 'react-fade-in';
 
 import { Button } from '@components/Button';
 
+import { useNavigate } from '@utils/navigation';
+
 export const DesktopHero = () => {
   // TODO: Probably need to have a template for this pink styled button so we don't have to
   // TODO: keep redefining the same style
+  const router = useNavigate();
+
+  const handleRedirectToLibrary = () => {
+    router.navigateTo('/library');
+  };
+
+  const handleRedirectToLogin = () => {
+    router.navigateTo('/login');
+  };
 
   return (
     <div className='flex flex-col w-4/5 m-auto gap-8'>
@@ -20,6 +31,7 @@ export const DesktopHero = () => {
             </p>
           </FadeIn>
           <Button
+            onClick={handleRedirectToLibrary}
             variant='contained'
             sx={{
               '& p, & span': { color: '#484b6a' },
@@ -49,6 +61,7 @@ export const DesktopHero = () => {
             </p>
           </FadeIn>
           <Button
+            onClick={handleRedirectToLogin}
             variant='contained'
             sx={{
               '& p, & span': { color: '#484b6a' },
