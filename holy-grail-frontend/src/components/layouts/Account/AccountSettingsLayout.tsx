@@ -10,6 +10,7 @@ import { AuthContext } from '@providers/AuthProvider';
 import { MediaQueryContext } from '@providers/MediaQueryProvider';
 
 import { useNavigate } from '@utils/navigation';
+import { Showcase } from '@components/Showcase';
 
 const AccountSettingsHeader = () => {
   return (

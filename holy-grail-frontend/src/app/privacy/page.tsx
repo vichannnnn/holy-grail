@@ -1,4 +1,5 @@
 import { generatePrivacyPolicyMetadata } from '@utils/metadata';
+import { Showcase } from '@components/Showcase';
 
 export const generateMetadata = generatePrivacyPolicyMetadata;
 

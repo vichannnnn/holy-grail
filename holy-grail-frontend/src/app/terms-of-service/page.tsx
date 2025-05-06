@@ -1,6 +1,7 @@
 import Link from 'next/link';
 
 import { generateTermsOfServiceMetadata } from '@utils/metadata';
+import { Showcase } from '@components/Showcase';
 
 export const generateMetadata = generateTermsOfServiceMetadata;
 
