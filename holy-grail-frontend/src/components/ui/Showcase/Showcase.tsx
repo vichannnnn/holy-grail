@@ -102,7 +102,7 @@ export const Showcase = () => {
 
   return (
     <div className='flex flex-col justify-center items-center gap-4' ref={showcaseRef}>
-      <div className='w-1/2 relative flex'>
+      <div className='w-full md:w-1/2 relative flex'>
         <a onClick={handleShowcaseClick} className='cursor-pointer'>
           <img alt='Turis VPN' src={ADS_IMAGE_URL} className='w-full' />
         </a>

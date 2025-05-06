@@ -2,6 +2,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import FadeIn from 'react-fade-in';
 
 import { Button } from '@components/Button';
+import { Showcase } from '@components/Showcase';
 
 import { useNavigate } from '@utils/navigation';
 
@@ -21,8 +22,11 @@ export const MobileHero = () => {
   return (
     <div className='flex flex-col w-4/5 m-auto gap-4 items-center text-center'>
       <img src='/trimmy-grail-chan-studying.webp' alt='Studying' width='300' />
+      <Showcase />
       <FadeIn>
-        <h1 className='mb-4 text-3xl font-bold'>Access your notes you need in just a click.</h1>
+        <h1 className='mb-4 mt-8 text-3xl font-bold'>
+          Access your notes you need in just a click.
+        </h1>
         <p className='mb-4'>
           Holy Grail is a completely free-to-access web library aimed at Singaporean students that
           houses all the summary notes and practice papers for GCE &#39;O&#39; Levels, GCE

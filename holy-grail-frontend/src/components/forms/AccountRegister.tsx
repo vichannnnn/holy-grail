@@ -18,7 +18,6 @@ export const AccountRegisterForm = ({ onSubmitSuccess, onSubmitFailure, formId }
   const { registerUserAccount } = useContext(AuthContext);
 
   const {
-    control,
     register,
     handleSubmit,
     formState: { errors },
