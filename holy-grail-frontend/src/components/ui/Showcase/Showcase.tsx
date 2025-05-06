@@ -9,7 +9,7 @@ import { adClick, adImpression } from '@api/analytics';
 
 import { MediaQueryContext } from '@providers/MediaQueryProvider';
 
-const ADS_IMAGE_URL = 'https://image.himaa.me/tori-soup-banner-v1.png';
+const ADS_IMAGE_URL = 'https://image.himaa.me/turis_vpn_banner.png';
 
 interface InfoButtonProps {
   isMobile: boolean;
@@ -65,7 +65,11 @@ export const Showcase = () => {
     try {
       await adClick();
     } finally {
-      window.open('https://tori.sg', '_blank', 'noopener,noreferrer');
+      window.open(
+        'https://play.google.com/store/apps/details?id=com.turisvpn.tech&pcampaignid=web_share',
+        '_blank',
+        'noopener,noreferrer',
+      );
     }
   };
 
@@ -100,7 +104,7 @@ export const Showcase = () => {
     <div className='flex flex-col justify-center items-center gap-4' ref={showcaseRef}>
       <div className='w-1/2 relative flex'>
         <a onClick={handleShowcaseClick} className='cursor-pointer'>
-          <img alt='Tori Soup' src={ADS_IMAGE_URL} className='w-full' />
+          <img alt='Turis VPN' src={ADS_IMAGE_URL} className='w-full' />
         </a>
         <InfoButton isMobile={isMedium} />
       </div>
