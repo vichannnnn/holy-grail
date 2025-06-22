@@ -101,13 +101,14 @@ export const Showcase = () => {
   }, [showcaseRef]);
 
   return (
-    <div className='flex flex-col justify-center items-center gap-4' ref={showcaseRef}>
-      <div className='w-full md:w-1/2 relative flex'>
-        <a onClick={handleShowcaseClick} className='cursor-pointer'>
-          <img alt='Turis VPN' src={ADS_IMAGE_URL} className='w-full' />
-        </a>
-        <InfoButton isMobile={isMedium} />
-      </div>
-    </div>
+    // <div className='flex flex-col justify-center items-center gap-4' ref={showcaseRef}>
+    //   <div className='w-full md:w-1/2 relative flex'>
+    //     <a onClick={handleShowcaseClick} className='cursor-pointer'>
+    //       <img alt='Turis VPN' src={ADS_IMAGE_URL} className='w-full' />
+    //     </a>
+    //     <InfoButton isMobile={isMedium} />
+    //   </div>
+    // </div>
+    <></>
   );
 };

@@ -1,9 +1,10 @@
 'use client';
 
+import { AdminActionType, AdminActions } from '@layouts/Admin';
 import Link from 'next/link';
 import { useCallback, useContext, useEffect, useState } from 'react';
 
-import { deleteNote } from '@api/actions';
+import { approveNote, deleteNote, updateNote } from '@api/actions';
 import {
   CategoryType,
   CommonType,
@@ -16,15 +17,14 @@ import {
 } from '@api/library';
 
 import { Divider } from '@components/Divider';
+import { DeleteNoteModal, UpdateNoteModal } from '@components/Modal';
 import { Showcase } from '@components/Showcase';
 
 import { NotesTable } from '@features/Library';
 
 import { AuthContext } from '@providers/AuthProvider';
-import { MediaQueryContext } from '@providers/MediaQueryProvider';
 
 export const Library = () => {
-  const { isMedium } = useContext(MediaQueryContext);
   const [notes, setNotes] = useState<PaginatedNotes>({
     items: [],
     page: 0,
@@ -32,7 +32,7 @@ export const Library = () => {
     size: 0,
     total: 0,
   });
-  const { user } = useContext(AuthContext);
+  const { isLoading, user } = useContext(AuthContext);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
   const [noteId, setNoteId] = useState<number>(0);
@@ -55,6 +55,7 @@ export const Library = () => {
   const [year, setYear] = useState<number | ''>(0);
   const [keyword, setKeyword] = useState<string>('');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+  const isAdmin = (user?.role ?? 0) >= 2;
 
   useEffect(() => {
     fetchLibraryTypes().then(({ categories, subjects, types, years }) => {
@@ -108,6 +109,11 @@ export const Library = () => {
     if (newPage >= 1 && newPage <= Math.ceil(pageInfo.total / pageInfo.size)) {
       setPageInfo({ ...pageInfo, page: newPage });
     }
+  };
+
+  const handleApprove = async (id: number) => {
+    await approveNote(id);
+    filterNotes();
   };
 
   const handleDelete = async (id: number) => {
@@ -170,6 +176,7 @@ export const Library = () => {
         explore partnership opportunities.
       </p>
       <Showcase />
+
       <NotesTable
         notes={notes.items}
         categories={categories.map((c) => ({ id: c.id, name: c.name }))}
@@ -188,6 +195,57 @@ export const Library = () => {
         onSortOrderChange={handleSortOrderChange}
         pageInfo={pageInfo}
         handlePageChange={handlePageChange}
+        isAdmin={isAdmin}
+        renderAdminActions={(note) => (
+          <AdminActions
+            actions={[AdminActionType.APPROVE, AdminActionType.DELETE, AdminActionType.EDIT]}
+            handleApprove={handleApprove}
+            setIsAlertOpen={setIsAlertOpen}
+            setNoteId={setNoteId}
+            setIsEditOpen={setIsEditOpen}
+            noteProperties={note}
+            setNoteProperties={setNoteInitialProperties}
+            noteId={note.id}
+          />
+        )}
+      />
+      <DeleteNoteModal
+        isOpen={isAlertOpen}
+        onClose={() => setIsAlertOpen(false)}
+        onConfirm={() => {
+          if (noteId !== null) {
+            handleDelete(noteId).then(() => null);
+          }
+        }}
+      />
+      <UpdateNoteModal
+        isOpen={isEditOpen}
+        onClose={() => setIsEditOpen(false)}
+        onConfirm={(
+          newCategory: number | '',
+          newSubject: number | '',
+          newType: number | '',
+          newDocName: string | '',
+          newYear: number | '',
+        ) => {
+          updateNote(
+            noteId,
+            noteInitialProperties?.uploaded_by,
+            newCategory,
+            newSubject,
+            newType,
+            newDocName,
+            newYear,
+          ).then(() => filterNotes());
+        }}
+        categories={categories.map((c) => ({ id: c.id, name: c.name }))}
+        types={types.map((t) => ({ id: t.id, name: t.name }))}
+        years={years.map((y) => ({ id: y.id, name: y.name }))}
+        category={noteInitialProperties ? noteInitialProperties.category : ''}
+        subject={noteInitialProperties ? noteInitialProperties.subject : ''}
+        type={noteInitialProperties ? noteInitialProperties.type : ''}
+        year={noteInitialProperties ? noteInitialProperties.year : ''}
+        documentName={noteInitialProperties ? noteInitialProperties.document_name : ''}
       />
     </div>
   );

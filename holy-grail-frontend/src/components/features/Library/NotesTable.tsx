@@ -183,6 +183,5 @@ export const FilterBar = ({
 
 export const NotesTable = (props: BaseNotesTableProps) => {
   const { isMedium } = useContext(MediaQueryContext);
-
   return isMedium ? <DesktopNotesTable {...props} /> : <MobileNotesTable {...props} />;
 };
