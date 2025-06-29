@@ -9,7 +9,7 @@ import { adClick, adImpression } from '@api/analytics';
 
 import { MediaQueryContext } from '@providers/MediaQueryProvider';
 
-const ADS_IMAGE_URL = 'https://image.himaa.me/turis_vpn_banner.png';
+const ADS_IMAGE_URL = 'https://image.himaa.me/TURIS_VPN_2.png';
 
 interface InfoButtonProps {
   isMobile: boolean;
@@ -101,14 +101,14 @@ export const Showcase = () => {
   }, [showcaseRef]);
 
   return (
-    // <div className='flex flex-col justify-center items-center gap-4' ref={showcaseRef}>
-    //   <div className='w-full md:w-1/2 relative flex'>
-    //     <a onClick={handleShowcaseClick} className='cursor-pointer'>
-    //       <img alt='Turis VPN' src={ADS_IMAGE_URL} className='w-full' />
-    //     </a>
-    //     <InfoButton isMobile={isMedium} />
-    //   </div>
-    // </div>
-    <></>
+    <div className='flex flex-col justify-center items-center gap-4' ref={showcaseRef}>
+      <div className='w-full md:w-1/2 relative flex'>
+        <a onClick={handleShowcaseClick} className='cursor-pointer'>
+          <img alt='Turis VPN' src={ADS_IMAGE_URL} className='w-full' />
+        </a>
+        <InfoButton isMobile={isMedium} />
+      </div>
+    </div>
+    // <></>
   );
 };
