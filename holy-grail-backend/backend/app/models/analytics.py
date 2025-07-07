@@ -90,7 +90,7 @@ class Analytics(Base, CRUD["analytics"]):
         client = BetaAnalyticsDataClient()
 
         request_api = RunReportRequest(
-            property=f"properties/{os.getenv('GOOGLE_APPLICATION_PROPERTY_ID', "")}",
+            property=f"properties/{os.getenv('GOOGLE_APPLICATION_PROPERTY_ID', '')}",
             dimensions=[Dimension(name="eventName")],
             metrics=[Metric(name="activeUsers"), Metric(name="eventCount")],
             date_ranges=[DateRange(start_date=starting_date, end_date=ending_date)],
