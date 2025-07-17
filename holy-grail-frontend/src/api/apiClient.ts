@@ -14,19 +14,6 @@ apiClient.interceptors.request.use(
     const accessToken = localStorage.getItem('access_token');
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  },
-);
-
-apiClient.interceptors.request.use(
-  (config) => {
-    const accessToken = localStorage.getItem('access_token');
-    if (accessToken) {
-      config.headers.Authorization = `Bearer ${accessToken}`;
     } else {
       localStorage.removeItem('user');
       localStorage.removeItem('access_token');
