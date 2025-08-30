@@ -9,7 +9,7 @@ import { adClick, adImpression } from '@api/analytics';
 
 import { MediaQueryContext } from '@providers/MediaQueryProvider';
 
-const ADS_IMAGE_URL = 'https://image.himaa.me/TURIS_VPN_5.jpg';
+const ADS_IMAGE_URL = 'https://image.himaa.me/TURIS_VPN_6.jpg';
 
 interface InfoButtonProps {
   isMobile: boolean;
