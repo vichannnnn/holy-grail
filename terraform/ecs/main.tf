@@ -241,4 +241,85 @@ resource "aws_appautoscaling_policy" "cpu_scale_down" {
   }
 }
 
+# Frontend Auto-scaling Configuration
+resource "aws_appautoscaling_target" "frontend" {
+  service_namespace  = "ecs"
+  resource_id        = "service/${aws_ecs_cluster.app_alb.name}/${aws_ecs_service.frontend.name}"
+  scalable_dimension = "ecs:service:DesiredCount"
+  min_capacity       = 1
+  max_capacity       = 3
+}
+
+resource "aws_appautoscaling_policy" "frontend_cpu_scale_up" {
+  name               = "frontend-cpu-scale-up"
+  service_namespace  = "ecs"
+  resource_id        = aws_appautoscaling_target.frontend.resource_id
+  scalable_dimension = aws_appautoscaling_target.frontend.scalable_dimension
+
+  step_scaling_policy_configuration {
+    adjustment_type = "ChangeInCapacity"
+    cooldown        = 60
+
+    step_adjustment {
+      metric_interval_lower_bound = 0
+      scaling_adjustment          = 1
+    }
+  }
+}
+
+resource "aws_appautoscaling_policy" "frontend_cpu_scale_down" {
+  name               = "frontend-cpu-scale-down"
+  service_namespace  = "ecs"
+  resource_id        = aws_appautoscaling_target.frontend.resource_id
+  scalable_dimension = aws_appautoscaling_target.frontend.scalable_dimension
+
+  step_scaling_policy_configuration {
+    adjustment_type = "ChangeInCapacity"
+    cooldown        = 120
+
+    step_adjustment {
+      metric_interval_upper_bound = 0
+      scaling_adjustment          = -1
+    }
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "frontend_cpu_high" {
+  alarm_name          = "${var.app_name}-frontend-cpu-high"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = "2"
+  metric_name        = "CPUUtilization"
+  namespace          = "AWS/ECS"
+  period             = "60"
+  statistic          = "Average"
+  threshold          = "75"
+  alarm_description  = "This metric monitors frontend cpu utilization"
+
+  dimensions = {
+    ClusterName = aws_ecs_cluster.app_alb.name
+    ServiceName = aws_ecs_service.frontend.name
+  }
+
+  alarm_actions = [aws_appautoscaling_policy.frontend_cpu_scale_up.arn]
+}
+
+resource "aws_cloudwatch_metric_alarm" "frontend_cpu_low" {
+  alarm_name          = "${var.app_name}-frontend-cpu-low"
+  comparison_operator = "LessThanThreshold"
+  evaluation_periods  = "3"
+  metric_name        = "CPUUtilization"
+  namespace          = "AWS/ECS"
+  period             = "60"
+  statistic          = "Average"
+  threshold          = "25"
+  alarm_description  = "This metric monitors frontend cpu utilization"
+
+  dimensions = {
+    ClusterName = aws_ecs_cluster.app_alb.name
+    ServiceName = aws_ecs_service.frontend.name
+  }
+
+  alarm_actions = [aws_appautoscaling_policy.frontend_cpu_scale_down.arn]
+}
+
 
