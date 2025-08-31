@@ -38,9 +38,7 @@ def test_create_account(test_not_logged_in_client, test_user_registration_data):
     assert "username" in response.json()["data"]
 
 
-def test_create_account_password_mismatch(
-    test_not_logged_in_client, test_user_registration_data
-):
+def test_create_account_password_mismatch(test_not_logged_in_client, test_user_registration_data):
     test_user_registration_data.repeat_password = "mismatch_password"
     response = test_not_logged_in_client.post(
         CREATE_URL, json=jsonable_encoder(test_user_registration_data)
@@ -60,9 +58,7 @@ def test_update_password(
     assert response.status_code == 200
     assert "username" in response.json()["data"]
 
-    login_response = test_not_logged_in_client.post(
-        LOGIN_URL, json=jsonable_encoder(test_user)
-    )
+    login_response = test_not_logged_in_client.post(LOGIN_URL, json=jsonable_encoder(test_user))
     token = login_response.json()["access_token"]
     headers = {"Authorization": f"Bearer {token}"}
 
@@ -74,18 +70,14 @@ def test_update_password(
     assert response.status_code == 204
 
 
-def test_get_account_name(
-    test_not_logged_in_client, test_user, test_user_registration_data
-):
+def test_get_account_name(test_not_logged_in_client, test_user, test_user_registration_data):
     response = test_not_logged_in_client.post(
         CREATE_URL, json=jsonable_encoder(test_user_registration_data)
     )
     assert response.status_code == 200
     assert "username" in response.json()["data"]
     # first login to get the auth token
-    login_response = test_not_logged_in_client.post(
-        LOGIN_URL, json=jsonable_encoder(test_user)
-    )
+    login_response = test_not_logged_in_client.post(LOGIN_URL, json=jsonable_encoder(test_user))
     token = login_response.json()["access_token"]
     headers = {"Authorization": f"Bearer {token}"}
 
@@ -96,7 +88,5 @@ def test_get_account_name(
 
 def test_login_invalid_credentials(test_not_logged_in_client, test_user):
     test_user.password = "invalid_password"
-    response = test_not_logged_in_client.post(
-        LOGIN_URL, json=jsonable_encoder(test_user)
-    )
+    response = test_not_logged_in_client.post(LOGIN_URL, json=jsonable_encoder(test_user))
     assert response.status_code == 422

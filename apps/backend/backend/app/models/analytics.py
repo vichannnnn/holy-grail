@@ -23,28 +23,16 @@ from app.utils.exceptions import AppError
 
 def extract_metrics(response: RunReportResponse) -> Tuple[Optional[int], Optional[int]]:
     event_name_position = next(
-        (
-            i
-            for i, header in enumerate(response.dimension_headers)
-            if header.name == "eventName"
-        ),
+        (i for i, header in enumerate(response.dimension_headers) if header.name == "eventName"),
         None,
     )
 
     active_users_position = next(
-        (
-            i
-            for i, header in enumerate(response.metric_headers)
-            if header.name == "activeUsers"
-        ),
+        (i for i, header in enumerate(response.metric_headers) if header.name == "activeUsers"),
         None,
     )
     event_count_position = next(
-        (
-            i
-            for i, header in enumerate(response.metric_headers)
-            if header.name == "eventCount"
-        ),
+        (i for i, header in enumerate(response.metric_headers) if header.name == "eventCount"),
         None,
     )
 

@@ -26,9 +26,7 @@ async def get_subjects_list(
     category_id: int = None,
 ):
     filter_ = {"category_id": category_id} if category_id is not None else None
-    data = await Subjects.get_all(
-        session, filter_=filter_, options=[joinedload(Subjects.category)]
-    )
+    data = await Subjects.get_all(session, filter_=filter_, options=[joinedload(Subjects.category)])
     return data
 
 

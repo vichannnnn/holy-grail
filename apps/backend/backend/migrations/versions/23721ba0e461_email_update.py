@@ -22,9 +22,7 @@ def upgrade():
         "account",
         sa.Column("verified", sa.Boolean(), server_default="f", nullable=False),
     )
-    op.add_column(
-        "account", sa.Column("email_verification_token", sa.String(), nullable=True)
-    )
+    op.add_column("account", sa.Column("email_verification_token", sa.String(), nullable=True))
     # ### end Alembic commands ###
 
 

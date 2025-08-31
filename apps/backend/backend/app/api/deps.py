@@ -7,6 +7,7 @@ from moto import mock_s3
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Session
 
+from app.core import Environment, settings
 from app.db.database import SessionLocal, async_session
 from app.models.auth import (
     ALGORITHM,
@@ -16,7 +17,6 @@ from app.models.auth import (
     Authenticator,
     CurrentUserSchema,
 )
-from app.core import Environment, settings
 from app.utils.file_handler import s3_app_client
 
 
@@ -42,9 +42,7 @@ def get_s3_client() -> boto3.Session:
 
 
 CurrentSession = Annotated[AsyncSession, Depends(get_session)]
-OAuth2Session = Annotated[
-    Authenticator.oauth2_scheme, Depends(Authenticator.oauth2_scheme)
-]
+OAuth2Session = Annotated[Authenticator.oauth2_scheme, Depends(Authenticator.oauth2_scheme)]
 
 
 async def get_verified_user(
@@ -55,9 +53,7 @@ async def get_verified_user(
         payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
 
         username = payload.get("sub")
-        user = (
-            await Account.select_from_username(session, username) if username else None
-        )
+        user = await Account.select_from_username(session, username) if username else None
 
         if username and user and user.verified:
             return CurrentUserSchema(
@@ -82,9 +78,7 @@ async def get_current_user(
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
         username = payload.get("sub")
-        user = (
-            await Account.select_from_username(session, username) if username else None
-        )
+        user = await Account.select_from_username(session, username) if username else None
 
         if username and user:
             return CurrentUserSchema(
@@ -109,9 +103,7 @@ async def get_admin(
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
         username = payload.get("sub")
-        user = (
-            await Account.select_from_username(session, username) if username else None
-        )
+        user = await Account.select_from_username(session, username) if username else None
 
         if username and user and user.role >= 2:
             return CurrentUserSchema(
@@ -136,9 +128,7 @@ async def get_developer(
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
         username = payload.get("sub")
-        user = (
-            await Account.select_from_username(session, username) if username else None
-        )
+        user = await Account.select_from_username(session, username) if username else None
 
         if username and user and user.role >= 3:
             return CurrentUserSchema(

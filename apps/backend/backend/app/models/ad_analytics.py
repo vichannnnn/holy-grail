@@ -2,8 +2,7 @@ import datetime
 
 import pytz
 from fastapi import Response as FastAPIResponse
-from sqlalchemy import Date, func, update
-from sqlalchemy import exc as SQLAlchemyExceptions
+from sqlalchemy import Date, exc as SQLAlchemyExceptions, func, update
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.crud.base import CRUD
@@ -39,9 +38,7 @@ class AdAnalytics(Base, CRUD["ad_analytics"]):
 
         except SQLAlchemyExceptions.IntegrityError:
             await session.rollback()
-            stmt = (
-                update(cls).where(cls.date == today_date).values(clicks=cls.clicks + 1)
-            )
+            stmt = update(cls).where(cls.date == today_date).values(clicks=cls.clicks + 1)
             await session.execute(stmt)
 
         await session.commit()

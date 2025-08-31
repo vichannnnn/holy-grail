@@ -21,9 +21,7 @@ def upgrade():
     op.drop_constraint("category_level_name_key", "category_level", type_="unique")
     op.add_column("subjects", sa.Column("category_id", sa.Integer()))
     op.drop_constraint("subjects_name_key", "subjects", type_="unique")
-    op.create_unique_constraint(
-        "category_level_name_unique", "subjects", ["name", "category_id"]
-    )
+    op.create_unique_constraint("category_level_name_unique", "subjects", ["name", "category_id"])
     op.create_foreign_key(None, "subjects", "category_level", ["category_id"], ["id"])
     op.alter_column("subjects", "category_id", nullable=True)
     # ### end Alembic commands ###

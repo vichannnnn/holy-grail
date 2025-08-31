@@ -7,9 +7,7 @@ from app.schemas.base import CustomBaseModel as BaseModel
 
 password_validator = Annotated[
     str,
-    StringConstraints(
-        strip_whitespace=True, pattern=r"^(?=.*[A-Z])(?=.*\W)[^\s]{8,30}$"
-    ),
+    StringConstraints(strip_whitespace=True, pattern=r"^(?=.*[A-Z])(?=.*\W)[^\s]{8,30}$"),
 ]
 username_validator = Annotated[
     str, StringConstraints(strip_whitespace=True, pattern="^[a-zA-Z0-9]{4,20}$")

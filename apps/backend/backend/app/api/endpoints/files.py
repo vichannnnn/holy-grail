@@ -11,8 +11,10 @@ router = APIRouter()
 async def serve_file(file_path: str):
     """Serve files from local storage (only available in LOCAL environment)"""
     if settings.environment != Environment.LOCAL:
-        raise HTTPException(status_code=404, detail="File serving only available in local environment")
-    
+        raise HTTPException(
+            status_code=404, detail="File serving only available in local environment"
+        )
+
     storage = LocalFileStorage()
     try:
         return storage.get_file_response(file_path)

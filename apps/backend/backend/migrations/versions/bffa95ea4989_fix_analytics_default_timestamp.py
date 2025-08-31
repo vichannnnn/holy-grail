@@ -22,9 +22,7 @@ def upgrade():
     # Add new column with server default
     op.add_column(
         "analytics",
-        sa.Column(
-            "new_timestamp", sa.DateTime, server_default=text("now()"), nullable=False
-        ),
+        sa.Column("new_timestamp", sa.DateTime, server_default=text("now()"), nullable=False),
     )
 
     # Copy data from old column to new column

@@ -11,11 +11,11 @@ from sqlalchemy import (
     ForeignKey,
     ForeignKeyConstraint,
     delete,
+    exc as SQLAlchemyExceptions,
     func,
     select,
     update,
 )
-from sqlalchemy import exc as SQLAlchemyExceptions
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Mapped, mapped_column, relationship, selectinload
 from sqlalchemy.sql.expression import text
@@ -54,9 +54,7 @@ def form_data_note_parser(
             category=int(form_data[f"{idx}[category]"]),
             subject=int(form_data[f"{idx}[subject]"]),
             type=int(form_data[f"{idx}[type]"]),
-            year=int(form_data[f"{idx}[year]"])
-            if form_data[f"{idx}[year]"] != 0
-            else None,
+            year=int(form_data[f"{idx}[year]"]) if form_data[f"{idx}[year]"] != 0 else None,
             document_name=form_data[f"{idx}[name]"],
         )
 
@@ -69,9 +67,7 @@ def form_data_note_parser(
 class Library(Base, CRUD["Library"]):
     __tablename__ = "library"
     __table_args__ = (
-        ForeignKeyConstraint(
-            ["subject", "category"], ["subjects.id", "subjects.category_id"]
-        ),
+        ForeignKeyConstraint(["subject", "category"], ["subjects.id", "subjects.category_id"]),
     )
 
     id: Mapped[int] = mapped_column(
@@ -96,15 +92,11 @@ class Library(Base, CRUD["Library"]):
     document_name: Mapped[str] = mapped_column(nullable=False, index=True)
     file_name: Mapped[str] = mapped_column(nullable=False, unique=True)
     view_count: Mapped[int] = mapped_column(server_default=text("0"), nullable=False)
-    uploaded_by: Mapped[int] = mapped_column(
-        ForeignKey("account.user_id"), nullable=False
-    )
+    uploaded_by: Mapped[int] = mapped_column(ForeignKey("account.user_id"), nullable=False)
     uploaded_on: Mapped[datetime.datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, server_default=func.now(), index=True
     )
-    approved: Mapped[bool] = mapped_column(
-        index=True, nullable=False, server_default="f"
-    )
+    approved: Mapped[bool] = mapped_column(index=True, nullable=False, server_default="f")
     year: Mapped[int] = mapped_column(nullable=True, index=True)
 
     account: Mapped["Account"] = relationship("Account", back_populates="documents")
@@ -114,9 +106,7 @@ class Library(Base, CRUD["Library"]):
     doc_subject: Mapped["Subjects"] = relationship(
         "Subjects", back_populates="documents", foreign_keys=[subject]
     )
-    doc_type: Mapped["DocumentTypes"] = relationship(
-        "DocumentTypes", back_populates="documents"
-    )
+    doc_type: Mapped["DocumentTypes"] = relationship("DocumentTypes", back_populates="documents")
     extension: Mapped[str] = mapped_column(server_default=".pdf", nullable=False)
 
     @classmethod
@@ -138,9 +128,7 @@ class Library(Base, CRUD["Library"]):
             UploadError.INVALID_FILE_TYPE.name: [],
         }
 
-        document_names = [
-            (form_data[f"{i}[name]"], i) for i in range(len(form_data) // 6)
-        ]
+        document_names = [(form_data[f"{i}[name]"], i) for i in range(len(form_data) // 6)]
 
         for _, idx in document_names:
             res, idx = form_data_note_parser(form_data, idx)
@@ -173,9 +161,7 @@ class Library(Base, CRUD["Library"]):
         files: List[Tuple[UploadFile, str]] = []
         for note, _ in valid_notes:
             if uploader_role.DEVELOPER:
-                extension = developer_accepted_doc_type_extensions[
-                    note.file.content_type
-                ]
+                extension = developer_accepted_doc_type_extensions[note.file.content_type]
             else:
                 extension = accepted_doc_type_extensions[note.file.content_type]
 
@@ -199,9 +185,7 @@ class Library(Base, CRUD["Library"]):
 
             await session.commit()
             for obj in objs:
-                await session.refresh(
-                    obj, ["doc_category", "doc_type", "doc_subject", "account"]
-                )
+                await session.refresh(obj, ["doc_category", "doc_type", "doc_subject", "account"])
 
         except SQLAlchemyExceptions.IntegrityError as exc:
             await session.rollback()
@@ -300,9 +284,7 @@ class Library(Base, CRUD["Library"]):
                 )
                 return response
             else:
-                raise HTTPException(
-                    status_code=response.status_code, detail="File not found"
-                )
+                raise HTTPException(status_code=response.status_code, detail="File not found")
 
     @classmethod
     async def update_note(
@@ -319,9 +301,7 @@ class Library(Base, CRUD["Library"]):
             fetch_stmt = fetch_stmt.where(cls.id == id).where(
                 cls.uploaded_by == authenticated.user_id
             )
-            stmt = stmt.where(cls.id == id).where(
-                cls.uploaded_by == authenticated.user_id
-            )
+            stmt = stmt.where(cls.id == id).where(cls.uploaded_by == authenticated.user_id)
         else:
             fetch_stmt = fetch_stmt.where(cls.id == id)
             stmt = stmt.where(cls.id == id)
@@ -332,22 +312,15 @@ class Library(Base, CRUD["Library"]):
         if not existing_note:
             raise HTTPException(status_code=404, detail="Note not found")
 
-        if (
-            authenticated.role < 2
-            and existing_note.uploaded_by != authenticated.user_id
-        ):
-            raise HTTPException(
-                status_code=403, detail="Not authorized to update this note"
-            )
+        if authenticated.role < 2 and existing_note.uploaded_by != authenticated.user_id:
+            raise HTTPException(status_code=403, detail="Not authorized to update this note")
 
         stmt = stmt.values(**data.dict(exclude_none=True))
         await session.execute(stmt)
         await session.commit()
         # import pdb
         # pdb.set_trace()
-        await session.refresh(
-            existing_note, ["doc_category", "doc_type", "doc_subject", "account"]
-        )
+        await session.refresh(existing_note, ["doc_category", "doc_type", "doc_subject", "account"])
 
         return existing_note
 
