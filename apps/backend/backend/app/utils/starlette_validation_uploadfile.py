@@ -60,9 +60,7 @@ class ValidateUploadFileMiddleware(BaseHTTPMiddleware):
 
         request._receive = receive
 
-    async def dispatch(
-        self, request: Request, call_next: RequestResponseEndpoint
-    ) -> Response:
+    async def dispatch(self, request: Request, call_next: RequestResponseEndpoint) -> Response:
         scope = request.scope
 
         if scope["type"] not in ("http",):

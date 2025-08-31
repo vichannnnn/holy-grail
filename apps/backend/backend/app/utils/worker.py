@@ -64,9 +64,7 @@ else:
 
     class MockCelery:
         def __init__(self) -> None:
-            logger.info(
-                "📧 Celery running in LOCAL mode - tasks will execute synchronously"
-            )
+            logger.info("📧 Celery running in LOCAL mode - tasks will execute synchronously")
             self.conf = type("conf", (), {})()
 
         def task(self, *args: Any, **kwargs: Any) -> Callable:

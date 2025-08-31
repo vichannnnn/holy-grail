@@ -492,9 +492,7 @@ def test_add_and_update_doc_types(
         assert res == {"name": test_add_doc_types.name, "id": res["id"]}
 
         payload = jsonable_encoder(test_update_doc_types)
-        response = test_client.put(
-            DOCUMENT_TYPE_URL, json=payload, params={"id": res["id"]}
-        )
+        response = test_client.put(DOCUMENT_TYPE_URL, json=payload, params={"id": res["id"]})
         assert response.status_code == status.HTTP_200_OK
         res = response.json()
         assert res == {"name": test_update_doc_types.name, "id": res["id"]}
@@ -547,9 +545,7 @@ def test_add_and_update_category_level(
         assert res == {"name": test_add_category_level.name, "id": res["id"]}
 
         payload = jsonable_encoder(test_update_category_level)
-        response = test_client.put(
-            CATEGORY_LEVEL_URL, json=payload, params={"id": res["id"]}
-        )
+        response = test_client.put(CATEGORY_LEVEL_URL, json=payload, params={"id": res["id"]})
         assert response.status_code == status.HTTP_200_OK
         res = response.json()
         assert res == {"name": test_update_category_level.name, "id": res["id"]}

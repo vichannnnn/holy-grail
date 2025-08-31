@@ -25,9 +25,7 @@ def upgrade():
         sa.Column("clicks", sa.Integer(), nullable=False),
         sa.PrimaryKeyConstraint("date"),
     )
-    op.create_index(
-        op.f("ix_ad_analytics_date"), "ad_analytics", ["date"], unique=False
-    )
+    op.create_index(op.f("ix_ad_analytics_date"), "ad_analytics", ["date"], unique=False)
     # ### end Alembic commands ###
 
 

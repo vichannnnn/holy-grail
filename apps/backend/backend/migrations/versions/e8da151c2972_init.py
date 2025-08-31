@@ -41,9 +41,7 @@ def upgrade():
         sa.Column("name", sa.String(), nullable=False),
         sa.PrimaryKeyConstraint("id"),
     )
-    op.create_index(
-        op.f("ix_category_level_id"), "category_level", ["id"], unique=False
-    )
+    op.create_index(op.f("ix_category_level_id"), "category_level", ["id"], unique=False)
     op.create_table(
         "documents",
         sa.Column("id", sa.Integer(), nullable=False),
@@ -65,9 +63,7 @@ def upgrade():
         sa.Column("subject", sa.Integer(), nullable=False),
         sa.Column("type", sa.Integer(), nullable=False),
         sa.Column("file_name", sa.String(), nullable=False),
-        sa.Column(
-            "view_count", sa.Integer(), server_default=sa.text("0"), nullable=False
-        ),
+        sa.Column("view_count", sa.Integer(), server_default=sa.text("0"), nullable=False),
         sa.Column("uploaded_by", sa.Integer(), nullable=False),
         sa.Column(
             "uploaded_on",
@@ -76,9 +72,7 @@ def upgrade():
             nullable=False,
         ),
         sa.Column("approved", sa.Boolean(), server_default="f", nullable=False),
-        sa.ForeignKeyConstraint(
-            ["category"], ["category_level.id"], onupdate="CASCADE"
-        ),
+        sa.ForeignKeyConstraint(["category"], ["category_level.id"], onupdate="CASCADE"),
         sa.ForeignKeyConstraint(["subject"], ["subjects.id"], onupdate="CASCADE"),
         sa.ForeignKeyConstraint(["type"], ["documents.id"], onupdate="CASCADE"),
         sa.ForeignKeyConstraint(
@@ -92,9 +86,7 @@ def upgrade():
     op.create_index(op.f("ix_library_id"), "library", ["id"], unique=False)
     op.create_index(op.f("ix_library_subject"), "library", ["subject"], unique=False)
     op.create_index(op.f("ix_library_type"), "library", ["type"], unique=False)
-    op.create_index(
-        op.f("ix_library_uploaded_on"), "library", ["uploaded_on"], unique=False
-    )
+    op.create_index(op.f("ix_library_uploaded_on"), "library", ["uploaded_on"], unique=False)
     # ### end Alembic commands ###
 
 

@@ -21,9 +21,7 @@ def upgrade():
     op.create_table(
         "scoreboard",
         sa.Column("user_id", sa.Integer(), nullable=False),
-        sa.Column(
-            "upload_count", sa.Integer(), server_default=sa.text("0"), nullable=False
-        ),
+        sa.Column("upload_count", sa.Integer(), server_default=sa.text("0"), nullable=False),
         sa.ForeignKeyConstraint(
             ["user_id"],
             ["account.user_id"],
@@ -33,9 +31,7 @@ def upgrade():
     op.create_index(
         op.f("ix_scoreboard_upload_count"), "scoreboard", ["upload_count"], unique=False
     )
-    op.create_index(
-        op.f("ix_scoreboard_user_id"), "scoreboard", ["user_id"], unique=False
-    )
+    op.create_index(op.f("ix_scoreboard_user_id"), "scoreboard", ["user_id"], unique=False)
     # ### end Alembic commands ###
 
 
