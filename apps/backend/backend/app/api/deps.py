@@ -16,8 +16,8 @@ from app.models.auth import (
     Authenticator,
     CurrentUserSchema,
 )
+from app.core import Environment, settings
 from app.utils.file_handler import s3_app_client
-from app.utils.flags import TESTING_FLAG
 
 
 def get_db() -> Generator[Session, None, None]:
@@ -31,7 +31,7 @@ async def get_session() -> AsyncGenerator[AsyncSession, None]:
 
 
 def get_s3_client() -> boto3.Session:
-    if TESTING_FLAG:
+    if settings.environment == Environment.LOCAL:
         with mock_s3():
             s3_client = boto3.client("s3", region_name="us-east-1")
             s3_client.create_bucket(Bucket="test-bucket")
