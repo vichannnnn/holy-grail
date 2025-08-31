@@ -160,10 +160,11 @@ make generate_xml   # Generate coverage XML report
 - **Backend**: FastAPI (Python 3.11) with async/await patterns
 - **Frontend**: React 18 with Next.js 15, TypeScript, Tailwind CSS, Material-UI
 - **Database**: PostgreSQL with Alembic migrations
-- **Message Queue**: Redis + Celery for async tasks
-- **Infrastructure**: Docker Compose for local development, AWS ECS for production
+- **Message Queue**: Redis + Celery for async tasks (production only)
+- **Infrastructure**: Direct Python execution for local development, AWS ECS for production
+- **Package Manager**: UV for fast Python dependency management
 - **Testing**: pytest for backend, Jest for frontend
-- **Code Quality**: Ruff, MyPy, ESLint, pre-commit hooks
+- **Code Quality**: Ruff (formatting & linting), MyPy, ESLint, pre-commit hooks
 
 ### Key Dependencies
 - Authentication: JWT-based with password reset via email
@@ -177,7 +178,8 @@ make generate_xml   # Generate coverage XML report
 - Production branch: `main`
 - Automated CI/CD via GitHub Actions for both environments
 - Pre-commit hooks ensure code quality before commits
-- Docker-based development for consistency across environments
+- Local development with direct Python execution and hot-reload
+- PostgreSQL runs in Docker, backend runs natively for better DX
 
 ## Agents
 
@@ -234,21 +236,26 @@ Before starting any task:
 - **Debug Backend**: http://localhost:9000/docs (with pdb support)
 
 ### Environment Setup
-- Copy `.env.example` to `.env` for backend configuration
+- Copy `.env.example` to `.env` for backend configuration (includes sensible defaults)
+- Environment detection via `ENVIRONMENT` variable (local/dev/prod)
 - Frontend environments: `.env` (local), `.env.development`, `.env.production`
-- Secret key generation: `secrets.token_hex(32)` in Python
-- AWS credentials configured for production deployments
+- Secret key auto-generated for local development if not provided
+- AWS credentials optional for local development (uses local file storage)
+- Email disabled by default in local (logs to console instead)
 
 ### Testing Guidelines
-- Run `make tests` before committing backend changes
-- Use `make test file=<name>` for targeted testing
+- Run `make test` before committing backend changes
+- Use `make test-file file=<name>` for targeted testing
 - Frontend tests via `bun test` or `npm test`
-- Coverage reports available via `make coverage` and `make generate_xml`
+- Coverage reports available via `make coverage`
+- Tests run with `ENVIRONMENT=local` automatically
 
 ### Database Management
-- Migrations managed via Alembic: `make migrations name=<description>`
-- Database dumps can be imported via `make dump`
+- Migrations managed via Alembic: `make migration name=<description>`
+- Database dumps can be imported via `make dump sql_file_name=<file>`
 - PostgreSQL running in Docker container `holy-grail-db`
+- Database accessible on `localhost:5432` for local development
+- Use `make db-shell` for direct PostgreSQL access
 
 ### Deployment
 - Development auto-deploys from `dev` branch

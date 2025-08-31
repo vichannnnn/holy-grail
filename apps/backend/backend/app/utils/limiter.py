@@ -1,7 +1,7 @@
 from slowapi import Limiter
 from starlette.requests import Request
 
-from app.utils.flags import TESTING_FLAG
+from app.core import Environment, settings
 
 
 def get_ipaddr(request: Request) -> str:
@@ -20,7 +20,7 @@ limiter = Limiter(key_func=get_ipaddr)
 
 def conditional_rate_limit(*args, **kwargs):
     def decorator(func):
-        if TESTING_FLAG:
+        if settings.environment == Environment.LOCAL:
             return func
         else:
             return limiter.limit(*args, **kwargs)(func)

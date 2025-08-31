@@ -1,7 +1,6 @@
 import random
 import string
 from datetime import datetime, timedelta
-from os import environ  # pylint: disable=E0611
 from typing import Any, Dict
 
 from fastapi import Depends
@@ -9,11 +8,12 @@ from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 
+from app.core import settings
 from app.utils.exceptions import AppError
 
-ACCESS_TOKEN_EXPIRE_MINUTES = int(environ["ACCESS_TOKEN_EXPIRE_MINUTES"])
-ALGORITHM = environ["ALGORITHM"]
-SECRET_KEY = environ["SECRET_KEY"]
+ACCESS_TOKEN_EXPIRE_MINUTES = settings.access_token_expire_minutes
+ALGORITHM = settings.algorithm
+SECRET_KEY = settings.secret_key
 
 
 def generate_password():

@@ -1,21 +1,21 @@
-import os
 from io import BytesIO
 
 import boto3
 from starlette.datastructures import UploadFile
 
-from app.utils.flags import TESTING_FLAG
+from app.core import Environment, settings
 
-AWS_ACCESS_KEY = os.environ.get("AWS_ACCESS_KEY")
-AWS_SECRET_KEY = os.environ.get("AWS_SECRET_KEY")
-S3_BUCKET_NAME = "test-bucket" if TESTING_FLAG else os.environ["AWS_S3_BUCKET_NAME"]
-AWS_CLOUDFRONT_URL = os.environ.get("AWS_CLOUDFRONT_URL")
+S3_BUCKET_NAME = "test-bucket" if settings.environment == Environment.LOCAL else settings.aws_s3_bucket_name
+AWS_CLOUDFRONT_URL = settings.aws_cloudfront_url
 
 S3_BUCKET_URL = f"https://{S3_BUCKET_NAME}.s3.ap-southeast-1.amazonaws.com/"
 
 s3_app_client = boto3.client(
-    "s3", aws_access_key_id=AWS_ACCESS_KEY, aws_secret_access_key=AWS_SECRET_KEY
-)
+    "s3", 
+    aws_access_key_id=settings.aws_access_key_id, 
+    aws_secret_access_key=settings.aws_secret_access_key,
+    region_name=settings.aws_region
+) if settings.aws_access_key_id else None
 
 accepted_doc_type_extensions = {
     # "application/vnd.openxmlformats-officedocument.wordprocessingml.document": ".docx",
