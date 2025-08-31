@@ -10,15 +10,12 @@
   "packageManager": "bun@1.2.21",
   "private": true,
   "scripts": {
+    "setup": "bunx turbo setup",
     "build": "bunx turbo build",
-    "changesets": "bunx turbo build && bunx changeset",
-    "changesets:publish": "bunx changeset publish",
-    "changesets:version": "bunx changeset version",
     "dev": "FORCE_COLOR=1 bunx turbo dev",
     "format": "FORCE_COLOR=1 bunx turbo format",
     "lint": "FORCE_COLOR=1 bunx turbo lint",
     "start": "NODE_ENV=production bunx turbo run start",
-    "syncpack": "bunx syncpack",
     "test": "FORCE_COLOR=1 bunx turbo test"
   },
     "workspaces": [
