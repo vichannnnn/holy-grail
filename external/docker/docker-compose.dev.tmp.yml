@@ -23,7 +23,7 @@ services:
     networks:
       - holy-grail-network
     ports:
-      - "6379"
+      - "6379:6379"
     depends_on:
       - db
     command: redis-server --loglevel verbose
