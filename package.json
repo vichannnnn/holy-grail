@@ -12,6 +12,7 @@
   "scripts": {
     "setup": "bunx turbo setup",
     "build": "bunx turbo build",
+    "predev": "docker-compose -f external/docker/docker-compose.dev.tmp.yml up -d",
     "dev": "FORCE_COLOR=1 bunx turbo dev",
     "format": "FORCE_COLOR=1 bunx turbo format",
     "lint": "FORCE_COLOR=1 bunx turbo lint",
