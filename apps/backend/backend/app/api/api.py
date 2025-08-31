@@ -7,10 +7,12 @@ from app.api.endpoints import (
     auth,
     categories,
     example,
+    files,
     library,
     scoreboard,
     tasks,
 )
+from app.core import Environment, settings
 
 api_router = APIRouter()
 api_router.include_router(
@@ -25,3 +27,7 @@ api_router.include_router(library.router, tags=["Library"], prefix="/note")
 api_router.include_router(library.notes_router, tags=["Library"], prefix="/notes")
 api_router.include_router(scoreboard.router, tags=["Scoreboard"], prefix="/scoreboard")
 api_router.include_router(tasks.router, tags=["Tasks"])
+
+# Include file serving endpoint for local development
+if settings.environment == Environment.LOCAL:
+    api_router.include_router(files.router, tags=["Files"])

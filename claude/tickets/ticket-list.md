@@ -15,16 +15,20 @@ This file maintains a centralized list of all tickets in the project. Update thi
 ## Active Tickets
 
 ### High Priority
-_No high priority tickets yet_
+_No high priority tickets currently_
 
 ### Medium Priority
-_No medium priority tickets yet_
+- 🔴 [TICKET-006](./TICKET-006-create-developer-setup-scripts.md) - Create Developer Setup Scripts
 
 ### Low Priority
 _No low priority tickets yet_
 
 ## Completed Tickets
-_No completed tickets yet_
+- 🟢 [TICKET-001](./TICKET-001-implement-configuration-system.md) - Implement Configuration System (Completed: 2025-01-31)
+- 🟢 [TICKET-002](./TICKET-002-migrate-to-uv-package-manager.md) - Migrate to UV Package Manager (Completed: 2025-01-31)
+- 🟢 [TICKET-003](./TICKET-003-simplify-docker-setup.md) - Simplify Docker Setup for Local Development (Completed: 2025-01-31)
+- 🟢 [TICKET-004](./TICKET-004-refactor-email-system.md) - Refactor Email System for Local Development (Completed: 2025-01-31)
+- 🟢 [TICKET-005](./TICKET-005-standardize-aws-configuration.md) - Standardize AWS Configuration (Completed: 2025-01-31)
 
 ## Cancelled/Archived Tickets
 _No cancelled tickets yet_

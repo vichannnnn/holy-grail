@@ -1,4 +1,3 @@
-from os import environ  # pylint: disable=E0611
 from typing import TYPE_CHECKING
 from uuid import uuid4
 
@@ -11,6 +10,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Mapped, mapped_column, relationship, synonym
 from sqlalchemy.sql.expression import text
 
+from app.core import settings
 from app.crud.base import CRUD
 from app.db.base_class import Base
 from app.schemas.admin import UpdateRoleSchema
@@ -23,9 +23,7 @@ from app.schemas.auth import (
     CurrentUserSchema,
     CurrentUserWithJWTSchema,
 )
-from app.tasks.new_password_email import send_new_password_email_task
-from app.tasks.reset_password_email import send_reset_password_email_task
-from app.tasks.verify_email import send_verification_email_task
+from app.services.email import email_service
 from app.utils.auth import Authenticator, generate_password
 from app.utils.exceptions import AppError
 
@@ -33,10 +31,10 @@ if TYPE_CHECKING:
     from app.models.library import Library
     from app.models.scoreboard import Scoreboard
 
-FRONTEND_URL = environ["FRONTEND_URL"]
-ACCESS_TOKEN_EXPIRE_MINUTES = int(environ["ACCESS_TOKEN_EXPIRE_MINUTES"])
-ALGORITHM = environ["ALGORITHM"]
-SECRET_KEY = environ["SECRET_KEY"]
+FRONTEND_URL = settings.frontend_url
+ACCESS_TOKEN_EXPIRE_MINUTES = settings.access_token_expire_minutes
+ALGORITHM = settings.algorithm
+SECRET_KEY = settings.secret_key
 
 
 class Account(Base, CRUD["Account"]):
@@ -93,10 +91,10 @@ class Account(Base, CRUD["Account"]):
 
         created_user = CurrentUserSchema(**res.__dict__)
         email_verification_token = uuid4().hex
-        send_verification_email_task.delay(
-            email=data.email,
+        await email_service.send_verification_email(
+            to=data.email,
             username=data.username,
-            confirm_url=f"{FRONTEND_URL}/verify-account?token={email_verification_token}",
+            verification_url=f"{FRONTEND_URL}/verify-account?token={email_verification_token}",
         )
 
         stmt = (
@@ -259,10 +257,10 @@ class Account(Base, CRUD["Account"]):
     ):
         email_verification_token = uuid4().hex
 
-        send_verification_email_task.delay(
-            email=email,
+        await email_service.send_verification_email(
+            to=email,
             username=username,
-            confirm_url=f"{FRONTEND_URL}/verify-account?token={email_verification_token}",
+            verification_url=f"{FRONTEND_URL}/verify-account?token={email_verification_token}",
         )
 
         stmt = (
@@ -280,10 +278,10 @@ class Account(Base, CRUD["Account"]):
 
         if not res.verified:
             email_verification_token = uuid4().hex
-            send_verification_email_task.delay(
-                email=res.email,
+            await email_service.send_verification_email(
+                to=res.email,
                 username=res.username,
-                confirm_url=f"{FRONTEND_URL}/verify-account?token={email_verification_token}",
+                verification_url=f"{FRONTEND_URL}/verify-account?token={email_verification_token}",
             )
 
             stmt = (
@@ -307,10 +305,10 @@ class Account(Base, CRUD["Account"]):
         account = result.scalar()
 
         try:
-            send_reset_password_email_task.delay(
-                email=email,
+            await email_service.send_reset_password_email(
+                to=email,
                 username=account.username,
-                confirm_url=f"{FRONTEND_URL}/reset-password?token={token}",
+                reset_url=f"{FRONTEND_URL}/reset-password?token={token}",
             )
         except Exception as e:  # pylint: disable=C0103, W0612, W0703
             return FastAPIResponse(status_code=200)
@@ -336,10 +334,10 @@ class Account(Base, CRUD["Account"]):
 
         password = generate_password()
 
-        send_new_password_email_task.delay(
+        await email_service.send_new_password_email(
+            to=account.email,
             username=account.username,
-            email=account.email,
-            password=password,
+            new_password=password,
         )
 
         account.password = Authenticator.pwd_context.hash(password)
