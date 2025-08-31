@@ -67,7 +67,6 @@ MANIFEST
 *.manifest
 *.spec
 
-*.json
 
 # Installer logs
 pip-log.txt
