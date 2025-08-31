@@ -4,8 +4,7 @@ from uuid import uuid4
 import jwt
 from fastapi import Response as FastAPIResponse
 from pydantic import EmailStr
-from sqlalchemy import Index, asc, func, select, update
-from sqlalchemy import exc as SQLAlchemyExceptions
+from sqlalchemy import Index, asc, exc as SQLAlchemyExceptions, func, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Mapped, mapped_column, relationship, synonym
 from sqlalchemy.sql.expression import text
@@ -39,13 +38,9 @@ SECRET_KEY = settings.secret_key
 
 class Account(Base, CRUD["Account"]):
     __tablename__ = "account"
-    __table_args__ = (
-        Index("username_case_sensitive_index", text("upper(username)"), unique=True),
-    )
+    __table_args__ = (Index("username_case_sensitive_index", text("upper(username)"), unique=True),)
 
-    user_id: Mapped[int] = mapped_column(
-        primary_key=True, index=True, autoincrement=True
-    )
+    user_id: Mapped[int] = mapped_column(primary_key=True, index=True, autoincrement=True)
     username: Mapped[str] = mapped_column(nullable=False, index=True, unique=True)
     email: Mapped[str] = mapped_column(nullable=True, unique=True)
     password: Mapped[str] = mapped_column(nullable=False)
@@ -127,9 +122,7 @@ class Account(Base, CRUD["Account"]):
         return res
 
     @classmethod
-    async def login(
-        cls, session: AsyncSession, data: AuthSchema
-    ) -> CurrentUserWithJWTSchema:
+    async def login(cls, session: AsyncSession, data: AuthSchema) -> CurrentUserWithJWTSchema:
         if not (credentials := await cls.select_from_username(session, data.username)):
             raise AppError.INVALID_CREDENTIALS_ERROR
         if not Authenticator.pwd_context.verify(data.password, credentials.password):
@@ -206,9 +199,7 @@ class Account(Base, CRUD["Account"]):
     @classmethod
     async def update_role(cls, session: AsyncSession, data: UpdateRoleSchema):
         data_dict = data.dict()
-        to_update = {
-            key: value for key, value in data_dict.items() if value is not None
-        }
+        to_update = {key: value for key, value in data_dict.items() if value is not None}
 
         stmt = (
             update(Account)

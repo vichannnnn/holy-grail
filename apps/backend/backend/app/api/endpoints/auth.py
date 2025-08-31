@@ -68,9 +68,7 @@ async def get_account_name(
 
 
 @router.post("/login", response_model=CurrentUserWithJWTSchema)
-async def user_login(
-    session: CurrentSession, data: AuthSchema
-) -> CurrentUserWithJWTSchema:
+async def user_login(session: CurrentSession, data: AuthSchema) -> CurrentUserWithJWTSchema:
     res = await Account.login(session, data)
     return res
 
@@ -90,9 +88,7 @@ async def resend_verify_email_token(
     session: CurrentSession,
     authenticated: SessionUser,
 ):
-    await Account.resend_email_verification_token(
-        session=session, user_id=authenticated.user_id
-    )
+    await Account.resend_email_verification_token(session=session, user_id=authenticated.user_id)
     return {"message": "Email verification resent to your email."}
 
 

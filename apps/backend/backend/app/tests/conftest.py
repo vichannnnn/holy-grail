@@ -21,9 +21,9 @@ from app.api.deps import (
 from app.db.base_class import Base
 from app.db.database import (
     SQLALCHEMY_DATABASE_URL,
+    async_session as TestingSessionLocal,
+    engine as test_engine,
 )
-from app.db.database import async_session as TestingSessionLocal
-from app.db.database import engine as test_engine
 from app.main import app
 from app.models.auth import Account
 from app.models.categories import CategoryLevel, DocumentTypes, Subjects

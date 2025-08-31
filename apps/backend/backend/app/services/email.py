@@ -20,21 +20,15 @@ class EmailService(ABC):
         pass
 
     @abstractmethod
-    async def send_verification_email(
-        self, to: str, username: str, verification_url: str
-    ) -> bool:
+    async def send_verification_email(self, to: str, username: str, verification_url: str) -> bool:
         pass
 
     @abstractmethod
-    async def send_reset_password_email(
-        self, to: str, username: str, reset_url: str
-    ) -> bool:
+    async def send_reset_password_email(self, to: str, username: str, reset_url: str) -> bool:
         pass
 
     @abstractmethod
-    async def send_new_password_email(
-        self, to: str, username: str, new_password: str
-    ) -> bool:
+    async def send_new_password_email(self, to: str, username: str, new_password: str) -> bool:
         pass
 
 
@@ -56,7 +50,7 @@ class ConsoleEmailService(EmailService):
 ║ To: {to:<52} ║
 ║ Subject: {subject:<47} ║
 ╠══════════════════════════════════════════════════════════╣
-║ Template: {template or 'None':<46} ║
+║ Template: {template or "None":<46} ║
 ╠══════════════════════════════════════════════════════════╣
 ║ Body:                                                     ║
 ║ {self._format_body(body)}
@@ -65,9 +59,7 @@ class ConsoleEmailService(EmailService):
         logger.info(email_output)
         return True
 
-    async def send_verification_email(
-        self, to: str, username: str, verification_url: str
-    ) -> bool:
+    async def send_verification_email(self, to: str, username: str, verification_url: str) -> bool:
         return await self.send_email(
             to=to,
             subject="Verify your email address",
@@ -86,9 +78,7 @@ The Holy Grail Team
             context={"username": username, "verification_url": verification_url},
         )
 
-    async def send_reset_password_email(
-        self, to: str, username: str, reset_url: str
-    ) -> bool:
+    async def send_reset_password_email(self, to: str, username: str, reset_url: str) -> bool:
         return await self.send_email(
             to=to,
             subject="Password Reset Request",
@@ -107,9 +97,7 @@ The Holy Grail Team
             context={"username": username, "reset_url": reset_url},
         )
 
-    async def send_new_password_email(
-        self, to: str, username: str, new_password: str
-    ) -> bool:
+    async def send_new_password_email(self, to: str, username: str, new_password: str) -> bool:
         return await self.send_email(
             to=to,
             subject="Your new password",
@@ -157,25 +145,19 @@ class CeleryEmailService(EmailService):
 
         return await send_email_via_mailtrap(to, subject, body)
 
-    async def send_verification_email(
-        self, to: str, username: str, verification_url: str
-    ) -> bool:
+    async def send_verification_email(self, to: str, username: str, verification_url: str) -> bool:
         from app.tasks.verify_email import send_verification_email_task
 
         send_verification_email_task.delay(to, username, verification_url)
         return True
 
-    async def send_reset_password_email(
-        self, to: str, username: str, reset_url: str
-    ) -> bool:
+    async def send_reset_password_email(self, to: str, username: str, reset_url: str) -> bool:
         from app.tasks.reset_password_email import send_reset_password_email_task
 
         send_reset_password_email_task.delay(to, username, reset_url)
         return True
 
-    async def send_new_password_email(
-        self, to: str, username: str, new_password: str
-    ) -> bool:
+    async def send_new_password_email(self, to: str, username: str, new_password: str) -> bool:
         from app.tasks.new_password_email import send_new_password_email_task
 
         send_new_password_email_task.delay(to, username, new_password)

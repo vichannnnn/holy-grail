@@ -60,9 +60,7 @@ class EmailClient:
             "html": html_content,
         }
 
-        response = httpx.post(
-            self.MAILTRAP_API_SEND_URL, headers=self.headers, json=payload
-        )
+        response = httpx.post(self.MAILTRAP_API_SEND_URL, headers=self.headers, json=payload)
         response.raise_for_status()
         return response.status_code
 

@@ -19,9 +19,7 @@ class Scoreboard(Base, CRUD["Scoreboard"]):
     user_id: Mapped[int] = mapped_column(
         ForeignKey("account.user_id"), primary_key=True, index=True, nullable=False
     )
-    upload_count: Mapped[int] = mapped_column(
-        nullable=False, index=True, server_default=text("0")
-    )
+    upload_count: Mapped[int] = mapped_column(nullable=False, index=True, server_default=text("0"))
 
     account: Mapped["Account"] = relationship("Account", back_populates="scoreboard")
     id: Mapped[int] = synonym("user_id")
@@ -61,9 +59,7 @@ class Scoreboard(Base, CRUD["Scoreboard"]):
     @classmethod
     async def get_authenticated_approved_user(cls, session: AsyncSession, user_id: int):
         stmt = (
-            select(
-                cls, func.rank().over(order_by=cls.upload_count.desc()).label("rank")
-            )
+            select(cls, func.rank().over(order_by=cls.upload_count.desc()).label("rank"))
             .where(cls.id == user_id)
             .options(
                 selectinload(cls.account).load_only(Account.user_id, Account.username),

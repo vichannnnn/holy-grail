@@ -42,9 +42,7 @@ class Authenticator:
     def create_access_token(cls, data: Dict[str, Any]) -> str:
         expiry = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
         expiry_timestamp = int(expiry.timestamp())
-        return jwt.encode(
-            {**data, "exp": expiry_timestamp}, SECRET_KEY, algorithm=ALGORITHM
-        )
+        return jwt.encode({**data, "exp": expiry_timestamp}, SECRET_KEY, algorithm=ALGORITHM)
 
     @classmethod
     async def verify(cls, token: str = Depends(oauth2_scheme)) -> bool:
