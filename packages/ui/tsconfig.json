@@ -2,9 +2,11 @@
 	"extends": "@shared/tooling/typescript",
 	"compilerOptions": {
 		// UI-specific overrides for components, hooks and contexts
-		"lib": ["ESNext"],
-		"module": "Preserve",
-		"allowJs": true,
+		// general
+		"module": "ESNext",
+		"moduleResolution": "bundler", // or "nodenext" or "bundler"
+		"baseUrl": ".",
+
 		"verbatimModuleSyntax": true,
 		"noUncheckedIndexedAccess": true,
 		"noImplicitOverride": true

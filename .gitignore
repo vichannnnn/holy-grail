@@ -203,3 +203,8 @@ cython_debug/
 
 # Claude Code configuration
 .claude/
+# Local docker mounts for development
+docker-volumes/
+
+.next
+.env.*
