@@ -37,37 +37,50 @@ export const Modal = ({ sx, ...props }: ModalProps) => {
 	return (
 		<BaseModal {...props}>
 			<Box
-				sx={{
-					position: "absolute",
-					top: "50%",
-					left: "50%",
-					transform: "translate(-50%, -50%)",
-					width: modalWidth,
-					borderRadius: "12px",
-					boxShadow: 24,
-					p: 4,
-					paddingTop: "12px",
-					maxHeight: "98vh",
-					overflowY: "auto",
-					backgroundColor: isDarkMode ? "#222222" : "#d9d9d9",
-					"&::-webkit-scrollbar": {
-						width: "8px",
-						marginRight: "-5px",
-					},
-					"&::-webkit-scrollbar-track": {
-						background: "#1f1f1f",
+				sx={[
+					{
+						position: "absolute",
+						top: "50%",
+						left: "50%",
+						transform: "translate(-50%, -50%)",
+						width: modalWidth,
 						borderRadius: "12px",
+						boxShadow: 24,
+						p: 4,
+						paddingTop: "12px",
+						maxHeight: "98vh",
+						overflowY: "auto",
+
+						"&::-webkit-scrollbar": {
+							width: "8px",
+							marginRight: "-5px",
+						},
+
+						"&::-webkit-scrollbar-track": {
+							background: "#1f1f1f",
+							borderRadius: "12px",
+						},
+
+						"&::-webkit-scrollbar-thumb": {
+							background: "#888",
+							borderRadius: "12px",
+						},
+
+						"&::-webkit-scrollbar-thumb:hover": {
+							cursor: "pointer",
+							background: "#555",
+						},
+
+						...sx,
 					},
-					"&::-webkit-scrollbar-thumb": {
-						background: "#888",
-						borderRadius: "12px",
-					},
-					"&::-webkit-scrollbar-thumb:hover": {
-						cursor: "pointer",
-						background: "#555",
-					},
-					...sx,
-				}}
+					isDarkMode
+						? {
+								backgroundColor: "#222222",
+							}
+						: {
+								backgroundColor: "#d9d9d9",
+							},
+				]}
 			>
 				{props.children}
 			</Box>

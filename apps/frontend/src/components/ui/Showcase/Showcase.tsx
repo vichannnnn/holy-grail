@@ -35,19 +35,34 @@ const InfoButton = ({ isMobile }: InfoButtonProps) => {
 			arrow
 		>
 			<IconButton
-				sx={{
-					position: "absolute",
-					top: isMobile ? "-4px" : "2px",
-					left: isMobile ? "-4px" : 0,
-					padding: "4px 4px",
-					backgroundColor: "transparent",
-					opacity: 0.9,
-					fontSize: "16px",
-					"&:focus": { outline: "none" },
-					"&:hover": {
+				sx={[
+					{
+						position: "absolute",
+						padding: "4px 4px",
 						backgroundColor: "transparent",
+						opacity: 0.9,
+						fontSize: "16px",
+						"&:focus": { outline: "none" },
+
+						"&:hover": {
+							backgroundColor: "transparent",
+						},
 					},
-				}}
+					isMobile
+						? {
+								top: "-4px",
+							}
+						: {
+								top: "2px",
+							},
+					isMobile
+						? {
+								left: "-4px",
+							}
+						: {
+								left: 0,
+							},
+				]}
 				disableRipple
 			>
 				<InfoIcon fontSize="small" />
@@ -109,6 +124,5 @@ export const Showcase = () => {
 				<InfoButton isMobile={isMedium} />
 			</div>
 		</div>
-		// <></>
 	);
 };

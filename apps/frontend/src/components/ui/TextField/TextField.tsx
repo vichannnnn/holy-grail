@@ -5,20 +5,33 @@ import { forwardRef } from "react";
 
 const CustomTextFieldStyled = styled(TextFieldBase)(({ theme }) => ({
 	"& .MuiInputBase-input .MuiInputBase-inputMultiline": {
-		color: theme.palette.mode === "dark" ? "#e4e5f1" : "#2d2d2d",
-		backgroundColor: theme.palette.mode === "dark" ? "#2d2d2d" : "#e4e5f1",
+		color: "#2d2d2d",
+		backgroundColor: "#e4e5f1",
 		borderTopLeftRadius: "8px",
 		borderBottomLeftRadius: "8px",
 		borderTopRightRadius: "8px",
 		borderBottomRightRadius: "8px",
+
+		...theme.applyStyles("dark", {
+			color: "#e4e5f1",
+			backgroundColor: "#2d2d2d",
+		}),
 	},
 
 	"& label": {
-		color: theme.palette.mode === "dark" ? "#949494" : "#2d2d2d",
+		color: "#2d2d2d",
+
+		...theme.applyStyles("dark", {
+			color: "#949494",
+		}),
 	},
 
 	"& label.Mui-focused": {
-		color: theme.palette.mode === "dark" ? "#949494" : "#2d2d2d",
+		color: "#2d2d2d",
+
+		...theme.applyStyles("dark", {
+			color: "#949494",
+		}),
 	},
 
 	"& .MuiOutlinedInput-root": {
@@ -27,15 +40,24 @@ const CustomTextFieldStyled = styled(TextFieldBase)(({ theme }) => ({
 		paddingRight: 0,
 
 		"&.Mui-focused fieldset": {
-			color: theme.palette.mode === "dark" ? "#949494" : "#2d2d2d",
-			borderColor: theme.palette.mode === "dark" ? "#ffffff" : "#2d2d2d",
+			color: "#2d2d2d",
+			borderColor: "#2d2d2d",
 			borderWidth: "1px",
+
+			...theme.applyStyles("dark", {
+				color: "#949494",
+				borderColor: "#ffffff",
+			}),
 		},
 
 		"&:hover fieldset": {
-			color: theme.palette.mode === "dark" ? "#949494" : "#2d2d2d",
+			color: "#2d2d2d",
 			borderColor: "#444444",
 			borderWidth: "1px",
+
+			...theme.applyStyles("dark", {
+				color: "#949494",
+			}),
 		},
 
 		"& .MuiOutlinedInput-notchedOutline": {

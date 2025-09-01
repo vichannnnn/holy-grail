@@ -20,23 +20,43 @@ export const IconButton = forwardRef<HTMLButtonElement, ButtonBaseProps>(
 				onClick={onClick}
 				ref={ref}
 				href={href}
-				sx={{
-					width: 36,
-					height: 36,
-					minWidth: 0,
-					minHeight: 0,
-					padding: 0,
-					display: "flex",
-					alignItems: "center",
-					justifyContent: "center",
-					borderRadius: "50%",
-					color: isDarkMode ? "#e5e5e5" : "#484b6a",
-					"&:hover": {
-						backgroundColor: isDarkMode ? "#2d2d2d" : "#e4e5f1",
-						border: "none",
+				sx={[
+					{
+						width: 36,
+						height: 36,
+						minWidth: 0,
+						minHeight: 0,
+						padding: 0,
+						display: "flex",
+						alignItems: "center",
+						justifyContent: "center",
+						borderRadius: "50%",
+
+						"&:hover": {
+							border: "none",
+						},
+
+						...sx,
 					},
-					...sx,
-				}}
+					isDarkMode
+						? {
+								color: "#e5e5e5",
+							}
+						: {
+								color: "#484b6a",
+							},
+					isDarkMode
+						? {
+								"&:hover": {
+									backgroundColor: "#2d2d2d",
+								},
+							}
+						: {
+								"&:hover": {
+									backgroundColor: "#e4e5f1",
+								},
+							},
+				]}
 				{...props}
 			>
 				{children}

@@ -7,10 +7,15 @@ const TextField = styled(TextFieldBase)(({ theme }) => ({
 	// TODO: We need to design properly on how the colour scheme should work for search field, but for now we can
 	// leave it. Ideally this should be the job of a designer
 	"& .MuiInputBase-input": {
-		backgroundColor: theme.palette.mode == "dark" ? "#2a3447" : "#ffffff",
-		color: theme.palette.mode == "dark" ? "white" : "black",
+		backgroundColor: "#ffffff",
+		color: "black",
 		borderTopLeftRadius: "8px",
 		borderBottomLeftRadius: "8px",
+
+		...theme.applyStyles("dark", {
+			backgroundColor: "#2a3447",
+			color: "white",
+		}),
 	},
 	"& .MuiOutlinedInput-root": {
 		borderColor: "#333333",
@@ -27,18 +32,31 @@ const TextField = styled(TextFieldBase)(({ theme }) => ({
 		},
 	},
 	"& .MuiInputAdornment-root": {
-		backgroundColor: theme.palette.mode == "dark" ? "#2a3447" : "#ffffff",
+		backgroundColor: "#ffffff",
 		padding: "28px 14px",
 		borderTopRightRadius: "8px",
 		borderBottomRightRadius: "8px",
 		margin: 0,
+
 		"&:hover": {
-			backgroundColor: theme.palette.mode == "dark" ? "#44546a" : "#e8ebf4",
+			backgroundColor: "#e8ebf4",
 			cursor: "pointer",
+
+			...theme.applyStyles("dark", {
+				backgroundColor: "#44546a",
+			}),
 		},
+
+		...theme.applyStyles("dark", {
+			backgroundColor: "#2a3447",
+		}),
 	},
 	"& .MuiSvgIcon-root": {
-		color: theme.palette.mode == "dark" ? "white" : "black",
+		color: "black",
+
+		...theme.applyStyles("dark", {
+			color: "white",
+		}),
 	},
 }));
 

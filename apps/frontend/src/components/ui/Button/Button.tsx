@@ -22,25 +22,46 @@ export const Button = forwardRef<HTMLButtonElement, ButtonBaseProps>(
 				ref={ref}
 				href={href}
 				variant="outlined"
-				sx={{
-					border: "none",
-					color: isDark ? "#e5e5e5" : "#484b6a",
-					textTransform: "capitalize",
-					fontSize: "16px",
-					fontWeight: "bold",
-					borderRadius: "4px",
-					padding: "8px 10px 8px 10px",
-					"&:hover": {
-						backgroundColor: isDark ? "#2d2d2d" : "#e4e5f1",
+				sx={[
+					{
 						border: "none",
+						textTransform: "capitalize",
+						fontSize: "16px",
+						fontWeight: "bold",
+						borderRadius: "4px",
+						padding: "8px 10px 8px 10px",
+
+						"&:hover": {
+							border: "none",
+						},
+
+						"&:focus": {
+							border: "none",
+							outline: "none",
+							boxShadow: "none",
+						},
+
+						...sx,
 					},
-					"&:focus": {
-						border: "none",
-						outline: "none",
-						boxShadow: "none",
-					},
-					...sx,
-				}}
+					isDark
+						? {
+								color: "#e5e5e5",
+							}
+						: {
+								color: "#484b6a",
+							},
+					isDark
+						? {
+								"&:hover": {
+									backgroundColor: "#2d2d2d",
+								},
+							}
+						: {
+								"&:hover": {
+									backgroundColor: "#e4e5f1",
+								},
+							},
+				]}
 				{...props}
 			>
 				{children}

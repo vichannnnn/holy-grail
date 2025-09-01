@@ -23,12 +23,20 @@ const CustomPasswordTextField = styled(TextField)(({ theme }) => ({
 		borderBottomRightRadius: "8px",
 		margin: 0,
 		"&:hover": {
-			backgroundColor: theme.palette.mode === "dark" ? "#333333" : "#d3d3d3",
+			backgroundColor: "#d3d3d3",
 			cursor: "pointer",
+
+			...theme.applyStyles("dark", {
+				backgroundColor: "#333333",
+			}),
 		},
 	},
 	"& .MuiSvgIcon-root": {
-		color: theme.palette.mode === "dark" ? "#e5e5e5" : "#484b6a",
+		color: "#484b6a",
+
+		...theme.applyStyles("dark", {
+			color: "#e5e5e5",
+		}),
 	},
 }));
 

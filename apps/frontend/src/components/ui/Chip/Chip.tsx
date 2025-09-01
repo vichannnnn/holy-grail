@@ -17,11 +17,19 @@ export const Chip = ({ sx, ...props }: ChipProps) => {
 	return (
 		<BaseChip
 			// TODO: Centralize the color themes such that MUI components can use the tailwind custom color as well.
-			sx={{
-				color: isDark ? "#e5e5e5" : "#484b6a",
-				backgroundColor: "#949494",
-				...sx,
-			}}
+			sx={[
+				{
+					backgroundColor: "#949494",
+					...sx,
+				},
+				isDark
+					? {
+							color: "#e5e5e5",
+						}
+					: {
+							color: "#484b6a",
+						},
+			]}
 			{...props}
 		/>
 	);

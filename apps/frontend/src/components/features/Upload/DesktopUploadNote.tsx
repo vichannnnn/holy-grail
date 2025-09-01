@@ -86,7 +86,7 @@ export const DesktopUploadNote = ({
 								<Grid
 									container
 									item
-									className="flex flex-row justify-center items-center pr-0 mb-3"
+									className="flex flex-row justify-center items-center pr-0 mb-3 w-full"
 								>
 									<Controller
 										name={`notes.${index}.name`}
@@ -111,7 +111,7 @@ export const DesktopUploadNote = ({
 								<Grid
 									container
 									item
-									className="flex flex-row items-center pr-0 gap-[1vh] justify-evenly"
+									className="flex flex-row items-center pr-0 gap-[1vh] justify-evenly w-full"
 								>
 									<Controller
 										name={`notes.${index}.category`}
