@@ -1,7 +1,7 @@
 import type { TitleProps, TitleOrder } from "./types";
 import { twMerge } from "tailwind-merge";
 
-export const defaultStyles = "text-theme-dark dark:text-theme-light";
+export const defaultStyles = "text-gray-900 dark:text-white";
 export const twTitleTextSizing: Record<TitleOrder, string> = {
 	1: "text-4xl",
 	2: "text-2xl",

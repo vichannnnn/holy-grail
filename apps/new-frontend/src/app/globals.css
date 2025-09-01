@@ -4,7 +4,9 @@
 
 @source "../../../../node_modules/@shared/ui/**/*.tsx";
 
-@theme {
-  --color-theme-light: #e5e5e5;
-	--color-theme-dark: #484b6a;
+/* implementation detail for this app */
+@layer base {
+	* {
+		font-family: "plusJakarta", sans-serif;
+	}
 }

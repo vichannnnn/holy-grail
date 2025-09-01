@@ -1,7 +1,7 @@
 import type { TextProps } from "./types";
 import { twMerge } from "tailwind-merge";
 
-const defaultStyles = "text-theme-dark dark:text-theme-light";
+const defaultStyles = "text-black dark:text-zinc-200";
 const descriptionStyles = "text-gray-600 dark:text-gray-400";
 
 export function Text({ children, className, description = false, ...rest }: TextProps) {

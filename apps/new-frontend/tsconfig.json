@@ -1,23 +1,23 @@
 {
-  "extends": "@shared/tooling/typescript",
-  "compilerOptions": {
-  "baseUrl": ".",
-    "allowJs": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "incremental": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
-    "paths": {
-      "@/*": ["./src/*"],
-      "@shared/ui": ["../../packages/ui/src"],
-      "@shared/ui/*": ["../../packages/ui/src/*"]
-    }
-  },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+	"extends": "@shared/tooling/typescript",
+	"compilerOptions": {
+		"baseUrl": ".",
+		"allowJs": true,
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"jsx": "preserve",
+		"incremental": true,
+		"plugins": [
+			{
+				"name": "next"
+			}
+		],
+		"paths": {
+			"@/*": ["./src/*"],
+			"@shared/ui": ["../../packages/ui/src"],
+			"@shared/ui/*": ["../../packages/ui/src/*"]
+		}
+	},
+	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+	"exclude": ["node_modules"]
 }
