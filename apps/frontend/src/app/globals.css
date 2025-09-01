@@ -1,26 +1,26 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap')
-layer(base);
-@import url('../fonts/stylesheet.css') layer(base);
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap")
+	layer(base);
+@import url("../fonts/stylesheet.css") layer(base);
 
-@import 'tailwindcss';
+@import "tailwindcss";
 
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --line-clamp-2: 2;
+	--line-clamp-2: 2;
 
-  --color-hima-white: #e5e5e5;
-  --color-hima-dark: #484b6a;
+	--color-hima-white: #e5e5e5;
+	--color-hima-dark: #484b6a;
 
-  --background-image-gradient-radial: radial-gradient(var(--tw-gradient-stops));
-  --background-image-gradient-conic: conic-gradient(
-    from 180deg at 50% 50%,
-    var(--tw-gradient-stops)
-  );
+	--background-image-gradient-radial: radial-gradient(var(--tw-gradient-stops));
+	--background-image-gradient-conic: conic-gradient(
+		from 180deg at 50% 50%,
+		var(--tw-gradient-stops)
+	);
 
-  --font-Patrick-hand-sC: PatrickHandSC, sans-serif;
-  --font-poppins: var(--font-poppins);
-  --font-Plus-jakarta-sans: Plus;
+	--font-Patrick-hand-sC: PatrickHandSC, sans-serif;
+	--font-poppins: var(--font-poppins);
+	--font-Plus-jakarta-sans: Plus;
 }
 
 /*
@@ -32,118 +32,115 @@ layer(base);
   color utility to any element that depends on these defaults.
 */
 @layer base {
-  *,
-  ::after,
-  ::before,
-  ::backdrop,
-  ::file-selector-button {
-    border-color: var(--color-gray-200, currentcolor);
-  }
+	*,
+	::after,
+	::before,
+	::backdrop,
+	::file-selector-button {
+		border-color: var(--color-gray-200, currentcolor);
+	}
 }
 
 @layer utilities {
-  :root {
-    line-height: 1.5;
-    font-weight: 400;
-    color-scheme: light dark;
+	:root {
+		line-height: 1.5;
+		font-weight: 400;
+		color-scheme: light dark;
 
-    /*color: #2f3f4f;*/
-    color: var(--color-hima-dark);
-    background-color: #fcfbf8;
+		/*color: #2f3f4f;*/
+		color: var(--color-hima-dark);
+		background-color: #fcfbf8;
 
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-text-size-adjust: 100%;
-  }
+		font-synthesis: none;
+		text-rendering: optimizeLegibility;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+		-webkit-text-size-adjust: 100%;
+	}
 
-  html.dark {
-    line-height: 1.5;
-    font-weight: 400;
-    color-scheme: light dark;
+	html.dark {
+		line-height: 1.5;
+		font-weight: 400;
+		color-scheme: light dark;
 
-    color: var(--color-hima-white);
-    background-color: #222222;
+		color: var(--color-hima-white);
+		background-color: #222222;
 
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-text-size-adjust: 100%;
-  }
+		font-synthesis: none;
+		text-rendering: optimizeLegibility;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+		-webkit-text-size-adjust: 100%;
+	}
 }
 
-
 @layer base {
-    input[type="number"]::-webkit-inner-spin-button,
-    input[type="number"]::-webkit-outer-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
+	input[type="number"]::-webkit-inner-spin-button,
+	input[type="number"]::-webkit-outer-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
 }
 
 @layer utilities {
-  p a {
-    @apply text-inherit;
-  }
+	p a {
+		@apply text-inherit;
+	}
 }
 
 @layer base {
-    p {
-        font-family: "PlusJakartaSans", sans-serif;
-        font-size: 0.875em;
-        @apply text-hima-dark dark:text-hima-white;
-    }
+	p {
+		font-family: "PlusJakartaSans", sans-serif;
+		font-size: 0.875em;
+		@apply text-hima-dark dark:text-hima-white;
+	}
 
-    h1 {
-        font-family: "PlusJakartaSans", sans-serif;
-        font-size: 2em;
-        line-height: 1.1;
-        @apply text-hima-dark dark:text-hima-white;
-    }
+	h1 {
+		font-family: "PlusJakartaSans", sans-serif;
+		font-size: 2em;
+		line-height: 1.1;
+		@apply text-hima-dark dark:text-hima-white;
+	}
 
-    h2 {
-        font-family: "PlusJakartaSans", sans-serif;
-        font-size: 1.5em;
-        @apply text-hima-dark dark:text-hima-white;
-    }
+	h2 {
+		font-family: "PlusJakartaSans", sans-serif;
+		font-size: 1.5em;
+		@apply text-hima-dark dark:text-hima-white;
+	}
 
-    h3 {
-        font-family: "PlusJakartaSans", sans-serif;
-        font-size: 1.17em;
-        @apply text-hima-dark dark:text-hima-white;
-    }
+	h3 {
+		font-family: "PlusJakartaSans", sans-serif;
+		font-size: 1.17em;
+		@apply text-hima-dark dark:text-hima-white;
+	}
 
-    h4 {
-        font-family: "PlusJakartaSans", sans-serif;
-        font-size: 1em;
-        @apply text-hima-dark dark:text-hima-white;
-    }
+	h4 {
+		font-family: "PlusJakartaSans", sans-serif;
+		font-size: 1em;
+		@apply text-hima-dark dark:text-hima-white;
+	}
 
-    h5 {
-        font-family: "PlusJakartaSans", sans-serif;
-        font-size: 0.83em;
-        @apply text-hima-dark dark:text-hima-white;
-    }
+	h5 {
+		font-family: "PlusJakartaSans", sans-serif;
+		font-size: 0.83em;
+		@apply text-hima-dark dark:text-hima-white;
+	}
 
-    h6 {
-        font-family: "PlusJakartaSans", sans-serif;
-        font-size: 0.75em;
-        @apply text-hima-dark dark:text-hima-white;
-    }
-
+	h6 {
+		font-family: "PlusJakartaSans", sans-serif;
+		font-size: 0.75em;
+		@apply text-hima-dark dark:text-hima-white;
+	}
 }
-
 
 body {
-    font-family: "PlusJakartaSans", sans-serif;
-    margin: 0;
-    place-items: center;
-    min-width: 320px;
-    min-height: 100vh;
+	font-family: "PlusJakartaSans", sans-serif;
+	margin: 0;
+	place-items: center;
+	min-width: 320px;
+	min-height: 100vh;
 }
 
 button {
-    cursor: pointer;
+	cursor: pointer;
 }

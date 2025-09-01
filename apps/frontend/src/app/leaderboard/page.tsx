@@ -1,15 +1,15 @@
-import { Leaderboard } from '@layouts/Leaderboard';
+import { Leaderboard } from "@layouts/Leaderboard";
 
-import { generateLeaderboardMetadata } from '@utils/metadata';
+import { generateLeaderboardMetadata } from "@utils/metadata";
 
 export const generateMetadata = generateLeaderboardMetadata;
 
 const LeaderboardPage = () => {
-  return (
-    <>
-      <Leaderboard />
-    </>
-  );
+	return (
+		<>
+			<Leaderboard />
+		</>
+	);
 };
 
 export default LeaderboardPage;

@@ -1,21 +1,21 @@
-import { AxiosError, AxiosResponse } from 'axios';
+import { AxiosError, AxiosResponse } from "axios";
 
-import { apiClient } from '@apiClient';
+import { apiClient } from "@apiClient";
 
-import { NoteInfoProps } from '@features/Upload';
+import { NoteInfoProps } from "@features/Upload";
 
 export const createNote = async (formData: NoteInfoProps[]): Promise<AxiosResponse> => {
-  try {
-    return await apiClient.post('/note', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-  } catch (error) {
-    const axiosError = error as AxiosError;
-    if (axiosError.response) {
-      return axiosError.response;
-    }
-    throw error;
-  }
+	try {
+		return await apiClient.post("/note", formData, {
+			headers: {
+				"Content-Type": "multipart/form-data",
+			},
+		});
+	} catch (error) {
+		const axiosError = error as AxiosError;
+		if (axiosError.response) {
+			return axiosError.response;
+		}
+		throw error;
+	}
 };

@@ -1,6 +1,6 @@
-import { apiClient } from '@apiClient';
+import { apiClient } from "@apiClient";
 
 export const approveNote = async (noteId: number) => {
-  const response = await apiClient.put(`/admin/approve/${noteId}`);
-  return response.data;
+	const response = await apiClient.put(`/admin/approve/${noteId}`);
+	return response.data;
 };

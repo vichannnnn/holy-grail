@@ -1,2 +1,2 @@
-export * from './AdAnalytics';
-export * from './getAnalytics';
+export * from "./AdAnalytics";
+export * from "./getAnalytics";

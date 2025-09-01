@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
 import {
-  TokenActionEnum,
-  TokenActionHandler,
-} from '@features/TokenVerification/TokenActionHandler';
+	TokenActionEnum,
+	TokenActionHandler,
+} from "@features/TokenVerification/TokenActionHandler";
 
 export const VerifyEmail = () => {
-  return <TokenActionHandler action={TokenActionEnum.VERIFY_EMAIL} />;
+	return <TokenActionHandler action={TokenActionEnum.VERIFY_EMAIL} />;
 };

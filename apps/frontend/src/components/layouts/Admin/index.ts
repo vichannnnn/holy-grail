@@ -1,2 +1,2 @@
-export * from './AdminActions';
-export * from './ApprovalTable';
+export * from "./AdminActions";
+export * from "./ApprovalTable";

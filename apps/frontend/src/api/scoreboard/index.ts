@@ -1,2 +1,2 @@
-export * from './getScoreboardUsers';
-export * from './getUserScore';
+export * from "./getScoreboardUsers";
+export * from "./getUserScore";

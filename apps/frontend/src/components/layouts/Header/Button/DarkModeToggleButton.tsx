@@ -1,20 +1,20 @@
-'use client';
+"use client";
 
-import DarkModeIcon from '@mui/icons-material/DarkMode';
-import { useContext } from 'react';
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import { useContext } from "react";
 
-import { IconButton } from '@components/Button';
+import { IconButton } from "@components/Button";
 
-import { DarkModeContext } from '@providers/DarkModeProvider';
+import { DarkModeContext } from "@providers/DarkModeProvider";
 
 export const DarkModeToggleButton = () => {
-  const { toggleDarkMode } = useContext(DarkModeContext);
+	const { toggleDarkMode } = useContext(DarkModeContext);
 
-  return (
-    <>
-      <IconButton onClick={toggleDarkMode}>
-        <DarkModeIcon />
-      </IconButton>
-    </>
-  );
+	return (
+		<>
+			<IconButton onClick={toggleDarkMode}>
+				<DarkModeIcon />
+			</IconButton>
+		</>
+	);
 };

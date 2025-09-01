@@ -1,19 +1,19 @@
-import { AuthenticationLayout } from '@layouts/Authentication/AuthenticationLayout';
+import { AuthenticationLayout } from "@layouts/Authentication/AuthenticationLayout";
 
-import { AccountRegister } from '@components/Authentication';
+import { AccountRegister } from "@components/Authentication";
 
-import { generateRegisterMetadata } from '@utils/metadata';
+import { generateRegisterMetadata } from "@utils/metadata";
 
 export const generateMetadata = generateRegisterMetadata;
 
 const RegisterAccountPage = () => {
-  return (
-    <>
-      <AuthenticationLayout>
-        <AccountRegister />
-      </AuthenticationLayout>
-    </>
-  );
+	return (
+		<>
+			<AuthenticationLayout>
+				<AccountRegister />
+			</AuthenticationLayout>
+		</>
+	);
 };
 
 export default RegisterAccountPage;
