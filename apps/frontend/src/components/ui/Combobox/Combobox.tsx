@@ -11,7 +11,7 @@ export interface CommonType {
 
 export interface ComboboxProps
 	extends Omit<
-		AutocompleteProps<CommonType, false, false, boolean>,
+		AutocompleteProps<string | CommonType, false, false, boolean>,
 		| "onChange"
 		| "value"
 		| "onInputChange"
@@ -43,7 +43,7 @@ export const Combobox = ({
 	...props
 }: ComboboxProps) => {
 	return (
-		<Autocomplete
+		<Autocomplete<string | CommonType, false, false, boolean>
 			ListboxProps={{
 				sx: {
 					"&::-webkit-scrollbar": {

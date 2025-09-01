@@ -14,15 +14,17 @@ interface DividerProps extends BaseDividerProps {
 export const Divider = ({ sx, ...props }: DividerProps) => {
 	return (
 		<DividerBase
-			sx={(theme) => ({
-				width: "100%",
-				borderColor: "#484b6a",
-				...sx,
-
-				...theme.applyStyles("dark", {
-					borderColor: "#e5e5e5",
-				}),
-			})}
+			sx={[
+				{
+					width: "100%",
+					borderColor: "#484b6a",
+				},
+				...(Array.isArray(sx) ? sx : sx ? [sx] : []),
+				(theme: Theme) =>
+					theme?.applyStyles
+						? theme.applyStyles("dark", { borderColor: "#e5e5e5" })
+						: { borderColor: theme.palette.mode === "dark" ? "#e5e5e5" : "#484b6a" },
+			]}
 			{...props}
 		/>
 	);
