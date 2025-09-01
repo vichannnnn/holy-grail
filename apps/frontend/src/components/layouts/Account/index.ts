@@ -1,1 +1,1 @@
-export * from './AccountSettingsLayout';
+export * from "./AccountSettingsLayout";

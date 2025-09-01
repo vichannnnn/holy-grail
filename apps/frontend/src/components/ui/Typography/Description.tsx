@@ -4,11 +4,7 @@ interface DescriptionProps extends HTMLAttributes<HTMLDivElement> {
 	children: ReactNode;
 	className?: string;
 }
-export const Description = ({
-	children,
-	className,
-	...props
-}: DescriptionProps) => {
+export const Description = ({ children, className, ...props }: DescriptionProps) => {
 	const baseClasses = "block text-lg text-gray-400 mb-2";
 	const combinedClassName = `${baseClasses} ${className}`.trim();
 

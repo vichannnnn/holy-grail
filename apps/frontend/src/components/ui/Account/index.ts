@@ -1,3 +1,3 @@
-export * from './ProfilePhoto';
-export * from './SectionBox';
-export * from './VerificationSection';
+export * from "./ProfilePhoto";
+export * from "./SectionBox";
+export * from "./VerificationSection";

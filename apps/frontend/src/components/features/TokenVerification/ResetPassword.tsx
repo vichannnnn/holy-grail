@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
 import {
-  TokenActionEnum,
-  TokenActionHandler,
-} from '@features/TokenVerification/TokenActionHandler';
+	TokenActionEnum,
+	TokenActionHandler,
+} from "@features/TokenVerification/TokenActionHandler";
 
 export const ResetPassword = () => {
-  return <TokenActionHandler action={TokenActionEnum.RESET_PASSWORD} />;
+	return <TokenActionHandler action={TokenActionEnum.RESET_PASSWORD} />;
 };

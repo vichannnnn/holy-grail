@@ -1,2 +1,2 @@
-export * from './DesktopHero';
-export * from './MobileHero';
+export * from "./DesktopHero";
+export * from "./MobileHero";

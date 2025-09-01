@@ -1,2 +1,2 @@
-export * from './DownloadIcon';
-export * from './NotesIcon';
+export * from "./DownloadIcon";
+export * from "./NotesIcon";

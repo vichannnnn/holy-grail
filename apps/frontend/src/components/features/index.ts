@@ -1,1 +1,1 @@
-export * from './TokenVerification';
+export * from "./TokenVerification";

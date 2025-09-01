@@ -1,1 +1,1 @@
-export * from './AuthenticationLayout';
+export * from "./AuthenticationLayout";
