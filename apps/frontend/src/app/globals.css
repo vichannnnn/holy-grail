@@ -1,17 +1,54 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
-@import url('../fonts/stylesheet.css');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap')
+layer(base);
+@import url('../fonts/stylesheet.css') layer(base);
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
-:root {
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --line-clamp-2: 2;
+
+  --color-hima-white: #e5e5e5;
+  --color-hima-dark: #484b6a;
+
+  --background-image-gradient-radial: radial-gradient(var(--tw-gradient-stops));
+  --background-image-gradient-conic: conic-gradient(
+    from 180deg at 50% 50%,
+    var(--tw-gradient-stops)
+  );
+
+  --font-Patrick-hand-sC: PatrickHandSC, sans-serif;
+  --font-poppins: var(--font-poppins);
+  --font-Plus-jakarta-sans: Plus;
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+@layer utilities {
+  :root {
     line-height: 1.5;
     font-weight: 400;
     color-scheme: light dark;
 
     /*color: #2f3f4f;*/
-    color: theme('colors.hima-dark');
+    color: var(--color-hima-dark);
     background-color: #fcfbf8;
 
     font-synthesis: none;
@@ -19,16 +56,14 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     -webkit-text-size-adjust: 100%;
+  }
 
-
-}
-
-html.dark {
+  html.dark {
     line-height: 1.5;
     font-weight: 400;
     color-scheme: light dark;
 
-    color: theme('colors.hima-white');;
+    color: var(--color-hima-white);
     background-color: #222222;
 
     font-synthesis: none;
@@ -36,6 +71,7 @@ html.dark {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     -webkit-text-size-adjust: 100%;
+  }
 }
 
 
@@ -47,8 +83,10 @@ html.dark {
     }
 }
 
-p a {
-    @apply text-inherit
+@layer utilities {
+  p a {
+    @apply text-inherit;
+  }
 }
 
 @layer base {

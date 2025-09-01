@@ -79,10 +79,10 @@ export const DesktopUploadNote = ({
             in={expanded}
             timeout='auto'
             unmountOnExit
-            className='p-[0_2%_2%_2%] flex-grow flex flex-row'
+            className='p-[0_2%_2%_2%] grow flex flex-row'
           >
             <Box className='flex flex-row'>
-              <Box className='flex flex-col flex-grow'>
+              <Box className='flex flex-col grow'>
                 <Grid
                   container
                   item

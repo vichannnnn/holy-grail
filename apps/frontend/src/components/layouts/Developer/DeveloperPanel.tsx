@@ -73,7 +73,7 @@ export const DeveloperPanel = () => {
         </p>
       </div>
 
-      <div className='bg-white shadow rounded-lg overflow-hidden'>
+      <div className='bg-white shadow-sm rounded-lg overflow-hidden'>
         <div className='border-b border-gray-200'>
           <nav className='flex -mb-px'>
             {Object.entries(tabMapping).map(([key, { title }]) => {
