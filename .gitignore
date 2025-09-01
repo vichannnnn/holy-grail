@@ -201,3 +201,6 @@ cython_debug/
 
 # Local docker mounts for development
 docker-volumes/
+
+# Claude Code configuration
+.claude/
