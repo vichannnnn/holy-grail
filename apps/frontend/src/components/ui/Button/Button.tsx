@@ -40,8 +40,6 @@ export const Button = forwardRef<HTMLButtonElement, ButtonBaseProps>(
 							outline: "none",
 							boxShadow: "none",
 						},
-
-						...sx,
 					},
 					isDark
 						? {
@@ -61,6 +59,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonBaseProps>(
 									backgroundColor: "#e4e5f1",
 								},
 							},
+					...(Array.isArray(sx) ? sx : sx ? [sx] : []),
 				]}
 				{...props}
 			>

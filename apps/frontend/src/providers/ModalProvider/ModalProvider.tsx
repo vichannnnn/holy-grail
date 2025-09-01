@@ -30,7 +30,7 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 		<ModalContext.Provider value={{ openModal, closeModal, activeModal }}>
 			{children}
 			{activeModal &&
-				cloneElement(activeModal as ReactElement, {
+				cloneElement<ModalProps>(activeModal as ReactElement<ModalProps>, {
 					open: true,
 					onClose: closeModal,
 				})}

@@ -70,8 +70,6 @@ export const Modal = ({ sx, ...props }: ModalProps) => {
 							cursor: "pointer",
 							background: "#555",
 						},
-
-						...sx,
 					},
 					isDarkMode
 						? {
@@ -80,6 +78,7 @@ export const Modal = ({ sx, ...props }: ModalProps) => {
 						: {
 								backgroundColor: "#d9d9d9",
 							},
+					...(Array.isArray(sx) ? sx : sx ? [sx] : []),
 				]}
 			>
 				{props.children}

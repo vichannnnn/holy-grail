@@ -20,7 +20,6 @@ export const Chip = ({ sx, ...props }: ChipProps) => {
 			sx={[
 				{
 					backgroundColor: "#949494",
-					...sx,
 				},
 				isDark
 					? {
@@ -29,6 +28,7 @@ export const Chip = ({ sx, ...props }: ChipProps) => {
 					: {
 							color: "#484b6a",
 						},
+				...(Array.isArray(sx) ? sx : sx ? [sx] : []),
 			]}
 			{...props}
 		/>

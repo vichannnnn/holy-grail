@@ -35,8 +35,6 @@ export const IconButton = forwardRef<HTMLButtonElement, ButtonBaseProps>(
 						"&:hover": {
 							border: "none",
 						},
-
-						...sx,
 					},
 					isDarkMode
 						? {
@@ -56,6 +54,7 @@ export const IconButton = forwardRef<HTMLButtonElement, ButtonBaseProps>(
 									backgroundColor: "#e4e5f1",
 								},
 							},
+					...(Array.isArray(sx) ? sx : sx ? [sx] : []),
 				]}
 				{...props}
 			>
