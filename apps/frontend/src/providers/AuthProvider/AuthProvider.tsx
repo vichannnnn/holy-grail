@@ -1,5 +1,5 @@
 import { AxiosError, AxiosResponse } from "axios";
-import jwt_decode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import { ReactNode, createContext, useCallback, useEffect, useMemo, useState } from "react";
 
 import { apiClient } from "@apiClient";
@@ -53,7 +53,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 		const intervalId = setInterval(() => {
 			const token = localStorage.getItem("access_token");
 			if (token) {
-				const decodedToken = jwt_decode<DecodedToken>(token);
+				const decodedToken = jwtDecode<DecodedToken>(token);
 				const currentTime = Date.now() / 1000;
 				const remainingTime = decodedToken.exp - currentTime;
 				if (remainingTime < 0) {
