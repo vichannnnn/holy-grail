@@ -1,0 +1,26 @@
+{
+	"name": "ui",
+	"module": "index.ts",
+	"type": "module",
+	"private": true,
+	"devDependencies": {
+		"@types/bun": "latest"
+	},
+	"peerDependencies": {
+		"typescript": "^5"
+	},
+	"dependencies": {
+		"@headlessui/react": "^2.2.7",
+		"@shared/tooling": "workspace:*",
+		"tailwind-merge": "^3.3.1"
+	},
+	"exports": {
+		"./ui": "./src/ui",
+		"./hooks": "./src/hooks",
+		"./providers": "./src/providers"
+	},
+	"scripts": {
+		"format": "bunx biome format --write .",
+		"lint": "bunx biome lint --write ./src"
+	}
+}
