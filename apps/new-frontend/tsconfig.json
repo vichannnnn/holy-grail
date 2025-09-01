@@ -15,7 +15,9 @@
 		"paths": {
 			"@/*": ["./src/*"],
 			"@shared/ui": ["../../packages/ui/src"],
-			"@shared/ui/*": ["../../packages/ui/src/*"]
+			"@shared/ui/*": ["../../packages/ui/src/*"],
+			"@lib/*": ["./src/lib/*"],
+			"@/lib/*": ["./src/lib/*"]
 		}
 	},
 	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

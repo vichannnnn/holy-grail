@@ -55,7 +55,13 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body className={twMerge("min-h-screen dark:bg-zinc-800 bg-zinc-100 transition-all", plusJakarta.variable, patrickHand.variable)}>
+			<body
+				className={twMerge(
+					"min-h-screen dark:bg-zinc-800 bg-zinc-100 transition-all",
+					plusJakarta.variable,
+					patrickHand.variable,
+				)}
+			>
 				<ClientProvider>{children}</ClientProvider>
 			</body>
 		</html>
