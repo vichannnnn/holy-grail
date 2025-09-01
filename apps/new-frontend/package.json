@@ -3,24 +3,25 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-		"setup": "bun install",
-		"dev": "cp .env .env.local && next dev --turbopack",
-		"build-local": "cp .env .env.local && bunx --bun next build",
-		"build-dev": "cp .env.development .env.local && bunx --bun next build",
-		"build-prod": "cp .env.production .env.local && bunx --bun next build",
-		"start": "next start",
-		"format": "bunx biome format --write .",
-		"lint": "bunx biome lint --write ./src"
-	},
+    "setup": "bun install",
+    "dev": "cp .env .env.local && next dev --turbopack",
+    "build-local": "cp .env .env.local && bunx --bun next build",
+    "build-dev": "cp .env.development .env.local && bunx --bun next build",
+    "build-prod": "cp .env.production .env.local && bunx --bun next build",
+    "start": "next start",
+    "format": "bunx biome format --write .",
+    "lint": "bunx biome lint --write ./src"
+  },
   "dependencies": {
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
+    "react": "19.1.1",
+    "react-dom": "19.1.1",
     "next": "15.5.2",
-    "@shared/tooling": "workspace:*"
+    "@shared/tooling": "workspace:*",
+    "@shared/ui": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5",
-    "@types/node": "^20",
+    "@types/node": "^24.3.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@tailwindcss/postcss": "^4",

@@ -1,6 +1,8 @@
 {
-	"name": "ui",
+	"name": "@shared/ui",
 	"module": "index.ts",
+	"main": "src/index.ts",
+	"types": "src/index.ts",
 	"type": "module",
 	"private": true,
 	"devDependencies": {
@@ -15,7 +17,7 @@
 		"tailwind-merge": "^3.3.1"
 	},
 	"exports": {
-		"./ui": "./src/ui",
+		"./components": "./src/components",
 		"./hooks": "./src/hooks",
 		"./providers": "./src/providers"
 	},
