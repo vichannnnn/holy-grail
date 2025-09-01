@@ -25,13 +25,37 @@ export const SidebarListItem = ({
 			<ListItemButton
 				selected={selected}
 				onClick={onClick}
-				sx={{
-					backgroundColor: selected ? "#6684FF" : "transparent",
-					color: selected ? "#253662" : "black",
-					borderRadius: "8px",
-					mx: 1,
-					"&:hover": { backgroundColor: isDarkMode ? "#253662" : "#ecf2ff" },
-				}}
+				sx={[
+					{
+						borderRadius: "8px",
+						mx: 1,
+					},
+					selected
+						? {
+								backgroundColor: "#6684FF",
+							}
+						: {
+								backgroundColor: "transparent",
+							},
+					selected
+						? {
+								color: "#253662",
+							}
+						: {
+								color: "black",
+							},
+					isDarkMode
+						? {
+								"&:hover": {
+									backgroundColor: "#253662",
+								},
+							}
+						: {
+								"&:hover": {
+									backgroundColor: "#ecf2ff",
+								},
+							},
+				]}
 			>
 				<ListItemIcon>{icon}</ListItemIcon>
 				<ListItemText primary={name} />
