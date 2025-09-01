@@ -1,15 +1,33 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import localFont from "next/font/local";
+import { ClientProvider } from "@shared/ui/providers";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+const plusJakarta = localFont({
+  src: [
+  { path: "../../public/fonts/PlusJakartaSans-ExtraLight.ttf", weight: "200", style: "normal" },
+  { path: "../../public/fonts/PlusJakartaSans-Light.ttf", weight: "300", style: "normal" },
+  { path: "../../public/fonts/PlusJakartaSans-Regular.ttf", weight: "400", style: "normal" },
+  { path: "../../public/fonts/PlusJakartaSans-Medium.ttf", weight: "500", style: "normal" },
+  { path: "../../public/fonts/PlusJakartaSans-SemiBold.ttf", weight: "600", style: "normal" },
+  { path: "../../public/fonts/PlusJakartaSans-Bold.ttf", weight: "700", style: "normal" },
+  { path: "../../public/fonts/PlusJakartaSans-ExtraBold.ttf", weight: "800", style: "normal" },
+  { path: "../../public/fonts/PlusJakartaSans-Italic.ttf", weight: "400", style: "italic" },
+  { path: "../../public/fonts/PlusJakartaSans-LightItalic.ttf", weight: "300", style: "italic" },
+  { path: "../../public/fonts/PlusJakartaSans-MediumItalic.ttf", weight: "500", style: "italic" },
+  { path: "../../public/fonts/PlusJakartaSans-SemiBoldItalic.ttf", weight: "600", style: "italic" },
+  { path: "../../public/fonts/PlusJakartaSans-BoldItalic.ttf", weight: "700", style: "italic" },
+  { path: "../../public/fonts/PlusJakartaSans-ExtraLightItalic.ttf", weight: "200", style: "italic" },
+  { path: "../../public/fonts/PlusJakartaSans-ExtraBoldItalic.ttf", weight: "800", style: "italic" },
+  ],
+  variable: "--font-plus-jakarta",
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const patrickHand = localFont({
+  src: "../../public/fonts/PatrickHandSC-Regular.ttf",
+  variable: "--font-patrick-hand",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -25,9 +43,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+  className={`${plusJakarta.variable} ${patrickHand.variable} antialiased`}
       >
-        {children}
+        <ClientProvider>
+          {children}
+        </ClientProvider>
       </body>
     </html>
   );
