@@ -29,7 +29,6 @@ holy-grail-backend/.idea
 
 
 *.sql
-postgres/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -199,8 +198,6 @@ cython_debug/
 
 .turbo
 
-# Local docker mounts for development
-docker-volumes/
 
 # Claude Code configuration
 .claude/
