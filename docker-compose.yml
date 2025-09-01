@@ -53,7 +53,7 @@ services:
       - '5432:5432'
     restart: unless-stopped
     volumes:
-      - ./postgres:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
       - ./holy-grail-backend/db:/docker-entrypoint-initdb.d/
 
   redis:
@@ -107,3 +107,7 @@ networks:
   holy-grail-network:
     name: holy-grail-network
     driver: bridge
+
+volumes:
+  postgres-data:
+    name: holy-grail-postgres-data
