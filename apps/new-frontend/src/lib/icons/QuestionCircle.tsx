@@ -1,8 +1,11 @@
 import type { SVGProps } from "react";
 import { twMerge } from "tailwind-merge";
-export function QuestionCircle({ className, ...props }: SVGProps<SVGSVGElement>) {
+export function QuestionCircle({ className, "aria-label": ariaLabel, ...props }: SVGProps<SVGSVGElement> & { "aria-label"?: string }) {
+	const label = ariaLabel ?? "Help";
 	return (
 		<svg
+			role="img"
+			aria-label={label}
 			xmlns="http://www.w3.org/2000/svg"
 			fill="none"
 			viewBox="0 0 24 24"
