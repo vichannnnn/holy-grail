@@ -1,14 +1,12 @@
 import { Title, Button, Text, IconButton } from "@shared/ui/components";
 import { DarkModeButton } from "@/lib/features/Header/DarkModeButton";
+import { Analytics, Hero } from "./_components";
 
 export default function Home() {
 	return (
 		<main className="p-8">
-			<Title>Welcome</Title>
-			<Text className="mt-2">This is the new frontend home page.</Text>
-			<div className="mt-4">
-				<DarkModeButton />
-			</div>
+			<Hero />
+			<Analytics />
 		</main>
 	);
 }
