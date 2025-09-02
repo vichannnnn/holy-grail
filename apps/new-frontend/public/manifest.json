@@ -1,0 +1,10 @@
+{
+	"name": "Holy Grail",
+	"short_name": "Holy Grail",
+	"start_url": "/",
+	"display": "standalone",
+	"description": "Holy Grail is a completely free-to-access web library aimed at Singaporean students that houses all the summary notes and practice papers for GCE 'O' Levels, GCE 'A' Levels and International Baccalaureate.",
+	"background_color": "#fcfbf8",
+	"theme_color": "#ffe1f0",
+	"icons": []
+}
