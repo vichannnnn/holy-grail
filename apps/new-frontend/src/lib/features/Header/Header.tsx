@@ -1,1 +1,36 @@
-import { Bars } from "@lib/icons/Bars";
+import Image from "next/image";
+import { DarkModeButton } from "./DarkModeButton";
+import { HeaderLink } from "./HeaderLink";
+import { NAV_LINKS } from "./constants";
+import { HeaderDropdown } from "./HeaderDropdown";
+import { AuthButtons } from "./AuthButtons";
+
+export function Header() {
+	return (
+		<header className="flex justify-between gap-6 py-6 px-12 items-center">
+			<div className="relative w-24 h-24 shrink">
+				<Image
+					src="/grail-chan-happy-v1.webp"
+					alt="Grail-chan"
+					fill
+					className="object-contain"
+					priority
+				/>
+			</div>
+			<div className="hidden sm:flex gap-4">
+				{Object.entries(NAV_LINKS).map(([key, { label, href }]) => (
+					<HeaderLink key={key} label={label} href={href} />
+				))}
+			</div>
+			<div className="flex gap-1 items-center">
+				<div className="lg:hidden">
+					<HeaderDropdown />
+				</div>
+				<div className="hidden lg:block">
+					<AuthButtons />
+				</div>
+				<DarkModeButton />
+			</div>
+		</header>
+	);
+}
