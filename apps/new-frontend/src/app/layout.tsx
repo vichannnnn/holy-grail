@@ -1,44 +1,21 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import localFont from "next/font/local";
 import { ClientProvider } from "@shared/ui/providers";
 import { twMerge } from "tailwind-merge";
+import { Plus_Jakarta_Sans, Patrick_Hand_SC } from "next/font/google";
+import { Header } from "@lib/features";
 
-const plusJakarta = localFont({
-	src: [
-		{ path: "../../public/fonts/PlusJakartaSans-ExtraLight.ttf", weight: "200", style: "normal" },
-		{ path: "../../public/fonts/PlusJakartaSans-Light.ttf", weight: "300", style: "normal" },
-		{ path: "../../public/fonts/PlusJakartaSans-Regular.ttf", weight: "400", style: "normal" },
-		{ path: "../../public/fonts/PlusJakartaSans-Medium.ttf", weight: "500", style: "normal" },
-		{ path: "../../public/fonts/PlusJakartaSans-SemiBold.ttf", weight: "600", style: "normal" },
-		{ path: "../../public/fonts/PlusJakartaSans-Bold.ttf", weight: "700", style: "normal" },
-		{ path: "../../public/fonts/PlusJakartaSans-ExtraBold.ttf", weight: "800", style: "normal" },
-		{ path: "../../public/fonts/PlusJakartaSans-Italic.ttf", weight: "400", style: "italic" },
-		{ path: "../../public/fonts/PlusJakartaSans-LightItalic.ttf", weight: "300", style: "italic" },
-		{ path: "../../public/fonts/PlusJakartaSans-MediumItalic.ttf", weight: "500", style: "italic" },
-		{
-			path: "../../public/fonts/PlusJakartaSans-SemiBoldItalic.ttf",
-			weight: "600",
-			style: "italic",
-		},
-		{ path: "../../public/fonts/PlusJakartaSans-BoldItalic.ttf", weight: "700", style: "italic" },
-		{
-			path: "../../public/fonts/PlusJakartaSans-ExtraLightItalic.ttf",
-			weight: "200",
-			style: "italic",
-		},
-		{
-			path: "../../public/fonts/PlusJakartaSans-ExtraBoldItalic.ttf",
-			weight: "800",
-			style: "italic",
-		},
-	],
+const plusJakarta = Plus_Jakarta_Sans({
+	subsets: ["latin"],
+	weight: ["200", "300", "400", "500", "600", "700", "800"],
+	style: ["normal", "italic"],
 	variable: "--font-plus-jakarta",
 	display: "swap",
 });
 
-const patrickHand = localFont({
-	src: "../../public/fonts/PatrickHandSC-Regular.ttf",
+const patrickHand = Patrick_Hand_SC({
+	subsets: ["latin"],
+	weight: ["400"],
 	variable: "--font-patrick-hand",
 	display: "swap",
 });
@@ -62,7 +39,10 @@ export default function RootLayout({
 					patrickHand.variable,
 				)}
 			>
-				<ClientProvider>{children}</ClientProvider>
+				<ClientProvider>
+					<Header />
+					{children}
+				</ClientProvider>
 			</body>
 		</html>
 	);
