@@ -1,5 +1,5 @@
 import { FooterLink } from "./FooterLink";
-import { Text, Title } from "@shared/ui/components";
+import { Title } from "@shared/ui/components";
 
 export function FooterRight() {
 	//TODO: Need to turn this into 2x2 grid when in mobile
