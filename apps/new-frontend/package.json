@@ -4,17 +4,18 @@
 	"private": true,
 	"scripts": {
 		"setup": "bun install",
-		"dev": "cp .env .env.local && next dev --turbopack",
+		"dev": "cp .env .env.local && next dev --turbopack -p 3001",
 		"build-local": "cp .env .env.local && bunx --bun next build",
 		"build-dev": "cp .env.development .env.local && bunx --bun next build",
 		"build-prod": "cp .env.production .env.local && bunx --bun next build",
-		"start": "next start",
+		"start": "next start -p 3001",
 		"format": "bunx biome format --write .",
 		"lint": "bunx biome lint --write ./src"
 	},
 	"dependencies": {
 		"@shared/tooling": "workspace:*",
 		"@shared/ui": "workspace:*",
+		"babel-plugin-react-compiler": "^19.1.0-rc.3",
 		"next": "15.5.2",
 		"react": "19.1.1",
 		"react-dom": "19.1.1",
