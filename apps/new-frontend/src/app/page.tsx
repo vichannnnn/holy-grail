@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Analytics, Hero } from "./_components";
+import { getUser } from "@lib/auth/getUser";
 
 export const metadata: Metadata = {
 	title: "Holy Grail",
@@ -35,7 +36,9 @@ export const metadata: Metadata = {
 	},
 };
 
-export default function Home() {
+export default async function Home() {
+	const user = await getUser();
+	console.log("Current user:", user);
 	return (
 		<main className="p-8">
 			<Hero />

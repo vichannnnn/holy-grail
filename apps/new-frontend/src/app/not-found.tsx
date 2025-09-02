@@ -22,7 +22,9 @@ export default function NotFound() {
 	return (
 		<div className="min-h-screen flex flex-col items-center text-center mt-16">
 			<Title className="text-6xl">404</Title>
-			<Title order={2} className="mt-4 mb-4">Oops! Page Not Found</Title>
+			<Title order={2} className="mt-4 mb-4">
+				Oops! Page Not Found
+			</Title>
 			<Text className="max-w-md mb-8" description>
 				Looks like we're still cooking up this page. The content you're looking for might be
 				simmering somewhere else.
