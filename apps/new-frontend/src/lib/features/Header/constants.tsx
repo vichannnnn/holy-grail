@@ -1,21 +1,39 @@
 import type { LinkData } from "./types";
-import { Home } from "@lib/icons/Home";
-import { QuestionCircle } from "@lib/icons/QuestionCircle";
-import { Upload } from "@lib/icons/Upload";
-import { Register } from "@lib/icons/Register";
-import { Leaderboard } from "@lib/icons/Leaderboard";
-import { Login } from "@lib/icons/Login";
-import { Document } from "@lib/icons/Document";
+import {
+	HomeIcon,
+	QuestionMarkCircleIcon,
+	ArrowUpTrayIcon,
+	UserPlusIcon,
+	TrophyIcon,
+	ArrowRightEndOnRectangleIcon,
+	DocumentTextIcon,
+} from "@heroicons/react/24/outline";
 
 export const NAV_LINKS: Record<string, LinkData> = {
-	home: { label: "Home", href: "/", icon: <Home /> },
-	library: { label: "Library", href: "/library", icon: <Document /> },
-	faq: { label: "FAQ", href: "/faq", icon: <QuestionCircle /> },
-	contribute: { label: "Contribute", href: "/contribute", icon: <Upload /> },
-	leaderboard: { label: "Leaderboard", href: "/leaderboard", icon: <Leaderboard /> },
+	home: { label: "Home", href: "/", icon: <HomeIcon className="size-6" /> },
+	library: { label: "Library", href: "/library", icon: <DocumentTextIcon className="size-6" /> },
+	faq: { label: "FAQ", href: "/faq", icon: <QuestionMarkCircleIcon className="size-6" /> },
+	contribute: {
+		label: "Contribute",
+		href: "/contribute",
+		icon: <ArrowUpTrayIcon className="size-6" />,
+	},
+	leaderboard: {
+		label: "Leaderboard",
+		href: "/leaderboard",
+		icon: <TrophyIcon className="size-6" />,
+	},
 };
 
 export const AUTH_LINKS: Record<string, LinkData> = {
-	signIn: { label: "Sign In", href: "/auth/signin", icon: <Login /> },
-	register: { label: "Register", href: "/auth/register", icon: <Register /> },
+	signIn: {
+		label: "Sign In",
+		href: "/auth/signin",
+		icon: <ArrowRightEndOnRectangleIcon className="size-6" />,
+	},
+	register: {
+		label: "Register",
+		href: "/auth/register",
+		icon: <UserPlusIcon className="size-6" />,
+	},
 };

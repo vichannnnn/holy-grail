@@ -1,6 +1,6 @@
 "use client";
 import { Dropdown } from "@shared/ui/components";
-import { Bars } from "@lib/icons/Bars";
+import { Bars3Icon } from "@heroicons/react/24/outline";
 import { useContext } from "react";
 import { ClientContext } from "@shared/ui/providers";
 import { NAV_LINKS, AUTH_LINKS } from "./constants";
@@ -13,7 +13,7 @@ export function HeaderDropdown() {
 
 	return (
 		<Dropdown
-			header={<Bars className="size-6 m-1 dark:stroke-white" />}
+			header={<Bars3Icon className="size-6 m-1 dark:stroke-white" />}
 			content={Object.entries(links).map(([key, { label, href, icon }]) => (
 				<Link
 					key={key}
