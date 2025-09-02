@@ -1,6 +1,10 @@
 import type { SVGProps } from "react";
 import { twMerge } from "tailwind-merge";
-export function Upload({ className, "aria-label": ariaLabel, ...props }: SVGProps<SVGSVGElement> & { "aria-label"?: string }) {
+export function Upload({
+	className,
+	"aria-label": ariaLabel,
+	...props
+}: SVGProps<SVGSVGElement> & { "aria-label"?: string }) {
 	const label = ariaLabel ?? "Upload";
 	return (
 		<svg
