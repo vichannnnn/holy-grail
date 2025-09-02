@@ -17,9 +17,9 @@ export default function PrivacyPolicyPage() {
 					Privacy Policy describes how we process your personal information, collect information
 					through the use of cookies and related technologies, and how you can access and update
 					your personal information. It also describes the data protection rights that may be
-					available under your country&apos;s or state's laws. Please read this Privacy Policy
-					carefully. By accessing or using any part of the App, you acknowledge that you have been
-					informed of and consent to our practices with regard to your personal information.
+					available under your country's or state's laws. Please read this Privacy Policy carefully.
+					By accessing or using any part of the App, you acknowledge that you have been informed of
+					and consent to our practices with regard to your personal information.
 				</Text>
 			</section>
 
