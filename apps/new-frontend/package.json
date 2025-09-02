@@ -4,8 +4,8 @@
 	"private": true,
 	"scripts": {
 		"setup": "bun install",
-		"dev": "cp .env .env.local && next dev --turbopack -p 3001",
-		"build-local": "cp .env .env.local && bunx --bun next build",
+		"dev": "cp .env .env.local && bunx next dev --turbopack -p 3001",
+		"build-local": "cp .env .env.local && bunx next build",
 		"build-dev": "cp .env.development .env.local && bunx --bun next build",
 		"build-prod": "cp .env.production .env.local && bunx --bun next build",
 		"start": "next start -p 3001",
@@ -23,7 +23,9 @@
 		"react": "19.1.1",
 		"react-countup": "^6.5.3",
 		"react-dom": "19.1.1",
-		"tailwind-merge": "^3.3.1"
+		"react-hook-form": "^7.62.0",
+		"tailwind-merge": "^3.3.1",
+		"zod": "^4.1.5"
 	},
 	"devDependencies": {
 		"typescript": "^5",
