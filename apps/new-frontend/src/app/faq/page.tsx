@@ -1,5 +1,22 @@
 import Link from "next/link";
 import { Title, Text } from "@shared/ui/components";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+	title: "FAQ - Holy Grail",
+	description:
+		"Get answers to frequently asked questions about Holy Grail. Find information about our services, account management, and more.",
+	openGraph: {
+		title: "Frequently Asked Questions | Holy Grail",
+		description:
+			"Find quick answers to common questions about Holy Grail. Our comprehensive FAQ covers account setup, features, and everything you need to get started.",
+		images: [
+			{
+				url: "",
+			},
+		],
+	},
+};
 
 export default function FAQPage() {
 	return (

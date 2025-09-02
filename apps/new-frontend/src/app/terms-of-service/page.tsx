@@ -1,5 +1,22 @@
 import Link from "next/link";
 import { Title, Text } from "@shared/ui/components";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+	title: "Terms of Service - Holy Grail",
+	description:
+		"Review the Terms of Service for Holy Grail. Learn about the terms for using the platform, including account creation and user responsibilities.",
+	openGraph: {
+		title: "Terms of Service - Holy Grail",
+		description:
+			"Understand the terms for using Holy Grail. Read about your rights and obligations, and how to use the platform responsibly.",
+		images: [
+			{
+				url: "",
+			},
+		],
+	},
+};
 
 export default function TermsOfServicePage() {
 	return (
