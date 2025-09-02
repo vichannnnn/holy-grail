@@ -11,16 +11,15 @@ export default function TermsOfServicePage() {
 
 				<Text className="text-md leading-relaxed">
 					Welcome, and thank you for your interest in{" "}
-					<span className="font-bold">Holy Grail Team</span> (&apos;Holy Grail Team,&apos;
-					&apos;we,&apos; or &apos;us&apos;) and our mobile and web application{" "}
-					<span className="font-bold">Holy Grail</span>, along with our related services
-					(collectively, the &apos;Service&apos;). These Terms of Service, including Holy Grail
-					Team&apos;s Privacy Policy (available{" "}
+					<span className="font-bold">Holy Grail Team</span> ('Holy Grail Team,' 'we,' or 'us') and
+					our mobile and web application <span className="font-bold">Holy Grail</span>, along with
+					our related services (collectively, the 'Service'). These Terms of Service, including Holy
+					Grail Team's Privacy Policy (available{" "}
 					<Link href="/privacy" passHref>
 						here
 					</Link>
-					), (together, these &apos;Terms&apos;) are a legally binding contract between you and Holy
-					Grail Team regarding your use of the Service.
+					), (together, these 'Terms') are a legally binding contract between you and Holy Grail
+					Team regarding your use of the Service.
 				</Text>
 
 				<Text className="text-md leading-relaxed mt-4">
@@ -29,8 +28,8 @@ export default function TermsOfServicePage() {
 					ACCESSING OR USING THE SERVICE, YOU AGREE THAT YOU HAVE READ AND UNDERSTOOD, AND, AS A
 					CONDITION TO YOUR USE OF THE SERVICE, YOU AGREE TO BE BOUND BY, THESE TERMS. IF YOU ARE
 					NOT ELIGIBLE OR DO NOT AGREE TO THESE TERMS, THEN YOU DO NOT HAVE OUR PERMISSION TO USE
-					THE SERVICE. YOUR USE OF THE SERVICE AND HOLY GRAIL TEAM&apos;S PROVISION OF THE SERVICE
-					TO YOU CONSTITUTES AN AGREEMENT BY BOTH PARTIES TO BE BOUND BY THESE TERMS.
+					THE SERVICE. YOUR USE OF THE SERVICE AND HOLY GRAIL TEAM'S PROVISION OF THE SERVICE TO YOU
+					CONSTITUTES AN AGREEMENT BY BOTH PARTIES TO BE BOUND BY THESE TERMS.
 				</Text>
 
 				<Text className="text-md leading-relaxed mt-4">
@@ -50,7 +49,7 @@ export default function TermsOfServicePage() {
 				</Text>
 
 				<Title order={3} className="text-2xl mb-4 mt-6">
-					1. Holy Grail&apos;s Service Overview
+					1. Holy Grail's Service Overview
 				</Title>
 				<Text className="text-md leading-relaxed">
 					The Holy Grail platform provides free educational resources.
@@ -106,18 +105,17 @@ export default function TermsOfServicePage() {
 					6. Customer and Usage Data
 				</Title>
 				<Text className="text-md leading-relaxed">
-					<span className="font-bold">Customer Data:</span> Any data, text, and other
-					information, including but not limited to contact details such as email addresses and
-					phone numbers, provided by you during your use of the Service is referred to as
-					&quot;Customer Data.&quot; Tutors&apos; phone numbers will only be shown to accounts with
-					verified email addresses. Emails may be used for marketing purposes but will not be
-					visible to other users.
+					<span className="font-bold">Customer Data:</span> Any data, text, and other information,
+					including but not limited to contact details such as email addresses and phone numbers,
+					provided by you during your use of the Service is referred to as &quot;Customer
+					Data.&quot; Tutors' phone numbers will only be shown to accounts with verified email
+					addresses. Emails may be used for marketing purposes but will not be visible to other
+					users.
 				</Text>
 				<Text className="text-md leading-relaxed mt-4">
-					<span className="font-bold">Usage Data:</span> We may collect performance, analytical,
-					or usage data related to your use of the Service (&quot;Usage Data&quot;). This data will
-					be anonymized and used to improve the Service. Usage Data will not include any Customer
-					Data.
+					<span className="font-bold">Usage Data:</span> We may collect performance, analytical, or
+					usage data related to your use of the Service (&quot;Usage Data&quot;). This data will be
+					anonymized and used to improve the Service. Usage Data will not include any Customer Data.
 				</Text>
 
 				<Title order={3} className="text-2xl mb-4 mt-6">
