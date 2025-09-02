@@ -3,7 +3,7 @@ import "./globals.css";
 import { ClientProvider } from "@shared/ui/providers";
 import { twMerge } from "tailwind-merge";
 import { Plus_Jakarta_Sans, Patrick_Hand_SC } from "next/font/google";
-import { Header } from "@lib/features";
+import { Header, Footer } from "@lib/features";
 
 const plusJakarta = Plus_Jakarta_Sans({
 	subsets: ["latin"],
@@ -42,6 +42,7 @@ export default function RootLayout({
 				<ClientProvider>
 					<Header />
 					{children}
+					<Footer />
 				</ClientProvider>
 			</body>
 		</html>

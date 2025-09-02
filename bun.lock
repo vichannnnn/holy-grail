@@ -59,7 +59,9 @@
       "dependencies": {
         "@shared/tooling": "workspace:*",
         "@shared/ui": "workspace:*",
+        "axios": "^1.11.0",
         "babel-plugin-react-compiler": "^19.1.0-rc.3",
+        "jwt-decode": "^4.0.0",
         "next": "15.5.2",
         "react": "19.1.1",
         "react-dom": "19.1.1",
