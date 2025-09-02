@@ -1,8 +1,11 @@
 import type { SVGProps } from "react";
 import { twMerge } from "tailwind-merge";
-export function Moon({ className, ...props }: SVGProps<SVGSVGElement>) {
+export function Moon({ className, "aria-label": ariaLabel, ...props }: SVGProps<SVGSVGElement> & { "aria-label"?: string }) {
+	const label = ariaLabel ?? "Moon";
 	return (
 		<svg
+			role="img"
+			aria-label={label}
 			xmlns="http://www.w3.org/2000/svg"
 			fill="none"
 			viewBox="0 0 24 24"
