@@ -7,11 +7,11 @@ const baseClasses =
 
 const variantClasses: Record<string, string> = {
 	solid:
-		"bg-blue-600 text-white hover:bg-blue-700 focus-visible:ring-blue-500 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus-visible:ring-blue-400",
+		"bg-pink-600 text-white hover:bg-pink-700 focus-visible:ring-pink-500 dark:bg-pink-500 dark:hover:bg-pink-600 dark:focus-visible:ring-pink-400",
 	outline:
-		"border border-gray-300 text-gray-700 hover:bg-gray-200 focus-visible:ring-blue-500 dark:border-gray-700 dark:text-gray-200 dark:hover:bg-zinc-700 dark:focus-visible:ring-blue-400",
+		"bg-pink-50 border border-pink-300 text-pink-700 hover:bg-pink-100 focus-visible:ring-pink-500 dark:bg-pink-600 dark:border-pink-700 dark:text-pink-200 dark:hover:bg-pink-700 dark:focus-visible:ring-pink-400",
 	ghost:
-		"bg-transparent text-gray-700 hover:bg-gray-200 focus-visible:ring-blue-500 dark:text-gray-200 dark:hover:bg-zinc-700 dark:focus-visible:ring-blue-400",
+		"bg-pink-50 text-pink-700 hover:bg-pink-100 focus-visible:ring-pink-500 dark:bg-transparent dark:text-pink-200 dark:hover:bg-zinc-700 dark:focus-visible:ring-pink-400",
 };
 
 export function Button({ variant = "solid", className, children, ...props }: ButtonProps) {

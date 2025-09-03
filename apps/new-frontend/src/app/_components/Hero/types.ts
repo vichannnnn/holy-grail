@@ -1,7 +1,6 @@
-import type { AnchorHTMLAttributes, ReactNode } from "react";
+import type { ReactNode } from "react";
 
-export interface PinkButtonProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
+export interface LinkButtonProps {
 	href: string;
 	children?: ReactNode;
-	className?: string;
 }
