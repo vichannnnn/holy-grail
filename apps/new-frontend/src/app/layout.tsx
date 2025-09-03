@@ -4,6 +4,8 @@ import { ClientProvider } from "@shared/ui/providers";
 import { twMerge } from "tailwind-merge";
 import { Plus_Jakarta_Sans, Patrick_Hand_SC } from "next/font/google";
 import { Header, Footer } from "@lib/features";
+import { Toaster } from "react-hot-toast";
+import type { ReactNode } from "react";
 
 const plusJakarta = Plus_Jakarta_Sans({
 	subsets: ["latin"],
@@ -28,7 +30,7 @@ export const metadata: Metadata = {
 export default function RootLayout({
 	children,
 }: Readonly<{
-	children: React.ReactNode;
+	children: ReactNode;
 }>) {
 	return (
 		<html lang="en">
@@ -43,6 +45,12 @@ export default function RootLayout({
 					<Header />
 					{children}
 					<Footer />
+					<Toaster
+						position="bottom-right"
+						toastOptions={{
+							className: "!bg-zinc-100 !text-zinc-900 dark:!bg-zinc-900 dark:!text-white",
+						}}
+					/>
 				</ClientProvider>
 			</body>
 		</html>
