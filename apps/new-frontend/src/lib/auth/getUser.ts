@@ -1,7 +1,7 @@
 import "server-only";
 import { cookies } from "next/headers";
 import { USER_DATA_KEY, ACCESS_TOKEN_KEY } from "./constants";
-import type { User } from "./types";
+import type { User } from "./schemas";
 import { jwtDecode } from "jwt-decode";
 
 // Function to get the current user from cookies
