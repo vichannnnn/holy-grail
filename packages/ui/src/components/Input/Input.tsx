@@ -2,9 +2,9 @@ import { Field, Label, Input as HeadlessInput, Description } from "@headlessui/r
 import { twMerge } from "tailwind-merge";
 import type { InputProps } from "./types";
 
-const baseInput = "block w-full rounded-sm border-none bg-slate-950/5 dark:bg-white/5 px-3 py-1.5 text-sm/6 dark:text-white text-black";
-const focusInput =
-	"focus:outline-2 focus:outline-blue-500";
+const baseInput =
+	"block w-full rounded-sm border-none bg-slate-950/5 dark:bg-white/5 px-3 py-1.5 text-sm/6 dark:text-white text-black";
+const focusInput = "focus:outline-2 focus:outline-blue-500";
 
 export function Input({
 	label,

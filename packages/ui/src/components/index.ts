@@ -6,3 +6,4 @@ export * from "./Dropdown";
 export * from "./Divider";
 export * from "./Card";
 export * from "./Input";
+export * from "./Modal";
