@@ -7,8 +7,8 @@ import { AuthButtons } from "./AuthButtons";
 
 export function Header() {
 	return (
-		<header className="flex justify-between gap-6 py-6 px-12 items-center">
-			<div className="relative w-24 h-24 shrink">
+		<header className="flex justify-between gap-6 py-4 px-8 items-center">
+			<div className="relative w-18 h-18 shrink">
 				<Image
 					src="/grail-chan-happy-v1.webp"
 					alt="Grail-chan"
@@ -17,7 +17,7 @@ export function Header() {
 					priority
 				/>
 			</div>
-			<div className="hidden sm:flex gap-4">
+			<div className="hidden sm:flex gap-6">
 				{Object.entries(NAV_LINKS).map(([key, { label, href }]) => (
 					<HeaderLink key={key} label={label} href={href} />
 				))}

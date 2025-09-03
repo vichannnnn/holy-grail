@@ -4,6 +4,7 @@
 	"main": "src/index.ts",
 	"types": "src/index.ts",
 	"type": "module",
+	"sideEffects": false,
 	"private": true,
 	"devDependencies": {
 		"@types/bun": "latest"
