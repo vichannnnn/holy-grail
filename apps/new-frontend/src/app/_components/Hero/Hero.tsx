@@ -1,7 +1,7 @@
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 
-import { PinkButton } from "./PinkButton";
+import { LinkButton } from "./LinkButton";
 import { Text, Title } from "@shared/ui/components";
 // import { Showcase } from "@components/Showcase";
 
@@ -21,10 +21,10 @@ export function Hero() {
 							&#39;A&#39; Levels and International Baccalaureate.
 						</Text>
 					</div>
-					<PinkButton href="/library">
+					<LinkButton href="/library">
 						<span>Head to the Library</span>
 						<ArrowRightIcon className="size-5 inline-block ml-1 -mt-0.5" />
-					</PinkButton>
+					</LinkButton>
 				</div>
 				<Image src="/trimmy-grail-chan-studying.webp" alt="Studying" width={300} height={300} />
 			</div>
@@ -39,10 +39,10 @@ export function Hero() {
 							or sign up for an account below to start contributing!
 						</Text>
 					</div>
-					<PinkButton href="/login">
+					<LinkButton href="/login">
 						<span>Click here to sign up!</span>
 						<ArrowRightIcon className="size-5 inline-block ml-1 -mt-0.5" />
-					</PinkButton>
+					</LinkButton>
 				</div>
 			</div>
 		</div>
