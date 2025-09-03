@@ -19,7 +19,6 @@ export function SignInForm() {
 		resolver: zodResolver(SignInSchema),
 	});
 	const [isPending, startTransition] = useTransition();
-  
 
 	const onSubmit = (data: SignInSchema) => {
 		startTransition(async () => {
@@ -27,9 +26,9 @@ export function SignInForm() {
 			if (!ok) {
 				toast.error(message || "Sign in failed");
 			} else {
-        toast.success("Sign in successful! Redirecting...");
-        redirect("/library");
-      }
+				toast.success("Sign in successful! Redirecting...");
+				redirect("/library");
+			}
 		});
 	};
 
