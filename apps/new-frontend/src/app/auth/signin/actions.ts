@@ -16,7 +16,7 @@ export async function signin(values: SignInSchema): Promise<{ ok: boolean; messa
 		// validate network response shape with centralized zod schema
 		const parseResult = CurrentUserWithJWTSchema.safeParse(response.data);
 		if (!parseResult.success) {
-			const msg = `Signin failed: unexpected response shape`;
+			const msg = "Signin failed: unexpected response shape";
 			return { ok: false, message: msg };
 		}
 
