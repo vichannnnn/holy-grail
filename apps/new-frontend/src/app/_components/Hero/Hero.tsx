@@ -3,9 +3,11 @@ import Image from "next/image";
 
 import { LinkButton } from "./LinkButton";
 import { Text, Title } from "@shared/ui/components";
+import { getUser } from "@lib/auth";
 // import { Showcase } from "@components/Showcase";
 
-export function Hero() {
+export async function Hero() {
+	const user = await getUser();
 	return (
 		<div className="flex flex-col w-4/5 m-auto gap-8">
 			<div className="flex flex-col-reverse items-center  md:flex-row gap-16">
@@ -34,15 +36,23 @@ export function Hero() {
 					<div className="animate-fade-in">
 						<Title className="mb-4 text-3xl font-bold">Want to contribute?</Title>
 						<Text className="mb-4">
-							Accessing notes is free for everyone in Holy Grail, even for those without an account,
-							but if you want to contribute revision materials into the repository, you can log in
-							or sign up for an account below to start contributing!
+							Accessing notes is free for everyone in Holy Grail, even for those without an account.{" "}
+							{user
+								? "If you would like to contribute revision materials, you can click the button below to upload your material!"
+								: "If you would like to contribute revision materials, you can sign up for an account below!"}
 						</Text>
 					</div>
-					<LinkButton href="/login">
-						<span>Click here to sign up!</span>
-						<ArrowRightIcon className="size-5 inline-block ml-1 -mt-0.5" />
-					</LinkButton>
+					{user ? (
+						<LinkButton href="/contribute">
+							<span>Contribute Now</span>
+							<ArrowRightIcon className="size-5 inline-block ml-1 -mt-0.5" />
+						</LinkButton>
+					) : (
+						<LinkButton href="/login">
+							<span>Log in to Contribute</span>
+							<ArrowRightIcon className="size-5 inline-block ml-1 -mt-0.5" />
+						</LinkButton>
+					)}
 				</div>
 			</div>
 		</div>
