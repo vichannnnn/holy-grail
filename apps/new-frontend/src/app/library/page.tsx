@@ -1,8 +1,14 @@
 import { getUser } from "@lib/auth";
 import Link from "next/link";
 import { Title, Text, Divider } from "@shared/ui/components";
+import { LibraryContent } from "./_components/LibraryContent/LibraryContent";
 
-export default async function LibraryPage() {
+export default async function LibraryPage({
+	searchParams,
+}: {
+	searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+	console.log(await searchParams);
 	const user = await getUser();
 	return (
 		<main className="flex flex-col gap-2 mx-6 md:mx-12 my-4">
@@ -32,6 +38,7 @@ export default async function LibraryPage() {
 					<span className="font-bold">grail@himaa.me</span> to explore partnership opportunities.
 				</Text>
 			</div>
+			<LibraryContent />
 		</main>
 	);
 }
