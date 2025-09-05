@@ -3,7 +3,7 @@ import "./globals.css";
 import { ClientProvider } from "@shared/ui/providers";
 import { twMerge } from "tailwind-merge";
 import { Plus_Jakarta_Sans, Patrick_Hand_SC } from "next/font/google";
-import { Header, Footer } from "@lib/features";
+import { Header, Footer } from "@/lib/features/server";
 import { Toaster } from "react-hot-toast";
 import type { ReactNode } from "react";
 
