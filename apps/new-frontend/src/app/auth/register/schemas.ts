@@ -18,3 +18,5 @@ export const RegisterSchema = z
 		message: "Passwords must match",
 		path: ["repeat_password"],
 	});
+
+export type RegisterSchema = z.infer<typeof RegisterSchema>;

@@ -7,11 +7,10 @@ import { isAxiosError } from "axios";
 import { jwtDecode } from "jwt-decode";
 
 export async function signin(values: SignInSchema): Promise<{ ok: boolean; message?: string }> {
-	let response: any;
 	let parsedData: CurrentUserWithJWT | null = null;
 
 	try {
-		response = await apiClient.post("/auth/login", values);
+		const response = await apiClient.post("/auth/login", values);
 
 		// validate network response shape with centralized zod schema
 		const parseResult = CurrentUserWithJWTSchema.safeParse(response.data);
@@ -26,6 +25,7 @@ export async function signin(values: SignInSchema): Promise<{ ok: boolean; messa
 		if (isAxiosError(err) && err.response) {
 			const status = err.response.status;
 			const message = err.response.data?.message ?? err.response.statusText ?? "Request failed";
+			console.log(err.response.data, values);
 			return { ok: false, message: `Signin failed (${status}): ${message}` };
 		}
 		const message = err instanceof Error ? err.message : String(err);

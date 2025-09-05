@@ -6,6 +6,9 @@ import { Input, Title, Text, Button } from "@shared/ui/components";
 import Link from "next/link";
 import { useTransition } from "react";
 import { PasswordInput } from "../_components";
+import { register as registerUser } from "./actions";
+import toast from "react-hot-toast";
+import { redirect } from "next/navigation";
 
 export function RegisterForm() {
 	const {
@@ -17,8 +20,16 @@ export function RegisterForm() {
 	});
 	const [isPending, startTransition] = useTransition();
 
-	const onSubmit = (data: any) => {
-		console.log(data);
+	const onSubmit = (data: RegisterSchema) => {
+		startTransition(async () => {
+			const { ok, message } = await registerUser(data);
+			if (!ok) {
+				toast.error(message || "Registering failed");
+			} else {
+				toast.success("Registering successful! Redirecting...");
+				redirect("/library");
+			}
+		});
 	};
 
 	return (
