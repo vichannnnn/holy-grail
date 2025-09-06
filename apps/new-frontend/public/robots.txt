@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /create/
+Disallow: /update/
+Disallow: /login/
+Disallow: /404/

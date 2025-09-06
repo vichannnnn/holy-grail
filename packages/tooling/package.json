@@ -1,0 +1,15 @@
+{
+	"name": "@shared/tooling",
+	"exports": {
+		"./biome": "./biome/base.json",
+		"./typescript": "./typescript/tsconfig.json"
+	},
+	"private": true,
+	"publishConfig": {
+		"access": "public"
+	},
+	"scripts": {
+		"format": "bunx biome format --write .",
+		"lint": "bunx biome lint --write ."
+	}
+}
