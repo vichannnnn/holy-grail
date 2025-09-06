@@ -1,4 +1,5 @@
 .claude
+google-analytics/
 
 # Frontend gitignore
 
@@ -156,7 +157,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
+apps/backend/.env
 .env.aws
 .venv
 env/

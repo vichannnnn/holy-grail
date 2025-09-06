@@ -4,7 +4,7 @@ services:
     networks:
       - holy-grail-network
     env_file:
-      - ../../apps/backend/backend/.env
+      - ../../apps/backend/.env
     healthcheck:
       interval: 5s
       retries: 10
@@ -23,12 +23,28 @@ services:
     networks:
       - holy-grail-network
     ports:
-      - "6379"
+      - "6379:6379"
     depends_on:
       - db
     command: redis-server --loglevel verbose
     restart: unless-stopped
 
+#  celery:
+#    container_name: celery
+#    networks:
+#      - holy-grail-network
+#    env_file:
+#      - ../../apps/backend/.env
+#    depends_on:
+#      - redis
+#    build:
+#      context: ../../apps/backend
+#    command: celery -A app.utils.worker worker -B --loglevel=info
+#    restart: unless-stopped
+#    healthcheck:
+#      test: [ "CMD-SHELL", "celery inspect ping" ]
+#    volumes:
+#      - ../../docker-volumes/backend:/app
 
 networks:
   holy-grail-network:
