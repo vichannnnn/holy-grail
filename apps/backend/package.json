@@ -2,8 +2,13 @@
   "name": "backend",
   "private": true,
   "scripts": {
-  "setup": "pip install -r /app/requirements.txt",
-  "dev": "bash -lc 'set -a && [ -f .env ] && source .env || true && set +a && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload'",
+    "setup": "cp -n .env.example .env 2>/dev/null || true && pip install -r app/requirements.txt",
+    "dev": "docker compose -f ../../external/docker/docker-compose.db.yml up -d && bash -lc 'set -a && [ -f .env ] && source .env || true && set +a && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload'",
+    "dev:backend-only": "bash -lc 'set -a && [ -f .env ] && source .env || true && set +a && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload'",
+    "docker:up": "docker compose -f ../../external/docker/docker-compose.db.yml up -d",
+    "docker:down": "docker compose -f ../../external/docker/docker-compose.db.yml down",
+    "migrate": "bash -lc 'set -a && [ -f .env ] && source .env || true && set +a && alembic upgrade head'",
+    "seed": "bash -lc 'set -a && [ -f .env ] && source .env || true && set +a && python scripts/seed_data.py'",
     "format": "uv run ruff format",
     "test": "bash -lc 'set -a && [ -f .env ] && source .env || true && set +a && PYTHONPATH=. pytest app/tests -x -vv'",
     "lint": "uv run ruff check ."
