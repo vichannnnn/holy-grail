@@ -4,6 +4,7 @@ import { Title, Text, Divider } from "@shared/ui/components";
 import { LibraryContent } from "./_components/LibraryContent/LibraryContent";
 import type { NotesSearchParams } from "./types";
 import { fetchApprovedNotes } from "./actions";
+import { PAGE_MAX_SIZE } from "./constants";
 
 export default async function LibraryPage({
 	searchParams,
@@ -11,7 +12,7 @@ export default async function LibraryPage({
 	searchParams: Promise<NotesSearchParams>;
 }) {
 	const query = await searchParams;
-	const response = await fetchApprovedNotes(query);
+	const notesResponse = await fetchApprovedNotes({ ...query, size: PAGE_MAX_SIZE });
 
 	const user = await getUser();
 	return (
@@ -46,7 +47,7 @@ export default async function LibraryPage({
 					</Text>
 				</div>
 			</div>
-			<LibraryContent {...response} />
+			<LibraryContent {...notesResponse} />
 		</main>
 	);
 }
