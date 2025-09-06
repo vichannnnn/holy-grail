@@ -20,7 +20,7 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
 			</Text>
 			<Button
 				onClick={() => onPageChange(currentPage + 1)}
-				disabled={currentPage === totalPages}
+				disabled={currentPage >= totalPages || totalPages === 0}
 				variant="ghost"
 				className="flex items-center space-x-2"
 			>

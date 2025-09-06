@@ -1,15 +1,14 @@
 "use client";
 import { Pagination } from "@lib/features/client";
-import type { LibraryAPIResponse, PaginatedNotes, NotesSearchParams } from "../../types";
+import type { LibraryAPIResponse, PaginatedNotes } from "../../types";
 import Image from "next/image";
 import { Title, Text } from "@shared/ui/components";
-import { useRouter, usePathname } from "next/navigation";
-import { useAddQueryString } from "../utils";
+import { useNavigateToSearchValue } from "../utils";
+import { redirect, useSearchParams } from "next/navigation";
 
 export function LibraryContent({ ok, data, err }: LibraryAPIResponse<PaginatedNotes>) {
-	const router = useRouter();
-	const pathName = usePathname();
-	const addQs = useAddQueryString();
+	const navigateToSearchValue = useNavigateToSearchValue();
+	const searchParams = useSearchParams();
 
 	if (!ok || !data) {
 		return (
@@ -22,6 +21,10 @@ export function LibraryContent({ ok, data, err }: LibraryAPIResponse<PaginatedNo
 			</div>
 		);
 	}
+	if (data.page > data.pages && data.pages > 0) {
+		// redirect to last valid page if current page exceeds total pages
+		redirect(`?${searchParams.toString().replace(/page=\d+/, `page=${data.pages}`)}`);
+	}
 
 	return (
 		<main>
@@ -29,9 +32,7 @@ export function LibraryContent({ ok, data, err }: LibraryAPIResponse<PaginatedNo
 			<Pagination
 				currentPage={data.page}
 				totalPages={data.pages}
-				onPageChange={() => {
-					router.push(`${pathName}?${addQs("page", String(data.page + 1))}`);
-				}}
+				onPageChange={(page) => navigateToSearchValue({ name: "page", value: page.toString() })}
 			/>
 		</main>
 	);

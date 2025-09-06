@@ -1,10 +1,15 @@
 import { getUser } from "@lib/auth";
 import Link from "next/link";
 import { Title, Text, Divider } from "@shared/ui/components";
-import { LibraryContent } from "./_components/LibraryContent/LibraryContent";
 import type { NotesSearchParams } from "./types";
-import { fetchApprovedNotes } from "./actions";
+import {
+	fetchApprovedNotes,
+	fetchAllCategories,
+	fetchAllDocumentTypes,
+	fetchAllSubjects,
+} from "./actions";
 import { PAGE_MAX_SIZE } from "./constants";
+import { LibrarySearch, LibraryContent } from "./_components";
 
 export default async function LibraryPage({
 	searchParams,
@@ -13,10 +18,19 @@ export default async function LibraryPage({
 }) {
 	const query = await searchParams;
 	const notesResponse = await fetchApprovedNotes({ ...query, size: PAGE_MAX_SIZE });
+	const categories = await fetchAllCategories();
+	const [documentTypes, subjects] = await Promise.all([
+		fetchAllDocumentTypes(),
+		fetchAllSubjects(
+			query.category
+				? Number(categories.data?.find((t) => t.name === query.category)?.id)
+				: undefined,
+		),
+	]);
 
 	const user = await getUser();
 	return (
-		<main className="flex flex-col gap-12">
+		<main className="flex flex-col gap-8">
 			<div className="flex flex-col gap-2 mx-6 md:mx-12 my-4">
 				<Title order={1} className="font-bold text-3xl">
 					Hello
@@ -47,6 +61,12 @@ export default async function LibraryPage({
 					</Text>
 				</div>
 			</div>
+			<LibrarySearch
+				query={query}
+				allCategories={categories}
+				allDocumentTypes={documentTypes}
+				allSubjects={subjects}
+			/>
 			<LibraryContent {...notesResponse} />
 		</main>
 	);
