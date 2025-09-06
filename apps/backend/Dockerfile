@@ -1,23 +1,19 @@
-FROM python:3.12.3-slim-bookworm
+FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim
 
 WORKDIR /app
 
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y build-essential libffi-dev curl
+# Install system dependencies required for Python packages
+RUN apt-get update && apt-get install -y build-essential libffi-dev && rm -rf /var/lib/apt/lists/*
 
-# Install UV
-RUN curl -LsSf https://astral.sh/uv/install.sh | sh
-ENV PATH="/root/.cargo/bin:${PATH}"
-
-# Copy dependency files
-COPY pyproject.toml .
-
-# Install dependencies using UV
-RUN uv pip install --system --no-deps -e .
-
-# Copy application code
+# Copy all files
 COPY . .
+
+# Install dependencies using uv
+RUN uv sync --frozen
+
+# Run migrations and start the server
+CMD ["sh", "-c", "uv run alembic upgrade head && uv run uvicorn app.main:app --host 0.0.0.0 --port 8000"]
 
