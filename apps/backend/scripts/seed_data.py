@@ -20,6 +20,7 @@ from app.core import settings
 from app.db.database import async_session, engine
 from app.models.auth import Account
 from app.models.categories import CategoryLevel, DocumentTypes, Subjects
+from app.models.library import Library
 from app.utils.auth import Authenticator
 
 
@@ -106,7 +107,8 @@ async def create_subjects(session: AsyncSession):
         # Check if subject exists
         result = await session.execute(
             select(Subjects).where(
-                (Subjects.name == subj_data["name"]) & (Subjects.category_id == subj_data["category_id"])
+                (Subjects.name == subj_data["name"])
+                & (Subjects.category_id == subj_data["category_id"])
             )
         )
         existing = result.scalar_one_or_none()
@@ -145,6 +147,144 @@ async def create_document_types(session: AsyncSession):
             print(f"ℹ️  Document type already exists: {doc_name}")
 
 
+async def create_sample_notes(session: AsyncSession):
+    """Create sample notes for development."""
+    # First get the admin user
+    result = await session.execute(select(Account).where(Account.email == "admin@holygrail.sg"))
+    admin = result.scalar_one_or_none()
+    
+    if not admin:
+        print("⚠️  Admin user not found, skipping notes creation")
+        return
+    
+    # Get subject IDs dynamically
+    subject_map = {}
+    
+    # O-Level subjects
+    for name in ["Mathematics", "Physics", "Chemistry"]:
+        result = await session.execute(
+            select(Subjects).where(
+                (Subjects.name == name) & (Subjects.category_id == 1)
+            )
+        )
+        subject = result.scalar_one_or_none()
+        if subject:
+            subject_map[(1, name)] = subject.id
+    
+    # A-Level subjects
+    result = await session.execute(
+        select(Subjects).where(
+            (Subjects.name == "H2 Mathematics") & (Subjects.category_id == 2)
+        )
+    )
+    subject = result.scalar_one_or_none()
+    if subject:
+        subject_map[(2, "H2 Mathematics")] = subject.id
+    
+    # IB subjects
+    result = await session.execute(
+        select(Subjects).where(
+            (Subjects.name == "Mathematics AA") & (Subjects.category_id == 3)
+        )
+    )
+    subject = result.scalar_one_or_none()
+    if subject:
+        subject_map[(3, "Mathematics AA")] = subject.id
+    
+    # Sample notes data
+    notes_data = [
+        # O-Level Mathematics
+        {
+            "category": 1,
+            "subject": subject_map.get((1, "Mathematics"), 1),
+            "type": 1,  # Notes
+            "document_name": "Chapter 1 - Algebra Fundamentals",
+            "file_name": "o-level-math-ch1-algebra.pdf",
+            "year": 2024,
+            "uploaded_by": admin.user_id,
+            "approved": True,
+        },
+        {
+            "category": 1,
+            "subject": subject_map.get((1, "Mathematics"), 1),
+            "type": 3,  # Past Year Paper
+            "document_name": "2023 O-Level Mathematics Paper 1",
+            "file_name": "o-level-math-2023-p1.pdf",
+            "year": 2023,
+            "uploaded_by": admin.user_id,
+            "approved": True,
+        },
+        # O-Level Physics
+        {
+            "category": 1,
+            "subject": subject_map.get((1, "Physics"), 2),
+            "type": 5,  # Formula Sheet
+            "document_name": "Physics Formula Sheet - Complete",
+            "file_name": "o-level-physics-formulas.pdf",
+            "year": 2024,
+            "uploaded_by": admin.user_id,
+            "approved": True,
+        },
+        # A-Level H2 Mathematics
+        {
+            "category": 2,
+            "subject": subject_map.get((2, "H2 Mathematics"), 12),
+            "type": 1,  # Notes
+            "document_name": "Complex Numbers - Complete Guide",
+            "file_name": "a-level-h2-math-complex.pdf",
+            "year": 2024,
+            "uploaded_by": admin.user_id,
+            "approved": True,
+        },
+        {
+            "category": 2,
+            "subject": subject_map.get((2, "H2 Mathematics"), 12),
+            "type": 2,  # Practice Paper
+            "document_name": "Vectors Practice Problems Set 1",
+            "file_name": "a-level-h2-math-vectors-practice.pdf",
+            "year": 2024,
+            "uploaded_by": admin.user_id,
+            "approved": True,
+        },
+        # IB Mathematics AA
+        {
+            "category": 3,
+            "subject": subject_map.get((3, "Mathematics AA"), 22),
+            "type": 6,  # Study Guide
+            "document_name": "IB Math AA HL Study Guide - Calculus",
+            "file_name": "ib-math-aa-calculus-guide.pdf",
+            "year": 2024,
+            "uploaded_by": admin.user_id,
+            "approved": True,
+        },
+        # Some unapproved notes
+        {
+            "category": 1,
+            "subject": subject_map.get((1, "Chemistry"), 3),
+            "type": 1,  # Notes
+            "document_name": "Organic Chemistry Summary",
+            "file_name": "o-level-chem-organic.pdf",
+            "year": 2024,
+            "uploaded_by": admin.user_id,
+            "approved": False,
+        },
+    ]
+    
+    for note_data in notes_data:
+        # Check if note already exists
+        result = await session.execute(
+            select(Library).where(Library.file_name == note_data["file_name"])
+        )
+        existing = result.scalar_one_or_none()
+        
+        if not existing:
+            note = Library(**note_data)
+            session.add(note)
+            print(f"✅ Created note: {note_data['document_name']}")
+        else:
+            print(f"ℹ️  Note already exists: {note_data['document_name']}")
+
+
 async def main():
     """Run all seed functions."""
     print("🌱 Starting seed data population...")
@@ -157,6 +297,7 @@ async def main():
             await create_subjects(session)
             await create_document_types(session)
             await create_admin_user(session)
+            await create_sample_notes(session)
 
             # Commit all changes
             await session.commit()
