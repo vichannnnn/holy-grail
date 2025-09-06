@@ -2,10 +2,10 @@
   "name": "backend",
   "private": true,
   "scripts": {
-  "setup": "pip install -r backend/app/requirements.txt",
-  "dev": "cd backend && bash -lc 'set -a && [ -f .env ] && source .env || true && set +a && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload'",
+  "setup": "pip install -r /app/requirements.txt",
+  "dev": "bash -lc 'set -a && [ -f .env ] && source .env || true && set +a && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload'",
     "format": "uv run ruff format",
-    "test": "pytest app/tests -x -vv",
+    "test": "bash -lc 'set -a && [ -f .env ] && source .env || true && set +a && PYTHONPATH=. pytest app/tests -x -vv'",
     "lint": "uv run ruff check ."
   }
 }
