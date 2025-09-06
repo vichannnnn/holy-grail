@@ -1,9 +1,10 @@
 import secrets
 from typing import Optional
 
-from app.core.enums import Environment
 from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+from app.core.enums import Environment
 
 
 class Settings(BaseSettings):
@@ -31,9 +32,7 @@ class Settings(BaseSettings):
 
     # AWS Configuration (Optional for LOCAL)
     aws_access_key_id: Optional[str] = Field(default=None, alias="AWS_ACCESS_KEY_ID")
-    aws_secret_access_key: Optional[str] = Field(
-        default=None, alias="AWS_SECRET_ACCESS_KEY"
-    )
+    aws_secret_access_key: Optional[str] = Field(default=None, alias="AWS_SECRET_ACCESS_KEY")
     aws_region: str = Field(default="ap-southeast-1", alias="AWS_REGION")
     aws_s3_bucket_name: Optional[str] = Field(default=None, alias="AWS_S3_BUCKET_NAME")
     aws_cloudfront_url: Optional[str] = Field(default=None, alias="AWS_CLOUDFRONT_URL")
@@ -78,9 +77,7 @@ class Settings(BaseSettings):
     def validate_aws_config(cls, v: Optional[str], info) -> Optional[str]:
         environment = info.data.get("environment", Environment.LOCAL)
         if environment != Environment.LOCAL and v is None:
-            raise ValueError(
-                f"AWS configuration required for {environment} environment"
-            )
+            raise ValueError(f"AWS configuration required for {environment} environment")
         return v
 
     @field_validator("email_enabled")

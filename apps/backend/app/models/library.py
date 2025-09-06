@@ -279,9 +279,9 @@ class Library(Base, CRUD["Library"]):
             if response.status_code == 200:
                 content = response.content
                 response = Response(content=content)
-                response.headers["Content-Disposition"] = (
-                    f"attachment; filename={note.document_name}{note.extension}"
-                )
+                response.headers[
+                    "Content-Disposition"
+                ] = f"attachment; filename={note.document_name}{note.extension}"
                 return response
             else:
                 raise HTTPException(status_code=response.status_code, detail="File not found")

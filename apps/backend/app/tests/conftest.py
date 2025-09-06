@@ -18,12 +18,12 @@ from app.api.deps import (
     get_session,
     get_verified_user,
 )
+from app.core import settings
 from app.db.base_class import Base
 from app.db.database import (
     async_session as TestingSessionLocal,
     engine as test_engine,
 )
-from app.core import settings
 from app.main import app
 from app.models.auth import Account
 from app.models.categories import CategoryLevel, DocumentTypes, Subjects
