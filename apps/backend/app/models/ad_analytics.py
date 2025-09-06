@@ -24,7 +24,7 @@ class AdAnalytics(Base, CRUD["ad_analytics"]):
     clicks: Mapped[int] = mapped_column(nullable=False)
 
     @classmethod
-    async def ad_click(cls, session: AsyncSession) -> FastAPIResponse:
+    async def ad_click(cls, session: AsyncSession) -> None:
         today_date = datetime.datetime.now(pytz.timezone("Asia/Singapore")).date()
         try:
             await super().create(
@@ -42,10 +42,9 @@ class AdAnalytics(Base, CRUD["ad_analytics"]):
             await session.execute(stmt)
 
         await session.commit()
-        return FastAPIResponse(status_code=204)
 
     @classmethod
-    async def ad_view(cls, session: AsyncSession):
+    async def ad_view(cls, session: AsyncSession) -> None:
         today_date = datetime.datetime.now(pytz.timezone("Asia/Singapore")).date()
         try:
             await super().create(
@@ -63,4 +62,3 @@ class AdAnalytics(Base, CRUD["ad_analytics"]):
             await session.execute(stmt)
 
         await session.commit()
-        return FastAPIResponse(status_code=204)

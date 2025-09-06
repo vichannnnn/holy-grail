@@ -197,6 +197,7 @@ async def create_sample_notes(session: AsyncSession):
             "year": 2024,
             "uploaded_by": admin.user_id,
             "approved": True,
+            "extension": ".pdf",
         },
         {
             "category": 1,
@@ -207,6 +208,7 @@ async def create_sample_notes(session: AsyncSession):
             "year": 2023,
             "uploaded_by": admin.user_id,
             "approved": True,
+            "extension": ".pdf",
         },
         # O-Level Physics
         {
@@ -218,6 +220,7 @@ async def create_sample_notes(session: AsyncSession):
             "year": 2024,
             "uploaded_by": admin.user_id,
             "approved": True,
+            "extension": ".pdf",
         },
         # A-Level H2 Mathematics
         {
@@ -229,6 +232,7 @@ async def create_sample_notes(session: AsyncSession):
             "year": 2024,
             "uploaded_by": admin.user_id,
             "approved": True,
+            "extension": ".pdf",
         },
         {
             "category": 2,
@@ -239,6 +243,7 @@ async def create_sample_notes(session: AsyncSession):
             "year": 2024,
             "uploaded_by": admin.user_id,
             "approved": True,
+            "extension": ".pdf",
         },
         # IB Mathematics AA
         {
@@ -250,6 +255,7 @@ async def create_sample_notes(session: AsyncSession):
             "year": 2024,
             "uploaded_by": admin.user_id,
             "approved": True,
+            "extension": ".pdf",
         },
         # Some unapproved notes
         {
@@ -261,6 +267,7 @@ async def create_sample_notes(session: AsyncSession):
             "year": 2024,
             "uploaded_by": admin.user_id,
             "approved": False,
+            "extension": ".pdf",
         },
     ]
 

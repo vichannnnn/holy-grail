@@ -4,7 +4,7 @@
 	"private": true,
 	"scripts": {
 		"setup": "bun install",
-		"dev": "cp .env .env.local && bunx next dev --turbopack -p 3001",
+		"dev": "touch .env && cp .env .env.local && bunx next dev --turbopack -p 3001",
 		"build-local": "cp .env .env.local && bunx next build",
 		"build-dev": "cp .env.development .env.local && bunx --bun next build",
 		"build-prod": "cp .env.production .env.local && bunx --bun next build",

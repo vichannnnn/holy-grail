@@ -11,7 +11,7 @@
     "migrate": "uv run alembic upgrade head",
     "migrate:create": "uv run alembic revision --autogenerate -m",
     "migrate:down": "uv run alembic downgrade -1",
-    "seed": "uv run python scripts/seed_data.py",
+    "seed": "POSTGRES_HOST=localhost uv run python scripts/seed_data.py",
     "format": "uv run ruff format .",
     "lint": "uv run ruff check .",
     "lint:fix": "uv run ruff check . --fix",

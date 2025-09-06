@@ -1,6 +1,5 @@
 from typing import List
 
-from fastapi import Response as FastAPIResponse
 from sqlalchemy import ForeignKey, func, not_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Mapped, mapped_column, relationship, selectinload, synonym
@@ -25,14 +24,13 @@ class Scoreboard(Base, CRUD["Scoreboard"]):
     id: Mapped[int] = synonym("user_id")
 
     @classmethod
-    async def update_scoreboard_users(cls, session: AsyncSession):
+    async def update_scoreboard_users(cls, session: AsyncSession) -> None:
         res = await Library.get_latest_scoreboard_users_stats(session)
 
         for data in res:
             await super().upsert(
                 session, id=data.uploaded_by, data={"upload_count": data.upload_count}
             )
-        return FastAPIResponse(status_code=204)
 
     @classmethod
     async def get_top_n_approved_users(

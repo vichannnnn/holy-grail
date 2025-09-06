@@ -16,7 +16,7 @@ section = config.config_ini_section
 
 POSTGRES_USER = os.getenv("POSTGRES_USER", "postgres")
 POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD", "postgres")
-POSTGRES_HOST = os.getenv("POSTGRES_HOST", "db")
+POSTGRES_HOST = os.getenv("POSTGRES_HOST", "localhost")
 POSTGRES_DB = os.getenv("POSTGRES_DB", "app")
 POSTGRES_PORT = os.getenv("POSTGRES_PORT", "5432")
 

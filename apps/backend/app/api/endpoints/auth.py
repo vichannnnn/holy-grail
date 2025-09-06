@@ -29,34 +29,32 @@ async def create_account(
     return created_user
 
 
-@router.post("/update_password")
+@router.post("/update_password", status_code=status.HTTP_204_NO_CONTENT)
 async def user_update_password(
     request: Request,  # pylint: disable=W0613
     session: CurrentSession,
     authenticated: SessionUser,
     data: AccountUpdatePasswordSchema,
 ):
-    credentials = await Account.update_password(
+    await Account.update_password(
         session=session,
         user_id=authenticated.user_id,
         data=data,
     )
-    return credentials
 
 
-@router.post("/update_email")
+@router.post("/update_email", status_code=status.HTTP_204_NO_CONTENT)
 async def user_update_email(
     request: Request,  # pylint: disable=W0613
     session: CurrentSession,
     authenticated: SessionUser,
     data: AccountUpdateEmailSchema,
 ):
-    credentials = await Account.update_email(
+    await Account.update_email(
         session=session,
         user_id=authenticated.user_id,
         data=data,
     )
-    return credentials
 
 
 @router.get("/get", response_model=CurrentUserSchema)

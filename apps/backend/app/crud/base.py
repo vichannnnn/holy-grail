@@ -1,6 +1,5 @@
 from typing import Any, Dict, Generic, List, Optional, Sequence, Type, TypeVar
 
-from fastapi import Response as FastAPIResponse
 from sqlalchemy import and_, asc, delete, exc as SQLAlchemyExceptions, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Load, declared_attr
@@ -101,7 +100,7 @@ class CRUD(Generic[ModelType]):
         cls: Type[ModelType],
         session: AsyncSession,
         id: int,  # pylint: disable=W0622
-    ) -> FastAPIResponse:
+    ) -> bool:
         stmt = delete(cls).returning(cls).where(cls.id == id)
         res = await session.execute(stmt)
         deleted_instance = res.scalar()
@@ -110,7 +109,7 @@ class CRUD(Generic[ModelType]):
             await session.rollback()
             raise AppError.RESOURCES_NOT_FOUND_ERROR
         await session.commit()
-        return FastAPIResponse(status_code=204)
+        return True
 
     @classmethod
     async def get_all(  # type: ignore

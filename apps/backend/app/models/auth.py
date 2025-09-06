@@ -2,7 +2,6 @@ from typing import TYPE_CHECKING
 from uuid import uuid4
 
 import jwt
-from fastapi import Response as FastAPIResponse
 from pydantic import EmailStr
 from sqlalchemy import Index, asc, exc as SQLAlchemyExceptions, func, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -144,7 +143,7 @@ class Account(Base, CRUD["Account"]):
     @classmethod
     async def update_password(
         cls, session: AsyncSession, user_id: int, data: AccountUpdatePasswordSchema
-    ) -> FastAPIResponse:
+    ) -> None:
         curr = await Account.get(session, id=user_id)
 
         if not curr:
@@ -166,12 +165,11 @@ class Account(Base, CRUD["Account"]):
         )
         await session.execute(stmt)
         await session.commit()
-        return FastAPIResponse(status_code=204)
 
     @classmethod
     async def update_email(
         cls, session: AsyncSession, user_id: int, data: AccountUpdateEmailSchema
-    ) -> FastAPIResponse:
+    ) -> None:
         stmt = select(cls).where(cls.user_id == user_id)
         result = await session.execute(stmt)
         account = result.scalar()
@@ -194,10 +192,9 @@ class Account(Base, CRUD["Account"]):
         await cls.send_verification_email(
             session, user_id, updated_account.email, updated_account.username
         )
-        return FastAPIResponse(status_code=204)
 
     @classmethod
-    async def update_role(cls, session: AsyncSession, data: UpdateRoleSchema):
+    async def update_role(cls, session: AsyncSession, data: UpdateRoleSchema) -> None:
         data_dict = data.dict()
         to_update = {key: value for key, value in data_dict.items() if value is not None}
 
@@ -209,7 +206,6 @@ class Account(Base, CRUD["Account"]):
         )
         await session.execute(stmt)
         await session.commit()
-        return FastAPIResponse(status_code=204)
 
     @classmethod
     async def select_from_username(cls, session: AsyncSession, username: str):
@@ -288,7 +284,7 @@ class Account(Base, CRUD["Account"]):
             raise AppError.BAD_REQUEST_ERROR
 
     @classmethod
-    async def send_reset_email(cls, session: AsyncSession, email: EmailStr):
+    async def send_reset_email(cls, session: AsyncSession, email: EmailStr) -> None:
         token = uuid4().hex
 
         stmt = select(cls).where(cls.email == email)
@@ -302,7 +298,7 @@ class Account(Base, CRUD["Account"]):
                 reset_url=f"{FRONTEND_URL}/reset-password?token={token}",
             )
         except Exception as e:  # pylint: disable=C0103, W0612, W0703
-            return FastAPIResponse(status_code=200)
+            return
 
         stmt = (
             update(Account)
@@ -314,7 +310,7 @@ class Account(Base, CRUD["Account"]):
         await session.commit()
 
     @classmethod
-    async def reset_password(cls, session: AsyncSession, token: str):
+    async def reset_password(cls, session: AsyncSession, token: str) -> None:
         try:
             stmt = select(Account).where(Account.reset_password_token == token)
             res = await session.execute(stmt)
@@ -334,7 +330,6 @@ class Account(Base, CRUD["Account"]):
         account.password = Authenticator.pwd_context.hash(password)
         account.reset_password_token = None
         await session.commit()
-        return FastAPIResponse(status_code=200)
 
     @classmethod
     async def get_all_users_ascending_by_id(cls, session: AsyncSession):

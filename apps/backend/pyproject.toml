@@ -43,6 +43,7 @@ dependencies = [
     "redis>=4.5.5",
     "httpx>=0.25.2",
     "aiofiles>=23.2.1",
+    "bcrypt>=4.3.0",
 ]
 
 [project.optional-dependencies]
