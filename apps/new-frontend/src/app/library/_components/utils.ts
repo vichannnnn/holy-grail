@@ -1,14 +1,25 @@
 "use client";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams, useRouter, redirect } from "next/navigation";
 import type { NotesSearchParams } from "../types";
 
-export function useAddQueryString() {
+export function useNavigateToSearchValue() {
+	const router = useRouter();
+	const pathName = usePathname();
 	const searchParams = useSearchParams();
 
-	const addQs = (name: keyof NotesSearchParams, value: string) => {
+	const createQueryString = (...args: { name: string; value: string }[]) => {
 		const params = new URLSearchParams(searchParams.toString());
-		params.set(name, value);
+
+		for (const { name, value } of args) {
+			if (value) {
+				params.set(name, value);
+			} else {
+				params.delete(name);
+			}
+		}
 		return params.toString();
 	};
-	return addQs;
+	return (...args: { name: keyof NotesSearchParams; value: string }[]) => {
+		router.push(`${pathName}?${createQueryString(...args)}`, { scroll: false });
+	};
 }
