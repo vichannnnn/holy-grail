@@ -1,18 +1,23 @@
 FROM python:3.12.3-slim-bookworm
 
-WORKDIR ./app
+WORKDIR /app
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-RUN apt-get update && apt-get install -y build-essential libffi-dev
+# Install system dependencies
+RUN apt-get update && apt-get install -y build-essential libffi-dev curl
 
-COPY ./app/requirements.txt ./app/requirements.txt
+# Install UV
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+ENV PATH="/root/.cargo/bin:${PATH}"
 
-RUN pip install types-Pygments types-colorama types-setuptools types-ujson
-RUN pip install --no-cache-dir --upgrade pip
-RUN pip install --no-cache-dir --default-timeout=100 -r ./app/requirements.txt
+# Copy dependency files
+COPY pyproject.toml .
 
+# Install dependencies using UV
+RUN uv pip install --system --no-deps -e .
 
+# Copy application code
 COPY . .
 
