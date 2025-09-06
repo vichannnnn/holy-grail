@@ -152,45 +152,39 @@ async def create_sample_notes(session: AsyncSession):
     # First get the admin user
     result = await session.execute(select(Account).where(Account.email == "admin@holygrail.sg"))
     admin = result.scalar_one_or_none()
-    
+
     if not admin:
         print("⚠️  Admin user not found, skipping notes creation")
         return
-    
+
     # Get subject IDs dynamically
     subject_map = {}
-    
+
     # O-Level subjects
     for name in ["Mathematics", "Physics", "Chemistry"]:
         result = await session.execute(
-            select(Subjects).where(
-                (Subjects.name == name) & (Subjects.category_id == 1)
-            )
+            select(Subjects).where((Subjects.name == name) & (Subjects.category_id == 1))
         )
         subject = result.scalar_one_or_none()
         if subject:
             subject_map[(1, name)] = subject.id
-    
+
     # A-Level subjects
     result = await session.execute(
-        select(Subjects).where(
-            (Subjects.name == "H2 Mathematics") & (Subjects.category_id == 2)
-        )
+        select(Subjects).where((Subjects.name == "H2 Mathematics") & (Subjects.category_id == 2))
     )
     subject = result.scalar_one_or_none()
     if subject:
         subject_map[(2, "H2 Mathematics")] = subject.id
-    
+
     # IB subjects
     result = await session.execute(
-        select(Subjects).where(
-            (Subjects.name == "Mathematics AA") & (Subjects.category_id == 3)
-        )
+        select(Subjects).where((Subjects.name == "Mathematics AA") & (Subjects.category_id == 3))
     )
     subject = result.scalar_one_or_none()
     if subject:
         subject_map[(3, "Mathematics AA")] = subject.id
-    
+
     # Sample notes data
     notes_data = [
         # O-Level Mathematics
@@ -269,14 +263,14 @@ async def create_sample_notes(session: AsyncSession):
             "approved": False,
         },
     ]
-    
+
     for note_data in notes_data:
         # Check if note already exists
         result = await session.execute(
             select(Library).where(Library.file_name == note_data["file_name"])
         )
         existing = result.scalar_one_or_none()
-        
+
         if not existing:
             note = Library(**note_data)
             session.add(note)
