@@ -13,6 +13,8 @@ import {
 import Link from "next/link";
 import { DropdownButton } from "./DropdownButton";
 import type { NavInfo } from "./types";
+import { deleteUser } from "@lib/auth/deleteUser";
+import toast from "react-hot-toast";
 
 export const NAV_DROPDOWN_INFO: Record<string, NavInfo> = {
 	home: {
@@ -87,7 +89,10 @@ export const AUTHED_DROPDOWN_INFO: Record<string, NavInfo> = {
 			<DropdownButton
 				label="Sign Out"
 				icon={<ArrowRightEndOnRectangleIcon className="size-6" />}
-				onClick={() => console.log("sign out")}
+				onClick={async () => {
+					await deleteUser();
+					toast.success("Signed out successfully");
+				}}
 			/>
 		),
 	},
