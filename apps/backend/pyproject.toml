@@ -1,5 +1,5 @@
 [project]
-name = "holy-grail-backend"
+name = "backend"
 version = "0.1.0"
 description = "Holy Grail Backend API - Educational platform for Singaporean students"
 # readme = "README.md"  # Uncomment when README.md is added
