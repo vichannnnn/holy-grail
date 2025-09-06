@@ -26,18 +26,14 @@ from app.utils.auth import Authenticator
 async def create_admin_user(session: AsyncSession):
     """Create a default admin user for development."""
     # Check if admin already exists
-    result = await session.execute(
-        select(Account).where(Account.email == "admin@holygrail.sg")
-    )
+    result = await session.execute(select(Account).where(Account.email == "admin@holygrail.sg"))
     existing_admin = result.scalar_one_or_none()
-    
+
     if not existing_admin:
-        auth = Authenticator()
         admin = Account(
             email="admin@holygrail.sg",
             username="admin",
-            password=auth.encode_password("admin123"),
-            name="Admin User",
+            password=Authenticator.pwd_context.hash("admin123"),
             role=4,  # Developer role
             verified=True,
         )
@@ -51,17 +47,15 @@ async def create_categories(session: AsyncSession):
     """Create default category levels."""
     categories = [
         "GCE 'O' Levels",
-        "GCE 'A' Levels", 
+        "GCE 'A' Levels",
         "International Baccalaureate",
     ]
-    
+
     for cat_name in categories:
         # Check if category exists
-        result = await session.execute(
-            select(CategoryLevel).where(CategoryLevel.name == cat_name)
-        )
+        result = await session.execute(select(CategoryLevel).where(CategoryLevel.name == cat_name))
         existing = result.scalar_one_or_none()
-        
+
         if not existing:
             category = CategoryLevel(name=cat_name)
             session.add(category)
@@ -74,58 +68,57 @@ async def create_subjects(session: AsyncSession):
     """Create default subjects for each category."""
     subjects_data = [
         # O-Level subjects
-        {"name": "Mathematics", "category": 1},
-        {"name": "Physics", "category": 1},
-        {"name": "Chemistry", "category": 1},
-        {"name": "Biology", "category": 1},
-        {"name": "English", "category": 1},
-        {"name": "Chinese", "category": 1},
-        {"name": "Malay", "category": 1},
-        {"name": "Tamil", "category": 1},
-        {"name": "History", "category": 1},
-        {"name": "Geography", "category": 1},
-        {"name": "Social Studies", "category": 1},
-        
+        {"name": "Mathematics", "category_id": 1},
+        {"name": "Physics", "category_id": 1},
+        {"name": "Chemistry", "category_id": 1},
+        {"name": "Biology", "category_id": 1},
+        {"name": "English", "category_id": 1},
+        {"name": "Chinese", "category_id": 1},
+        {"name": "Malay", "category_id": 1},
+        {"name": "Tamil", "category_id": 1},
+        {"name": "History", "category_id": 1},
+        {"name": "Geography", "category_id": 1},
+        {"name": "Social Studies", "category_id": 1},
         # A-Level subjects
-        {"name": "H2 Mathematics", "category": 2},
-        {"name": "H2 Physics", "category": 2},
-        {"name": "H2 Chemistry", "category": 2},
-        {"name": "H2 Biology", "category": 2},
-        {"name": "H2 Economics", "category": 2},
-        {"name": "H1 General Paper", "category": 2},
-        {"name": "H2 Literature", "category": 2},
-        {"name": "H2 History", "category": 2},
-        {"name": "H2 Geography", "category": 2},
-        
+        {"name": "H2 Mathematics", "category_id": 2},
+        {"name": "H2 Physics", "category_id": 2},
+        {"name": "H2 Chemistry", "category_id": 2},
+        {"name": "H2 Biology", "category_id": 2},
+        {"name": "H2 Economics", "category_id": 2},
+        {"name": "H1 General Paper", "category_id": 2},
+        {"name": "H2 Literature", "category_id": 2},
+        {"name": "H2 History", "category_id": 2},
+        {"name": "H2 Geography", "category_id": 2},
         # IB subjects
-        {"name": "Mathematics AA", "category": 3},
-        {"name": "Mathematics AI", "category": 3},
-        {"name": "Physics", "category": 3},
-        {"name": "Chemistry", "category": 3},
-        {"name": "Biology", "category": 3},
-        {"name": "Economics", "category": 3},
-        {"name": "Business Management", "category": 3},
-        {"name": "Psychology", "category": 3},
-        {"name": "English A", "category": 3},
-        {"name": "Theory of Knowledge", "category": 3},
+        {"name": "Mathematics AA", "category_id": 3},
+        {"name": "Mathematics AI", "category_id": 3},
+        {"name": "Physics", "category_id": 3},
+        {"name": "Chemistry", "category_id": 3},
+        {"name": "Biology", "category_id": 3},
+        {"name": "Economics", "category_id": 3},
+        {"name": "Business Management", "category_id": 3},
+        {"name": "Psychology", "category_id": 3},
+        {"name": "English A", "category_id": 3},
+        {"name": "Theory of Knowledge", "category_id": 3},
     ]
-    
+
     for subj_data in subjects_data:
         # Check if subject exists
         result = await session.execute(
             select(Subjects).where(
-                Subjects.name == subj_data["name"],
-                Subjects.category == subj_data["category"]
+                (Subjects.name == subj_data["name"]) & (Subjects.category_id == subj_data["category_id"])
             )
         )
         existing = result.scalar_one_or_none()
-        
+
         if not existing:
             subject = Subjects(**subj_data)
             session.add(subject)
-            print(f"✅ Created subject: {subj_data['name']} (Category {subj_data['category']})")
+            print(f"✅ Created subject: {subj_data['name']} (Category {subj_data['category_id']})")
         else:
-            print(f"ℹ️  Subject already exists: {subj_data['name']} (Category {subj_data['category']})")
+            print(
+                f"ℹ️  Subject already exists: {subj_data['name']} (Category {subj_data['category_id']})"
+            )
 
 
 async def create_document_types(session: AsyncSession):
@@ -138,14 +131,12 @@ async def create_document_types(session: AsyncSession):
         "Formula Sheet",
         "Study Guide",
     ]
-    
+
     for doc_name in doc_types:
         # Check if document type exists
-        result = await session.execute(
-            select(DocumentTypes).where(DocumentTypes.name == doc_name)
-        )
+        result = await session.execute(select(DocumentTypes).where(DocumentTypes.name == doc_name))
         existing = result.scalar_one_or_none()
-        
+
         if not existing:
             doc_type = DocumentTypes(name=doc_name)
             session.add(doc_type)
@@ -158,7 +149,7 @@ async def main():
     """Run all seed functions."""
     print("🌱 Starting seed data population...")
     print(f"📍 Using database: {settings.database_url}")
-    
+
     async with async_session() as session:
         try:
             # Create all seed data
@@ -166,11 +157,11 @@ async def main():
             await create_subjects(session)
             await create_document_types(session)
             await create_admin_user(session)
-            
+
             # Commit all changes
             await session.commit()
             print("\n✅ Seed data population completed successfully!")
-            
+
         except Exception as e:
             await session.rollback()
             print(f"\n❌ Error during seed data population: {e}")

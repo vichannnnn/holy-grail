@@ -160,6 +160,7 @@ celerybeat.pid
 apps/backend/.env
 .env.aws
 .venv
+docker-volumes/
 env/
 venv/
 ENV/

@@ -24,6 +24,8 @@ services:
     image: python:3.11-slim
     env_file:
       - ../../apps/backend/.env
+    environment:
+      POSTGRES_HOST: db
     depends_on:
       db:
         condition: service_healthy
@@ -32,7 +34,7 @@ services:
     working_dir: /app
     command: >
       sh -c "
-        pip install alembic psycopg2-binary sqlalchemy pydantic pydantic-settings pytz &&
+        pip install alembic psycopg2-binary sqlalchemy pydantic pydantic-settings pytz asyncpg &&
         alembic upgrade head &&
         echo 'Migrations completed successfully'
       "
