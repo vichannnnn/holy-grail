@@ -1,4 +1,4 @@
-import "server-only";
+"use server";
 import { cookies } from "next/headers";
 import { USER_DATA_KEY, ACCESS_TOKEN_KEY } from "./constants";
 
