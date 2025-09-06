@@ -11,7 +11,7 @@ import {
 } from "@headlessui/react";
 import { ChevronDownIcon, CheckIcon } from "@heroicons/react/24/outline";
 import { twMerge } from "tailwind-merge";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import type { Item, ComboboxProps } from "./types";
 
 const baseInput =
@@ -32,6 +32,7 @@ export function Combobox<T extends Item>({
 	disabled,
 }: ComboboxProps<T>) {
 	const [query, setQuery] = useState("");
+  const comboboxRef = useRef<HTMLElement | null>(null);
 	const inputClass = twMerge(
 		baseInput,
 		focusInput,
@@ -51,6 +52,9 @@ export function Combobox<T extends Item>({
 				onValueChange(selectedItem);
 				setQuery("");
 			}}
+      onClose={() => setQuery("")}
+      immediate
+      ref={comboboxRef}
 		>
 			<Field className={twMerge("flex flex-col gap-1", containerClassName)}>
 				<div className="flex flex-col gap-0.5">
@@ -72,6 +76,7 @@ export function Combobox<T extends Item>({
 
 				<div className="relative">
 					<ComboboxInput
+            onClick={() => comboboxRef.current?.focus()}
 						id={id}
 						as="input"
 						className={inputClass}
