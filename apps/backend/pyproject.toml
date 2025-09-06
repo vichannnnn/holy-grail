@@ -2,11 +2,11 @@
 name = "holy-grail-backend"
 version = "0.1.0"
 description = "Holy Grail Backend API - Educational platform for Singaporean students"
-readme = "README.md"
+# readme = "README.md"  # Uncomment when README.md is added
 requires-python = ">=3.11"
 license = { text = "MIT" }
 authors = [
-    { name = "Holy Grail Team", email = "admin@grail.moe" }
+    { name = "Holy Grail Team", email = "grail@himaa.me" }
 ]
 dependencies = [
     "alembic>=1.13.1",
@@ -39,8 +39,10 @@ dependencies = [
     "celery>=5.3.6",
     "psycopg>=3.1.17",
     "psycopg-binary>=3.1.17",
+    "psycopg2-binary>=2.9.9",
     "redis>=4.5.5",
     "httpx>=0.25.2",
+    "aiofiles>=23.2.1",
 ]
 
 [project.optional-dependencies]

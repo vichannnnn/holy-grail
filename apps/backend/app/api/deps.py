@@ -3,7 +3,6 @@ from typing import Annotated, AsyncGenerator, Generator
 import boto3
 from fastapi import Depends
 from jose import JWTError, jwt
-from moto import mock_s3
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Session
 
@@ -32,11 +31,15 @@ async def get_session() -> AsyncGenerator[AsyncSession, None]:
 
 def get_s3_client() -> boto3.Session:
     if settings.environment == Environment.LOCAL:
-        with mock_s3():
-            s3_client = boto3.client("s3", region_name="us-east-1")
-            s3_client.create_bucket(Bucket="test-bucket")
-            yield s3_client
-
+        try:
+            from moto import mock_s3
+            with mock_s3():
+                s3_client = boto3.client("s3", region_name="us-east-1")
+                s3_client.create_bucket(Bucket="test-bucket")
+                yield s3_client
+        except ImportError:
+            # If moto is not installed (production), fall back to real S3
+            yield s3_app_client
     else:
         yield s3_app_client
 
