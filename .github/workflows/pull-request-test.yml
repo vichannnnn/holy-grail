@@ -5,6 +5,9 @@ on:
     branches:
       - dev
       - master
+    paths:
+      - 'apps/backend/**'
+      - '.github/workflows/pull-request-test.yml'
 
 jobs:
   test:
