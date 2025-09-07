@@ -1,5 +1,5 @@
 "use client";
-import { usePathname, useSearchParams, useRouter, redirect } from "next/navigation";
+import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import type { NotesSearchParams } from "../types";
 
 export function useNavigateToSearchValue() {

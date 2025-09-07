@@ -1,7 +1,7 @@
 import type { User } from "@lib/auth";
 import type { ReactNode, HTMLAttributes } from "react";
 
-export interface DropdownButtonProps extends HTMLAttributes<HTMLDivElement> {
+export interface DropdownButtonProps extends HTMLAttributes<HTMLButtonElement> {
 	label: string;
 	icon: ReactNode;
 }
