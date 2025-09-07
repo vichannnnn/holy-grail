@@ -1,11 +1,9 @@
 "use client";
-import type { Note } from "../../types";
 import { Button } from "@shared/ui/components";
 import { downloadNote } from "../../actions";
-
-interface LibraryTableProps {
-	items: Note[];
-}
+import Link from "next/link";
+import type { Note } from "../../types";
+import type { LibraryTableProps } from "./types";
 
 export function LibraryTable({ items }: LibraryTableProps) {
 	const formatDate = (dateString: string) => {
@@ -14,7 +12,7 @@ export function LibraryTable({ items }: LibraryTableProps) {
 			month: "long",
 			year: "numeric",
 		};
-		return new Date(dateString).toLocaleDateString(undefined, options);
+		return new Date(dateString).toLocaleDateString("en-SG", options);
 	};
 
 	const handleDownload = async (note: Note) => {
@@ -41,47 +39,49 @@ export function LibraryTable({ items }: LibraryTableProps) {
 	};
 
 	const getDocumentUrl = (fileName: string) => {
-		// TODO: Replace with actual CloudFront URL from environment
-		return `#${fileName}`;
+		const cdnUrl = process.env.NEXT_PUBLIC_AWS_CLOUDFRONT_URL;
+		if (!cdnUrl) return undefined;
+		return `${cdnUrl}/${fileName}`;
 	};
 
 	return (
 		<div className="overflow-x-auto">
-			<table className="w-full border-collapse border border-gray-300 dark:border-gray-600">
+			<table className="w-full ">
 				<thead>
-					<tr className="bg-gray-50 dark:bg-gray-800">
-						<th className="border border-gray-300 dark:border-gray-600 px-4 py-3 text-left font-semibold text-gray-900 dark:text-gray-100">
+					<tr className="text-xs border-b-2 border-gray-200 dark:border-slate-700">
+						<th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-gray-100">
 							Document Name
 						</th>
-						<th className="border border-gray-300 dark:border-gray-600 px-4 py-3 text-left font-semibold text-gray-900 dark:text-gray-100">
+						<th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-gray-100">
 							Category
 						</th>
-						<th className="border border-gray-300 dark:border-gray-600 px-4 py-3 text-left font-semibold text-gray-900 dark:text-gray-100">
+						<th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-gray-100">
 							Subject
 						</th>
-						<th className="border border-gray-300 dark:border-gray-600 px-4 py-3 text-left font-semibold text-gray-900 dark:text-gray-100">
+						<th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-gray-100">
 							Type
 						</th>
-						<th className="border border-gray-300 dark:border-gray-600 px-4 py-3 text-left font-semibold text-gray-900 dark:text-gray-100">
+						<th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-gray-100">
 							Uploaded By
 						</th>
-						<th className="border border-gray-300 dark:border-gray-600 px-4 py-3 text-left font-semibold text-gray-900 dark:text-gray-100">
+						<th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-gray-100">
 							Year
 						</th>
-						<th className="border border-gray-300 dark:border-gray-600 px-4 py-3 text-left font-semibold text-gray-900 dark:text-gray-100">
+						<th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-gray-100">
 							Uploaded On
 						</th>
-						<th className="border border-gray-300 dark:border-gray-600 px-4 py-3 text-left font-semibold text-gray-900 dark:text-gray-100">
+						<th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-gray-100">
 							Download
 						</th>
 					</tr>
 				</thead>
 				<tbody>
 					{items.map((note) => (
-						<tr key={note.id} className="hover:bg-gray-50 dark:hover:bg-gray-800">
-							<td className="border border-gray-300 dark:border-gray-600 px-4 py-3">
-								<a
-									href={getDocumentUrl(note.file_name)}
+						<tr key={note.id} className="hover:bg-gray-50 dark:hover:bg-gray-800 text-xs">
+							<td className="px-4 py-3">
+								<Link
+									href={getDocumentUrl(note.file_name) ?? "#"}
+									prefetch={false}
 									target="_blank"
 									rel="noopener noreferrer"
 									className="text-blue-600 dark:text-blue-400 hover:underline"
@@ -89,27 +89,25 @@ export function LibraryTable({ items }: LibraryTableProps) {
 									{note.document_name.length > 40
 										? `${note.document_name.substring(0, 40)}...`
 										: note.document_name}
-								</a>
+								</Link>
 							</td>
-							<td className="border border-gray-300 dark:border-gray-600 px-4 py-3 text-gray-900 dark:text-gray-100">
-								{note.doc_category?.name || "—"}
+							<td className="px-4 py-3 text-gray-900 dark:text-gray-100">
+								{note.doc_category?.name ?? "—"}
 							</td>
-							<td className="border border-gray-300 dark:border-gray-600 px-4 py-3 text-gray-900 dark:text-gray-100">
-								{note.doc_subject?.name || "—"}
+							<td className="px-4 py-3 text-gray-900 dark:text-gray-100">
+								{note.doc_subject?.name ?? "—"}
 							</td>
-							<td className="border border-gray-300 dark:border-gray-600 px-4 py-3 text-gray-900 dark:text-gray-100">
-								{note.doc_type?.name || "—"}
+							<td className="px-4 py-3 text-gray-900 dark:text-gray-100">
+								{note.doc_type?.name ?? "—"}
 							</td>
-							<td className="border border-gray-300 dark:border-gray-600 px-4 py-3 text-gray-900 dark:text-gray-100">
-								{note.account?.username || "—"}
+							<td className="px-4 py-3 text-gray-900 dark:text-gray-100">
+								{note.account?.username ?? "—"}
 							</td>
-							<td className="border border-gray-300 dark:border-gray-600 px-4 py-3 text-gray-900 dark:text-gray-100">
-								{note.year || "—"}
-							</td>
-							<td className="border border-gray-300 dark:border-gray-600 px-4 py-3 text-gray-900 dark:text-gray-100">
+							<td className="px-4 py-3 text-gray-900 dark:text-gray-100">{note.year || "—"}</td>
+							<td className="px-4 py-3 text-gray-900 dark:text-gray-100">
 								{formatDate(note.uploaded_on)}
 							</td>
-							<td className="border border-gray-300 dark:border-gray-600 px-4 py-3">
+							<td className="px-4 py-3">
 								<Button
 									variant="outline"
 									onClick={() => handleDownload(note)}

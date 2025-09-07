@@ -6,10 +6,16 @@ import { Title, Text } from "@shared/ui/components";
 import { useNavigateToSearchValue } from "../utils";
 import { redirect, useSearchParams } from "next/navigation";
 import { LibraryTable } from "./LibraryTable";
+import { useContext } from "react";
+import { ClientContext } from "@shared/ui/providers";
+import { LibraryCard } from "./LibraryCard";
 
 export function LibraryContent({ ok, data, err }: LibraryAPIResponse<PaginatedNotes>) {
 	const navigateToSearchValue = useNavigateToSearchValue();
 	const searchParams = useSearchParams();
+	const { breakpoint } = useContext(ClientContext);
+
+	console.log(breakpoint);
 
 	if (!ok || !data) {
 		return (
@@ -40,8 +46,16 @@ export function LibraryContent({ ok, data, err }: LibraryAPIResponse<PaginatedNo
 	}
 
 	return (
-		<main>
-			<LibraryTable items={data.items} />
+		<main className="flex flex-col px-8">
+			{[undefined, "sm", "md"].includes(breakpoint) ? (
+				<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+					{data.items.map((item) => (
+						<LibraryCard key={item.id} item={item} />
+					))}
+				</div>
+			) : (
+				<LibraryTable items={data.items} />
+			)}
 			<Pagination
 				currentPage={data.page}
 				totalPages={data.pages}
