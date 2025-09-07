@@ -1,3 +1,4 @@
+import re
 from enum import IntEnum
 from typing import Annotated, Optional
 
@@ -7,10 +8,14 @@ from app.schemas.base import CustomBaseModel as BaseModel
 
 password_validator = Annotated[
     str,
-    StringConstraints(strip_whitespace=True, min_length=8, max_length=30),
+    StringConstraints(
+        strip_whitespace=True,
+        pattern=re.compile(r"^[A-Za-z0-9!@#$%^&*()\-_=+\[\]{}|;:'\",.<>?/]{8,30}$"),
+    ),
 ]
+
 username_validator = Annotated[
-    str, StringConstraints(strip_whitespace=True, pattern="^[a-zA-Z0-9]{4,20}$")
+    str, StringConstraints(strip_whitespace=True, pattern=re.compile(r"^[a-zA-Z0-9]{4,20}$"))
 ]
 
 
