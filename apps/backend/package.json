@@ -16,7 +16,7 @@
     "lint": "uv run ruff check .",
     "lint:fix": "uv run ruff check . --fix",
     "typecheck": "uv run mypy app",
-    "test": "uv run pytest app/tests -x -vv",
+    "test": "PYTHONPATH=. uv run pytest app/tests -x -vv",
     "test:cov": "uv run coverage run -m pytest app/tests && uv run coverage report",
     "check": "npm run lint && npm run typecheck && npm run test"
   }

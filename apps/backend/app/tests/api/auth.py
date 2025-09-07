@@ -43,7 +43,7 @@ def test_create_account_password_mismatch(test_not_logged_in_client, test_user_r
     response = test_not_logged_in_client.post(
         CREATE_URL, json=jsonable_encoder(test_user_registration_data)
     )
-    assert response.status_code == 422
+    assert response.status_code == 400
 
 
 def test_update_password(
@@ -89,4 +89,4 @@ def test_get_account_name(test_not_logged_in_client, test_user, test_user_regist
 def test_login_invalid_credentials(test_not_logged_in_client, test_user):
     test_user.password = "invalid_password"
     response = test_not_logged_in_client.post(LOGIN_URL, json=jsonable_encoder(test_user))
-    assert response.status_code == 422
+    assert response.status_code == 401
