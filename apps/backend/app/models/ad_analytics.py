@@ -1,3 +1,9 @@
+"""
+Advertisement analytics model for tracking ad performance.
+
+This module tracks daily advertisement impressions and clicks to measure
+ad effectiveness and user engagement with promotional content.
+"""
 import datetime
 
 import pytz
@@ -11,6 +17,17 @@ from app.db.database import AsyncSession
 
 
 class AdAnalytics(Base, CRUD["ad_analytics"]):
+    """
+    Daily advertisement performance metrics.
+    
+    Tracks advertisement views and clicks on a daily basis using
+    Singapore timezone for consistent reporting.
+    
+    Attributes:
+        date: Date of the metrics (primary key)
+        views: Number of ad impressions for the day
+        clicks: Number of ad clicks for the day
+    """
     __tablename__ = "ad_analytics"
 
     date: Mapped[datetime.date] = mapped_column(
@@ -25,6 +42,15 @@ class AdAnalytics(Base, CRUD["ad_analytics"]):
 
     @classmethod
     async def ad_click(cls, session: AsyncSession) -> None:
+        """
+        Record an advertisement click event.
+        
+        Increments the click counter for today or creates a new record
+        if this is the first event of the day.
+        
+        Args:
+            session: Active database session
+        """
         today_date = datetime.datetime.now(pytz.timezone("Asia/Singapore")).date()
         try:
             await super().create(
@@ -45,6 +71,15 @@ class AdAnalytics(Base, CRUD["ad_analytics"]):
 
     @classmethod
     async def ad_view(cls, session: AsyncSession) -> None:
+        """
+        Record an advertisement view/impression event.
+        
+        Increments the view counter for today or creates a new record
+        if this is the first event of the day.
+        
+        Args:
+            session: Active database session
+        """
         today_date = datetime.datetime.now(pytz.timezone("Asia/Singapore")).date()
         try:
             await super().create(

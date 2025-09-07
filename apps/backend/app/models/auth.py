@@ -1,3 +1,11 @@
+"""
+Account model for user authentication and management.
+
+This module defines the Account model which handles user registration,
+authentication, email verification, password management, and role-based
+access control. It integrates with JWT for token-based authentication
+and provides comprehensive user lifecycle management.
+"""
 from typing import TYPE_CHECKING
 from uuid import uuid4
 
@@ -36,6 +44,28 @@ SECRET_KEY = settings.secret_key
 
 
 class Account(Base, CRUD["Account"]):
+    """
+    User account model for authentication and authorization.
+    
+    This model manages user accounts with features including:
+    - Case-insensitive username matching
+    - Email verification workflow
+    - Password reset functionality
+    - Role-based access control (1=user, 2=admin, 3=developer)
+    - Integration with scoreboard and library systems
+    
+    Attributes:
+        user_id: Primary key identifier for the account
+        username: Unique username (case-insensitive)
+        email: Email address (optional during registration)
+        password: Hashed password using bcrypt
+        role: User role level (1=normal, 2=admin, 3=developer)
+        verified: Email verification status
+        email_verification_token: Token for email verification
+        reset_password_token: Token for password reset
+        scoreboard: One-to-one relationship with user's scoreboard
+        documents: One-to-many relationship with uploaded documents
+    """
     __tablename__ = "account"
     __table_args__ = (Index("username_case_sensitive_index", text("upper(username)"), unique=True),)
 
@@ -56,7 +86,16 @@ class Account(Base, CRUD["Account"]):
     id: Mapped[int] = synonym("user_id")
 
     @classmethod
-    async def get_users_count(cls, session: AsyncSession):
+    async def get_users_count(cls, session: AsyncSession) -> int:
+        """
+        Get the total count of registered users.
+        
+        Args:
+            session: Active database session
+            
+        Returns:
+            int: Total number of user accounts
+        """
         stmt = select(func.count(cls.user_id))
         result = await session.execute(stmt)
         return result.scalar_one()
@@ -67,6 +106,23 @@ class Account(Base, CRUD["Account"]):
         session: AsyncSession,
         data: AccountRegisterSchema,
     ) -> CurrentUserWithJWTSchema:
+        """
+        Register a new user account with email verification.
+        
+        Creates a new user account, hashes the password, sends a verification
+        email, and returns user data with JWT access token.
+        
+        Args:
+            session: Active database session
+            data: Registration data including username, email, and password
+            
+        Returns:
+            CurrentUserWithJWTSchema: User data with JWT access token
+            
+        Raises:
+            AppError.BAD_REQUEST_ERROR: If passwords don't match
+            AppError.RESOURCES_ALREADY_EXISTS_ERROR: If username/email exists
+        """
         if data.password != data.repeat_password:
             raise AppError.BAD_REQUEST_ERROR
 
@@ -122,6 +178,22 @@ class Account(Base, CRUD["Account"]):
 
     @classmethod
     async def login(cls, session: AsyncSession, data: AuthSchema) -> CurrentUserWithJWTSchema:
+        """
+        Authenticate user and generate access token.
+        
+        Validates credentials and returns user data with JWT token for
+        accessing protected endpoints.
+        
+        Args:
+            session: Active database session
+            data: Login credentials (username and password)
+            
+        Returns:
+            CurrentUserWithJWTSchema: User data with JWT access token
+            
+        Raises:
+            AppError.INVALID_CREDENTIALS_ERROR: If credentials are invalid
+        """
         if not (credentials := await cls.select_from_username(session, data.username)):
             raise AppError.INVALID_CREDENTIALS_ERROR
         if not Authenticator.pwd_context.verify(data.password, credentials.password):
@@ -144,6 +216,19 @@ class Account(Base, CRUD["Account"]):
     async def update_password(
         cls, session: AsyncSession, user_id: int, data: AccountUpdatePasswordSchema
     ) -> None:
+        """
+        Update user password with current password verification.
+        
+        Args:
+            session: Active database session
+            user_id: ID of the user updating password
+            data: Current and new password information
+            
+        Raises:
+            AppError.INVALID_CREDENTIALS_ERROR: If user not found
+            AppError.PERMISSION_DENIED_ERROR: If current password incorrect
+            AppError.BAD_REQUEST_ERROR: If new passwords don't match
+        """
         curr = await Account.get(session, id=user_id)
 
         if not curr:
@@ -170,6 +255,21 @@ class Account(Base, CRUD["Account"]):
     async def update_email(
         cls, session: AsyncSession, user_id: int, data: AccountUpdateEmailSchema
     ) -> None:
+        """
+        Update user email address and trigger verification.
+        
+        Changes email address and marks account as unverified until
+        the new email is confirmed.
+        
+        Args:
+            session: Active database session
+            user_id: ID of the user updating email
+            data: New email address
+            
+        Raises:
+            AppError.INVALID_CREDENTIALS_ERROR: If user not found
+            AppError.BAD_REQUEST_ERROR: If new email same as current
+        """
         stmt = select(cls).where(cls.user_id == user_id)
         result = await session.execute(stmt)
         account = result.scalar()
@@ -195,6 +295,13 @@ class Account(Base, CRUD["Account"]):
 
     @classmethod
     async def update_role(cls, session: AsyncSession, data: UpdateRoleSchema) -> None:
+        """
+        Update user role for access control.
+        
+        Args:
+            session: Active database session
+            data: Role update data including user_id and new role
+        """
         data_dict = data.dict()
         to_update = {key: value for key, value in data_dict.items() if value is not None}
 
@@ -208,7 +315,17 @@ class Account(Base, CRUD["Account"]):
         await session.commit()
 
     @classmethod
-    async def select_from_username(cls, session: AsyncSession, username: str):
+    async def select_from_username(cls, session: AsyncSession, username: str) -> "Account | None":
+        """
+        Find user by username (case-insensitive).
+        
+        Args:
+            session: Active database session
+            username: Username to search for
+            
+        Returns:
+            Account | None: User account if found, None otherwise
+        """
         try:
             stmt = select(Account).where(Account.username.ilike(username))
             result = await session.execute(stmt)
@@ -218,7 +335,19 @@ class Account(Base, CRUD["Account"]):
             return None
 
     @classmethod
-    async def verify_email(cls, session: AsyncSession, token: str):
+    async def verify_email(cls, session: AsyncSession, token: str) -> None:
+        """
+        Verify user email using verification token.
+        
+        Marks account as verified and clears the verification token.
+        
+        Args:
+            session: Active database session
+            token: Email verification token from email link
+            
+        Raises:
+            AppError.BAD_REQUEST_ERROR: If token invalid or already verified
+        """
         try:
             stmt = select(Account).where(Account.email_verification_token == token)
             res = await session.execute(stmt)
@@ -241,7 +370,18 @@ class Account(Base, CRUD["Account"]):
         user_id: int,
         email: EmailStr,
         username: str,
-    ):
+    ) -> None:
+        """
+        Send email verification link to user.
+        
+        Generates verification token and sends email with verification URL.
+        
+        Args:
+            session: Active database session
+            user_id: ID of the user to verify
+            email: Email address to send verification to
+            username: Username for email personalization
+        """
         email_verification_token = uuid4().hex
 
         await email_service.send_verification_email(
@@ -260,7 +400,17 @@ class Account(Base, CRUD["Account"]):
         await session.commit()
 
     @classmethod
-    async def resend_email_verification_token(cls, session: AsyncSession, user_id: int):
+    async def resend_email_verification_token(cls, session: AsyncSession, user_id: int) -> None:
+        """
+        Resend email verification token to unverified users.
+        
+        Args:
+            session: Active database session
+            user_id: ID of the user requesting new verification email
+            
+        Raises:
+            AppError.BAD_REQUEST_ERROR: If user already verified
+        """
         res = await cls.get(session=session, id=user_id)
 
         if not res.verified:
@@ -285,6 +435,16 @@ class Account(Base, CRUD["Account"]):
 
     @classmethod
     async def send_reset_email(cls, session: AsyncSession, email: EmailStr) -> None:
+        """
+        Send password reset email to user.
+        
+        Generates reset token and sends email with reset link. Silently
+        fails if email not found to prevent email enumeration.
+        
+        Args:
+            session: Active database session
+            email: Email address to send reset link
+        """
         token = uuid4().hex
 
         stmt = select(cls).where(cls.email == email)
@@ -311,6 +471,19 @@ class Account(Base, CRUD["Account"]):
 
     @classmethod
     async def reset_password(cls, session: AsyncSession, token: str) -> None:
+        """
+        Reset password using reset token.
+        
+        Generates a new random password and emails it to the user.
+        Clears the reset token after use.
+        
+        Args:
+            session: Active database session
+            token: Password reset token from email link
+            
+        Raises:
+            AppError.RESOURCES_NOT_FOUND_ERROR: If token invalid
+        """
         try:
             stmt = select(Account).where(Account.reset_password_token == token)
             res = await session.execute(stmt)
@@ -332,7 +505,16 @@ class Account(Base, CRUD["Account"]):
         await session.commit()
 
     @classmethod
-    async def get_all_users_ascending_by_id(cls, session: AsyncSession):
+    async def get_all_users_ascending_by_id(cls, session: AsyncSession) -> list["Account"]:
+        """
+        Get all users sorted by ID in ascending order.
+        
+        Args:
+            session: Active database session
+            
+        Returns:
+            list[Account]: List of all user accounts sorted by ID
+        """
         stmt = select(cls).order_by(asc(cls.id))
         result = await session.execute(stmt)
         return result.scalars().all()

@@ -1,3 +1,10 @@
+"""
+Library model for educational resource management.
+
+This module defines the Library model for storing and managing educational
+documents including summary notes, practice papers, and other study materials.
+It handles file uploads, categorization, approval workflows, and download tracking.
+"""
 import datetime
 import uuid
 from typing import TYPE_CHECKING, List, Optional, Tuple, Union
@@ -48,6 +55,19 @@ if TYPE_CHECKING:
 def form_data_note_parser(
     form_data: FormData, idx: int
 ) -> Union[bool, Tuple[NoteCreateSchema, int]]:
+    """
+    Parse form data to extract note information.
+    
+    Extracts and validates note upload data from multipart form submission.
+    
+    Args:
+        form_data: Form data containing file and metadata
+        idx: Index of the note in batch upload
+        
+    Returns:
+        Union[bool, Tuple[NoteCreateSchema, int]]: Parsed note schema and index,
+            or False if validation fails
+    """
     try:
         note_ds = NoteCreateSchema(
             file=form_data[f"{idx}[file]"],
@@ -65,6 +85,35 @@ def form_data_note_parser(
 
 
 class Library(Base, CRUD["Library"]):
+    """
+    Educational document library model.
+    
+    Manages educational resources with features including:
+    - Multi-category organization (O-Level, A-Level, IB)
+    - Subject and document type categorization
+    - File upload and storage management
+    - Approval workflow for quality control
+    - Download tracking and analytics
+    - Support for various file formats (PDF, images, etc.)
+    
+    Attributes:
+        id: Primary key identifier
+        category: Education level (foreign key to category_level)
+        subject: Subject area (foreign key to subjects)
+        type: Document type (foreign key to documents)
+        document_name: Display name for the document
+        file_name: Unique stored filename
+        view_count: Number of downloads/views
+        uploaded_by: User who uploaded the document
+        uploaded_on: Upload timestamp
+        approved: Admin approval status
+        year: Year of examination (optional)
+        extension: File extension
+        account: Relationship to uploader account
+        doc_category: Relationship to category level
+        doc_subject: Relationship to subject
+        doc_type: Relationship to document type
+    """
     __tablename__ = "library"
     __table_args__ = (
         ForeignKeyConstraint(["subject", "category"], ["subjects.id", "subjects.category_id"]),
@@ -117,7 +166,27 @@ class Library(Base, CRUD["Library"]):
         form_data: FormData,
         uploaded_by: int,
         s3_bucket: boto3.client,
-    ):
+    ) -> List[NoteSchema]:
+        """
+        Create multiple educational documents from form upload.
+        
+        Handles batch upload of educational resources with validation,
+        file storage, and database entry creation.
+        
+        Args:
+            session: Active database session
+            uploader_role: Role of the uploading user
+            form_data: Multipart form data containing files and metadata
+            uploaded_by: ID of the user uploading documents
+            s3_bucket: S3 bucket client for file storage
+            
+        Returns:
+            List[NoteSchema]: List of created document records
+            
+        Raises:
+            AppError.BAD_REQUEST_ERROR: If form data exceeds limits
+            AppError.MULTIPLE_GENERIC_ERRORS: If validation fails for any files
+        """
         # A form has 6 fields, we have 25 limits so it should be 25 * 6
         if len(form_data) > 25 * 6:
             raise AppError.BAD_REQUEST_ERROR

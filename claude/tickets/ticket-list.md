@@ -15,7 +15,7 @@ This file maintains a centralized list of all tickets in the project. Update thi
 ## Active Tickets
 
 ### High Priority
-_No high priority tickets currently_
+- 🟡 [TICKET-007](./TICKET-007-add-documentation.md) - Add Documentation to Backend API
 
 ### Medium Priority
 - 🔴 [TICKET-006](./TICKET-006-create-developer-setup-scripts.md) - Create Developer Setup Scripts

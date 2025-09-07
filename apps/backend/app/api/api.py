@@ -1,3 +1,10 @@
+"""
+API route configuration and aggregation.
+
+This module aggregates all API endpoints and configures routing
+for the FastAPI application. It organizes endpoints by functionality
+and conditionally includes development-only routes.
+"""
 from fastapi import APIRouter
 
 from app.api.endpoints import (
