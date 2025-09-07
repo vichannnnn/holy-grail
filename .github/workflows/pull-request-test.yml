@@ -36,7 +36,7 @@ jobs:
 
       - name: Build backend Docker image
         working-directory: ./apps/backend
-        run: docker build -f Dockerfile.test -t holy-grail-backend-test .
+        run: docker build -f Dockerfile.ci -t holy-grail-backend-test .
 
       - name: Run backend container
         run: |
