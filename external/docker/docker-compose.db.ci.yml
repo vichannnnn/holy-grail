@@ -1,0 +1,19 @@
+services:
+  db:
+    container_name: holy-grail-db
+    image: postgres:14.1-alpine
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_DB: holy_grail
+      POSTGRES_USER: holy_grail
+      POSTGRES_PASSWORD: holy_grail
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U holy_grail -d holy_grail"]
+      interval: 5s
+      retries: 10
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
