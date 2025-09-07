@@ -19,7 +19,7 @@ router = APIRouter()
 # async def fetch_google_analytics(request: Request, session: CurrentSession):
 #     """
 #     Manually trigger Google Analytics data fetch.
-#     
+#
 #     This endpoint is commented out as analytics fetching is now handled
 #     by scheduled background tasks.
 #     """
@@ -31,17 +31,17 @@ router = APIRouter()
 async def ad_view(session: CurrentSession) -> AnalyticsResponse:
     """
     Get the latest analytics data for the platform.
-    
+
     Returns the most recent analytics snapshot including page views,
     user counts, engagement metrics, and popular content. Data is
     automatically updated via scheduled background tasks.
-    
+
     Args:
         session: Active database session
-        
+
     Returns:
         AnalyticsResponse: Latest analytics data with metrics and timestamps
-        
+
     Note:
         Analytics data is fetched from Google Analytics API daily
     """

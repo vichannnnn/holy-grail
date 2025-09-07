@@ -1,3 +1,13 @@
+"""
+File upload handler for S3 storage.
+
+This module provides utilities for uploading files to AWS S3 with
+appropriate content types and caching headers. Handles both regular
+documents and zip archives.
+
+Note: This module appears to be legacy code as the application now uses
+the storage service abstraction.
+"""
 from io import BytesIO
 
 import boto3
@@ -38,6 +48,20 @@ developer_accepted_doc_type_extensions = {
 
 
 async def save_file(file: UploadFile, file_name: str, s3_client: boto3.client) -> str:
+    """
+    Upload file to S3 bucket.
+
+    Sets appropriate content type and disposition based on file extension.
+    Applies immutable caching headers for performance.
+
+    Args:
+        file: FastAPI UploadFile object to upload.
+        file_name: Desired filename in S3.
+        s3_client: Boto3 S3 client instance.
+
+    Returns:
+        str: The filename used in S3.
+    """
     file.filename = file_name
     file_content = await file.read()
     file_obj = BytesIO(file_content)

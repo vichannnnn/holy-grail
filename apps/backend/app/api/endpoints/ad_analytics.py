@@ -17,14 +17,14 @@ router = APIRouter()
 async def ad_click(request: Request, session: CurrentSession) -> Response:
     """
     Record an advertisement click event.
-    
+
     Tracks when a user clicks on an advertisement for analytics purposes.
     No rate limiting applied as each click is a valuable engagement metric.
-    
+
     Args:
         request: FastAPI request object
         session: Active database session
-        
+
     Returns:
         Response: 204 No Content on success
     """
@@ -37,17 +37,17 @@ async def ad_click(request: Request, session: CurrentSession) -> Response:
 async def ad_view(request: Request, session: CurrentSession) -> Response:
     """
     Record an advertisement view/impression event.
-    
+
     Tracks when an advertisement is displayed to a user. Rate limited to
     prevent artificial inflation of view counts.
-    
+
     Args:
         request: FastAPI request object for rate limiting
         session: Active database session
-        
+
     Returns:
         Response: 204 No Content on success
-        
+
     Raises:
         HTTPException(429): If rate limit exceeded (1 view per day)
     """

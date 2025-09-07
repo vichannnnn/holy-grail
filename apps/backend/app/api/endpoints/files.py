@@ -18,20 +18,20 @@ router = APIRouter()
 async def serve_file(file_path: str) -> FileResponse:
     """
     Serve files from local storage in development environment.
-    
+
     This endpoint allows direct file access during local development without
     requiring S3 credentials. It's automatically disabled in production where
     files are served from S3/CDN.
-    
+
     Args:
         file_path: Path to the file within local storage directory
-        
+
     Returns:
         FileResponse: The requested file with appropriate MIME type
-        
+
     Raises:
         HTTPException(404): If file not found or in non-local environment
-        
+
     Note:
         This endpoint is only available when ENVIRONMENT=local
     """

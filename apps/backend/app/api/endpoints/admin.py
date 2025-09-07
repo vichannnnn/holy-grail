@@ -26,19 +26,19 @@ async def approve_note(
 ) -> NoteSchema:
     """
     Approve a pending educational note for public access.
-    
+
     Admin-only endpoint that marks a note as approved, making it visible
     to all users in the library. This is the final step in the content
     moderation workflow.
-    
+
     Args:
         session: Active database session
         authenticated: Admin user with approval permissions
         id: Unique identifier of the note to approve
-        
+
     Returns:
         NoteSchema: Approved note with updated status
-        
+
     Raises:
         HTTPException(404): If note not found
         HTTPException(403): If user is not an admin
@@ -55,17 +55,17 @@ async def get_all_account(
 ) -> List[CurrentUserSchema]:
     """
     Get list of all registered users.
-    
+
     Developer-only endpoint that returns all user accounts sorted by ID.
     Useful for user management and analytics.
-    
+
     Args:
         session: Active database session
         authenticated: Developer user with access permissions
-        
+
     Returns:
         List[CurrentUserSchema]: List of all users with their details
-        
+
     Raises:
         HTTPException(403): If user is not a developer
     """
@@ -81,18 +81,18 @@ async def get_account(
 ) -> CurrentUserSchema:
     """
     Get a specific user's account details.
-    
+
     Developer-only endpoint for retrieving detailed information about
     a specific user account.
-    
+
     Args:
         session: Active database session
         authenticated: Developer user with access permissions
         id: Unique identifier of the user
-        
+
     Returns:
         CurrentUserSchema: User account details
-        
+
     Raises:
         HTTPException(404): If user not found
         HTTPException(403): If requester is not a developer
@@ -110,19 +110,19 @@ async def update_account(
 ) -> CurrentUserSchema:
     """
     Update a user's role and permissions.
-    
+
     Developer-only endpoint for modifying user roles (e.g., promoting
     to admin, developer status). Critical for access control management.
-    
+
     Args:
         session: Active database session
         authenticated: Developer user with update permissions
         id: Unique identifier of the user to update
         data: New role information
-        
+
     Returns:
         CurrentUserSchema: Updated user information
-        
+
     Raises:
         HTTPException(404): If user not found
         HTTPException(403): If requester is not a developer

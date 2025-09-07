@@ -11,6 +11,7 @@ class User(BaseModel):
     """
     Basic user information for scoreboard display.
     """
+
     user_id: int
     username: str
 
@@ -18,9 +19,10 @@ class User(BaseModel):
 class ScoreboardUser(BaseModel):
     """
     Schema for scoreboard user entry.
-    
+
     Contains user info and their contribution count.
     """
+
     user: User
     upload_count: int
 
@@ -28,7 +30,8 @@ class ScoreboardUser(BaseModel):
 class AuthenticatedScoreboardUser(ScoreboardUser):
     """
     Extended scoreboard schema for authenticated users.
-    
+
     Includes the user's rank position on the leaderboard.
     """
+
     rank: int

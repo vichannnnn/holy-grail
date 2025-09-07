@@ -1,3 +1,10 @@
+"""
+Middleware for validating file uploads.
+
+This module provides a Starlette middleware that validates file uploads
+based on content type and file size before they reach the application
+endpoints.
+"""
 from enum import Enum
 
 from starlette import status
@@ -19,6 +26,12 @@ _request_entity_too_large = PlainTextResponse(
 
 
 class FileTypeName(str, Enum):
+    """
+    Enumeration of allowed file MIME types.
+
+    Defines the content types that can be accepted for file uploads.
+    """
+
     JPEG = "image/jpeg"
     JPG = "image/jpeg"
     PNG = "image/png"
@@ -30,6 +43,17 @@ class FileTypeName(str, Enum):
 
 
 class ValidateUploadFileMiddleware(BaseHTTPMiddleware):
+    """
+    Middleware for validating file uploads before processing.
+
+    Validates file uploads based on:
+    - File size (configurable maximum)
+    - Content type (if specified)
+    - Applied only to specific paths
+
+    Returns appropriate HTTP error responses for invalid uploads.
+    """
+
     def __init__(
         self,
         app: ASGIApp,
@@ -37,6 +61,15 @@ class ValidateUploadFileMiddleware(BaseHTTPMiddleware):
         max_size: int = 16777216,  # 16MB
         file_type=None,
     ) -> None:
+        """
+        Initialize the validation middleware.
+
+        Args:
+            app: The ASGI application.
+            app_path: List of paths to apply validation to.
+            max_size: Maximum allowed file size in bytes (default 16MB).
+            file_type: List of allowed content types.
+        """
         super().__init__(app)
         if app_path is None:
             app_path = []
@@ -61,6 +94,19 @@ class ValidateUploadFileMiddleware(BaseHTTPMiddleware):
         request._receive = receive
 
     async def dispatch(self, request: Request, call_next: RequestResponseEndpoint) -> Response:
+        """
+        Process the request and validate file uploads.
+
+        Checks file size and content type for POST/PUT requests on
+        configured paths. Returns error responses for invalid uploads.
+
+        Args:
+            request: The incoming HTTP request.
+            call_next: The next middleware/endpoint in the chain.
+
+        Returns:
+            Response: Either an error response or the result of call_next.
+        """
         scope = request.scope
 
         if scope["type"] not in ("http",):

@@ -20,17 +20,17 @@ router = APIRouter()
 async def top_approved_note_users(session: CurrentSession) -> List[ScoreboardUser]:
     """
     Get the top contributors leaderboard.
-    
+
     Returns a ranked list of users with the most approved educational
     content contributions. System accounts and test users are excluded
     from the rankings.
-    
+
     Args:
         session: Active database session
-        
+
     Returns:
         List[ScoreboardUser]: Top 20 users ranked by approved contributions
-        
+
     Note:
         Excludes system accounts (IDs: 1, 4, 9) from rankings
     """
@@ -44,15 +44,15 @@ async def get_user_approved_note_count(
 ) -> AuthenticatedScoreboardUser:
     """
     Get the authenticated user's contribution statistics.
-    
+
     Returns the current user's approved note count and their ranking
     position on the leaderboard. Useful for showing personalized
     progress and encouraging more contributions.
-    
+
     Args:
         session: Active database session
         authenticated: Currently authenticated user
-        
+
     Returns:
         AuthenticatedScoreboardUser: User's contribution stats and ranking
     """

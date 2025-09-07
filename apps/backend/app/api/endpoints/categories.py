@@ -34,17 +34,17 @@ async def get_subjects_list(
 ) -> List[SubjectSchema]:
     """
     Get list of all available subjects with optional category filtering.
-    
+
     Returns all subjects in the system, optionally filtered by education level
     (category). Includes category information for each subject.
-    
+
     Args:
         session: Active database session
         category_id: Optional filter by category/education level ID
-        
+
     Returns:
         List[SubjectSchema]: List of subjects with their associated categories
-        
+
     Example:
         GET /all_subjects?category_id=1 returns all O-Level subjects
     """
@@ -59,13 +59,13 @@ async def get_category_level_list(
 ) -> List[CategorySchema]:
     """
     Get list of all education levels/categories.
-    
+
     Returns all available education levels in the system
     (e.g., O-Level, A-Level, IB).
-    
+
     Args:
         session: Active database session
-        
+
     Returns:
         List[CategorySchema]: List of all education level categories
     """
@@ -80,16 +80,16 @@ async def get_category(
 ) -> CategorySchema:
     """
     Get a specific education level/category by ID.
-    
+
     Returns detailed information about a single education level.
-    
+
     Args:
         category_id: Unique identifier of the category
         session: Active database session
-        
+
     Returns:
         CategorySchema: Category information
-        
+
     Raises:
         HTTPException(404): If category not found
     """
@@ -103,13 +103,13 @@ async def get_notes_type_list(
 ) -> List[DocumentTypeSchema]:
     """
     Get list of all document types.
-    
+
     Returns all available document types for educational resources
     (e.g., Summary Notes, Practice Papers, Past Year Papers).
-    
+
     Args:
         session: Active database session
-        
+
     Returns:
         List[DocumentTypeSchema]: List of all document types
     """
@@ -125,18 +125,18 @@ async def add_subject(
 ) -> SubjectSchema:
     """
     Create a new subject.
-    
+
     Developer-only endpoint for adding new subjects to the system.
     Subjects must be associated with a category/education level.
-    
+
     Args:
         data: Subject creation data including name and category
         session: Active database session
         is_developer: Developer authentication dependency
-        
+
     Returns:
         SubjectSchema: Created subject information
-        
+
     Raises:
         HTTPException(403): If user is not a developer
         HTTPException(400): If subject already exists or invalid data
@@ -153,18 +153,18 @@ async def add_category(
 ) -> CategorySchema:
     """
     Create a new education level/category.
-    
+
     Developer-only endpoint for adding new education levels
     (e.g., new curriculum types).
-    
+
     Args:
         data: Category creation data including name
         session: Active database session
         is_developer: Developer authentication dependency
-        
+
     Returns:
         CategorySchema: Created category information
-        
+
     Raises:
         HTTPException(403): If user is not a developer
         HTTPException(400): If category already exists
@@ -181,17 +181,17 @@ async def add_notes_type(
 ) -> DocumentTypeSchema:
     """
     Create a new document type.
-    
+
     Developer-only endpoint for adding new types of educational documents.
-    
+
     Args:
         data: Document type creation data including name
         session: Active database session
         is_developer: Developer authentication dependency
-        
+
     Returns:
         DocumentTypeSchema: Created document type information
-        
+
     Raises:
         HTTPException(403): If user is not a developer
         HTTPException(400): If document type already exists
@@ -209,18 +209,18 @@ async def update_subject(
 ) -> SubjectSchema:
     """
     Update an existing subject.
-    
+
     Developer-only endpoint for modifying subject information.
-    
+
     Args:
         id: Unique identifier of the subject to update
         data: Updated subject data
         session: Active database session
         is_developer: Developer authentication dependency
-        
+
     Returns:
         SubjectSchema: Updated subject information
-        
+
     Raises:
         HTTPException(404): If subject not found
         HTTPException(403): If user is not a developer
@@ -238,18 +238,18 @@ async def update_category(
 ) -> CategorySchema:
     """
     Update an existing education level/category.
-    
+
     Developer-only endpoint for modifying category information.
-    
+
     Args:
         id: Unique identifier of the category to update
         data: Updated category data
         session: Active database session
         is_developer: Developer authentication dependency
-        
+
     Returns:
         CategorySchema: Updated category information
-        
+
     Raises:
         HTTPException(404): If category not found
         HTTPException(403): If user is not a developer
@@ -267,18 +267,18 @@ async def update_notes_type(
 ) -> DocumentTypeSchema:
     """
     Update an existing document type.
-    
+
     Developer-only endpoint for modifying document type information.
-    
+
     Args:
         id: Unique identifier of the document type to update
         data: Updated document type data
         session: Active database session
         is_developer: Developer authentication dependency
-        
+
     Returns:
         DocumentTypeSchema: Updated document type information
-        
+
     Raises:
         HTTPException(404): If document type not found
         HTTPException(403): If user is not a developer

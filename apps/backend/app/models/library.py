@@ -57,13 +57,13 @@ def form_data_note_parser(
 ) -> Union[bool, Tuple[NoteCreateSchema, int]]:
     """
     Parse form data to extract note information.
-    
+
     Extracts and validates note upload data from multipart form submission.
-    
+
     Args:
         form_data: Form data containing file and metadata
         idx: Index of the note in batch upload
-        
+
     Returns:
         Union[bool, Tuple[NoteCreateSchema, int]]: Parsed note schema and index,
             or False if validation fails
@@ -87,7 +87,7 @@ def form_data_note_parser(
 class Library(Base, CRUD["Library"]):
     """
     Educational document library model.
-    
+
     Manages educational resources with features including:
     - Multi-category organization (O-Level, A-Level, IB)
     - Subject and document type categorization
@@ -95,7 +95,7 @@ class Library(Base, CRUD["Library"]):
     - Approval workflow for quality control
     - Download tracking and analytics
     - Support for various file formats (PDF, images, etc.)
-    
+
     Attributes:
         id: Primary key identifier
         category: Education level (foreign key to category_level)
@@ -114,6 +114,7 @@ class Library(Base, CRUD["Library"]):
         doc_subject: Relationship to subject
         doc_type: Relationship to document type
     """
+
     __tablename__ = "library"
     __table_args__ = (
         ForeignKeyConstraint(["subject", "category"], ["subjects.id", "subjects.category_id"]),
@@ -169,20 +170,20 @@ class Library(Base, CRUD["Library"]):
     ) -> List[NoteSchema]:
         """
         Create multiple educational documents from form upload.
-        
+
         Handles batch upload of educational resources with validation,
         file storage, and database entry creation.
-        
+
         Args:
             session: Active database session
             uploader_role: Role of the uploading user
             form_data: Multipart form data containing files and metadata
             uploaded_by: ID of the user uploading documents
             s3_bucket: S3 bucket client for file storage
-            
+
         Returns:
             List[NoteSchema]: List of created document records
-            
+
         Raises:
             AppError.BAD_REQUEST_ERROR: If form data exceeds limits
             AppError.MULTIPLE_GENERIC_ERRORS: If validation fails for any files

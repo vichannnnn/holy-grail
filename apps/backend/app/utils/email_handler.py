@@ -1,3 +1,9 @@
+"""
+Email client for sending templated emails via Mailtrap.
+
+This module provides functionality to send HTML emails using Jinja2
+templates and the Mailtrap API service for production email delivery.
+"""
 from os import environ
 
 import httpx
@@ -8,7 +14,19 @@ env = Environment(loader=FileSystemLoader("./app/email_templates/"))
 
 
 class EmailClient:
-    def __init__(self):
+    """
+    Client for sending emails through Mailtrap API.
+
+    Handles email template rendering with Jinja2 and sending emails
+    via Mailtrap's REST API for production environments.
+    """
+
+    def __init__(self) -> None:
+        """
+        Initialize email client with Mailtrap configuration.
+
+        Reads API key from environment and sets up HTTP client.
+        """
         self.MAILTRAP_API_KEY = environ["MAILTRAP_API_KEY"]
         self.MAILTRAP_API_SEND_URL = "https://send.api.mailtrap.io/api/send"
         self.client = httpx.Client()
@@ -106,6 +124,16 @@ class EmailClient:
     ) -> int:
         """
         Sends a password reset email.
+
+        Args:
+            sender_name: The name of the sender.
+            from_email: The sender's email address.
+            to_email: The recipient's email address.
+            confirm_url: The password reset URL.
+            username: The recipient's username.
+
+        Returns:
+            The HTTP status code of the email sending request.
         """
         html_content = self._render_template(
             "reset_password.html", username=username, confirm_url=confirm_url
@@ -128,6 +156,16 @@ class EmailClient:
     ) -> int:
         """
         Sends a new password email.
+
+        Args:
+            sender_name: The name of the sender.
+            from_email: The sender's email address.
+            to_email: The recipient's email address.
+            username: The recipient's username.
+            password: The new temporary password.
+
+        Returns:
+            The HTTP status code of the email sending request.
         """
         html_content = self._render_template(
             "new_password.html", username=username, password=password
@@ -139,3 +177,33 @@ class EmailClient:
             "New Password for Holy Grail",
             html_content,
         )
+
+
+async def send_email_via_mailtrap(to: str, subject: str, body: str) -> bool:
+    """
+    Send a plain text email via Mailtrap.
+
+    This is a simple async wrapper for sending basic emails without templates.
+    Used by the production email service.
+
+    Args:
+        to: Recipient email address.
+        subject: Email subject line.
+        body: Plain text email body.
+
+    Returns:
+        bool: True if email sent successfully (status 200), False otherwise.
+    """
+    try:
+        client = EmailClient()
+        status_code = client._send_email(
+            sender_name="Holy Grail",
+            from_email="noreply@holygrail.sg",
+            to_email=to,
+            subject=subject,
+            html_content=f"<pre>{body}</pre>",
+        )
+        return status_code == 200
+    except Exception as e:
+        print(f"Failed to send email: {e}")
+        return False

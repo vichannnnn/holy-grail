@@ -1,3 +1,9 @@
+"""
+Core application configuration and utilities.
+
+This package provides the central configuration settings and enums
+used throughout the application.
+"""
 from app.core.config import settings
 from app.core.enums import Environment
 

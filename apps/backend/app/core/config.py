@@ -1,3 +1,10 @@
+"""
+Application configuration management.
+
+This module defines all configuration settings for the application,
+loading from environment variables and providing sensible defaults
+for different deployment environments.
+"""
 import secrets
 from typing import Optional
 
@@ -8,6 +15,14 @@ from app.core.enums import Environment
 
 
 class Settings(BaseSettings):
+    """
+    Central configuration class for the application.
+
+    Loads settings from environment variables with validation and
+    provides computed properties for derived configuration values.
+    Enforces different requirements based on the deployment environment.
+    """
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",
@@ -60,14 +75,36 @@ class Settings(BaseSettings):
 
     @property
     def database_url(self) -> str:
+        """
+        Async PostgreSQL connection URL.
+
+        Returns:
+            str: Connection string for async database operations.
+        """
         return f"postgresql+asyncpg://{self.postgres_user}:{self.postgres_password}@{self.postgres_host}:{self.postgres_port}/{self.postgres_db}"
 
     @property
     def sync_database_url(self) -> str:
+        """
+        Sync PostgreSQL connection URL.
+
+        Used for Alembic migrations and sync operations.
+
+        Returns:
+            str: Connection string for sync database operations.
+        """
         return f"postgresql+psycopg://{self.postgres_user}:{self.postgres_password}@{self.postgres_host}:{self.postgres_port}/{self.postgres_db}"
 
     @property
     def storage_url(self) -> str:
+        """
+        Base URL for file storage access.
+
+        Returns local storage URL for development, CloudFront URL for production.
+
+        Returns:
+            str: Base URL for accessing stored files.
+        """
         if self.environment == Environment.LOCAL:
             return self.local_storage_url
         return self.aws_cloudfront_url or self.local_storage_url
@@ -75,6 +112,21 @@ class Settings(BaseSettings):
     @field_validator("aws_access_key_id", "aws_secret_access_key", "aws_s3_bucket_name")
     @classmethod
     def validate_aws_config(cls, v: Optional[str], info) -> Optional[str]:
+        """
+        Validate AWS configuration based on environment.
+
+        AWS credentials are required for non-local environments.
+
+        Args:
+            v: The field value being validated.
+            info: Validation context containing other field values.
+
+        Returns:
+            Optional[str]: The validated value.
+
+        Raises:
+            ValueError: If AWS config is missing in production.
+        """
         environment = info.data.get("environment", Environment.LOCAL)
         if environment != Environment.LOCAL and v is None:
             raise ValueError(f"AWS configuration required for {environment} environment")
@@ -83,6 +135,18 @@ class Settings(BaseSettings):
     @field_validator("email_enabled")
     @classmethod
     def validate_email_config(cls, v: bool, info) -> bool:
+        """
+        Validate email configuration based on environment.
+
+        Email is always disabled in local development.
+
+        Args:
+            v: The email_enabled flag.
+            info: Validation context.
+
+        Returns:
+            bool: False for local environment, original value otherwise.
+        """
         environment = info.data.get("environment", Environment.LOCAL)
         if environment == Environment.LOCAL:
             return False
@@ -91,6 +155,19 @@ class Settings(BaseSettings):
     @field_validator("mailtrap_api_key", "mailtrap_bearer_token")
     @classmethod
     def validate_mailtrap_config(cls, v: Optional[str], info) -> Optional[str]:
+        """
+        Validate Mailtrap configuration when email is enabled.
+
+        Args:
+            v: The Mailtrap credential being validated.
+            info: Validation context.
+
+        Returns:
+            Optional[str]: The validated value.
+
+        Raises:
+            ValueError: If Mailtrap config is missing when email is enabled.
+        """
         environment = info.data.get("environment", Environment.LOCAL)
         email_enabled = info.data.get("email_enabled", False)
         if environment != Environment.LOCAL and email_enabled and v is None:
@@ -98,6 +175,12 @@ class Settings(BaseSettings):
         return v
 
     def __init__(self, **kwargs):
+        """
+        Initialize settings with environment-specific overrides.
+
+        Ensures email is disabled for local development regardless
+        of environment variable settings.
+        """
         super().__init__(**kwargs)
         if self.environment == Environment.LOCAL:
             self.email_enabled = False

@@ -1,7 +1,20 @@
+"""
+Application-specific HTTP exceptions.
+
+This module defines standardized HTTP exceptions used throughout the
+application for consistent error handling and API responses.
+"""
 from fastapi import HTTPException, status
 
 
 class AppError:
+    """
+    Container class for application-specific HTTP exceptions.
+
+    Provides pre-configured HTTP exceptions for common error scenarios
+    with appropriate status codes and messages.
+    """
+
     BAD_REQUEST_ERROR = HTTPException(
         status_code=status.HTTP_400_BAD_REQUEST,
         detail="Resources provided is invalid.",
@@ -29,7 +42,17 @@ class AppError:
         status_code=status.HTTP_409_CONFLICT, detail="Resource already exists"
     )
 
-    def MULTIPLE_GENERIC_ERRORS(**kwargs):
+    @staticmethod
+    def MULTIPLE_GENERIC_ERRORS(**kwargs) -> HTTPException:
+        """
+        Create an HTTP exception with multiple error details.
+
+        Args:
+            **kwargs: Key-value pairs of error details.
+
+        Returns:
+            HTTPException: 400 Bad Request with multiple error details.
+        """
         return HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=kwargs,

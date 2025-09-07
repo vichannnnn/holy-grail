@@ -20,9 +20,10 @@ DocumentNameStr = constr(min_length=1, max_length=100)
 class NoteCreateSchema(BaseModel):
     """
     Schema for creating educational documents.
-    
+
     Validates file upload and metadata for new documents.
     """
+
     file: Any
     category: int
     subject: int
@@ -34,9 +35,10 @@ class NoteCreateSchema(BaseModel):
 class NoteInsertSchema(BaseModel):
     """
     Internal schema for database insertion.
-    
+
     Contains processed file information ready for storage.
     """
+
     category: int
     subject: int
     type: int
@@ -50,9 +52,10 @@ class NoteInsertSchema(BaseModel):
 class NoteUpdateSchema(BaseModel):
     """
     Schema for updating document metadata.
-    
+
     All fields are optional for partial updates.
     """
+
     category: Optional[int] = None
     document_name: Optional[DocumentNameStr] = None
     subject: Optional[int] = None
@@ -65,10 +68,11 @@ class NoteUpdateSchema(BaseModel):
 class NoteSchema(BaseModel):
     """
     Complete document schema with relationships.
-    
+
     Includes all metadata and related category information
     for display and API responses.
     """
+
     id: int
     category: int
     subject: int
@@ -90,8 +94,9 @@ class NoteSchema(BaseModel):
 class UserUploadCount(BaseModel):
     """
     Schema for user upload statistics.
-    
+
     Used for scoreboard and analytics.
     """
+
     uploaded_by: int
     upload_count: int

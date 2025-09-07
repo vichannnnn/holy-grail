@@ -31,12 +31,12 @@ from app.utils.exceptions import AppError
 def extract_metrics(response: RunReportResponse) -> Tuple[Optional[int], Optional[int]]:
     """
     Extract specific metrics from Google Analytics response.
-    
+
     Parses the GA response to extract file download counts and active user metrics.
-    
+
     Args:
         response: Google Analytics API response
-        
+
     Returns:
         Tuple[Optional[int], Optional[int]]: File download count and active users
     """
@@ -68,10 +68,10 @@ def extract_metrics(response: RunReportResponse) -> Tuple[Optional[int], Optiona
 class Analytics(Base, CRUD["analytics"]):
     """
     Platform analytics snapshot model.
-    
+
     Stores periodic snapshots of platform usage metrics fetched from
     Google Analytics and internal database statistics.
-    
+
     Attributes:
         id: Primary key identifier
         file_download_count: Total file downloads from GA
@@ -79,6 +79,7 @@ class Analytics(Base, CRUD["analytics"]):
         user_count: Total registered users from database
         timestamp: Snapshot timestamp
     """
+
     __tablename__ = "analytics"
 
     id: Mapped[int] = mapped_column(
@@ -96,13 +97,13 @@ class Analytics(Base, CRUD["analytics"]):
     async def get_latest_analytics(cls, session: AsyncSession) -> ModelType:
         """
         Get the most recent analytics snapshot.
-        
+
         Args:
             session: Active database session
-            
+
         Returns:
             Analytics: Latest analytics record
-            
+
         Raises:
             AppError.RESOURCES_NOT_FOUND_ERROR: If no analytics data exists
         """
@@ -118,10 +119,10 @@ class Analytics(Base, CRUD["analytics"]):
     async def fetch_google_analytics_async(cls, session: AsyncSession) -> None:
         """
         Fetch and store latest analytics from Google Analytics.
-        
+
         Retrieves metrics from GA API and combines with database statistics
         to create a new analytics snapshot. Typically run as a scheduled task.
-        
+
         Args:
             session: Active database session
         """
