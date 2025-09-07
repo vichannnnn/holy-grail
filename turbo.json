@@ -29,7 +29,8 @@
 		},
     "test": {
       "dependsOn": ["^test"],
-      "inputs": ["src/**"]
+      "inputs": ["src/**"],
+      "cache": false
     }
 	}
 }
