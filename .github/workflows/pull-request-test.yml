@@ -49,16 +49,16 @@ jobs:
 
       - name: Run tests in container
         run: |
-          docker exec backend-test sh -c "cd /app && PYTHONPATH=. uv run pytest app/tests -x -vv"
+          docker exec backend-test sh -c "cd /backend && PYTHONPATH=. uv run pytest app/tests -x -vv"
 
       - name: Generate coverage
         run: |
-          docker exec backend-test sh -c "cd /app && PYTHONPATH=. uv run coverage run -m pytest app/tests"
-          docker exec backend-test sh -c "cd /app && uv run coverage xml"
+          docker exec backend-test sh -c "cd /backend && PYTHONPATH=. uv run coverage run -m pytest app/tests"
+          docker exec backend-test sh -c "cd /backend && uv run coverage xml"
 
       - name: Copy coverage file
         run: |
-          docker cp backend-test:/app/coverage.xml ./coverage.xml
+          docker cp backend-test:/backend/coverage.xml ./coverage.xml
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
