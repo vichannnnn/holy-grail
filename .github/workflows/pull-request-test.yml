@@ -21,23 +21,49 @@ jobs:
       - name: Install dependencies
         run: bun install
 
-      - name: Setup backend environment
-        working-directory: ./apps/backend
-        run: |
-          cp -n .env.example .env 2>/dev/null || true
-          pip install uv
-          uv sync
-
       - name: Start database
         run: bun run db
 
-      - name: Run tests with coverage
-        working-directory: ./apps/backend
-        run: bun run test:cov
+      - name: Wait for database to be ready
+        run: |
+          until docker exec holy-grail-db pg_isready -U holy_grail; do
+            echo "Waiting for database..."
+            sleep 2
+          done
 
-      - name: Generate coverage XML
+      - name: Build backend Docker image
         working-directory: ./apps/backend
-        run: uv run coverage xml
+        run: docker build -t holy-grail-backend-test .
+
+      - name: Run backend container
+        run: |
+          docker run -d --name backend-test \
+            --network container:holy-grail-db \
+            -e POSTGRES_HOST=localhost \
+            -e POSTGRES_PORT=5432 \
+            -e POSTGRES_DB=holy_grail \
+            -e POSTGRES_USER=holy_grail \
+            -e POSTGRES_PASSWORD=holy_grail \
+            -e ENVIRONMENT=local \
+            holy-grail-backend-test
+
+      - name: Wait for backend to be ready
+        run: |
+          echo "Waiting for backend to start..."
+          sleep 10
+
+      - name: Run tests in container
+        run: |
+          docker exec backend-test sh -c "cd /app && PYTHONPATH=. uv run pytest app/tests -x -vv"
+
+      - name: Generate coverage
+        run: |
+          docker exec backend-test sh -c "cd /app && PYTHONPATH=. uv run coverage run -m pytest app/tests"
+          docker exec backend-test sh -c "cd /app && uv run coverage xml"
+
+      - name: Copy coverage file
+        run: |
+          docker cp backend-test:/app/coverage.xml ./coverage.xml
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
@@ -45,7 +71,13 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: true
           verbose: true
-          directory: ./apps/backend
+          file: ./coverage.xml
+
+      - name: Cleanup
+        if: always()
+        run: |
+          docker stop backend-test || true
+          docker rm backend-test || true
 
   check:
     if: always()
