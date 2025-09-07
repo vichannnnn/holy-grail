@@ -33,7 +33,7 @@ jobs:
 
       - name: Build backend Docker image
         working-directory: ./apps/backend
-        run: docker build -t holy-grail-backend-test .
+        run: docker build -f Dockerfile.test -t holy-grail-backend-test .
 
       - name: Run backend container
         run: |
@@ -46,11 +46,6 @@ jobs:
             -e POSTGRES_PASSWORD=holy_grail \
             -e ENVIRONMENT=local \
             holy-grail-backend-test
-
-      - name: Wait for backend to be ready
-        run: |
-          echo "Waiting for backend to start..."
-          sleep 10
 
       - name: Run tests in container
         run: |
