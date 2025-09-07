@@ -102,7 +102,7 @@ export async function downloadNote(
 				ok: true,
 				data: {
 					data: base64Data,
-					filename: note.document_name,
+					filename: note.document_name + note.extension,
 				},
 			};
 		}

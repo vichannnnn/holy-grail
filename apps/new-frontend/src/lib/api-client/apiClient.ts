@@ -19,10 +19,6 @@ apiClient.interceptors.request.use(
 
 		if (accessToken) {
 			config.headers.Authorization = `Bearer ${accessToken}`;
-		} else {
-			// If no token is found, ensure user data is cleared
-			cookieStore.delete(ACCESS_TOKEN_KEY);
-			cookieStore.delete(USER_DATA_KEY);
 		}
 		return config;
 	},
@@ -31,6 +27,7 @@ apiClient.interceptors.request.use(
 	},
 );
 
+/*
 apiClient.interceptors.response.use(
 	(response) => response,
 	async (error) => {
@@ -42,3 +39,4 @@ apiClient.interceptors.response.use(
 		return Promise.reject(error);
 	},
 );
+*/
