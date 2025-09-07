@@ -10,6 +10,23 @@ import {
 } from "./actions";
 import { PAGE_MAX_SIZE } from "./constants";
 import { LibrarySearch, LibraryContent } from "./_components";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+	title: "Library - Holy Grail",
+	description:
+		"Browse Holy Grail's comprehensive resource library. Access educational materials, guides, and resources organized by category and subject.",
+	openGraph: {
+		title: "Resource Library | Holy Grail",
+		description:
+			"Discover a wealth of knowledge in Holy Grail's library. Find curated educational resources, learning materials, and guides to enhance your experience.",
+		images: [
+			{
+				url: "",
+			},
+		],
+	},
+};
 
 export default async function LibraryPage({
 	searchParams,
