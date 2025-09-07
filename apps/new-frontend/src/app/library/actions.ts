@@ -105,9 +105,8 @@ export async function downloadNote(
 					filename: note.document_name,
 				},
 			};
-		} else {
-			return { ok: false, err: "File not found" };
 		}
+		return { ok: false, err: "File not found" };
 	} catch (error) {
 		return { ok: false, err: `Failed to download note: ${error}` };
 	}

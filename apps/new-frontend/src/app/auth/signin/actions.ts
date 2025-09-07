@@ -25,7 +25,7 @@ export async function signin(values: SignInSchema): Promise<{ ok: boolean; messa
 		if (isAxiosError(err) && err.response) {
 			const status = err.response.status;
 			const message = err.response.data?.message ?? err.response.statusText ?? "Request failed";
-			console.log(err.response.data, values);
+
 			return { ok: false, message: `Signin failed (${status}): ${message}` };
 		}
 		const message = err instanceof Error ? err.message : String(err);

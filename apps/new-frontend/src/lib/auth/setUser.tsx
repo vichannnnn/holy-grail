@@ -17,7 +17,4 @@ export async function setUser(user: User, accessToken: string, expiresAtMs: numb
 		httpOnly: true,
 		secure: process.env.NODE_ENV === "production",
 	});
-
-	console.log(cookieStore.get(USER_DATA_KEY));
-	console.log(cookieStore.get(ACCESS_TOKEN_KEY));
 }
