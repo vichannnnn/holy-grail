@@ -6,7 +6,7 @@ export const NAV_LINKS: Record<string, HeaderLinkProps> = {
 	faq: { label: "FAQ", href: "/faq" },
 	contribute: {
 		label: "Contribute",
-		href: "/contribute",
+		href: "/upload",
 	},
 	leaderboard: {
 		label: "Leaderboard",

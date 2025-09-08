@@ -41,7 +41,7 @@ export const NAV_DROPDOWN_INFO: Record<string, NavInfo> = {
 	},
 	contribute: {
 		render: () => (
-			<Link href="/contribute">
+			<Link href="/upload">
 				<DropdownButton label="Contribute" icon={<ArrowUpTrayIcon className="size-6" />} />
 			</Link>
 		),

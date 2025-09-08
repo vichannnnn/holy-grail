@@ -43,7 +43,7 @@ export async function Hero() {
 						</Text>
 					</div>
 					{user ? (
-						<LinkButton href="/contribute">
+						<LinkButton href="/upload">
 							<span>Contribute Now</span>
 							<ArrowRightIcon className="size-5 inline-block ml-1 -mt-0.5" />
 						</LinkButton>

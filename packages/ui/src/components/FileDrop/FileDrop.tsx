@@ -1,13 +1,42 @@
 "use client";
 import { Button, Text } from "..";
 import type { FileDropProps } from "./types";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useImperativeHandle } from "react";
 import { twMerge } from "tailwind-merge";
 
-export function FileDrop({ optional, className, disabled, ...props }: FileDropProps) {
+export function FileDrop({
+	optional,
+	retainFiles = false,
+	className,
+	disabled,
+	ref,
+	...props
+}: FileDropProps) {
 	const inputRef = useRef<HTMLInputElement>(null);
 	const containerRef = useRef<HTMLDivElement>(null);
 	const [uploadedFiles, setUploadedFiles] = useState<FileList | null>(null);
+
+	useImperativeHandle(
+		ref,
+		() => ({
+			input: inputRef.current,
+			removeByName: (name: string) => {
+				if (!inputRef.current || !inputRef.current.files) return;
+				const dt = new DataTransfer();
+				Array.from(inputRef.current.files)
+					.filter((file) => file.name !== name)
+					.forEach((file) => dt.items.add(file));
+				inputRef.current.files = dt.files;
+				setUploadedFiles(dt.files);
+			},
+			clear: () => {
+				if (!inputRef.current) return;
+				inputRef.current.value = "";
+				setUploadedFiles(null);
+			},
+		}),
+		[inputRef],
+	);
 
 	useEffect(() => {
 		if (!containerRef.current || !inputRef.current) return;
@@ -30,12 +59,25 @@ export function FileDrop({ optional, className, disabled, ...props }: FileDropPr
 			if (files.length === 0) return;
 			const giveFiles = new DataTransfer();
 
+			// If retainFiles is true, multiple is true, and we already have files, add them first
+			if (retainFiles && props.multiple && inputRef.current.files) {
+				for (const file of Array.from(inputRef.current.files)) {
+					giveFiles.items.add(file);
+				}
+			}
+
 			// if multiple files are not allowed, only the first file will be added
-			if (!props.multiple) giveFiles.items.add(files[0] as File);
-			else
+			if (!props.multiple) {
+				// For single file mode, always replace with the new file (retainFiles doesn't apply)
+				giveFiles.items.clear();
+				giveFiles.items.add(files[0] as File);
+			} else {
+				// For multiple files mode, add new files (retain existing if retainFiles is true)
 				for (const file of Array.from(files)) {
 					giveFiles.items.add(file);
 				}
+			}
+
 			inputRef.current.files = giveFiles.files;
 
 			// trigger change event
@@ -53,7 +95,7 @@ export function FileDrop({ optional, className, disabled, ...props }: FileDropPr
 		<div
 			ref={containerRef}
 			className={twMerge(
-				"w-full h-full py-4 border-2 border-dashed border-blue-500 dark:border-blue-400 rounded-lg flex flex-col items-center justify-center gap-2",
+				"w-full h-full py-4 border-2 border-dashed border-pink-500 dark:border-pink-400 rounded-lg flex flex-col items-center justify-center gap-2",
 				disabled ? "cursor-not-allowed" : "cursor-pointer",
 				className,
 			)}
@@ -92,18 +134,20 @@ export function FileDrop({ optional, className, disabled, ...props }: FileDropPr
 
 			<Button onClick={() => inputRef.current?.click()} disabled={disabled}>
 				{uploadedFiles === null ? "Select files" : "Reselect files"}
-				<input
-					ref={inputRef}
-					type="file"
-					className="hidden"
-					disabled={disabled}
-					onChange={(e) => {
-						setUploadedFiles(e.target.files);
-						props.onChange?.(e);
-					}}
-					{...props}
-				/>
 			</Button>
+
+			<input
+				ref={inputRef}
+				type="file"
+				className="hidden"
+				disabled={disabled}
+				{...props}
+				onChange={(e) => {
+					setUploadedFiles(e.target.files);
+
+					props.onChange?.(e);
+				}}
+			/>
 		</div>
 	);
 }
