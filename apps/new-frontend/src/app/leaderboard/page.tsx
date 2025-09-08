@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 	openGraph: {
 		title: "Community Leaderboard | Holy Grail",
 		description:
-			"Check out Holy Grail\'s leaderboard to discover top contributors and track your own progress. See how you" +
+			"Check out Holy Grail's leaderboard to discover top contributors and track your own progress. See how you" +
 			" compare with others and celebrate community achievements.",
 		images: [
 			{

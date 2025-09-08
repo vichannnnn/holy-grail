@@ -1,4 +1,4 @@
-import type { CategoryType, DocumentType, SubjectType } from "@/app/library/types";
+import type { CategoryType, DocumentType } from "@/app/library/types";
 
 export interface UploadWorkspaceProps {
 	categories: CategoryType[];

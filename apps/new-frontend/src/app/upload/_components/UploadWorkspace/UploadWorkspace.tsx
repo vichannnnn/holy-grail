@@ -19,7 +19,6 @@ export function UploadWorkspace({ categories, documentTypes }: UploadWorkspacePr
 			} else {
 				setSelectedFiles(null);
 			}
-			// Remove metadata for deleted file
 		}
 	};
 
