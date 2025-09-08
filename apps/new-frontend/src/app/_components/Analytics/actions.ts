@@ -6,7 +6,7 @@ export async function fetchAnalytics(): Promise<AnalyticsResponse | null> {
 	let response;
 	try {
 		response = await apiClient.get<AnalyticsResponse>("/analytics/get_latest_analytics");
-	} catch (error) {
+	} catch {
 		return null;
 	}
 	return response.data;

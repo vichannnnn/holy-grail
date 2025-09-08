@@ -15,11 +15,9 @@ export function LibraryContent({ ok, data, err }: LibraryAPIResponse<PaginatedNo
 	const searchParams = useSearchParams();
 	const { breakpoint } = useContext(ClientContext);
 
-	console.log(breakpoint);
-
 	if (!ok || !data) {
 		return (
-			<div className="flex flex-col items-center justify-center h-64">
+			<div className="flex flex-col items-center justify-center">
 				<Image src="/trimmy-grail-chan-sparkling.webp" alt="Error" width={100} height={100} />
 				<Title order={2} className="font-bold mb-4">
 					We ran into an issue :(
