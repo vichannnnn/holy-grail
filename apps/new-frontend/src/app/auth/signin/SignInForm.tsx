@@ -27,7 +27,7 @@ export function SignInForm() {
 				toast.error(message || "Sign in failed");
 			} else {
 				toast.success("Sign in successful! Redirecting...");
-				redirect("/library");
+				redirect("/");
 			}
 		});
 	};

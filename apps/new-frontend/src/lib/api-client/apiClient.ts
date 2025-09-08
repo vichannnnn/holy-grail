@@ -1,6 +1,6 @@
 import "server-only";
 import axios from "axios";
-import { ACCESS_TOKEN_KEY, USER_DATA_KEY } from "@lib/auth/constants";
+import { ACCESS_TOKEN_KEY } from "@lib/auth/constants";
 import { cookies } from "next/headers";
 
 const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL;
