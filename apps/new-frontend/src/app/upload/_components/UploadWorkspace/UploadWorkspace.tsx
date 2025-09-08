@@ -3,8 +3,9 @@ import { FileDrop, Text, type FileDropHandle, Title, Button } from "@shared/ui/c
 import Image from "next/image";
 import { useRef, useState } from "react";
 import type { UploadWorkspaceProps } from "./types";
+import { UploadEntry } from "./UploadEntry";
 
-export function UploadWorkspace({ fetchSubjects }: UploadWorkspaceProps) {
+export function UploadWorkspace({ categories, documentTypes }: UploadWorkspaceProps) {
 	const fileDropRef = useRef<FileDropHandle>(null);
 	// be very careful to sync this state with the FileDrop's internal state
 	const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
@@ -27,24 +28,13 @@ export function UploadWorkspace({ fetchSubjects }: UploadWorkspaceProps) {
 				{selectedFiles !== null && selectedFiles.length !== 0 ? (
 					<div className="w-full">
 						{Array.from(selectedFiles).map((file) => (
-							<div
+							<UploadEntry
 								key={file.name}
-								className="flex justify-between items-center mb-1 p-2 bg-white dark:bg-gray-800 rounded"
-							>
-								<span>{file.name}</span>
-								<button
-									onClick={() => deleteFile(file.name)}
-									className="text-red-500 hover:text-red-700"
-								>
-									Delete
-								</button>
-								<button
-									onClick={() => fetchSubjects()}
-									className="text-blue-500 hover:text-blue-700"
-								>
-									Fetch Subjects
-								</button>
-							</div>
+								file={file}
+								onDelete={deleteFile}
+								categories={categories}
+								documentTypes={documentTypes}
+							/>
 						))}
 						<div className="flex flex-col sm:flex-row sm:items-center gap-4 mt-4">
 							<Text description className="flex-1 text-xs">

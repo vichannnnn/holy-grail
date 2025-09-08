@@ -1,13 +1,14 @@
-import type {
-	CategoryType,
-	DocumentType,
-	SubjectType,
-	LibraryAPIResponse,
-} from "@/app/library/types";
+import type { CategoryType, DocumentType } from "@/app/library/types";
 
 export interface UploadWorkspaceProps {
 	categories: CategoryType[];
 	documentTypes: DocumentType[];
-	// subjects prop will be fetched dynamically based on category selection
-	fetchSubjects: (category_id?: number) => Promise<LibraryAPIResponse<SubjectType[]>>;
+	// subjects prop will be fetched dynamically based on category selection (see UploadEntry.tsx)
+}
+
+export interface UploadEntryProps {
+	file: File;
+	onDelete: (fileName: string) => void;
+	categories: CategoryType[];
+	documentTypes: DocumentType[];
 }

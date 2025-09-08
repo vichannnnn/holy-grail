@@ -1,7 +1,7 @@
 import { Title, Text } from "@shared/ui/components";
 import { unauthorized } from "next/navigation";
 import { getUser } from "@lib/auth";
-import { fetchAllCategories, fetchAllDocumentTypes, fetchAllSubjects } from "@/app/library/actions";
+import { fetchAllCategories, fetchAllDocumentTypes } from "@/app/library/actions";
 import Image from "next/image";
 import type { Metadata } from "next";
 import { UploadWorkspace } from "./_components";
@@ -59,11 +59,7 @@ export default async function UploadPage() {
 					team before being published.
 				</Title>
 			</div>
-			<UploadWorkspace
-				fetchSubjects={fetchAllSubjects}
-				categories={categories.data}
-				documentTypes={documentTypes.data}
-			/>
+			<UploadWorkspace categories={categories.data} documentTypes={documentTypes.data} />
 		</main>
 	);
 }
