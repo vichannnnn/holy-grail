@@ -9,3 +9,4 @@ export * from "./Input";
 export * from "./Modal";
 export * from "./Combobox";
 export * from "./FileDrop";
+export * from "./Accordion";
