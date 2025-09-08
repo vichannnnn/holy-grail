@@ -15,6 +15,7 @@ import { DropdownButton } from "./DropdownButton";
 import type { NavInfo } from "./types";
 import { deleteUser } from "@lib/auth/deleteUser";
 import toast from "react-hot-toast";
+import { RoleEnum } from "@lib/auth/constants";
 
 export const NAV_DROPDOWN_INFO: Record<string, NavInfo> = {
 	home: {
@@ -82,7 +83,7 @@ export const AUTHED_DROPDOWN_INFO: Record<string, NavInfo> = {
 				<DropdownButton label="Profile" icon={<UserCircleIcon className="size-6" />} />
 			</Link>
 		),
-		needsRole: 1,
+		needsRole: RoleEnum.USER,
 	},
 	signOut: {
 		render: () => (
@@ -102,7 +103,7 @@ export const AUTHED_DROPDOWN_INFO: Record<string, NavInfo> = {
 				<DropdownButton label="Admin" icon={<AdjustmentsHorizontalIcon className="size-6" />} />
 			</Link>
 		),
-		needsRole: 2,
+		needsRole: RoleEnum.ADMIN,
 	},
 	developer: {
 		render: () => (
@@ -110,7 +111,7 @@ export const AUTHED_DROPDOWN_INFO: Record<string, NavInfo> = {
 				<DropdownButton label="Developer" icon={<ExclamationTriangleIcon className="size-6" />} />
 			</Link>
 		),
-		needsRole: 3,
+		needsRole: RoleEnum.DEVELOPER,
 	},
 };
 

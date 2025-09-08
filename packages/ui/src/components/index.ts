@@ -8,3 +8,4 @@ export * from "./Card";
 export * from "./Input";
 export * from "./Modal";
 export * from "./Combobox";
+export * from "./FileDrop";
