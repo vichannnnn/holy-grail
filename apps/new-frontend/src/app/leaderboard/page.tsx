@@ -1,6 +1,25 @@
 import { fetchScoreboardUsers, fetchUserScore } from "./actions";
 import { Title, Text } from "@shared/ui/components";
+import type { Metadata } from "next";
 import Image from "next/image";
+
+export const metadata: Metadata = {
+	title: "Leaderboard - Holy Grail",
+	description:
+		"Explore the Holy Grail leaderboard to see top contributors and rankings. Track your progress and compare with" +
+		" others in the community.",
+	openGraph: {
+		title: "Community Leaderboard | Holy Grail",
+		description:
+			"Check out Holy Grail\'s leaderboard to discover top contributors and track your own progress. See how you" +
+			" compare with others and celebrate community achievements.",
+		images: [
+			{
+				url: "",
+			},
+		],
+	},
+};
 
 export default async function LeaderboardPage() {
 	const scoreboardUsers = await fetchScoreboardUsers();
