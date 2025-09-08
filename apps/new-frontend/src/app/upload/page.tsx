@@ -1,12 +1,12 @@
-"use client";
 import { Title, Text, FileDrop, type FileDropHandle } from "@shared/ui/components";
-import { useRef, useEffect } from "react";
+import { unauthorized } from "next/navigation";
+import { getUser } from "@lib/auth";
 
-export default function UploadPage() {
-	const inputRef = useRef<FileDropHandle>(null);
-
-	// You can access the files via inputRef.current.files
-	console.log(inputRef.current?.input?.files);
+export default async function UploadPage() {
+	const user = await getUser();
+	if (!user) {
+		unauthorized();
+	}
 
 	return (
 		<main className="flex flex-col items-center mx-auto lg:w-2/3 w-5/6 ">
@@ -19,8 +19,6 @@ export default function UploadPage() {
 					team before being published.
 				</Title>
 			</div>
-
-			<FileDrop multiple ref={inputRef} onChange={(e) => console.log(e.target.files)} />
 		</main>
 	);
 }

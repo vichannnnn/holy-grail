@@ -66,6 +66,30 @@ export function FileDrop({
 				}
 			}
 
+			// Helper function to get unique file name
+			const getUniqueFileName = (file: File, existingFiles: File[]): File => {
+				const existingNames = existingFiles.map((f) => f.name);
+				let fileName = file.name;
+				let idx = 1;
+
+				// Extract name and extension
+				const lastDotIndex = fileName.lastIndexOf(".");
+				const name = lastDotIndex !== -1 ? fileName.substring(0, lastDotIndex) : fileName;
+				const extension = lastDotIndex !== -1 ? fileName.substring(lastDotIndex) : "";
+
+				// Keep incrementing suffix until we find a unique name
+				while (existingNames.includes(fileName)) {
+					fileName = `${name}_${idx}${extension}`;
+					idx++;
+				}
+
+				// If name changed, create a new File object with the new name
+				if (fileName !== file.name) {
+					return new File([file], fileName, { type: file.type, lastModified: file.lastModified });
+				}
+				return file;
+			};
+
 			// if multiple files are not allowed, only the first file will be added
 			if (!props.multiple) {
 				// For single file mode, always replace with the new file (retainFiles doesn't apply)
@@ -73,8 +97,11 @@ export function FileDrop({
 				giveFiles.items.add(files[0] as File);
 			} else {
 				// For multiple files mode, add new files (retain existing if retainFiles is true)
+				const existingFiles = Array.from(giveFiles.files);
 				for (const file of Array.from(files)) {
-					giveFiles.items.add(file);
+					const uniqueFile = getUniqueFileName(file, existingFiles);
+					giveFiles.items.add(uniqueFile);
+					existingFiles.push(uniqueFile);
 				}
 			}
 
