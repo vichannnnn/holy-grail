@@ -30,6 +30,7 @@ export function Combobox<T extends Item>({
 	containerClassName,
 	placeholder,
 	disabled,
+	overrideDisplayValue,
 }: ComboboxProps<T>) {
 	const [query, setQuery] = useState("");
 	const comboboxRef = useRef<HTMLElement | null>(null);
@@ -80,7 +81,9 @@ export function Combobox<T extends Item>({
 						id={id}
 						as="input"
 						className={inputClass}
-						displayValue={(item: T | null) => (!defaultValue ? "" : item?.name || "")}
+						displayValue={(item: T | null) =>
+							overrideDisplayValue ? overrideDisplayValue(item) : item ? item.name : ""
+						}
 						onChange={(e) => setQuery(e.target.value)}
 						placeholder={placeholder}
 						disabled={disabled}

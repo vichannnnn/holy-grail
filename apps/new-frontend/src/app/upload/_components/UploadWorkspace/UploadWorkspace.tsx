@@ -19,12 +19,13 @@ export function UploadWorkspace({ categories, documentTypes }: UploadWorkspacePr
 			} else {
 				setSelectedFiles(null);
 			}
+			// Remove metadata for deleted file
 		}
 	};
 
 	return (
 		<div className="w-full flex flex-col items-center">
-			<div className="flex flex-col items-center mb-4 shadow-sm dark:shadow-none bg-gray-200 dark:bg-gray-600 p-4 rounded-lg w-full">
+			<div className="flex flex-col items-center mb-4 shadow-sm dark:shadow-none bg-gray-200 dark:bg-gray-600/20 p-4 rounded-lg w-full">
 				{selectedFiles !== null && selectedFiles.length !== 0 ? (
 					<div className="w-full">
 						{Array.from(selectedFiles).map((file) => (

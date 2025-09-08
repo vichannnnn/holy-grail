@@ -1,10 +1,13 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import type { DropdownProps } from "./types";
 
-export function Dropdown({ header, content }: DropdownProps) {
+export function Dropdown({ header, content, ...rest }: DropdownProps) {
 	return (
 		<Menu>
-			<MenuButton className="inline-flex items-center justify-center rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 hover:bg-gray-200 dark:hover:bg-zinc-700 focus-visible:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition cursor-pointer">
+			<MenuButton
+				className="inline-flex items-center justify-center rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 hover:bg-gray-200 dark:hover:bg-zinc-700 focus-visible:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition cursor-pointer"
+				{...rest}
+			>
 				{header}
 			</MenuButton>
 
