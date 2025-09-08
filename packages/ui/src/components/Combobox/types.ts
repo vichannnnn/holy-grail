@@ -15,4 +15,5 @@ export interface ComboboxProps<T extends Item> {
 	containerClassName?: string;
 	placeholder?: string;
 	disabled?: boolean;
+	overrideDisplayValue?: (item: T | null) => string;
 }

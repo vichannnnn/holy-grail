@@ -52,6 +52,11 @@ export function LibrarySearch({
 						navigateToSearchValue({ name: "subject", value: newValue ? String(newValue.name) : "" })
 					}
 					disabled={!query?.category}
+					overrideDisplayValue={() =>
+						query?.subject && query?.category
+							? (allSubjects.data?.find((t) => query.subject === t.name.toString())?.name ?? "")
+							: ""
+					}
 				/>
 				<LibraryCombobox
 					label="Year"

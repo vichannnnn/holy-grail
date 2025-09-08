@@ -1,6 +1,7 @@
-import type { ReactNode } from "react";
+import type { ReactNode, HTMLAttributes } from "react";
 
-export interface DropdownProps {
+export interface DropdownProps extends Omit<HTMLAttributes<HTMLButtonElement>, "content"> {
 	header: ReactNode;
+
 	content: ReactNode[];
 }

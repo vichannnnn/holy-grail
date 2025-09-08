@@ -5,6 +5,7 @@ export interface AccordionProps {
 	children: ReactNode;
 	className?: string;
 	buttonClassName?: string;
+	additionalButtons?: ReactNode;
 	panelClassName?: string;
 	iconClassName?: string;
 	defaultOpen?: boolean;

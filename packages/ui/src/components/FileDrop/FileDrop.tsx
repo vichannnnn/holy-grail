@@ -138,7 +138,7 @@ export function FileDrop({
 			) : (
 				<div className="flex flex-col items-center justify-center gap-0.5 px-1">
 					<Text description>
-						{uploadedFiles.length} file{uploadedFiles.length > 1 ? "s" : ""} selected
+						{uploadedFiles.length} file{uploadedFiles.length !== 1 ? "s" : ""} selected
 					</Text>
 					<Text description className="flex flex-col text-xs">
 						{Array.from(uploadedFiles).map((file) => (
