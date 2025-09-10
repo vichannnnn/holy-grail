@@ -1,5 +1,5 @@
 import type { CategoryType, DocumentType } from "@/app/library/types";
-import type { Control, FieldErrors } from "react-hook-form";
+import type { Control, FieldErrors, UseFormSetValue } from "react-hook-form";
 import type { z } from "zod";
 import type { NoteSchema, NotesSchema } from "./schemas";
 
@@ -17,6 +17,7 @@ export interface UploadEntryProps {
 	file: File;
 	index: number;
 	control: Control<NotesFormData>;
+	setValue: UseFormSetValue<NotesFormData>;
 	onDelete: (fileName: string) => void;
 	categories: CategoryType[];
 	documentTypes: DocumentType[];

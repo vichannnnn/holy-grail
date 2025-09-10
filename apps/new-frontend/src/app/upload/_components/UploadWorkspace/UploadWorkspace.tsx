@@ -12,7 +12,7 @@ import type { NotesFormData } from "./types";
 export function UploadWorkspace({ categories, documentTypes }: UploadWorkspaceProps) {
 	const fileDropRef = useRef<FileDropHandle>(null);
 
-  const { control, handleSubmit, formState: { errors } } = useForm<NotesFormData>({
+  const { control, handleSubmit, formState: { errors }, setValue } = useForm<NotesFormData>({
     resolver: zodResolver(NotesSchema),
     defaultValues: {
       notes: [],
@@ -69,16 +69,8 @@ export function UploadWorkspace({ categories, documentTypes }: UploadWorkspacePr
 	};
 
 	const onSubmit = (data: NotesFormData) => {
-		// Reconstruct the form data with actual File objects
-		const formData: NotesFormData = {
-			...data,
-			notes: data.notes.map((note, index) => ({
-				...note,
-				file: fields[index]?.file ?? note.file // Get the actual File object from the field array
-			}))
-		};
-		console.log("Form submitted:", formData);
-		// Handle form submission here
+		console.log("Form submitted:", data);
+		// Handle form submission here - data now contains the correct values!
 	};
 
 	// Sync form when files change
@@ -86,9 +78,6 @@ export function UploadWorkspace({ categories, documentTypes }: UploadWorkspacePr
 		const newFiles = e.target.files;
 		syncFormWithFiles(newFiles);
 	};
-
-	console.log('Form errors:', errors);
-	console.log('Form fields:', fields);
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit)} className="w-full flex flex-col items-center">
@@ -101,6 +90,7 @@ export function UploadWorkspace({ categories, documentTypes }: UploadWorkspacePr
 								file={field.file}
 								index={index}
 								control={control}
+								setValue={setValue}
 								onDelete={(fileName) => deleteFile(fileName, index)}
 								categories={categories}
 								documentTypes={documentTypes}
