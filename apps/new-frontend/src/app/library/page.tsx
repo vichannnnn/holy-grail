@@ -74,8 +74,8 @@ export default async function LibraryPage({
 					<Link
 						href="https://t.me/+FlxeSKjMXIk2ZjA1"
 						className="underline hover:text-blue-500 transition-colors"
-            prefetch={false}
-            target="_blank"
+						prefetch={false}
+						target="_blank"
 					>
 						{" "}
 						here

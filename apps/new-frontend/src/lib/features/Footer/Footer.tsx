@@ -22,8 +22,8 @@ export function Footer() {
 						<Link
 							href="mailto:allthingsholygrail@gmail.com"
 							className="underline hover:text-blue-500 transition-colors"
-              prefetch={false}
-              target="_blank"
+							prefetch={false}
+							target="_blank"
 						>
 							allthingsholygrail@gmail.com
 						</Link>
@@ -31,8 +31,8 @@ export function Footer() {
 						<Link
 							href="https://t.me/+FlxeSKjMXIk2ZjA1"
 							className="underline hover:text-blue-500 transition-colors"
-              prefetch={false}
-              target="_blank"
+							prefetch={false}
+							target="_blank"
 						>
 							Telegram channel
 						</Link>

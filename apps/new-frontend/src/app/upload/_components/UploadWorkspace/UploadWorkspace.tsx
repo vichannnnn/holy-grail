@@ -50,8 +50,13 @@ export function UploadWorkspace({ categories, documentTypes }: UploadWorkspacePr
 		const existingFileNames = fields.map((field) => field.file.name);
 		currentFiles.forEach((file) => {
 			if (!existingFileNames.includes(file.name)) {
+				// Extract filename without extension for the default name
+				const lastDotIndex = file.name.lastIndexOf(".");
+				const nameWithoutExtension =
+					lastDotIndex > 0 ? file.name.substring(0, lastDotIndex) : file.name;
+
 				append({
-					name: file.name,
+					name: nameWithoutExtension,
 					subject: 0,
 					type: 0,
 					category: 0,
@@ -101,8 +106,9 @@ export function UploadWorkspace({ categories, documentTypes }: UploadWorkspacePr
 						))}
 						<div className="flex flex-col sm:flex-row sm:items-center gap-4 mt-4">
 							<Text description className="flex-1 text-xs">
-								By uploading, you agree to have read and accepted our terms of service. Your files
-								will be reviewed by our admin team before being published.
+								By uploading, you agree to have read and accepted our terms of service and the
+								uploading guidelines. Your files will be reviewed by our admin team before being
+								published.
 							</Text>
 							<Button type="submit" className="sm:ml-auto">
 								Upload!

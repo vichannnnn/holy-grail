@@ -125,7 +125,6 @@ export function UploadEntry({
 						<Controller
 							name={`notes.${index}.name`}
 							control={control}
-							defaultValue={file.name}
 							render={({ field, fieldState: { error } }) => (
 								<Input
 									label="Document Name"

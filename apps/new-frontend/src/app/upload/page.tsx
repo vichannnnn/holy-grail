@@ -74,10 +74,11 @@ export default async function UploadPage() {
 					Upload Materials
 				</Title>
 				<Title order={2} className="text-center text-lg font-normal">
-					Thanks for contributing to Holy Grail! Note that all uploads will be reviewed by the admin
-					team before being published.
+					Thanks for contributing to Holy Grail! Do follow the guidelines for uploading your
+					documents.
 				</Title>
 			</div>
+
 			<UploadWorkspace categories={categories.data} documentTypes={documentTypes.data} />
 		</main>
 	);
