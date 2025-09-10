@@ -24,18 +24,15 @@ export function UploadWorkspace({ categories, documentTypes }: UploadWorkspacePr
 		},
 	});
 
-	const { fields, append, remove, update } = useFieldArray({
+	const { fields, append, remove } = useFieldArray({
 		control,
 		name: "notes",
 	});
 
 	// hack: Sync form fields with selected files
 	const syncFormWithFiles = (fileList: FileList | null) => {
-		if (!fileList || fileList.length === 0) {
-			// Remove all fields if no files
-			for (let i = fields.length - 1; i >= 0; i--) {
-				remove(i);
-			}
+		if (!fileList?.length) {
+			setValue("notes", []);
 			return;
 		}
 

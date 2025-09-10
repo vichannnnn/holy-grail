@@ -16,6 +16,7 @@ import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/outline";
 import type { SubjectType } from "@/app/library/types";
 import { Controller, useWatch } from "react-hook-form";
 import toast from "react-hot-toast";
+import { twMerge } from "tailwind-merge";
 
 export function UploadEntry({
 	file,
@@ -31,9 +32,6 @@ export function UploadEntry({
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [subjects, setSubjects] = useState<SubjectType[]>([]);
 
-	// hack: force re-render of subject combobox when category changes
-	const [categoryKey, setCategoryKey] = useState(0);
-
 	// Watch current entry values for mirroring
 	const currentValues = useWatch({
 		control,
@@ -46,6 +44,14 @@ export function UploadEntry({
 		name: `notes.${index}.category`,
 	});
 
+	// fetch subjects when category changes
+	const fetchSubjects = async (categoryId: number) => {
+		const subjects = await fetchAllSubjects(categoryId);
+		if (subjects.ok && subjects.data) {
+			setSubjects(subjects.data);
+		}
+	};
+
 	// Fetch subjects when category changes
 	useEffect(() => {
 		if (currentCategory && currentCategory > 0) {
@@ -53,7 +59,7 @@ export function UploadEntry({
 		} else {
 			setSubjects([]);
 		}
-	}, [currentCategory]);
+	}, [currentCategory, fetchSubjects]);
 
 	const handleDeleteClick = () => {
 		setShowDeleteModal(true);
@@ -66,14 +72,6 @@ export function UploadEntry({
 
 	const handleCancelDelete = () => {
 		setShowDeleteModal(false);
-	};
-
-	// fetch subjects when category changes
-	const fetchSubjects = async (categoryId: number) => {
-		const subjects = await fetchAllSubjects(categoryId);
-		if (subjects.ok && subjects.data) {
-			setSubjects(subjects.data);
-		}
 	};
 
 	// Mirror current entry's properties to all other entries
@@ -164,8 +162,6 @@ export function UploadEntry({
 												field.onChange(newValue?.id || 0);
 												// Reset subject when category changes
 												setValue(`notes.${index}.subject`, 0);
-												// Force re-render of subject combobox by changing key
-												setCategoryKey((prev) => prev + 1);
 												if (newValue && newValue.id) {
 													fetchSubjects(Number(newValue.id));
 												} else {
@@ -187,7 +183,7 @@ export function UploadEntry({
 										subjects.find((subj) => subj.id === field.value) || undefined;
 									return (
 										<Combobox
-											key={`subject-${currentCategory}-${index}-${field.value}-${subjects.map(s => s.id).join(',')}`}
+											key={`subject-${currentCategory}-${index}-${field.value}-${subjects.map((s) => s.id).join(",")}`}
 											label="Subject"
 											placeholder="eg. H2 Math"
 											items={subjects}
@@ -237,14 +233,15 @@ export function UploadEntry({
 						content={[
 							<div
 								role="button"
-								className={`block w-full px-2 py-1 rounded-sm text-left ${
+								className={twMerge(
+									"block w-full px-2 py-1 rounded-sm text-left",
 									totalEntries > 1 &&
-									currentValues?.category &&
-									currentValues?.subject &&
-									currentValues?.type
+										currentValues?.category &&
+										currentValues?.subject &&
+										currentValues?.type
 										? "hover:bg-gray-200 dark:hover:bg-zinc-600 cursor-pointer"
-										: "opacity-50 cursor-not-allowed"
-								}`}
+										: "opacity-50 cursor-not-allowed",
+								)}
 								key="mirror-properties"
 								onClick={(e) => {
 									e.preventDefault();
