@@ -108,7 +108,7 @@ export default async function AccountPage() {
 					<div className="flex flex-col sm:flex-row gap-2 justify-between">
 						<Input
 							label="New email address"
-							placeholder="joe.mom@email.com"
+							placeholder="eg. joe.mom@email.com"
 							containerClassName="grow"
 						/>
 						<Button className="grow-0 mt-2 sm:mt-auto mx-auto">Update</Button>
@@ -123,17 +123,17 @@ export default async function AccountPage() {
 					<div className="flex flex-col gap-2 justify-between">
 						<PasswordInput
 							label="Old password"
-							placeholder="joe.mom@email.com"
+							placeholder="eg. iloveEc0ns/"
 							containerClassName="grow"
 						/>
 						<PasswordInput
 							label="New password"
-							placeholder="joe.mom@email.com"
+							placeholder="eg. ihateEc0ns/"
 							containerClassName="grow"
 						/>
 						<PasswordInput
 							label="Repeat new password"
-							placeholder="joe.mom@email.com"
+							placeholder="eg. ihateEc0ns/"
 							containerClassName="grow"
 						/>
 					</div>
