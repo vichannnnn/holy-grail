@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const SUPPORTED_FORMATS = ["application/pdf", "application/zip"];
+export const SUPPORTED_FORMATS = ["application/pdf", "application/zip"];
 const FILE_SIZE_LIMIT = 1048576000; // 1GB
 
 export const NoteSchema = z.object({
@@ -10,6 +10,10 @@ export const NoteSchema = z.object({
 	category: z.number().min(1, "Category is required"),
 	file: z
 		.file()
-		.refine((file) => file.size <= FILE_SIZE_LIMIT, "File too large")
-		.refine((file) => SUPPORTED_FORMATS.includes(file.type), "Unsupported File Format"),
+		.refine((file) => file.size <= FILE_SIZE_LIMIT, "File too large (max 1GB)")
+		.refine((file) => SUPPORTED_FORMATS.includes(file.type), "Unsupported File Format (only PDF and ZIP allowed)"),
+});
+
+export const NotesSchema = z.object({
+  notes: z.array(NoteSchema).min(1, "At least one document is required"),
 });

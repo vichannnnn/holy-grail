@@ -11,11 +11,12 @@ import {
 } from "@shared/ui/components";
 import type { UploadEntryProps } from "./types";
 import { fetchAllSubjects } from "@/app/library/actions";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/outline";
 import type { SubjectType } from "@/app/library/types";
+import { Controller } from "react-hook-form";
 
-export function UploadEntry({ file, onDelete, categories, documentTypes }: UploadEntryProps) {
+export function UploadEntry({ file, index, control, onDelete, categories, documentTypes, errors }: UploadEntryProps) {
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [subjects, setSubjects] = useState<SubjectType[]>([]);
 
@@ -53,48 +54,95 @@ export function UploadEntry({ file, onDelete, categories, documentTypes }: Uploa
 					iconClassName="size-8 p-1 transition-none rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 hover:bg-gray-200 dark:hover:bg-zinc-700 focus-visible:ring-blue-500"
 				>
 					<div className="flex flex-col items-center gap-2">
-						<Input
-							label="Document Name"
+            {/* Display file validation errors */}
+						{errors?.file && (
+							<div className="w-full">
+								<Text className="!text-red-500 text-xs">
+									File validation error: {errors.file.message}
+								</Text>
+							</div>
+						)}
+						<Controller
+							name={`notes.${index}.name`}
+							control={control}
 							defaultValue={file.name}
-							placeholder={`eg. ${file.name}`}
-							containerClassName="w-full"
+							render={({ field, fieldState: { error } }) => (
+								<Input
+									label="Document Name"
+									placeholder={`eg. ${file.name}`}
+									containerClassName="w-full"
+									error={error?.message}
+									{...field}
+								/>
+							)}
 						/>
+						{/* Hidden field for the file - we'll handle this at submit time */}
+						<input
+							type="hidden"
+							{...control.register(`notes.${index}.file`)}
+							value={file.name} // We store the file name and reference the actual file from the form data
+						/>
+						
 						<div className="flex flex-col sm:flex-row gap-4 w-full">
-							<Combobox
-								label="Category"
-								placeholder="eg. A Levels"
-								items={categories}
-								onValueChange={(newValue) => {
-									// Force re-render of subject combobox by changing key
-									setCategoryKey((prev) => prev + 1);
-									if (newValue && newValue.id) {
-										fetchSubjects(Number(newValue.id));
-									} else {
-										setSubjects([]);
-									}
-								}}
-								containerClassName="w-full"
+							<Controller
+								name={`notes.${index}.category`}
+								control={control}
+								defaultValue={0}
+								render={({ field, fieldState: { error } }) => (
+									<Combobox
+										label="Category"
+										placeholder="eg. A Levels"
+										items={categories}
+										onValueChange={(newValue) => {
+											field.onChange(newValue?.id || 0);
+											// Force re-render of subject combobox by changing key
+											setCategoryKey((prev) => prev + 1);
+											if (newValue && newValue.id) {
+												fetchSubjects(Number(newValue.id));
+											} else {
+												setSubjects([]);
+											}
+										}}
+										containerClassName="w-full"
+										error={error?.message}
+									/>
+								)}
 							/>
-							<Combobox
-								key={categoryKey}
-								label="Subject"
-								placeholder="eg. H2 Math"
-								items={subjects}
-								onValueChange={(newValue) => {
-									console.log(newValue);
-									// do nothing for now
-								}}
-								disabled={subjects.length === 0}
-								containerClassName="w-full"
+							<Controller
+								name={`notes.${index}.subject`}
+								control={control}
+								defaultValue={0}
+								render={({ field, fieldState: { error } }) => (
+									<Combobox
+										key={categoryKey}
+										label="Subject"
+										placeholder="eg. H2 Math"
+										items={subjects}
+										onValueChange={(newValue) => {
+											field.onChange(newValue?.id || 0);
+										}}
+										disabled={subjects.length === 0}
+										containerClassName="w-full"
+										error={error?.message}
+									/>
+								)}
 							/>
-							<Combobox
-								label="Document Type"
-								placeholder="eg. Exam Papers"
-								items={documentTypes}
-								onValueChange={(newValue) => {
-									// do nothing
-								}}
-								containerClassName="w-full"
+							<Controller
+								name={`notes.${index}.type`}
+								control={control}
+								defaultValue={0}
+								render={({ field, fieldState: { error } }) => (
+									<Combobox
+										label="Document Type"
+										placeholder="eg. Exam Papers"
+										items={documentTypes}
+										onValueChange={(newValue) => {
+											field.onChange(newValue?.id || 0);
+										}}
+										containerClassName="w-full"
+										error={error?.message}
+									/>
+								)}
 							/>
 						</div>
 					</div>
@@ -106,21 +154,24 @@ export function UploadEntry({ file, onDelete, categories, documentTypes }: Uploa
 							<AdjustmentsHorizontalIcon className="size-8 stroke-2 p-1 stroke-gray-700 dark:stroke-gray-300 cursor-pointer" />
 						}
 						content={[
+              
 							<div
 								role="button"
 								className="block w-full px-2 py-1 rounded-sm hover:bg-gray-200 dark:hover:bg-zinc-600 text-left"
-								id="delete-file"
+								key="delete-file"
 								onClick={handleDeleteClick}
+                tabIndex={0}
 							>
 								Delete this field
 							</div>,
 							<div
 								role="button"
 								className="block w-full px-2 py-1 rounded-sm hover:bg-gray-200 dark:hover:bg-zinc-600 text-left"
-								id="mirror-properties"
+								key="mirror-properties"
 								onClick={(e) => {
 									e.preventDefault();
 								}}
+                tabIndex={0}
 							>
 								Mirror properties to other entries
 							</div>,
