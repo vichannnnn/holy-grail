@@ -22,4 +22,5 @@ export interface UploadEntryProps {
 	categories: CategoryType[];
 	documentTypes: DocumentType[];
 	errors?: FieldErrors<NoteFormData>;
+	totalEntries: number;
 }
