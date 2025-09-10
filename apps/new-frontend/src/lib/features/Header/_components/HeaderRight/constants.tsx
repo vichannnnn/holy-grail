@@ -79,7 +79,7 @@ export const NEEDS_AUTH_DROPDOWN_INFO: Record<string, NavInfo> = {
 export const AUTHED_DROPDOWN_INFO: Record<string, NavInfo> = {
 	profile: {
 		render: () => (
-			<Link href="/profile">
+			<Link href="/account">
 				<DropdownButton label="Profile" icon={<UserCircleIcon className="size-6" />} />
 			</Link>
 		),
