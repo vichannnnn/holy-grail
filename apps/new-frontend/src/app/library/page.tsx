@@ -64,17 +64,31 @@ export default async function LibraryPage({
 				</Title>
 				<Text>
 					View materials or contribute{" "}
-					<Link href="/upload" className="font-bold">
+					<Link href="/upload" className="underline hover:text-blue-500 transition-colors">
 						here
 					</Link>{" "}
 					after you have logged in (subjected to approval of administrators).
+				</Text>
+				<Text>
+					Join our Telegram channel{" "}
+					<Link
+						href="https://t.me/+FlxeSKjMXIk2ZjA1"
+						className="underline hover:text-blue-500 transition-colors"
+            prefetch={false}
+            target="_blank"
+					>
+						{" "}
+						here
+					</Link>{" "}
+					for the latest updates!
 				</Text>
 				<div className="flex flex-col">
 					<Text>Are you a tuition centre or freelance tutor looking to expand your reach?</Text>
 					<Text>We have one of the largest student-focused audiences in Singapore.</Text>
 					<Text>
 						Interested sponsors and advertisers, please contact us at{" "}
-						<span className="font-bold">allthingsholygrail@gmail.com</span> to explore partnership opportunities.
+						<span className="font-bold">allthingsholygrail@gmail.com</span> to explore partnership
+						opportunities.
 					</Text>
 				</div>
 			</div>

@@ -212,8 +212,8 @@ export default function PrivacyPolicyPage() {
 
 				<Text className="text-md leading-relaxed mt-4">
 					You may withdraw your consent at any time through the unsubscribe feature provided with
-					the relevant marketing email or by contacting us using the details in the 'Contacting
-					Holy Grail About Your Privacy' section of this Privacy Policy.
+					the relevant marketing email or by contacting us using the details in the 'Contacting Holy
+					Grail About Your Privacy' section of this Privacy Policy.
 				</Text>
 			</section>
 
