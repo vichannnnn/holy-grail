@@ -4,7 +4,7 @@ import { getUser } from "@lib/auth";
 import { fetchAllCategories, fetchAllDocumentTypes } from "@/app/library/actions";
 import Image from "next/image";
 import type { Metadata } from "next";
-import { UploadWorkspace } from "./_components";
+import { UploadWorkspace, UploadGuidelines } from "./_components";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -74,8 +74,9 @@ export default async function UploadPage() {
 					Upload Materials
 				</Title>
 				<Title order={2} className="text-center text-lg font-normal">
-					Thanks for contributing to Holy Grail! Do follow the guidelines for uploading your
-					documents.
+					Thanks for contributing to Holy Grail! Please review our{" "}
+					<UploadGuidelines>upload guidelines</UploadGuidelines>{" "}
+					before uploading your documents.
 				</Title>
 			</div>
 
