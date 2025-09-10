@@ -11,9 +11,12 @@ export const NoteSchema = z.object({
 	file: z
 		.file()
 		.refine((file) => file.size <= FILE_SIZE_LIMIT, "File too large (max 1GB)")
-		.refine((file) => SUPPORTED_FORMATS.includes(file.type), "Unsupported File Format (only PDF and ZIP allowed)"),
+		.refine(
+			(file) => SUPPORTED_FORMATS.includes(file.type),
+			"Unsupported File Format (only PDF and ZIP allowed)",
+		),
 });
 
 export const NotesSchema = z.object({
-  notes: z.array(NoteSchema).min(1, "At least one document is required"),
+	notes: z.array(NoteSchema).min(1, "At least one document is required"),
 });

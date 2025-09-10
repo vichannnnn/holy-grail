@@ -12,12 +12,17 @@ import type { NotesFormData } from "./types";
 export function UploadWorkspace({ categories, documentTypes }: UploadWorkspaceProps) {
 	const fileDropRef = useRef<FileDropHandle>(null);
 
-  const { control, handleSubmit, formState: { errors }, setValue } = useForm<NotesFormData>({
-    resolver: zodResolver(NotesSchema),
-    defaultValues: {
-      notes: [],
-    },
-  });
+	const {
+		control,
+		handleSubmit,
+		formState: { errors },
+		setValue,
+	} = useForm<NotesFormData>({
+		resolver: zodResolver(NotesSchema),
+		defaultValues: {
+			notes: [],
+		},
+	});
 
 	const { fields, append, remove, update } = useFieldArray({
 		control,
@@ -35,8 +40,8 @@ export function UploadWorkspace({ categories, documentTypes }: UploadWorkspacePr
 		}
 
 		const currentFiles = Array.from(fileList);
-		const currentFileNames = currentFiles.map(f => f.name);
-		
+		const currentFileNames = currentFiles.map((f) => f.name);
+
 		// Remove fields for files that no longer exist
 		for (let i = fields.length - 1; i >= 0; i--) {
 			const field = fields[i];
@@ -46,8 +51,8 @@ export function UploadWorkspace({ categories, documentTypes }: UploadWorkspacePr
 		}
 
 		// Add fields for new files
-		const existingFileNames = fields.map(field => field.file.name);
-		currentFiles.forEach(file => {
+		const existingFileNames = fields.map((field) => field.file.name);
+		currentFiles.forEach((file) => {
 			if (!existingFileNames.includes(file.name)) {
 				append({
 					name: file.name,
@@ -95,6 +100,7 @@ export function UploadWorkspace({ categories, documentTypes }: UploadWorkspacePr
 								categories={categories}
 								documentTypes={documentTypes}
 								errors={errors.notes?.[index]}
+								totalEntries={fields.length}
 							/>
 						))}
 						<div className="flex flex-col sm:flex-row sm:items-center gap-4 mt-4">
@@ -102,7 +108,9 @@ export function UploadWorkspace({ categories, documentTypes }: UploadWorkspacePr
 								By uploading, you agree to have read and accepted our terms of service. Your files
 								will be reviewed by our admin team before being published.
 							</Text>
-							<Button type="submit" className="sm:ml-auto">Upload!</Button>
+							<Button type="submit" className="sm:ml-auto">
+								Upload!
+							</Button>
 						</div>
 					</div>
 				) : (
@@ -120,7 +128,7 @@ export function UploadWorkspace({ categories, documentTypes }: UploadWorkspacePr
 				retainFiles
 				ref={fileDropRef}
 				onChange={handleFilesChange}
-        accept={SUPPORTED_FORMATS.join(",")}
+				accept={SUPPORTED_FORMATS.join(",")}
 			/>
 		</form>
 	);

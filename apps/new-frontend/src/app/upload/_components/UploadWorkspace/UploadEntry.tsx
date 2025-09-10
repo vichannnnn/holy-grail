@@ -14,14 +14,46 @@ import { fetchAllSubjects } from "@/app/library/actions";
 import { useState, useEffect } from "react";
 import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/outline";
 import type { SubjectType } from "@/app/library/types";
-import { Controller } from "react-hook-form";
+import { Controller, useWatch } from "react-hook-form";
+import toast from "react-hot-toast";
 
-export function UploadEntry({ file, index, control, setValue, onDelete, categories, documentTypes, errors }: UploadEntryProps) {
+export function UploadEntry({
+	file,
+	index,
+	control,
+	setValue,
+	onDelete,
+	categories,
+	documentTypes,
+	errors,
+	totalEntries,
+}: UploadEntryProps) {
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [subjects, setSubjects] = useState<SubjectType[]>([]);
 
 	// hack: force re-render of subject combobox when category changes
 	const [categoryKey, setCategoryKey] = useState(0);
+
+	// Watch current entry values for mirroring
+	const currentValues = useWatch({
+		control,
+		name: `notes.${index}`,
+	});
+
+	// Watch category changes to fetch subjects
+	const currentCategory = useWatch({
+		control,
+		name: `notes.${index}.category`,
+	});
+
+	// Fetch subjects when category changes
+	useEffect(() => {
+		if (currentCategory && currentCategory > 0) {
+			fetchSubjects(currentCategory);
+		} else {
+			setSubjects([]);
+		}
+	}, [currentCategory]);
 
 	const handleDeleteClick = () => {
 		setShowDeleteModal(true);
@@ -44,6 +76,35 @@ export function UploadEntry({ file, index, control, setValue, onDelete, categori
 		}
 	};
 
+	// Mirror current entry's properties to all other entries
+	const handleMirrorProperties = () => {
+		if (!currentValues || totalEntries <= 1) {
+			toast.error("Cannot mirror properties - need at least 2 entries");
+			return;
+		}
+
+		const { category, subject, type } = currentValues;
+
+		if (!category || !subject || !type) {
+			toast.error("Please fill in all fields before mirroring");
+			return;
+		}
+
+		// Update all other entries with the current entry's values
+		for (let i = 0; i < totalEntries; i++) {
+			if (i !== index) {
+				setValue(`notes.${i}.category`, category);
+				setValue(`notes.${i}.subject`, subject);
+				setValue(`notes.${i}.type`, type);
+			}
+		}
+
+		const entriesUpdated = totalEntries - 1;
+		toast.success(
+			`Properties mirrored to ${entriesUpdated} other entr${entriesUpdated === 1 ? "y" : "ies"}!`,
+		);
+	};
+
 	return (
 		<>
 			<div className="relative mb-2">
@@ -54,7 +115,7 @@ export function UploadEntry({ file, index, control, setValue, onDelete, categori
 					iconClassName="size-8 p-1 transition-none rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 hover:bg-gray-200 dark:hover:bg-zinc-700 focus-visible:ring-blue-500"
 				>
 					<div className="flex flex-col items-center gap-2">
-            {/* Display file validation errors */}
+						{/* Display file validation errors */}
 						{errors?.file && (
 							<div className="w-full">
 								<Text className="!text-red-500 text-xs">
@@ -83,14 +144,15 @@ export function UploadEntry({ file, index, control, setValue, onDelete, categori
 							defaultValue={file}
 							render={() => <></>}
 						/>
-						
+
 						<div className="flex flex-col sm:flex-row gap-4 w-full">
 							<Controller
 								name={`notes.${index}.category`}
 								control={control}
 								defaultValue={0}
 								render={({ field, fieldState: { error } }) => {
-									const selectedCategory = categories.find(cat => cat.id === field.value) || undefined;
+									const selectedCategory =
+										categories.find((cat) => cat.id === field.value) || undefined;
 									return (
 										<Combobox
 											key={`category-${index}-${field.value}`}
@@ -121,10 +183,11 @@ export function UploadEntry({ file, index, control, setValue, onDelete, categori
 								control={control}
 								defaultValue={0}
 								render={({ field, fieldState: { error } }) => {
-									const selectedSubject = subjects.find(subj => subj.id === field.value) || undefined;
+									const selectedSubject =
+										subjects.find((subj) => subj.id === field.value) || undefined;
 									return (
 										<Combobox
-											key={`subject-${categoryKey}-${index}-${field.value}`}
+											key={`subject-${categoryKey}-${index}-${field.value}-${currentValues?.subject || 0}`}
 											label="Subject"
 											placeholder="eg. H2 Math"
 											items={subjects}
@@ -135,6 +198,14 @@ export function UploadEntry({ file, index, control, setValue, onDelete, categori
 											disabled={subjects.length === 0}
 											containerClassName="w-full"
 											error={error?.message}
+											overrideDisplayValue={() => {
+												// Always display the correct subject name based on current field value
+												if (field.value && field.value > 0 && subjects.length > 0) {
+													const currentSubject = subjects.find((subj) => subj.id === field.value);
+													return currentSubject ? currentSubject.name : "";
+												}
+												return "";
+											}}
 										/>
 									);
 								}}
@@ -144,7 +215,8 @@ export function UploadEntry({ file, index, control, setValue, onDelete, categori
 								control={control}
 								defaultValue={0}
 								render={({ field, fieldState: { error } }) => {
-									const selectedDocumentType = documentTypes.find(type => type.id === field.value) || undefined;
+									const selectedDocumentType =
+										documentTypes.find((type) => type.id === field.value) || undefined;
 									return (
 										<Combobox
 											key={`type-${index}-${field.value}`}
@@ -171,26 +243,37 @@ export function UploadEntry({ file, index, control, setValue, onDelete, categori
 							<AdjustmentsHorizontalIcon className="size-8 stroke-2 p-1 stroke-gray-700 dark:stroke-gray-300 cursor-pointer" />
 						}
 						content={[
-              
 							<div
 								role="button"
-								className="block w-full px-2 py-1 rounded-sm hover:bg-gray-200 dark:hover:bg-zinc-600 text-left"
-								key="delete-file"
-								onClick={handleDeleteClick}
-                tabIndex={0}
-							>
-								Delete this field
-							</div>,
-							<div
-								role="button"
-								className="block w-full px-2 py-1 rounded-sm hover:bg-gray-200 dark:hover:bg-zinc-600 text-left"
+								className={`block w-full px-2 py-1 rounded-sm text-left ${
+									totalEntries > 1 &&
+									currentValues?.category &&
+									currentValues?.subject &&
+									currentValues?.type
+										? "hover:bg-gray-200 dark:hover:bg-zinc-600 cursor-pointer"
+										: "opacity-50 cursor-not-allowed"
+								}`}
 								key="mirror-properties"
 								onClick={(e) => {
 									e.preventDefault();
+									e.stopPropagation();
+									handleMirrorProperties();
 								}}
-                tabIndex={0}
+								tabIndex={0}
 							>
 								Mirror properties to other entries
+							</div>,
+							<div
+								role="button"
+								className="block w-full px-2 py-1 rounded-sm hover:bg-red-100 dark:hover:bg-red-900/30 text-left text-red-600 dark:text-red-400"
+								key="delete-file"
+								onClick={(e) => {
+									e.stopPropagation();
+									handleDeleteClick();
+								}}
+								tabIndex={0}
+							>
+								Delete this entry
 							</div>,
 						]}
 					/>
