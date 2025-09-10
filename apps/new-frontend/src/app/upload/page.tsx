@@ -5,6 +5,7 @@ import { fetchAllCategories, fetchAllDocumentTypes } from "@/app/library/actions
 import Image from "next/image";
 import type { Metadata } from "next";
 import { UploadWorkspace } from "./_components";
+import Link from "next/link";
 
 export const metadata: Metadata = {
 	title: "Upload - Holy Grail",
@@ -24,9 +25,27 @@ export const metadata: Metadata = {
 
 export default async function UploadPage() {
 	const user = await getUser();
+
 	if (!user) {
 		unauthorized();
 	}
+
+	if (!user.verified) {
+		return (
+			<main className="flex flex-col items-center">
+				<Image src="/trimmy-grail-chan-sparkling.webp" alt="Error" width={100} height={100} />
+				<Title order={2} className="font-bold mb-4">
+					Account Not Verified
+				</Title>
+				<Text>
+					You need to verify your account before you can upload materials. Please check your email
+					for the verification link, or go to <Link href="/account">Account Settings</Link> to
+					resend the verification email.
+				</Text>
+			</main>
+		);
+	}
+
 	const [categories, documentTypes] = await Promise.all([
 		fetchAllCategories(),
 		fetchAllDocumentTypes(),
