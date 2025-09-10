@@ -16,7 +16,7 @@ import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/outline";
 import type { SubjectType } from "@/app/library/types";
 import { Controller } from "react-hook-form";
 
-export function UploadEntry({ file, index, control, onDelete, categories, documentTypes, errors }: UploadEntryProps) {
+export function UploadEntry({ file, index, control, setValue, onDelete, categories, documentTypes, errors }: UploadEntryProps) {
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [subjects, setSubjects] = useState<SubjectType[]>([]);
 
@@ -76,11 +76,12 @@ export function UploadEntry({ file, index, control, onDelete, categories, docume
 								/>
 							)}
 						/>
-						{/* Hidden field for the file - we'll handle this at submit time */}
-						<input
-							type="hidden"
-							{...control.register(`notes.${index}.file`)}
-							value={file.name} // We store the file name and reference the actual file from the form data
+						{/* Hidden controller for the file */}
+						<Controller
+							name={`notes.${index}.file`}
+							control={control}
+							defaultValue={file}
+							render={() => <></>}
 						/>
 						
 						<div className="flex flex-col sm:flex-row gap-4 w-full">
@@ -88,61 +89,77 @@ export function UploadEntry({ file, index, control, onDelete, categories, docume
 								name={`notes.${index}.category`}
 								control={control}
 								defaultValue={0}
-								render={({ field, fieldState: { error } }) => (
-									<Combobox
-										label="Category"
-										placeholder="eg. A Levels"
-										items={categories}
-										onValueChange={(newValue) => {
-											field.onChange(newValue?.id || 0);
-											// Force re-render of subject combobox by changing key
-											setCategoryKey((prev) => prev + 1);
-											if (newValue && newValue.id) {
-												fetchSubjects(Number(newValue.id));
-											} else {
-												setSubjects([]);
-											}
-										}}
-										containerClassName="w-full"
-										error={error?.message}
-									/>
-								)}
+								render={({ field, fieldState: { error } }) => {
+									const selectedCategory = categories.find(cat => cat.id === field.value) || undefined;
+									return (
+										<Combobox
+											key={`category-${index}-${field.value}`}
+											label="Category"
+											placeholder="eg. A Levels"
+											items={categories}
+											defaultValue={selectedCategory}
+											onValueChange={(newValue) => {
+												field.onChange(newValue?.id || 0);
+												// Reset subject when category changes
+												setValue(`notes.${index}.subject`, 0);
+												// Force re-render of subject combobox by changing key
+												setCategoryKey((prev) => prev + 1);
+												if (newValue && newValue.id) {
+													fetchSubjects(Number(newValue.id));
+												} else {
+													setSubjects([]);
+												}
+											}}
+											containerClassName="w-full"
+											error={error?.message}
+										/>
+									);
+								}}
 							/>
 							<Controller
 								name={`notes.${index}.subject`}
 								control={control}
 								defaultValue={0}
-								render={({ field, fieldState: { error } }) => (
-									<Combobox
-										key={categoryKey}
-										label="Subject"
-										placeholder="eg. H2 Math"
-										items={subjects}
-										onValueChange={(newValue) => {
-											field.onChange(newValue?.id || 0);
-										}}
-										disabled={subjects.length === 0}
-										containerClassName="w-full"
-										error={error?.message}
-									/>
-								)}
+								render={({ field, fieldState: { error } }) => {
+									const selectedSubject = subjects.find(subj => subj.id === field.value) || undefined;
+									return (
+										<Combobox
+											key={`subject-${categoryKey}-${index}-${field.value}`}
+											label="Subject"
+											placeholder="eg. H2 Math"
+											items={subjects}
+											defaultValue={selectedSubject}
+											onValueChange={(newValue) => {
+												field.onChange(newValue?.id || 0);
+											}}
+											disabled={subjects.length === 0}
+											containerClassName="w-full"
+											error={error?.message}
+										/>
+									);
+								}}
 							/>
 							<Controller
 								name={`notes.${index}.type`}
 								control={control}
 								defaultValue={0}
-								render={({ field, fieldState: { error } }) => (
-									<Combobox
-										label="Document Type"
-										placeholder="eg. Exam Papers"
-										items={documentTypes}
-										onValueChange={(newValue) => {
-											field.onChange(newValue?.id || 0);
-										}}
-										containerClassName="w-full"
-										error={error?.message}
-									/>
-								)}
+								render={({ field, fieldState: { error } }) => {
+									const selectedDocumentType = documentTypes.find(type => type.id === field.value) || undefined;
+									return (
+										<Combobox
+											key={`type-${index}-${field.value}`}
+											label="Document Type"
+											placeholder="eg. Exam Papers"
+											items={documentTypes}
+											defaultValue={selectedDocumentType}
+											onValueChange={(newValue) => {
+												field.onChange(newValue?.id || 0);
+											}}
+											containerClassName="w-full"
+											error={error?.message}
+										/>
+									);
+								}}
 							/>
 						</div>
 					</div>
