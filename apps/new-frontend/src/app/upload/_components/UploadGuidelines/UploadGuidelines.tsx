@@ -22,7 +22,7 @@ export function UploadGuidelines({ children }: UploadGuidelinesProps) {
 					<Title order={2} className="font-bold text-xl mb-4">
 						Upload Guidelines
 					</Title>
-					
+
 					<div className="space-y-3 max-h-96 overflow-y-auto text-zinc-700 dark:text-zinc-300">
 						<div>
 							<Title order={3} className="font-semibold text-lg mb-2">
@@ -33,13 +33,16 @@ export function UploadGuidelines({ children }: UploadGuidelinesProps) {
 								<li>Supported formats: PDF, ZIP</li>
 							</ul>
 						</div>
-            <div>
+						<div>
 							<Title order={3} className="font-semibold text-lg mb-2">
 								Quality Guidelines
 							</Title>
 							<ul className="list-disc list-inside space-y-1 text-sm marker:text-zinc-700 dark:marker:text-zinc-300">
-								<li>Try to adhere to the naming scheme: [school] [year] [chapter title/paper component].</li>
-                <li>Distinguish between exam types (eg. between mid-year papers and prelims).</li>
+								<li>
+									Try to adhere to the naming scheme: [school] [year] [chapter title/paper
+									component].
+								</li>
+								<li>Distinguish between exam types (eg. between mid-year papers and prelims).</li>
 							</ul>
 						</div>
 
@@ -49,14 +52,14 @@ export function UploadGuidelines({ children }: UploadGuidelinesProps) {
 							</Title>
 							<ul className="list-disc list-inside space-y-1 text-sm marker:text-zinc-700 dark:marker:text-zinc-300">
 								<li>Content should not contain offensive material.</li>
-                <li>Do not upload copyrighted material (eg. SEAB papers).</li>
+								<li>Do not upload copyrighted material (eg. SEAB papers).</li>
 							</ul>
 						</div>
 
 						<div className="bg-yellow-100 dark:bg-yellow-900 p-3 rounded-md">
 							<Text className="text-sm font-medium text-zinc-800 dark:text-zinc-100">
-								<span className="font-semibold">Note:</span> All uploaded materials are subject to moderation. 
-								Content that violates these guidelines may be rejected.
+								<span className="font-semibold">Note:</span> All uploaded materials are subject to
+								moderation. Content that violates these guidelines may be rejected.
 							</Text>
 						</div>
 					</div>

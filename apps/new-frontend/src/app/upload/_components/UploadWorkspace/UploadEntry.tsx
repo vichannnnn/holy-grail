@@ -82,7 +82,7 @@ export function UploadEntry({
 			return;
 		}
 
-		const { category, subject, type } = currentValues;
+		const { category, subject, type, year } = currentValues;
 
 		if (!category || !subject || !type) {
 			toast.error("Please fill in all fields before mirroring");
@@ -95,6 +95,9 @@ export function UploadEntry({
 				setValue(`notes.${i}.category`, category);
 				setValue(`notes.${i}.subject`, subject);
 				setValue(`notes.${i}.type`, type);
+				if (year) {
+					setValue(`notes.${i}.year`, year);
+				}
 			}
 		}
 
@@ -143,7 +146,7 @@ export function UploadEntry({
 							render={() => <></>}
 						/>
 
-						<div className="flex flex-col sm:flex-row gap-4 w-full">
+						<div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 w-full">
 							<Controller
 								name={`notes.${index}.category`}
 								control={control}
@@ -198,6 +201,7 @@ export function UploadEntry({
 									);
 								}}
 							/>
+
 							<Controller
 								name={`notes.${index}.type`}
 								control={control}
@@ -214,6 +218,32 @@ export function UploadEntry({
 											defaultValue={selectedDocumentType}
 											onValueChange={(newValue) => {
 												field.onChange(newValue?.id || 0);
+											}}
+											containerClassName="w-full"
+											error={error?.message}
+										/>
+									);
+								}}
+							/>
+							<Controller
+								name={`notes.${index}.year`}
+								control={control}
+								render={({ field, fieldState: { error } }) => {
+									const yearItems = Array.from({ length: 2025 - 2008 + 1 }, (_, i) => 2008 + i).map(
+										(year) => ({ id: year, name: String(year) }),
+									);
+									const selectedYear = field.value
+										? { id: field.value, name: String(field.value) }
+										: undefined;
+									return (
+										<Combobox
+											key={`year-${index}-${field.value}`}
+											label="Year"
+											placeholder={`eg. ${new Date().getFullYear()} (optional)`}
+											items={yearItems}
+											defaultValue={selectedYear}
+											onValueChange={(newValue) => {
+												field.onChange(newValue?.id || undefined);
 											}}
 											containerClassName="w-full"
 											error={error?.message}
