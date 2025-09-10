@@ -24,3 +24,10 @@ export interface UploadEntryProps {
 	errors?: FieldErrors<NoteFormData>;
 	totalEntries: number;
 }
+
+export interface DeleteConfirmModalProps {
+	isOpen: boolean;
+	fileName: string;
+	onConfirm: () => void;
+	onCancel: () => void;
+}
