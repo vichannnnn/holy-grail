@@ -8,6 +8,7 @@ export const NoteSchema = z.object({
 	subject: z.number().min(1, "Subject is required"),
 	type: z.number().min(1, "Type is required"),
 	category: z.number().min(1, "Category is required"),
+	year: z.number().min(1900, "Year must be valid").max(2100, "Year must be valid").optional(),
 	file: z
 		.file()
 		.refine((file) => file.size <= FILE_SIZE_LIMIT, "File too large (max 1GB)")

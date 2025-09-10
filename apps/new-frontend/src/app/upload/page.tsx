@@ -68,15 +68,14 @@ export default async function UploadPage() {
 	}
 
 	return (
-		<main className="flex flex-col items-center mx-auto lg:w-2/3 w-11/12">
+		<main className="flex flex-col items-center mx-auto lg:w-3/4 w-11/12">
 			<div className="flex flex-col items-center gap-2 mb-8">
 				<Title order={1} className="font-bold text-center text-2xl">
 					Upload Materials
 				</Title>
 				<Title order={2} className="text-center text-lg font-normal">
 					Thanks for contributing to Holy Grail! Please review our{" "}
-					<UploadGuidelines>upload guidelines</UploadGuidelines>{" "}
-					before uploading your documents.
+					<UploadGuidelines>upload guidelines</UploadGuidelines> before uploading your documents.
 				</Title>
 			</div>
 
