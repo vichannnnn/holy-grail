@@ -187,7 +187,7 @@ export function UploadEntry({
 										subjects.find((subj) => subj.id === field.value) || undefined;
 									return (
 										<Combobox
-											key={`subject-${categoryKey}-${index}-${field.value}-${currentValues?.subject || 0}`}
+											key={`subject-${currentCategory}-${index}-${field.value}-${subjects.map(s => s.id).join(',')}`}
 											label="Subject"
 											placeholder="eg. H2 Math"
 											items={subjects}
@@ -198,14 +198,6 @@ export function UploadEntry({
 											disabled={subjects.length === 0}
 											containerClassName="w-full"
 											error={error?.message}
-											overrideDisplayValue={() => {
-												// Always display the correct subject name based on current field value
-												if (field.value && field.value > 0 && subjects.length > 0) {
-													const currentSubject = subjects.find((subj) => subj.id === field.value);
-													return currentSubject ? currentSubject.name : "";
-												}
-												return "";
-											}}
 										/>
 									);
 								}}
