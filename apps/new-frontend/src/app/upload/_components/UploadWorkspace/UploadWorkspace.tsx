@@ -1,39 +1,110 @@
 "use client";
 import { FileDrop, Text, type FileDropHandle, Title, Button } from "@shared/ui/components";
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import type { UploadWorkspaceProps } from "./types";
 import { UploadEntry } from "./UploadEntry";
+import { useForm, useFieldArray } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { NotesSchema, SUPPORTED_FORMATS } from "./schemas";
+import type { NotesFormData } from "./types";
 
 export function UploadWorkspace({ categories, documentTypes }: UploadWorkspaceProps) {
 	const fileDropRef = useRef<FileDropHandle>(null);
-	// be very careful to sync this state with the FileDrop's internal state
-	const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
 
-	const deleteFile = (fileName: string) => {
+  const { control, handleSubmit, formState: { errors } } = useForm<NotesFormData>({
+    resolver: zodResolver(NotesSchema),
+    defaultValues: {
+      notes: [],
+    },
+  });
+
+	const { fields, append, remove, update } = useFieldArray({
+		control,
+		name: "notes",
+	});
+
+	// hack: Sync form fields with selected files
+	const syncFormWithFiles = (fileList: FileList | null) => {
+		if (!fileList || fileList.length === 0) {
+			// Remove all fields if no files
+			for (let i = fields.length - 1; i >= 0; i--) {
+				remove(i);
+			}
+			return;
+		}
+
+		const currentFiles = Array.from(fileList);
+		const currentFileNames = currentFiles.map(f => f.name);
+		
+		// Remove fields for files that no longer exist
+		for (let i = fields.length - 1; i >= 0; i--) {
+			const field = fields[i];
+			if (!currentFileNames.includes(field.file.name)) {
+				remove(i);
+			}
+		}
+
+		// Add fields for new files
+		const existingFileNames = fields.map(field => field.file.name);
+		currentFiles.forEach(file => {
+			if (!existingFileNames.includes(file.name)) {
+				append({
+					name: file.name,
+					subject: 0,
+					type: 0,
+					category: 0,
+					file: file,
+				});
+			}
+		});
+	};
+
+	const deleteFile = (fileName: string, fieldIndex: number) => {
 		if (fileDropRef.current) {
 			fileDropRef.current.removeByName(fileName);
-			// update local state to reflect the change
-			if (fileDropRef.current.input && fileDropRef.current.input.files) {
-				setSelectedFiles(fileDropRef.current.input.files);
-			} else {
-				setSelectedFiles(null);
-			}
+			// Remove the form field
+			remove(fieldIndex);
 		}
 	};
 
+	const onSubmit = (data: NotesFormData) => {
+		// Reconstruct the form data with actual File objects
+		const formData: NotesFormData = {
+			...data,
+			notes: data.notes.map((note, index) => ({
+				...note,
+				file: fields[index]?.file ?? note.file // Get the actual File object from the field array
+			}))
+		};
+		console.log("Form submitted:", formData);
+		// Handle form submission here
+	};
+
+	// Sync form when files change
+	const handleFilesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const newFiles = e.target.files;
+		syncFormWithFiles(newFiles);
+	};
+
+	console.log('Form errors:', errors);
+	console.log('Form fields:', fields);
+
 	return (
-		<div className="w-full flex flex-col items-center">
+		<form onSubmit={handleSubmit(onSubmit)} className="w-full flex flex-col items-center">
 			<div className="flex flex-col items-center mb-4 shadow-sm dark:shadow-none bg-gray-200 dark:bg-gray-600/20 p-4 rounded-lg w-full">
-				{selectedFiles !== null && selectedFiles.length !== 0 ? (
+				{fields.length > 0 ? (
 					<div className="w-full">
-						{Array.from(selectedFiles).map((file) => (
+						{fields.map((field, index) => (
 							<UploadEntry
-								key={file.name}
-								file={file}
-								onDelete={deleteFile}
+								key={field.id}
+								file={field.file}
+								index={index}
+								control={control}
+								onDelete={(fileName) => deleteFile(fileName, index)}
 								categories={categories}
 								documentTypes={documentTypes}
+								errors={errors.notes?.[index]}
 							/>
 						))}
 						<div className="flex flex-col sm:flex-row sm:items-center gap-4 mt-4">
@@ -41,7 +112,7 @@ export function UploadWorkspace({ categories, documentTypes }: UploadWorkspacePr
 								By uploading, you agree to have read and accepted our terms of service. Your files
 								will be reviewed by our admin team before being published.
 							</Text>
-							<Button className="sm:ml-auto">Upload!</Button>
+							<Button type="submit" className="sm:ml-auto">Upload!</Button>
 						</div>
 					</div>
 				) : (
@@ -58,8 +129,9 @@ export function UploadWorkspace({ categories, documentTypes }: UploadWorkspacePr
 				multiple
 				retainFiles
 				ref={fileDropRef}
-				onChange={(e) => setSelectedFiles(e.target.files)}
+				onChange={handleFilesChange}
+        accept={SUPPORTED_FORMATS.join(",")}
 			/>
-		</div>
+		</form>
 	);
 }
