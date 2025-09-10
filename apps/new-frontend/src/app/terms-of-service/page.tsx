@@ -40,13 +40,13 @@ export default function TermsOfServicePage() {
 				</Text>
 
 				<Text className="text-md leading-relaxed mt-4">
-					PLEASE READ THE FOLLOWING TERMS CAREFULLY: BY CLICKING 'I ACCEPT,' SIGNING AN
-					ORDER FORM THAT REFERENCES THESE TERMS, OR BY DOWNLOADING, INSTALLING, OR OTHERWISE
-					ACCESSING OR USING THE SERVICE, YOU AGREE THAT YOU HAVE READ AND UNDERSTOOD, AND, AS A
-					CONDITION TO YOUR USE OF THE SERVICE, YOU AGREE TO BE BOUND BY, THESE TERMS. IF YOU ARE
-					NOT ELIGIBLE OR DO NOT AGREE TO THESE TERMS, THEN YOU DO NOT HAVE OUR PERMISSION TO USE
-					THE SERVICE. YOUR USE OF THE SERVICE AND HOLY GRAIL TEAM'S PROVISION OF THE SERVICE TO YOU
-					CONSTITUTES AN AGREEMENT BY BOTH PARTIES TO BE BOUND BY THESE TERMS.
+					PLEASE READ THE FOLLOWING TERMS CAREFULLY: BY CLICKING 'I ACCEPT,' SIGNING AN ORDER FORM
+					THAT REFERENCES THESE TERMS, OR BY DOWNLOADING, INSTALLING, OR OTHERWISE ACCESSING OR
+					USING THE SERVICE, YOU AGREE THAT YOU HAVE READ AND UNDERSTOOD, AND, AS A CONDITION TO
+					YOUR USE OF THE SERVICE, YOU AGREE TO BE BOUND BY, THESE TERMS. IF YOU ARE NOT ELIGIBLE OR
+					DO NOT AGREE TO THESE TERMS, THEN YOU DO NOT HAVE OUR PERMISSION TO USE THE SERVICE. YOUR
+					USE OF THE SERVICE AND HOLY GRAIL TEAM'S PROVISION OF THE SERVICE TO YOU CONSTITUTES AN
+					AGREEMENT BY BOTH PARTIES TO BE BOUND BY THESE TERMS.
 				</Text>
 
 				<Text className="text-md leading-relaxed mt-4">
@@ -124,15 +124,14 @@ export default function TermsOfServicePage() {
 				<Text className="text-md leading-relaxed">
 					<span className="font-bold">Customer Data:</span> Any data, text, and other information,
 					including but not limited to contact details such as email addresses and phone numbers,
-					provided by you during your use of the Service is referred to as 'Customer
-					Data.' Tutors' phone numbers will only be shown to accounts with verified email
-					addresses. Emails may be used for marketing purposes but will not be visible to other
-					users.
+					provided by you during your use of the Service is referred to as 'Customer Data.' Tutors'
+					phone numbers will only be shown to accounts with verified email addresses. Emails may be
+					used for marketing purposes but will not be visible to other users.
 				</Text>
 				<Text className="text-md leading-relaxed mt-4">
 					<span className="font-bold">Usage Data:</span> We may collect performance, analytical, or
-					usage data related to your use of the Service ('Usage Data'). This data will be
-					anonymized and used to improve the Service. Usage Data will not include any Customer Data.
+					usage data related to your use of the Service ('Usage Data'). This data will be anonymized
+					and used to improve the Service. Usage Data will not include any Customer Data.
 				</Text>
 
 				<Title order={3} className="text-2xl mb-4 mt-6">
@@ -175,9 +174,9 @@ export default function TermsOfServicePage() {
 					11. Disclaimers and Limitation of Liability
 				</Title>
 				<Text className="text-md leading-relaxed">
-					The Service is provided 'as is,' and Holy Grail Team disclaims all warranties of
-					any kind. We do not guarantee uninterrupted, secure, or error-free access to the Service.
-					In no event shall Holy Grail Team be liable for any indirect, incidental, special, or
+					The Service is provided 'as is,' and Holy Grail Team disclaims all warranties of any kind.
+					We do not guarantee uninterrupted, secure, or error-free access to the Service. In no
+					event shall Holy Grail Team be liable for any indirect, incidental, special, or
 					consequential damages arising from the use of the Service.
 				</Text>
 

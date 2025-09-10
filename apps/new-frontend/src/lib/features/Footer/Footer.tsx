@@ -2,6 +2,7 @@ import { Divider } from "@shared/ui/components";
 import { FooterLeft } from "./FooterLeft";
 import { FooterRight } from "./FooterRight";
 import { Text } from "@shared/ui/components";
+import Link from "next/link";
 
 export function Footer() {
 	const currentYear = new Date().getFullYear();
@@ -17,7 +18,25 @@ export function Footer() {
 				<div className="w-full mt-3">
 					<Divider />
 					<Text>
-						© 2023 - {currentYear} Holy Grail Team • Questions? Contact us at allthingsholygrail@gmail.com
+						© 2023 - {currentYear} Holy Grail Team • Questions? Contact us at{" "}
+						<Link
+							href="mailto:allthingsholygrail@gmail.com"
+							className="underline hover:text-blue-500 transition-colors"
+              prefetch={false}
+              target="_blank"
+						>
+							allthingsholygrail@gmail.com
+						</Link>
+						, or join our{" "}
+						<Link
+							href="https://t.me/+FlxeSKjMXIk2ZjA1"
+							className="underline hover:text-blue-500 transition-colors"
+              prefetch={false}
+              target="_blank"
+						>
+							Telegram channel
+						</Link>
+						!
 					</Text>
 				</div>
 			</footer>
