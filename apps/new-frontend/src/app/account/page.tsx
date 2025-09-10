@@ -10,13 +10,28 @@ import {
 	CheckCircleIcon,
 } from "@heroicons/react/24/outline";
 import { PasswordInput } from "@/app/auth/_components/PasswordInput";
+import type { Metadata } from "next";
 
+export const metadata: Metadata = {
+	title: "Account Settings - Holy Grail",
+	description:
+		"Manage your account settings on Holy Grail. Update personal details and settings to keep your account secure and up-to-date.",
+	openGraph: {
+		title: "Account Settings - Holy Grail",
+		description:
+			"Modify your personal details and settings to enhance your experience on Holy Grail.",
+		images: [
+			{
+				url: "",
+			},
+		],
+	},
+};
 export default async function AccountPage() {
 	const user = await getUser();
 	if (!user) {
 		unauthorized();
 	}
-
 
 	return (
 		<main className="flex flex-col items-center mx-auto lg:w-2/3 w-11/12">
@@ -55,12 +70,8 @@ export default async function AccountPage() {
 								) : (
 									<>
 										Please click{" "}
-										<span
-											className="text-blue-500 font-semibold cursor-pointer"
-										>
-											here
-										</span>{" "}
-										to resend the verification email.
+										<span className="text-blue-500 font-semibold cursor-pointer">here</span> to
+										resend the verification email.
 									</>
 								)}
 							</Text>
@@ -95,19 +106,38 @@ export default async function AccountPage() {
 						)}
 					</Text>
 					<div className="flex flex-col sm:flex-row gap-2 justify-between">
-						<Input label="New email address" placeholder="joe.mom@email.com" containerClassName="grow" />
+						<Input
+							label="New email address"
+							placeholder="joe.mom@email.com"
+							containerClassName="grow"
+						/>
 						<Button className="grow-0 mt-2 sm:mt-auto mx-auto">Update</Button>
 					</div>
 				</AccountSection>
-				<AccountSection title="Change password" icon={<LockClosedIcon className="size-6" />} className="flex flex-col gap-4">
+				<AccountSection
+					title="Change password"
+					icon={<LockClosedIcon className="size-6" />}
+					className="flex flex-col gap-4"
+				>
 					<Text>Enter your current password and the new password you want to change to.</Text>
-          <div className="flex flex-col gap-2 justify-between">
-						<PasswordInput label="Old password" placeholder="joe.mom@email.com" containerClassName="grow" />
-            <PasswordInput label="New password" placeholder="joe.mom@email.com" containerClassName="grow" />
-            <PasswordInput label="Repeat new password" placeholder="joe.mom@email.com" containerClassName="grow" />
-
+					<div className="flex flex-col gap-2 justify-between">
+						<PasswordInput
+							label="Old password"
+							placeholder="joe.mom@email.com"
+							containerClassName="grow"
+						/>
+						<PasswordInput
+							label="New password"
+							placeholder="joe.mom@email.com"
+							containerClassName="grow"
+						/>
+						<PasswordInput
+							label="Repeat new password"
+							placeholder="joe.mom@email.com"
+							containerClassName="grow"
+						/>
 					</div>
-          <Button className="grow-0 mx-auto">Update password</Button>
+					<Button className="grow-0 mx-auto">Update password</Button>
 				</AccountSection>
 			</div>
 		</main>
