@@ -17,7 +17,7 @@ export function Footer() {
 				<div className="w-full mt-3">
 					<Divider />
 					<Text>
-						© 2023 - {currentYear} Holy Grail Team • Questions? Contact us at grail@himaa.me
+						© 2023 - {currentYear} Holy Grail Team • Questions? Contact us at allthingsholygrail@gmail.com
 					</Text>
 				</div>
 			</footer>

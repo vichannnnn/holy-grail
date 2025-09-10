@@ -212,8 +212,8 @@ export default function PrivacyPolicyPage() {
 
 				<Text className="text-md leading-relaxed mt-4">
 					You may withdraw your consent at any time through the unsubscribe feature provided with
-					the relevant marketing email or by contacting us using the details in the &quot;Contacting
-					Holy Grail About Your Privacy&quot; section of this Privacy Policy.
+					the relevant marketing email or by contacting us using the details in the 'Contacting
+					Holy Grail About Your Privacy' section of this Privacy Policy.
 				</Text>
 			</section>
 
@@ -393,12 +393,12 @@ export default function PrivacyPolicyPage() {
 				<Text className="text-md leading-relaxed mt-4">
 					If you have any questions about this Privacy Policy or our privacy and security practices,
 					or you wish to make a complaint about our compliance with applicable privacy laws, please
-					feel free to contact us at grail@himaa.me.
+					feel free to contact us at allthingsholygrail@gmail.com.
 				</Text>
 				<Text className="text-md leading-relaxed mt-4">
 					If you have questions or concerns about the way we are handling your personal information,
 					or would like to exercise your privacy rights, please email us with the subject line
-					&quot;Privacy Concern&quot; at grail@himaa.me.
+					'Privacy Concern' at allthingsholygrail@gmail.com.
 				</Text>
 				<Text className="text-md leading-relaxed mt-4">
 					In most cases, we will respond within 30 days of receiving your message, but please note
@@ -412,7 +412,7 @@ export default function PrivacyPolicyPage() {
 					<Text className="text-md leading-relaxed">
 						<span className="font-bold">Holy Grail Team</span>
 					</Text>
-					<Text className="text-md leading-relaxed mt-1">Email: grail@himaa.me</Text>
+					<Text className="text-md leading-relaxed mt-1">Email: allthingsholygrail@gmail.com</Text>
 				</div>
 			</section>
 		</div>

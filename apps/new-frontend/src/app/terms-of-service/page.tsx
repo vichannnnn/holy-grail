@@ -40,7 +40,7 @@ export default function TermsOfServicePage() {
 				</Text>
 
 				<Text className="text-md leading-relaxed mt-4">
-					PLEASE READ THE FOLLOWING TERMS CAREFULLY: BY CLICKING &quot;I ACCEPT,&quot; SIGNING AN
+					PLEASE READ THE FOLLOWING TERMS CAREFULLY: BY CLICKING 'I ACCEPT,' SIGNING AN
 					ORDER FORM THAT REFERENCES THESE TERMS, OR BY DOWNLOADING, INSTALLING, OR OTHERWISE
 					ACCESSING OR USING THE SERVICE, YOU AGREE THAT YOU HAVE READ AND UNDERSTOOD, AND, AS A
 					CONDITION TO YOUR USE OF THE SERVICE, YOU AGREE TO BE BOUND BY, THESE TERMS. IF YOU ARE
@@ -100,7 +100,7 @@ export default function TermsOfServicePage() {
 					provide accurate, complete, and current information when registering and to keep this
 					information up to date. You are responsible for all activities occurring under your
 					account. If you suspect unauthorized use of your account, you must notify us immediately
-					at grail@himaa.me.
+					at allthingsholygrail@gmail.com.
 				</Text>
 				{/*
 				<Title order={3} className="text-2xl mb-4 mt-6">4. Payment Terms</Title>
@@ -116,7 +116,7 @@ export default function TermsOfServicePage() {
 				subscription will be billed according to the subscription plan you choose, either as a
 				lifetime payment or a recurring payment. You must cancel the subscription before the
 				renewal date to avoid being charged for the next billing period. For cancellation, please
-				use the billing menu or contact us at grail@himaa.me.</Text>*/}
+				use the billing menu or contact us at allthingsholygrail@gmail.com.</Text>*/}
 
 				<Title order={3} className="text-2xl mb-4 mt-6">
 					6. Customer and Usage Data
@@ -124,14 +124,14 @@ export default function TermsOfServicePage() {
 				<Text className="text-md leading-relaxed">
 					<span className="font-bold">Customer Data:</span> Any data, text, and other information,
 					including but not limited to contact details such as email addresses and phone numbers,
-					provided by you during your use of the Service is referred to as &quot;Customer
-					Data.&quot; Tutors' phone numbers will only be shown to accounts with verified email
+					provided by you during your use of the Service is referred to as 'Customer
+					Data.' Tutors' phone numbers will only be shown to accounts with verified email
 					addresses. Emails may be used for marketing purposes but will not be visible to other
 					users.
 				</Text>
 				<Text className="text-md leading-relaxed mt-4">
 					<span className="font-bold">Usage Data:</span> We may collect performance, analytical, or
-					usage data related to your use of the Service (&quot;Usage Data&quot;). This data will be
+					usage data related to your use of the Service ('Usage Data'). This data will be
 					anonymized and used to improve the Service. Usage Data will not include any Customer Data.
 				</Text>
 
@@ -175,7 +175,7 @@ export default function TermsOfServicePage() {
 					11. Disclaimers and Limitation of Liability
 				</Title>
 				<Text className="text-md leading-relaxed">
-					The Service is provided &quot;as is,&quot; and Holy Grail Team disclaims all warranties of
+					The Service is provided 'as is,' and Holy Grail Team disclaims all warranties of
 					any kind. We do not guarantee uninterrupted, secure, or error-free access to the Service.
 					In no event shall Holy Grail Team be liable for any indirect, incidental, special, or
 					consequential damages arising from the use of the Service.
@@ -217,7 +217,7 @@ export default function TermsOfServicePage() {
 					<Text className="text-md leading-relaxed">
 						<span className="font-bold">Holy Grail Team</span>
 					</Text>
-					<Text className="text-md leading-relaxed mt-1">Email: grail@himaa.me</Text>
+					<Text className="text-md leading-relaxed mt-1">Email: allthingsholygrail@gmail.com</Text>
 				</div>
 			</section>
 		</div>
