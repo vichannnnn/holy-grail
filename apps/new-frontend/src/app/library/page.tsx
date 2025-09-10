@@ -74,7 +74,7 @@ export default async function LibraryPage({
 					<Text>We have one of the largest student-focused audiences in Singapore.</Text>
 					<Text>
 						Interested sponsors and advertisers, please contact us at{" "}
-						<span className="font-bold">grail@himaa.me</span> to explore partnership opportunities.
+						<span className="font-bold">allthingsholygrail@gmail.com</span> to explore partnership opportunities.
 					</Text>
 				</div>
 			</div>
