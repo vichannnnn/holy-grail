@@ -9,11 +9,12 @@ import type {
 	SubjectType,
 	Note,
 } from "./types";
+import type { AxiosResponse } from "axios";
 
 export async function fetchApprovedNotes(
 	searchParams: NotesSearchParams,
 ): Promise<LibraryAPIResponse<PaginatedNotes>> {
-	let response;
+	let response: AxiosResponse<PaginatedNotes>;
 	try {
 		response = await apiClient.get<PaginatedNotes>("/notes/approved", {
 			params: searchParams,
@@ -26,7 +27,7 @@ export async function fetchApprovedNotes(
 }
 
 export async function fetchAllCategories(): Promise<LibraryAPIResponse<CategoryType[]>> {
-	let response;
+	let response: AxiosResponse<CategoryType[]>;
 	try {
 		response = await apiClient.get("/all_category_level");
 	} catch (error) {
@@ -43,7 +44,7 @@ export async function fetchAllCategories(): Promise<LibraryAPIResponse<CategoryT
 }
 
 export async function fetchAllDocumentTypes(): Promise<LibraryAPIResponse<DocumentType[]>> {
-	let response;
+	let response: AxiosResponse<DocumentType[]>;
 	try {
 		response = await apiClient.get("/all_document_type");
 	} catch (error) {
@@ -62,7 +63,7 @@ export async function fetchAllDocumentTypes(): Promise<LibraryAPIResponse<Docume
 export async function fetchAllSubjects(
 	category_id?: number,
 ): Promise<LibraryAPIResponse<SubjectType[]>> {
-	let subjectsResponse;
+	let subjectsResponse: AxiosResponse<SubjectType[]>;
 	try {
 		if (category_id) {
 			subjectsResponse = await apiClient.get("/all_subjects", {

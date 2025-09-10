@@ -22,7 +22,7 @@ export function FileDrop({
 		() => ({
 			input: inputRef.current,
 			removeByName: (name: string) => {
-				if (!inputRef.current || !inputRef.current.files) return;
+				if (!inputRef.current?.files) return;
 				const dt = new DataTransfer();
 				Array.from(inputRef.current.files)
 					.filter((file) => file.name !== name)
@@ -95,7 +95,7 @@ export function FileDrop({
 			if (!props.multiple) {
 				// For single file mode, always replace with the new file (retainFiles doesn't apply)
 				giveFiles.items.clear();
-				giveFiles.items.add(files[0] as File);
+				giveFiles.items.add(files[0]!);
 			} else {
 				// For multiple files mode, add new files (retain existing if retainFiles is true)
 				const existingFiles = Array.from(giveFiles.files);

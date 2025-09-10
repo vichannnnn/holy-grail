@@ -2,12 +2,11 @@
 import { FileDrop, Text, type FileDropHandle, Title, Button } from "@shared/ui/components";
 import Image from "next/image";
 import { useRef } from "react";
-import type { UploadWorkspaceProps } from "./types";
+import type { UploadWorkspaceProps, NotesFormData } from "./types";
 import { UploadEntry } from "./UploadEntry";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { NotesSchema, SUPPORTED_FORMATS } from "./schemas";
-import type { NotesFormData } from "./types";
 
 export function UploadWorkspace({ categories, documentTypes }: UploadWorkspaceProps) {
 	const fileDropRef = useRef<FileDropHandle>(null);

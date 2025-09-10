@@ -53,13 +53,14 @@ export function UploadEntry({
 	};
 
 	// Fetch subjects when category changes
+	// biome-ignore lint/correctness/useExhaustiveDependencies: fetchSubjects changes on every render
 	useEffect(() => {
 		if (currentCategory && currentCategory > 0) {
 			fetchSubjects(currentCategory);
 		} else {
 			setSubjects([]);
 		}
-	}, [currentCategory, fetchSubjects]);
+	}, [currentCategory]);
 
 	const handleDeleteClick = () => {
 		setShowDeleteModal(true);
@@ -162,7 +163,7 @@ export function UploadEntry({
 												field.onChange(newValue?.id || 0);
 												// Reset subject when category changes
 												setValue(`notes.${index}.subject`, 0);
-												if (newValue && newValue.id) {
+												if (newValue?.id) {
 													fetchSubjects(Number(newValue.id));
 												} else {
 													setSubjects([]);
