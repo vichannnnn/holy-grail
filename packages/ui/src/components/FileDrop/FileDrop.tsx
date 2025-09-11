@@ -26,7 +26,9 @@ export function FileDrop({
 				const dt = new DataTransfer();
 				Array.from(inputRef.current.files)
 					.filter((file) => file.name !== name)
-					.forEach((file) => dt.items.add(file));
+					.forEach((file) => {
+						dt.items.add(file);
+					});
 				inputRef.current.files = dt.files;
 				setUploadedFiles(dt.files);
 			},
