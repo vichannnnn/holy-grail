@@ -1,7 +1,12 @@
 import { getUser, RoleEnum } from "@lib/auth";
 import { unauthorized } from "next/navigation";
-import { Title, Text, Divider, Button } from "@shared/ui/components";
-import { AccountSection, ResendVerifyEmail, UpdateEmailForm, UpdatePasswordForm } from "./_components";
+import { Title, Text, Divider } from "@shared/ui/components";
+import {
+	AccountSection,
+	ResendVerifyEmail,
+	UpdateEmailForm,
+	UpdatePasswordForm,
+} from "./_components";
 import {
 	UserIcon,
 	EnvelopeIcon,
@@ -68,9 +73,8 @@ export default async function AccountPage() {
 									"Verified accounts can upload notes to our repository :)"
 								) : (
 									<>
-										Please click{" "}
-										<ResendVerifyEmail>here</ResendVerifyEmail> to
-										resend the verification email.
+										Please click <ResendVerifyEmail>here</ResendVerifyEmail> to resend the
+										verification email.
 									</>
 								)}
 							</Text>
