@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { Analytics, Hero } from "./_components";
 import { getUser } from "@lib/auth/getUser";
 

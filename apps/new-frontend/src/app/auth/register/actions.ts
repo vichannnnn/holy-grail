@@ -10,7 +10,7 @@ export async function register(values: RegisterSchema): Promise<{ ok: boolean; m
 	let parsedData: CurrentUserWithJWT | null = null;
 
 	try {
-		const response = await apiClient.post("/auth/register", values);
+		const response = await apiClient.post("/auth/create", values);
 
 		// validate network response shape with centralized zod schema
 		const parseResult = CurrentUserWithJWTSchema.safeParse(response.data);
