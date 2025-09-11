@@ -28,6 +28,8 @@ export const metadata: Metadata = {
 	},
 };
 
+export const revalidate = 60; // revalidate every 1 minute
+
 export default async function LibraryPage({
 	searchParams,
 }: {
