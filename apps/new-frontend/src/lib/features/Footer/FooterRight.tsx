@@ -11,6 +11,12 @@ export function FooterRight() {
 					<FooterLink href="/" label="Home" />
 					<FooterLink href="/library" label="Library" />
 					<FooterLink href="/faq" label="FAQ" />
+					<FooterLink
+						href="https://drive.google.com/drive/u/0/folders/1gC6GQLgcuoHzwDXtEGzTwvzCz0YsYuwg"
+						label="Google Drive"
+						prefetch={false}
+						target="_blank"
+					/>
 				</div>
 				<div className="flex flex-col gap-2">
 					<Title order={3}>Legal</Title>
