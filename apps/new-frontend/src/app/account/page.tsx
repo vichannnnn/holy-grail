@@ -1,7 +1,7 @@
 import { getUser, RoleEnum } from "@lib/auth";
 import { unauthorized } from "next/navigation";
 import { Title, Text, Divider, Button } from "@shared/ui/components";
-import { AccountSection, UpdateEmailForm, UpdatePasswordForm } from "./_components";
+import { AccountSection, ResendVerifyEmail, UpdateEmailForm, UpdatePasswordForm } from "./_components";
 import {
 	UserIcon,
 	EnvelopeIcon,
@@ -69,7 +69,7 @@ export default async function AccountPage() {
 								) : (
 									<>
 										Please click{" "}
-										<span className="text-blue-500 font-semibold cursor-pointer">here</span> to
+										<ResendVerifyEmail>here</ResendVerifyEmail> to
 										resend the verification email.
 									</>
 								)}
