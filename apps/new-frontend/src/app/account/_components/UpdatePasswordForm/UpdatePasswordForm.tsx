@@ -7,7 +7,6 @@ import { type UpdatePasswordFormData, updatePasswordFormSchema } from "./schemas
 import { updatePassword } from "./actions";
 import { useTransition, useState } from "react";
 import toast from "react-hot-toast";
-import { flushSync } from "react-dom";
 
 export function UpdatePasswordForm() {
 	const [isPending, startTransition] = useTransition();
@@ -40,7 +39,7 @@ export function UpdatePasswordForm() {
 				} else {
 					toast.error(result.message);
 				}
-			} catch (error) {
+			} catch {
 				toast.error("An unexpected error occurred. Please try again later.");
 			}
 		});

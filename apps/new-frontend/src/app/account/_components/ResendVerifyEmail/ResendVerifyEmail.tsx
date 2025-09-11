@@ -15,15 +15,21 @@ export function ResendVerifyEmail({ children }: ResendVerifyEmailProps) {
 			} else {
 				toast.error(message);
 			}
-		} catch (error) {
+		} catch {
 			toast.error("An unexpected error occurred. Please try again later.");
 		}
 	};
 
 	return (
-		<span 
+		<span
+			role="button"
 			className="text-blue-500 font-semibold cursor-pointer hover:text-blue-600 transition-colors"
 			onClick={handleResendEmail}
+			onKeyDown={(e) => {
+				if (e.key === "Enter" || e.key === " ") {
+					handleResendEmail();
+				}
+			}}
 		>
 			{children}
 		</span>
