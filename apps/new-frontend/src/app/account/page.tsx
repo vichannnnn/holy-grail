@@ -1,7 +1,7 @@
 import { getUser, RoleEnum } from "@lib/auth";
 import { unauthorized } from "next/navigation";
-import { Title, Text, Divider, Input, Button } from "@shared/ui/components";
-import { AccountSection } from "./_components";
+import { Title, Text, Divider, Button } from "@shared/ui/components";
+import { AccountSection, UpdateEmailForm, UpdatePasswordForm } from "./_components";
 import {
 	UserIcon,
 	EnvelopeIcon,
@@ -9,7 +9,6 @@ import {
 	ExclamationCircleIcon,
 	CheckCircleIcon,
 } from "@heroicons/react/24/outline";
-import { PasswordInput } from "@/app/auth/_components/PasswordInput";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -76,19 +75,18 @@ export default async function AccountPage() {
 								)}
 							</Text>
 						</div>
-						<Text className="text-green-600 dark:text-green-500 flex items-center gap-1">
-							{user.verified ? (
-								<>
-									<CheckCircleIcon className="size-5" />
-									Verified
-								</>
-							) : (
-								<>
-									<ExclamationCircleIcon className="size-5" />
-									Not verified
-								</>
-							)}
-						</Text>
+
+						{user.verified ? (
+							<Text className="text-green-600 dark:text-green-500 flex items-center gap-1">
+								<CheckCircleIcon className="size-5" />
+								Verified
+							</Text>
+						) : (
+							<Text className="text-red-600 dark:text-red-500 flex items-center gap-1">
+								<ExclamationCircleIcon className="size-5" />
+								Not verified
+							</Text>
+						)}
 					</div>
 				</AccountSection>
 				<AccountSection
@@ -105,14 +103,7 @@ export default async function AccountPage() {
 							"You have not set an email address yet."
 						)}
 					</Text>
-					<div className="flex flex-col sm:flex-row gap-2 justify-between">
-						<Input
-							label="New email address"
-							placeholder="eg. joe.mom@email.com"
-							containerClassName="grow"
-						/>
-						<Button className="grow-0 mt-2 sm:mt-auto mx-auto">Update</Button>
-					</div>
+					<UpdateEmailForm />
 				</AccountSection>
 				<AccountSection
 					title="Change password"
@@ -120,24 +111,7 @@ export default async function AccountPage() {
 					className="flex flex-col gap-4"
 				>
 					<Text>Enter your current password and the new password you want to change to.</Text>
-					<div className="flex flex-col gap-2 justify-between">
-						<PasswordInput
-							label="Old password"
-							placeholder="eg. iloveEc0ns/"
-							containerClassName="grow"
-						/>
-						<PasswordInput
-							label="New password"
-							placeholder="eg. ihateEc0ns/"
-							containerClassName="grow"
-						/>
-						<PasswordInput
-							label="Repeat new password"
-							placeholder="eg. ihateEc0ns/"
-							containerClassName="grow"
-						/>
-					</div>
-					<Button className="grow-0 mx-auto">Update password</Button>
+					<UpdatePasswordForm />
 				</AccountSection>
 			</div>
 		</main>

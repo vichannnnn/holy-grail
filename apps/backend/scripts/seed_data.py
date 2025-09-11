@@ -34,12 +34,12 @@ async def create_admin_user(session: AsyncSession):
         admin = Account(
             email="admin@holygrail.sg",
             username="admin",
-            password=Authenticator.pwd_context.hash("admin123"),
-            role=4,  # Developer role
+            password=Authenticator.pwd_context.hash("Admin123!"),
+            role=3,  # Developer role
             verified=True,
         )
         session.add(admin)
-        print("✅ Created admin user (email: admin@holygrail.sg, password: admin123)")
+        print("✅ Created admin user (email: admin@holygrail.sg, password: Admin123!)")
     else:
         print("ℹ️  Admin user already exists")
 
