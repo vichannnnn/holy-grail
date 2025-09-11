@@ -8,7 +8,7 @@ import { isAxiosError } from "axios";
 export async function updateEmail(values: UpdateEmailFormData): Promise<ResponseData> {
 	try {
 		await apiClient.post("/auth/update_email", values);
-		const updatedUser = await updateUser({ email: values.new_email });
+		const updatedUser = await updateUser({ email: values.new_email, verified: false });
 		if (!updatedUser) {
 			return {
 				ok: false,
@@ -16,7 +16,7 @@ export async function updateEmail(values: UpdateEmailFormData): Promise<Response
 					"Failed to update user data locally. Sign out and sign in again to see updated changes.",
 			};
 		}
-		return { ok: true, message: "Email updated successfully" };
+		return { ok: true, message: "Email updated successfully. Check your email to verify it." };
 	} catch (err: unknown) {
 		if (isAxiosError(err) && err.response) {
 			const status = err.response.status;
