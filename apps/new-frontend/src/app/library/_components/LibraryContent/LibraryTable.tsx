@@ -77,7 +77,7 @@ export function LibraryTable({ items }: LibraryTableProps) {
 				</thead>
 				<tbody>
 					{items.map((note) => (
-						<tr key={note.id} className="hover:bg-gray-50 dark:hover:bg-gray-800 text-xs">
+						<tr key={note.id} className=" text-xs">
 							<td className="px-4 py-3">
 								<Link
 									href={getDocumentUrl(note.file_name) ?? "#"}

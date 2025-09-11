@@ -8,7 +8,7 @@ import {
 	DocumentTextIcon,
 	UserCircleIcon,
 	AdjustmentsHorizontalIcon,
-	ExclamationTriangleIcon,
+	CommandLineIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { DropdownButton } from "./DropdownButton";
@@ -56,12 +56,17 @@ export const NAV_DROPDOWN_INFO: Record<string, NavInfo> = {
 	},
 };
 
+export const AUTH_LINKS = {
+	signIn: { label: "Sign In", href: "/auth/signin" },
+	register: { label: "Register", href: "/auth/register" },
+} as const;
+
 export const NEEDS_AUTH_DROPDOWN_INFO: Record<string, NavInfo> = {
 	signIn: {
 		render: () => (
-			<Link href="/auth/signin">
+			<Link href={AUTH_LINKS.signIn.href}>
 				<DropdownButton
-					label="Sign In"
+					label={AUTH_LINKS.signIn.label}
 					icon={<ArrowRightEndOnRectangleIcon className="size-6" />}
 				/>
 			</Link>
@@ -69,8 +74,11 @@ export const NEEDS_AUTH_DROPDOWN_INFO: Record<string, NavInfo> = {
 	},
 	register: {
 		render: () => (
-			<Link href="/auth/register">
-				<DropdownButton label="Register" icon={<UserPlusIcon className="size-6" />} />
+			<Link href={AUTH_LINKS.register.href}>
+				<DropdownButton
+					label={AUTH_LINKS.register.label}
+					icon={<UserPlusIcon className="size-6" />}
+				/>
 			</Link>
 		),
 	},
@@ -108,14 +116,9 @@ export const AUTHED_DROPDOWN_INFO: Record<string, NavInfo> = {
 	developer: {
 		render: () => (
 			<Link href="/developer">
-				<DropdownButton label="Developer" icon={<ExclamationTriangleIcon className="size-6" />} />
+				<DropdownButton label="Developer" icon={<CommandLineIcon className="size-6" />} />
 			</Link>
 		),
 		needsRole: RoleEnum.DEVELOPER,
 	},
 };
-
-export const AUTH_LINKS = {
-	signIn: { label: "Sign In", href: "/auth/signin" },
-	register: { label: "Register", href: "/auth/register" },
-} as const;
