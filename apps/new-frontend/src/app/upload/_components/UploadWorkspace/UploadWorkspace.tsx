@@ -1,9 +1,11 @@
 "use client";
 import { FileDrop, Text, type FileDropHandle, Title, Button } from "@shared/ui/components";
 import Image from "next/image";
+import Link from "next/link";
 import { useRef } from "react";
 import type { UploadWorkspaceProps, NotesFormData } from "./types";
 import { UploadEntry } from "./UploadEntry";
+import { UploadGuidelines } from "../UploadGuidelines";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { NotesSchema, SUPPORTED_FORMATS } from "./schemas";
@@ -106,9 +108,15 @@ export function UploadWorkspace({ categories, documentTypes }: UploadWorkspacePr
 						))}
 						<div className="flex flex-col sm:flex-row sm:items-center gap-4 mt-4">
 							<Text description className="flex-1 text-xs">
-								By uploading, you agree to have read and accepted our terms of service and the
-								uploading guidelines. Your files will be reviewed by our admin team before being
-								published.
+								By uploading, you agree to have read and accepted our{" "}
+								<Link
+									href="/terms"
+									className="underline hover:text-blue-500 transition-colors cursor-pointer inline"
+								>
+									terms of service
+								</Link>{" "}
+								and the <UploadGuidelines>uploading guidelines</UploadGuidelines>. Your files will
+								be reviewed by our admin team before being published.
 							</Text>
 							<Button type="submit" className="sm:ml-auto">
 								Upload!

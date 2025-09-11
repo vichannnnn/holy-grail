@@ -75,7 +75,7 @@ export default async function UploadPage() {
 				</Title>
 				<Title order={2} className="text-center text-lg font-normal">
 					Thanks for contributing to Holy Grail! Please review our{" "}
-					<UploadGuidelines>upload guidelines</UploadGuidelines> before uploading your documents.
+					<UploadGuidelines>uploading guidelines</UploadGuidelines> before uploading your documents.
 				</Title>
 			</div>
 

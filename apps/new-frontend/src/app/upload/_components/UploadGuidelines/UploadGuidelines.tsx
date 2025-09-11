@@ -29,8 +29,9 @@ export function UploadGuidelines({ children }: UploadGuidelinesProps) {
 								File Requirements
 							</Title>
 							<ul className="list-disc list-inside space-y-1 text-sm marker:text-zinc-700 dark:marker:text-zinc-300">
-								<li>Maximum file size: 1GB per file</li>
+								<li>Maximum file size: 500MB per file</li>
 								<li>Supported formats: PDF, ZIP</li>
+								<li>Maximum files per upload: 25</li>
 							</ul>
 						</div>
 						<div>
@@ -42,7 +43,7 @@ export function UploadGuidelines({ children }: UploadGuidelinesProps) {
 									Try to adhere to the naming scheme: [school] [year] [chapter title/paper
 									component].
 								</li>
-								<li>Distinguish between exam types (eg. between mid-year papers and prelims).</li>
+								<li>Distinguish between exam types (eg. between mid-year and prelim papers).</li>
 							</ul>
 						</div>
 
@@ -52,7 +53,7 @@ export function UploadGuidelines({ children }: UploadGuidelinesProps) {
 							</Title>
 							<ul className="list-disc list-inside space-y-1 text-sm marker:text-zinc-700 dark:marker:text-zinc-300">
 								<li>Content should not contain offensive material.</li>
-								<li>Do not upload copyrighted material (eg. SEAB papers).</li>
+								<li>Do not upload copyrighted material (eg. SEAB papers, scans of textbooks).</li>
 							</ul>
 						</div>
 
