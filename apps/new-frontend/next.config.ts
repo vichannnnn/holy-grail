@@ -5,6 +5,9 @@ const nextConfig: NextConfig = {
 		reactCompiler: true,
 		authInterrupts: true,
 		optimizePackageImports: ["@shared/ui", "@lib"],
+		serverActions: {
+			bodySizeLimit: "13gb", // 500mb * 25 files + buffer (500mb)
+		},
 	},
 };
 
