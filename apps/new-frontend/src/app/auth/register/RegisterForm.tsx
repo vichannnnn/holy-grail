@@ -8,9 +8,10 @@ import { useTransition } from "react";
 import { PasswordInput } from "../_components";
 import { register as registerUser } from "./actions";
 import toast from "react-hot-toast";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export function RegisterForm() {
+  const router = useRouter();
 	const {
 		register,
 		handleSubmit,
@@ -27,7 +28,7 @@ export function RegisterForm() {
 				toast.error(message || "Registering failed");
 			} else {
 				toast.success("Registering successful! Redirecting...");
-				redirect("/library");
+				router.push("/library");
 			}
 		});
 	};
