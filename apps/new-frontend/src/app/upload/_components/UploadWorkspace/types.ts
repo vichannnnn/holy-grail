@@ -7,6 +7,12 @@ import type { NoteSchema, NotesSchema } from "./schemas";
 export type NoteFormData = z.infer<typeof NoteSchema>;
 export type NotesFormData = z.infer<typeof NotesSchema>;
 
+// Response interface for server actions
+export interface ResponseData {
+	ok: boolean;
+	message: string;
+}
+
 export interface UploadWorkspaceProps {
 	categories: CategoryType[];
 	documentTypes: DocumentType[];

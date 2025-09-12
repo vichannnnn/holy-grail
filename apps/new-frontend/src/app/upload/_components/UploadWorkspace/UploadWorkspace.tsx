@@ -2,16 +2,20 @@
 import { FileDrop, Text, type FileDropHandle, Title, Button } from "@shared/ui/components";
 import Image from "next/image";
 import Link from "next/link";
-import { useRef } from "react";
+import { useRef, useTransition } from "react";
+import { redirect } from "next/navigation";
+import toast from "react-hot-toast";
 import type { UploadWorkspaceProps, NotesFormData } from "./types";
 import { UploadEntry } from "./UploadEntry";
 import { UploadGuidelines } from "../UploadGuidelines";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { NotesSchema, SUPPORTED_FORMATS } from "./schemas";
+import { uploadNotes } from "./actions";
 
 export function UploadWorkspace({ categories, documentTypes }: UploadWorkspaceProps) {
 	const fileDropRef = useRef<FileDropHandle>(null);
+	const [isPending, startTransition] = useTransition();
 
 	const {
 		control,
@@ -76,9 +80,35 @@ export function UploadWorkspace({ categories, documentTypes }: UploadWorkspacePr
 		}
 	};
 
-	const onSubmit = (data: NotesFormData) => {
-		console.log("Form submitted:", data);
-		// Handle form submission here - data now contains the correct values!
+	const onSubmit = async (data: NotesFormData) => {
+		const formData = new FormData();
+
+		data.notes.forEach((note, i) => {
+			// backend expects these exact keys: `${i}[file]`, `${i}[category]`, `${i}[subject]`, `${i}[type]`, `${i}[year]`, `${i}[name]`
+			formData.append(`${i}[file]`, note.file as File);
+			formData.append(`${i}[category]`, String(note.category));
+			formData.append(`${i}[subject]`, String(note.subject));
+			formData.append(`${i}[type]`, String(note.type));
+			// send "0" when year is absent to match backend parsing behavior
+			formData.append(`${i}[year]`, note.year ? String(note.year) : "0");
+			formData.append(`${i}[name]`, note.name ?? "");
+		});
+
+		startTransition(async () => {
+			try {
+				const result = await uploadNotes(formData);
+
+				if (result.ok) {
+					toast.success(result.message);
+					redirect("/");
+				} else {
+					toast.error(result.message);
+				}
+			} catch (error) {
+				console.error("Upload failed:", error);
+				toast.error("An unexpected error occurred. Please try again.");
+			}
+		});
 	};
 
 	// Sync form when files change
@@ -118,8 +148,8 @@ export function UploadWorkspace({ categories, documentTypes }: UploadWorkspacePr
 								and the <UploadGuidelines>uploading guidelines</UploadGuidelines>. Your files will
 								be reviewed by our admin team before being published.
 							</Text>
-							<Button type="submit" className="sm:ml-auto">
-								Upload!
+							<Button type="submit" className="sm:ml-auto" disabled={isPending}>
+								{isPending ? "Uploading..." : "Upload!"}
 							</Button>
 						</div>
 					</div>

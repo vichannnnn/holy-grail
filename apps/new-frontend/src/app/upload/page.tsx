@@ -32,15 +32,18 @@ export default async function UploadPage() {
 
 	if (!user.verified) {
 		return (
-			<main className="flex flex-col items-center">
+			<main className="flex flex-col items-center w-5/6 mx-auto">
 				<Image src="/trimmy-grail-chan-sparkling.webp" alt="Error" width={100} height={100} />
 				<Title order={2} className="font-bold mb-4">
 					Account Not Verified
 				</Title>
 				<Text>
 					You need to verify your account before you can upload materials. Please check your email
-					for the verification link, or go to <Link href="/account">Account Settings</Link> to
-					resend the verification email.
+					for the verification link, or go to{" "}
+					<Link href="/account" className="underline hover:text-blue-500 transition-colors">
+						Account Settings
+					</Link>{" "}
+					to resend the verification email.
 				</Text>
 			</main>
 		);
@@ -53,7 +56,7 @@ export default async function UploadPage() {
 
 	if (!categories.ok || !documentTypes.ok || !categories.data || !documentTypes.data) {
 		return (
-			<main className="flex flex-col items-center">
+			<main className="flex flex-col items-center w-5/6 mx-auto">
 				<Image src="/trimmy-grail-chan-sparkling.webp" alt="Error" width={100} height={100} />
 				<Title order={2} className="font-bold mb-4">
 					We ran into an issue :(
