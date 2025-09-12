@@ -21,8 +21,7 @@ export function ResendVerifyEmail({ children }: ResendVerifyEmailProps) {
 	};
 
 	return (
-		<span
-			role="button"
+		<button
 			className="text-blue-500 font-semibold cursor-pointer hover:text-blue-600 transition-colors"
 			onClick={handleResendEmail}
 			onKeyDown={(e) => {
@@ -32,6 +31,6 @@ export function ResendVerifyEmail({ children }: ResendVerifyEmailProps) {
 			}}
 		>
 			{children}
-		</span>
+		</button>
 	);
 }

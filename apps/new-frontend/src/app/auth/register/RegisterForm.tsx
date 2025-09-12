@@ -11,7 +11,7 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
 export function RegisterForm() {
-  const router = useRouter();
+	const router = useRouter();
 	const {
 		register,
 		handleSubmit,

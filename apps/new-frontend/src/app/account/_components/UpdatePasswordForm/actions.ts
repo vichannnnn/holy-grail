@@ -11,7 +11,6 @@ export async function updatePassword(values: UpdatePasswordFormData): Promise<Re
 	} catch (err: unknown) {
 		if (isAxiosError(err) && err.response) {
 			const status = err.response.status;
-			console.log(status);
 			let errorDescription = "Unable to update password. Please check your input and try again.";
 			switch (status) {
 				case 400:
