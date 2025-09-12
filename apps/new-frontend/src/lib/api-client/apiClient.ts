@@ -7,9 +7,6 @@ const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const apiClient = axios.create({
 	baseURL: NEXT_PUBLIC_API_URL,
-	headers: {
-		"Content-Type": "application/json",
-	},
 });
 
 apiClient.interceptors.request.use(
@@ -20,6 +17,16 @@ apiClient.interceptors.request.use(
 		if (accessToken) {
 			config.headers.Authorization = `Bearer ${accessToken}`;
 		}
+
+		// Set Content-Type based on data type
+		if (config.data instanceof FormData) {
+			// Let the browser set the Content-Type with boundary for FormData
+			delete config.headers["Content-Type"];
+		} else if (!config.headers["Content-Type"]) {
+			// Default to JSON for other data types
+			config.headers["Content-Type"] = "application/json";
+		}
+
 		return config;
 	},
 	(error) => {

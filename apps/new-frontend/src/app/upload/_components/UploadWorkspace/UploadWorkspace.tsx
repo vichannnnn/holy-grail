@@ -3,7 +3,6 @@ import { FileDrop, Text, type FileDropHandle, Title, Button } from "@shared/ui/c
 import Image from "next/image";
 import Link from "next/link";
 import { useRef, useTransition } from "react";
-import { redirect } from "next/navigation";
 import toast from "react-hot-toast";
 import type { UploadWorkspaceProps, NotesFormData } from "./types";
 import { UploadEntry } from "./UploadEntry";
@@ -12,10 +11,12 @@ import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { NotesSchema, SUPPORTED_FORMATS } from "./schemas";
 import { uploadNotes } from "./actions";
+import { useRouter } from "next/navigation";
 
 export function UploadWorkspace({ categories, documentTypes }: UploadWorkspaceProps) {
 	const fileDropRef = useRef<FileDropHandle>(null);
 	const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
 	const {
 		control,
@@ -100,7 +101,7 @@ export function UploadWorkspace({ categories, documentTypes }: UploadWorkspacePr
 
 				if (result.ok) {
 					toast.success(result.message);
-					redirect("/");
+					router.push("/");
 				} else {
 					toast.error(result.message);
 				}
