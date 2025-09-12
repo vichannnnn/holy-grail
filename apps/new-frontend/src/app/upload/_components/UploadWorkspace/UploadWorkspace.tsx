@@ -16,7 +16,7 @@ import { useRouter } from "next/navigation";
 export function UploadWorkspace({ categories, documentTypes }: UploadWorkspaceProps) {
 	const fileDropRef = useRef<FileDropHandle>(null);
 	const [isPending, startTransition] = useTransition();
-  const router = useRouter();
+	const router = useRouter();
 
 	const {
 		control,
