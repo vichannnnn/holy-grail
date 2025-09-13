@@ -1,6 +1,5 @@
-the big todo list :)
+the small todo list :)
 
 - reset password workflow
-- verify account workflow
 - admin
 - developer
