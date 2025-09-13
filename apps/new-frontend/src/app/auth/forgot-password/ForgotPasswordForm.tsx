@@ -59,7 +59,7 @@ export function ForgotPasswordForm() {
 			</form>
 			<Text description className="mt-4 text-sm">
 				Remembered your password? Sign in{" "}
-				<Link href="/auth/signin" className="font-bold">
+				<Link href="/auth/sign-in" className="font-bold">
 					here
 				</Link>
 				.

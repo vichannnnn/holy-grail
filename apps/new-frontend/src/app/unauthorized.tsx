@@ -28,7 +28,7 @@ export default function Unauthorized() {
 				You need to be logged in to access this page. Please sign in to continue.
 			</Text>
 
-			<Link href="/auth/signin">
+			<Link href="/auth/sign-in">
 				<Button className="flex justify-center mx-auto">Sign In</Button>
 			</Link>
 		</div>
