@@ -1,10 +1,12 @@
 "use client";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ForgotPasswordSchema } from "./schemas";
+import { ForgotPasswordSchema, type ForgotPasswordFormData } from "./schemas";
 import { Input, Title, Text, Button } from "@shared/ui/components";
 import Link from "next/link";
 import { useTransition } from "react";
+import toast from "react-hot-toast";
+import { sendResetPasswordEmail } from "./actions";
 
 export function ForgotPasswordForm() {
 	const {
@@ -16,8 +18,15 @@ export function ForgotPasswordForm() {
 	});
 	const [isPending, startTransition] = useTransition();
 
-	const onSubmit = (data: any) => {
-		console.log(data);
+	const onSubmit = (data: ForgotPasswordFormData) => {
+		startTransition(async () => {
+			const result = await sendResetPasswordEmail(data);
+			if (result.ok) {
+				toast.success(result.message);
+			} else {
+				toast.error(result.message);
+			}
+		});
 	};
 
 	return (
