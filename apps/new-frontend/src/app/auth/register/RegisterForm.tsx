@@ -89,7 +89,7 @@ export function RegisterForm() {
 			</form>
 			<Text description className="mt-4 text-sm">
 				Already have an account? Sign in{" "}
-				<Link href="/auth/signin" className="font-bold">
+				<Link href="/auth/sign-in" className="font-bold">
 					here
 				</Link>
 				.

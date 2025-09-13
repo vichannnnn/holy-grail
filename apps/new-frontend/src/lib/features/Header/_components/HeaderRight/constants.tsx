@@ -57,7 +57,7 @@ export const NAV_DROPDOWN_INFO: Record<string, NavInfo> = {
 };
 
 export const AUTH_LINKS = {
-	signIn: { label: "Sign In", href: "/auth/signin" },
+	signIn: { label: "Sign In", href: "/auth/sign-in" },
 	register: { label: "Register", href: "/auth/register" },
 } as const;
 
