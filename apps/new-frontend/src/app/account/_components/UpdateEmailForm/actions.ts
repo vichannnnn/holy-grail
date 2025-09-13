@@ -1,5 +1,5 @@
 "use server";
-import { updateUser } from "@/lib/auth/updateUser";
+import { updateUser } from "@lib/auth";
 import type { ResponseData } from "../../types";
 import type { UpdateEmailFormData } from "./schemas";
 import { apiClient } from "@lib/api-client";
