@@ -1,0 +1,36 @@
+services:
+  db:
+    container_name: holy-grail-db
+    image: postgres:14.1-alpine
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-app}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    healthcheck:
+      interval: 5s
+      retries: 10
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+    restart: unless-stopped
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - holy-grail-network
+
+  redis:
+    container_name: holy-grail-redis
+    image: redis:7.0.7-alpine
+    ports:
+      - "6379:6379"
+    command: redis-server --loglevel verbose
+    restart: unless-stopped
+    networks:
+      - holy-grail-network
+
+volumes:
+  postgres_data:
+
+networks:
+  holy-grail-network:
+    driver: bridge

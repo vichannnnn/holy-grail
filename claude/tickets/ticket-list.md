@@ -30,6 +30,9 @@ _No low priority tickets yet_
 - 🟢 [TICKET-004](./TICKET-004-refactor-email-system.md) - Refactor Email System for Local Development (Completed: 2025-01-31)
 - 🟢 [TICKET-005](./TICKET-005-standardize-aws-configuration.md) - Standardize AWS Configuration (Completed: 2025-01-31)
 - 🟢 [TICKET-007](./TICKET-007-add-documentation.md) - Add Documentation to Backend API (Completed: 2025-09-07)
+- 🟢 [TICKET-008](./TICKET-008-docker-compose-simplification.md) - Simplify Docker Compose for Database Only (Completed: 2025-09-13)
+- 🟢 [TICKET-009](./TICKET-009-fix-celery-macos-error.md) - Fix Celery Beat macOS Error (Completed: 2025-09-13)
+- 🟢 [TICKET-010](./TICKET-010-task-service-decoupling.md) - Verify Task Service Decoupling (Completed: 2025-09-13)
 
 ## Cancelled/Archived Tickets
 _No cancelled tickets yet_

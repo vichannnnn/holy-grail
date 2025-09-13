@@ -57,14 +57,11 @@ class Settings(BaseSettings):
     mailtrap_api_key: Optional[str] = Field(default=None)
     mailtrap_bearer_token: Optional[str] = Field(default=None)
 
-    # Celery Configuration (Optional for LOCAL)
-    celery_broker_url: Optional[str] = Field(default="redis://localhost:6379")
-    celery_result_backend: Optional[str] = Field(default="redis://localhost:6379")
-
     # Application URLs
     frontend_url: str = Field(default="http://localhost:3000")
     backend_url: str = Field(default="http://localhost:8000")
     backend_container_url: str = Field(default="backend:8000")
+    task_api_url: str = Field(default="http://localhost:8001")
 
     # Local Storage Configuration (for LOCAL environment)
     local_storage_path: str = Field(default="./uploads")

@@ -5,9 +5,10 @@ This module provides endpoints for triggering and monitoring Celery background
 tasks. Used primarily for testing task queue health and debugging async
 job execution.
 """
-from fastapi import APIRouter
+import httpx
+from fastapi import APIRouter, HTTPException
 
-from app.tasks.health_check import ping as ping_task
+from app.core import settings
 
 router = APIRouter()
 
@@ -27,12 +28,17 @@ async def trigger_ping_task() -> dict[str, str]:
     Example:
         {"task_id": "550e8400-e29b-41d4-a716-446655440000"}
     """
-    task = ping_task.delay()
-    return {"task_id": task.id}
+    async with httpx.AsyncClient() as client:
+        try:
+            response = await client.post(f"{settings.task_api_url}/tasks/ping")
+            response.raise_for_status()
+            return response.json()
+        except httpx.RequestError as e:
+            raise HTTPException(status_code=503, detail=f"Task service unavailable: {str(e)}")
 
 
 @router.get("/check_ping_task/{task_id}")
-def check_triggered_ping_task(task_id: str) -> dict[str, str]:
+async def check_triggered_ping_task(task_id: str) -> dict[str, str]:
     """
     Check the status of a triggered ping task.
 
@@ -50,11 +56,17 @@ def check_triggered_ping_task(task_id: str) -> dict[str, str]:
         - Success: {"status": "success", "result": "pong"}
         - Failure: {"status": "failure", "error": "Worker offline"}
     """
-    task = ping_task.AsyncResult(task_id)
+    async with httpx.AsyncClient() as client:
+        try:
+            response = await client.get(f"{settings.task_api_url}/tasks/{task_id}/status")
+            response.raise_for_status()
+            data = response.json()
 
-    if task.state == "PENDING":  # pylint: disable=no-else-return
-        return {"status": "pending"}
-    elif task.state == "SUCCESS":
-        return {"status": "success", "result": task.result}
-    else:
-        return {"status": "failure", "error": str(task.result)}
+            if data["status"] == "PENDING":
+                return {"status": "pending"}
+            elif data["status"] == "SUCCESS":
+                return {"status": "success", "result": data["result"]}
+            else:
+                return {"status": "failure", "error": str(data.get("result", "Unknown error"))}
+        except httpx.RequestError as e:
+            raise HTTPException(status_code=503, detail=f"Task service unavailable: {str(e)}")

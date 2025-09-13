@@ -6,8 +6,8 @@ temporary passwords after a password reset.
 """
 from pydantic import EmailStr
 
-from app.utils.email_handler import EmailClient
-from app.utils.worker import celery_app
+from email_service.email_task_client import EmailTaskClient
+from worker import celery_app
 
 
 @celery_app.task
@@ -27,7 +27,7 @@ def send_new_password_email_task(email: EmailStr, username: str, password: str) 
         dict: Success message if email sent, None on error.
     """
     try:
-        email_client = EmailClient()
+        email_client = EmailTaskClient()
         email_client.send_new_password_mail(
             sender_name="Holy Grail",
             username=username,

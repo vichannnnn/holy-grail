@@ -14,17 +14,43 @@ from app.schemas.analytics import AnalyticsResponse
 router = APIRouter()
 
 
-# @router.post("/fetch_google_analytics")
-# @conditional_rate_limit("1/day")
-# async def fetch_google_analytics(request: Request, session: CurrentSession):
-#     """
-#     Manually trigger Google Analytics data fetch.
-#
-#     This endpoint is commented out as analytics fetching is now handled
-#     by scheduled background tasks.
-#     """
-#     resp = await Analytics.fetch_google_analytics_async(session)
-#     return resp
+@router.post("/fetch_google_analytics")
+async def fetch_google_analytics(session: CurrentSession):
+    """
+    Fetch Google Analytics data.
+
+    This endpoint is called by the task service to update analytics data.
+    It fetches the latest data from Google Analytics API and stores it
+    in the database.
+
+    Args:
+        session: Active database session
+
+    Returns:
+        dict: Success status and message
+    """
+    resp = await Analytics.fetch_google_analytics_async(session)
+    return resp
+
+
+@router.post("/update_scoreboard")
+async def update_scoreboard(session: CurrentSession):
+    """
+    Update scoreboard rankings for all users.
+
+    This endpoint is called by the task service to recalculate user
+    rankings based on their upload count and contribution metrics.
+
+    Args:
+        session: Active database session
+
+    Returns:
+        dict: Success status and message
+    """
+    from app.models.scoreboard import Scoreboard
+
+    await Scoreboard.update_scoreboard_users(session=session)
+    return {"status": "success", "message": "Scoreboard updated"}
 
 
 @router.get("/get_latest_analytics", response_model=AnalyticsResponse)

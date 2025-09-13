@@ -9,6 +9,8 @@ import logging
 from abc import ABC, abstractmethod
 from typing import Any, Dict, Optional
 
+import httpx
+
 from app.core import Environment, settings
 
 logger = logging.getLogger(__name__)
@@ -252,13 +254,18 @@ The Holy Grail Team
         return "\n".join(formatted_lines)
 
 
-class CeleryEmailService(EmailService):
+class HTTPEmailService(EmailService):
     """
-    Celery-based email service for production environments.
+    HTTP-based email service for production environments.
 
-    Sends emails asynchronously via Celery task queue to avoid blocking
-    the main application. Uses Mailtrap or configured SMTP service.
+    Sends emails by making HTTP requests to the task service API,
+    which handles the async processing via Celery.
     """
+
+    def __init__(self):
+        """Initialize with task service URL."""
+        self.task_api_url = settings.task_api_url
+        self.client = httpx.AsyncClient()
 
     async def send_email(
         self,
@@ -269,7 +276,10 @@ class CeleryEmailService(EmailService):
         context: Optional[Dict[str, Any]] = None,
     ) -> bool:
         """
-        Send email via Mailtrap using async handler.
+        Generic email sending is not implemented for HTTP service.
+
+        All emails should be sent through specific methods like
+        send_verification_email, send_reset_password_email, etc.
 
         Args:
             to: Recipient email address.
@@ -279,12 +289,13 @@ class CeleryEmailService(EmailService):
             context: Optional context data (not used).
 
         Returns:
-            bool: True if email sent successfully, False otherwise.
+            bool: Always returns False as this method is not implemented.
         """
-        # Import here to avoid issues when Celery is not available
-        from app.utils.email_handler import send_email_via_mailtrap
-
-        return await send_email_via_mailtrap(to, subject, body)
+        logger.warning(
+            "Generic send_email called on HTTPEmailService. "
+            "Use specific methods like send_verification_email instead."
+        )
+        return False
 
     async def send_verification_email(self, to: str, username: str, verification_url: str) -> bool:
         """
@@ -298,10 +309,20 @@ class CeleryEmailService(EmailService):
         Returns:
             bool: Always returns True after queuing.
         """
-        from app.tasks.verify_email import send_verification_email_task
-
-        send_verification_email_task.delay(to, username, verification_url)
-        return True
+        try:
+            response = await self.client.post(
+                f"{self.task_api_url}/tasks/send-verify-email",
+                json={
+                    "email": to,
+                    "username": username,
+                    "confirm_url": verification_url,
+                },
+            )
+            response.raise_for_status()
+            return True
+        except Exception as e:
+            logger.error(f"Failed to send verification email: {e}")
+            return False
 
     async def send_reset_password_email(self, to: str, username: str, reset_url: str) -> bool:
         """
@@ -315,10 +336,20 @@ class CeleryEmailService(EmailService):
         Returns:
             bool: Always returns True after queuing.
         """
-        from app.tasks.reset_password_email import send_reset_password_email_task
-
-        send_reset_password_email_task.delay(to, username, reset_url)
-        return True
+        try:
+            response = await self.client.post(
+                f"{self.task_api_url}/tasks/send-reset-password-email",
+                json={
+                    "email": to,
+                    "username": username,
+                    "confirm_url": reset_url,
+                },
+            )
+            response.raise_for_status()
+            return True
+        except Exception as e:
+            logger.error(f"Failed to send reset password email: {e}")
+            return False
 
     async def send_new_password_email(self, to: str, username: str, new_password: str) -> bool:
         """
@@ -332,10 +363,20 @@ class CeleryEmailService(EmailService):
         Returns:
             bool: Always returns True after queuing.
         """
-        from app.tasks.new_password_email import send_new_password_email_task
-
-        send_new_password_email_task.delay(to, username, new_password)
-        return True
+        try:
+            response = await self.client.post(
+                f"{self.task_api_url}/tasks/send-new-password-email",
+                json={
+                    "email": to,
+                    "username": username,
+                    "password": new_password,
+                },
+            )
+            response.raise_for_status()
+            return True
+        except Exception as e:
+            logger.error(f"Failed to send new password email: {e}")
+            return False
 
 
 def get_email_service() -> EmailService:
@@ -351,8 +392,8 @@ def get_email_service() -> EmailService:
     if settings.environment == Environment.LOCAL or not settings.email_enabled:
         logger.info("📧 Email service running in console mode - emails will be logged")
         return ConsoleEmailService()
-    logger.info("📧 Email service running in production mode - using Celery/Mailtrap")
-    return CeleryEmailService()
+    logger.info("📧 Email service running in production mode - using Task API/Mailtrap")
+    return HTTPEmailService()
 
 
 # Singleton instance
