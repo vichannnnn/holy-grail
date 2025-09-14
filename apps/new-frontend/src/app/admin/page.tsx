@@ -6,7 +6,7 @@ import { LibrarySearch } from "@/app/library/_components";
 import type { NotesSearchParams } from "@/app/library/types";
 import { fetchPendingApprovalNotes } from "./actions";
 import { PAGE_MAX_SIZE } from "./constants";
-import { Pagination } from "@lib/features/Pagination";
+import { AdminContent } from "./_components";
 import { fetchAllCategories, fetchAllDocumentTypes, fetchAllSubjects } from "@/app/library/actions";
 
 export const metadata: Metadata = {
@@ -27,6 +27,7 @@ export default async function AdminPage({
 	}
 
 	const query = { ...(await searchParams), size: PAGE_MAX_SIZE };
+	const pendingNotesResponse = await fetchPendingApprovalNotes(query);
 	const categories = await fetchAllCategories();
 	const [documentTypes, subjects] = await Promise.all([
 		fetchAllDocumentTypes(),
@@ -51,7 +52,7 @@ export default async function AdminPage({
 				allDocumentTypes={documentTypes}
 				allSubjects={subjects}
 			/>
-			{JSON.stringify(await fetchPendingApprovalNotes(await searchParams))}
+			<AdminContent {...pendingNotesResponse} />
 		</main>
 	);
 }
