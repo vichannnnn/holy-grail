@@ -2,3 +2,5 @@
 export * from "./Pagination";
 export * from "./AdminEdit";
 export * from "./AdminDelete";
+export * from "./AdminApprove";
+export * from "./AdminApprove";
