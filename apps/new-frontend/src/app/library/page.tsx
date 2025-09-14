@@ -1,4 +1,4 @@
-import { getUser } from "@lib/auth";
+import { getUser, RoleEnum } from "@lib/auth";
 import Link from "next/link";
 import { Title, Text, Divider } from "@shared/ui/components";
 import type { NotesSearchParams } from "./types";
@@ -102,7 +102,7 @@ export default async function LibraryPage({
 				allDocumentTypes={documentTypes}
 				allSubjects={subjects}
 			/>
-			<LibraryContent {...notesResponse} />
+			<LibraryContent {...notesResponse} isAdmin={!!user?.role && user.role >= RoleEnum.ADMIN} />
 		</main>
 	);
 }

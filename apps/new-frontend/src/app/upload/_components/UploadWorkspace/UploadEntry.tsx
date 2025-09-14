@@ -9,6 +9,7 @@ import { Controller, useWatch } from "react-hook-form";
 import toast from "react-hot-toast";
 import { twMerge } from "tailwind-merge";
 import { DeleteConfirmModal } from "./DeleteConfirmModal";
+import { MAPPED_YEAR_RANGE } from "@lib/features/AdminEdit/constants";
 
 export function UploadEntry({
 	file,
@@ -208,9 +209,6 @@ export function UploadEntry({
 								name={`notes.${index}.year`}
 								control={control}
 								render={({ field, fieldState: { error } }) => {
-									const yearItems = Array.from({ length: 2025 - 2008 + 1 }, (_, i) => 2008 + i).map(
-										(year) => ({ id: year, name: String(year) }),
-									);
 									const selectedYear = field.value
 										? { id: field.value, name: String(field.value) }
 										: undefined;
@@ -219,7 +217,7 @@ export function UploadEntry({
 											key={`year-${index}-${field.value}`}
 											label="Year"
 											placeholder={`eg. ${new Date().getFullYear()} (optional)`}
-											items={yearItems}
+											items={MAPPED_YEAR_RANGE}
 											defaultValue={selectedYear}
 											onValueChange={(newValue) => {
 												field.onChange(newValue?.id || undefined);
