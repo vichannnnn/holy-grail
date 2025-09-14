@@ -20,7 +20,7 @@ export function AdminContent({ ok, data, err }: AdminContentProps) {
 
 	if (!ok || !data) {
 		return (
-			<div className="flex flex-col items-center justify-center">
+			<div className="flex flex-col items-center justify-center mt-4">
 				<Image src="/trimmy-grail-chan-sparkling.webp" alt="Error" width={100} height={100} />
 				<Title order={2} className="font-bold mb-4">
 					We ran into an issue :(
@@ -36,7 +36,7 @@ export function AdminContent({ ok, data, err }: AdminContentProps) {
 
 	if (data.items.length === 0) {
 		return (
-			<div className="flex flex-col items-center justify-center h-64">
+			<div className="flex flex-col items-center justify-center h-64 mt-4">
 				<Image src="/trimmy-grail-chan-sparkling.webp" alt="No Results" width={100} height={100} />
 				<Title order={2} className="font-bold mb-4">
 					No pending approval notes found
