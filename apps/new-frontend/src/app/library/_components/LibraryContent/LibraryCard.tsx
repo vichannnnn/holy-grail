@@ -4,9 +4,8 @@ import { downloadNote } from "../../actions";
 import Link from "next/link";
 import type { Note } from "../../types";
 import type { LibraryCardProps } from "./types";
-import { AdminEdit } from "@lib/features/client";
 
-export function LibraryCard({ item, isAdmin }: LibraryCardProps) {
+export function LibraryCard({ item, renderAdminActions }: LibraryCardProps) {
 	const formatDate = (dateString: string) => {
 		const options: Intl.DateTimeFormatOptions = {
 			day: "numeric",
@@ -110,16 +109,7 @@ export function LibraryCard({ item, isAdmin }: LibraryCardProps) {
 				<Button variant="outline" onClick={() => handleDownload(item)} className="w-full text-sm">
 					Download
 				</Button>
-				<AdminEdit
-					render={({ toggleOpen }) =>
-						isAdmin && (
-							<Button variant="ghost" onClick={toggleOpen} className="w-full text-sm mt-2">
-								Edit
-							</Button>
-						)
-					}
-					note={item}
-				/>
+				{renderAdminActions?.()}
 			</div>
 		</Card>
 	);

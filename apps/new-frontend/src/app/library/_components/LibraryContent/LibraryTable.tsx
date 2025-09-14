@@ -4,10 +4,9 @@ import { downloadNote } from "../../actions";
 import Link from "next/link";
 import type { Note } from "../../types";
 import type { LibraryTableProps } from "./types";
-import { ArrowDownTrayIcon, PencilIcon } from "@heroicons/react/24/outline";
-import { AdminEdit } from "@lib/features/client";
+import { ArrowDownTrayIcon } from "@heroicons/react/24/outline";
 
-export function LibraryTable({ items, isAdmin }: LibraryTableProps) {
+export function LibraryTable({ items, renderAdminActions }: LibraryTableProps) {
 	const formatDate = (dateString: string) => {
 		const options: Intl.DateTimeFormatOptions = {
 			day: "numeric",
@@ -109,27 +108,14 @@ export function LibraryTable({ items, isAdmin }: LibraryTableProps) {
 							<td className="px-4 py-3 text-gray-900 dark:text-gray-100">
 								{formatDate(note.uploaded_on)}
 							</td>
-							<td className="px-4 py-3">
+							<td className="px-4 py-3 flex">
 								<IconButton
 									onClick={() => handleDownload(note)}
 									aria-label={`Download ${note.document_name}`}
 								>
 									<ArrowDownTrayIcon className="h-5 w-5 text-gray-700 dark:text-gray-300" />
 								</IconButton>
-								<AdminEdit
-									render={({ toggleOpen }) =>
-										isAdmin && (
-											<IconButton
-												onClick={toggleOpen}
-												aria-label={`Edit ${note.document_name}`}
-												className="ml-2"
-											>
-												<PencilIcon className="h-5 w-5 text-gray-700 dark:text-gray-300" />
-											</IconButton>
-										)
-									}
-									note={note}
-								/>
+								{renderAdminActions?.(note)}
 							</td>
 						</tr>
 					))}

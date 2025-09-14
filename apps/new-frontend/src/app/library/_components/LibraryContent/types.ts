@@ -1,13 +1,14 @@
 import type { LibraryAPIResponse, PaginatedNotes, Note } from "../../types";
+import type { ReactNode } from "react";
 
 export interface LibraryCardProps {
-	isAdmin: boolean;
 	item: Note;
+	renderAdminActions?: () => ReactNode;
 }
 
 export interface LibraryTableProps {
-	isAdmin: boolean;
 	items: Note[];
+	renderAdminActions?: (note: Note) => ReactNode;
 }
 
 export interface LibraryContentProps extends LibraryAPIResponse<PaginatedNotes> {
