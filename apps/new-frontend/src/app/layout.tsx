@@ -15,13 +15,6 @@ const plusJakarta = Plus_Jakarta_Sans({
 	display: "swap",
 });
 
-const patrickHand = Patrick_Hand_SC({
-	subsets: ["latin"],
-	weight: ["400"],
-	variable: "--font-patrick-hand",
-	display: "swap",
-});
-
 export const metadata: Metadata = {
 	title: "Holy Grail",
 	description: "Holy Grail - The platform for educational resources and community learning.",
@@ -67,7 +60,6 @@ export default function RootLayout({
 				className={twMerge(
 					"min-h-screen dark:bg-zinc-800 bg-zinc-100 transition-all",
 					plusJakarta.variable,
-					patrickHand.variable,
 				)}
 			>
 				<ClientProvider>
