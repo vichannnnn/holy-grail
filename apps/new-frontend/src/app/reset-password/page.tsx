@@ -46,25 +46,24 @@ export default async function ResetPasswordPage({
 				</div>
 			</main>
 		);
-	} else {
-		return (
-			<main className="flex min-h-screen flex-col items-center justify-center px-6 py-24 sm:py-32 lg:px-8">
-				<div className="text-center">
-					<ExclamationTriangleIcon className="mx-auto h-12 w-12 text-red-600" />
-					<Title order={1} className="mt-6 text-3xl font-bold tracking-tight text-gray-900">
-						Reset Password Link Invalid or Expired
-					</Title>
-					<Text className="mt-4 text-base leading-7 text-gray-600">
-						Your reset password link is invalid or has expired. Please request a new reset password
-						email.
-					</Text>
-					<div className="mt-6 flex items-center justify-center gap-x-6">
-						<Button>
-							<Link href="/auth/forgot-password">Request New Reset Link</Link>
-						</Button>
-					</div>
-				</div>
-			</main>
-		);
 	}
+	return (
+		<main className="flex min-h-screen flex-col items-center justify-center px-6 py-24 sm:py-32 lg:px-8">
+			<div className="text-center">
+				<ExclamationTriangleIcon className="mx-auto h-12 w-12 text-red-600" />
+				<Title order={1} className="mt-6 text-3xl font-bold tracking-tight text-gray-900">
+					Reset Password Link Invalid or Expired
+				</Title>
+				<Text className="mt-4 text-base leading-7 text-gray-600">
+					Your reset password link is invalid or has expired. Please request a new reset password
+					email.
+				</Text>
+				<div className="mt-6 flex items-center justify-center gap-x-6">
+					<Button>
+						<Link href="/auth/forgot-password">Request New Reset Link</Link>
+					</Button>
+				</div>
+			</div>
+		</main>
+	);
 }

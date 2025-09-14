@@ -1,6 +1,6 @@
 import { useState, useTransition } from "react";
 import type { CategoryType, DocumentType, SubjectType } from "@/app/library/types";
-import { fetchAllCategories, fetchAllDocumentTypes, fetchAllSubjects } from "./actions";
+import { fetchAllCategories, fetchAllDocumentTypes, fetchAllSubjects } from "@/app/library/actions";
 import toast from "react-hot-toast";
 
 export interface InitialFormDataReturn {
@@ -47,7 +47,7 @@ export function useInitialFormData(): InitialFormDataReturn {
 				if (documentTypesResult.ok && documentTypesResult.data) {
 					setDocumentTypes(documentTypesResult.data);
 				}
-			} catch (error) {
+			} catch {
 				toast.error("Failed to load form data");
 			}
 		});
@@ -82,7 +82,7 @@ export function useSubjects(): SubjectsReturn {
 				if (subjectsResult.ok && subjectsResult.data) {
 					setSubjects(subjectsResult.data);
 				}
-			} catch (error) {
+			} catch {
 				toast.error("Failed to load subjects");
 			}
 		});

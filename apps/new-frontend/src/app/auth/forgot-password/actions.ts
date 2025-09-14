@@ -1,8 +1,8 @@
 "use server";
-import { ForgotPasswordSchema } from "./schemas";
+import type { ForgotPasswordSchema } from "./schemas";
 import { apiClient } from "@lib/api-client";
 import { isAxiosError } from "axios";
-import { z } from "zod";
+import type { z } from "zod";
 
 type ForgotPasswordFormData = z.infer<typeof ForgotPasswordSchema>;
 
