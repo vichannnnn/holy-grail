@@ -9,6 +9,9 @@ import { useContext } from "react";
 import { ClientContext } from "@shared/ui/providers";
 import { LibraryCard } from "./LibraryCard";
 import type { LibraryContentProps } from "./types";
+import { AdminEdit, AdminDelete } from "@lib/features/client";
+import { Button, IconButton } from "@shared/ui/components";
+import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 
 export function LibraryContent({ ok, data, err, isAdmin }: LibraryContentProps) {
 	const navigateToSearchValue = useNavigateToSearchValue();
@@ -48,11 +51,72 @@ export function LibraryContent({ ok, data, err, isAdmin }: LibraryContentProps) 
 			{[undefined, "sm", "md"].includes(breakpoint) ? (
 				<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 					{data.items.map((item) => (
-						<LibraryCard key={item.id} item={item} isAdmin={isAdmin} />
+						<LibraryCard
+							key={item.id}
+							item={item}
+							renderAdminActions={() =>
+								isAdmin && (
+									<div className="flex gap-2 mt-2">
+										<AdminEdit
+											render={({ toggleOpen }) => (
+												<Button variant="ghost" onClick={toggleOpen} className="flex-1 text-sm">
+													Edit
+												</Button>
+											)}
+											note={item}
+										/>
+										<AdminDelete
+											render={({ toggleOpen }) => (
+												<Button
+													variant="ghost"
+													onClick={toggleOpen}
+													className="flex-1 text-sm text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
+												>
+													Delete
+												</Button>
+											)}
+											note={item}
+										/>
+									</div>
+								)
+							}
+						/>
 					))}
 				</div>
 			) : (
-				<LibraryTable items={data.items} isAdmin={isAdmin} />
+				<LibraryTable
+					items={data.items}
+					renderAdminActions={(note) =>
+						isAdmin && (
+							<>
+								<AdminEdit
+									render={({ toggleOpen }) => (
+										<IconButton
+											onClick={toggleOpen}
+											aria-label={`Edit ${note.document_name}`}
+											className="ml-2"
+										>
+											<PencilIcon className="h-5 w-5 text-gray-700 dark:text-gray-300" />
+										</IconButton>
+									)}
+									note={note}
+								/>
+								<AdminDelete
+									render={({ toggleOpen }) => (
+										<IconButton
+											onClick={toggleOpen}
+											aria-label={`Delete ${note.document_name}`}
+											className="ml-2"
+										>
+											<TrashIcon className="h-5 w-5 text-red-600 dark:text-red-400" />
+										</IconButton>
+									)}
+									note={note}
+								/>
+							</>
+						)
+					}
+				/>
 			)}
 			<Pagination
 				currentPage={data.page}
