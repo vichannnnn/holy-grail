@@ -1,5 +1,5 @@
 "use client";
-import { Button, IconButton } from "@shared/ui/components";
+import { IconButton } from "@shared/ui/components";
 import { downloadNote } from "../../actions";
 import Link from "next/link";
 import type { Note } from "../../types";

@@ -41,6 +41,7 @@ export function AdminEdit({ render, note }: AdminEditProps) {
 	const toggleOpen = () => setIsOpen((prev) => !prev);
 
 	// Fetch initial data when modal opens
+	// biome-ignore lint/correctness/useExhaustiveDependencies: Adding fetchSubjects and fetchData would cause infinite loops
 	useEffect(() => {
 		if (isOpen) {
 			fetchData();
@@ -53,11 +54,11 @@ export function AdminEdit({ render, note }: AdminEditProps) {
 	}, [isOpen, note.category]);
 
 	// Fetch subjects when category changes
+	// biome-ignore lint/correctness/useExhaustiveDependencies: Adding fetchSubjects would cause infinite loops
 	useEffect(() => {
 		if (currentCategory && currentCategory > 0) {
 			fetchSubjects(currentCategory);
 		}
-		// biome-ignore lint/correctness/useExhaustiveDependencies: Adding fetchSubjects would cause infinite loops
 	}, [currentCategory]);
 
 	const onSubmit = async (formData: UpdateNoteFormData) => {
