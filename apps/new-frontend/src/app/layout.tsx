@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ClientProvider } from "@shared/ui/providers";
 import { twMerge } from "tailwind-merge";
-import { Plus_Jakarta_Sans, Patrick_Hand_SC } from "next/font/google";
-import { Header, Footer } from "@/lib/features/server";
+import { Plus_Jakarta_Sans } from "next/font/google";
+import { Header, Footer } from "@lib/features/server";
+import { Showcase } from "@lib/features/client";
 import { Toaster } from "react-hot-toast";
 import type { ReactNode } from "react";
 
@@ -64,7 +65,9 @@ export default function RootLayout({
 			>
 				<ClientProvider>
 					<Header />
+
 					{children}
+					<Showcase />
 					<Footer />
 					<Toaster
 						position="bottom-right"

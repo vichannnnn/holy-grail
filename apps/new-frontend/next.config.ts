@@ -9,6 +9,15 @@ const nextConfig: NextConfig = {
 			bodySizeLimit: "13gb", // 500mb * 25 files + buffer (500mb)
 		},
 	},
+	images: {
+		remotePatterns: [
+			{
+				protocol: "https",
+				hostname: "image.himaa.me",
+				pathname: "**",
+			},
+		],
+	},
 };
 
 export default nextConfig;
