@@ -3,6 +3,22 @@ import { Button, Text, Title } from "@shared/ui/components";
 import { CheckCircleIcon, ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import { ResendVerifyButton } from "./_components";
 import Link from "next/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+	title: "Verify Your Account - Holy Grail",
+	description: "Verify your account on Holy Grail.",
+	openGraph: {
+		title: "Account Verification - Holy Grail",
+		description:
+			"Complete your account verification on Holy Grail to explore. Verify your email and unlock access to our platform.",
+		images: [
+			{
+				url: "",
+			},
+		],
+	},
+};
 
 export default async function VerifyAccountPage({
 	searchParams,
