@@ -41,9 +41,7 @@ function getAllRoutes(): string[] {
 			const entries = readdirSync(dirPath, { withFileTypes: true });
 
 			// Check if current directory has a page.tsx file
-			const hasPage = entries.some(entry => 
-				!entry.isDirectory() && entry.name === "page.tsx"
-			);
+			const hasPage = entries.some((entry) => !entry.isDirectory() && entry.name === "page.tsx");
 
 			if (hasPage) {
 				routes.push(routePath || "/");
@@ -68,12 +66,12 @@ function getAllRoutes(): string[] {
 export default function sitemap(): MetadataRoute.Sitemap {
 	const baseUrl = "https://grail.moe";
 	const currentDate = new Date();
-	
+
 	const routes = getAllRoutes();
 
 	return routes.map((route) => {
 		const config = routeConfigs[route] || defaultConfig;
-		
+
 		return {
 			url: `${baseUrl}${route}`,
 			lastModified: currentDate,
