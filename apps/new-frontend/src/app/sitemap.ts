@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
-import { readdirSync } from "fs";
-import * as path from "path";
+import { readdirSync } from "node:fs";
+import * as path from "node:path";
 
 interface RouteConfig {
 	priority: number;
@@ -50,7 +50,7 @@ function getAllRoutes(): string[] {
 			// Recursively scan subdirectories
 			for (const entry of entries) {
 				if (entry.isDirectory() && !entry.name.startsWith("_") && !entry.name.startsWith("(")) {
-					const newRoutePath = routePath + "/" + entry.name;
+					const newRoutePath = `${routePath}/${entry.name}`;
 					scanDirectory(path.join(dirPath, entry.name), newRoutePath);
 				}
 			}
@@ -60,7 +60,7 @@ function getAllRoutes(): string[] {
 	}
 
 	scanDirectory(appDir);
-	return routes.sort();
+	return routes.sort((a, b) => a.localeCompare(b));
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {

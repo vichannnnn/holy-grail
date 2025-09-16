@@ -27,6 +27,13 @@ export function CategoryEdit({ render, category }: Readonly<CategoryEditProps>) 
 		},
 	});
 
+	const getButtonText = () => {
+		if (isPending) {
+			return isEditMode ? "Updating..." : "Creating...";
+		}
+		return isEditMode ? "Update Category" : "Create Category";
+	};
+
 	const toggleOpen = () => setIsOpen((prev) => !prev);
 
 	const onSubmit = async (formData: EditCategoryFormData) => {
@@ -86,13 +93,7 @@ export function CategoryEdit({ render, category }: Readonly<CategoryEditProps>) 
 								Cancel
 							</Button>
 							<Button type="submit" disabled={isPending}>
-								{isPending
-									? isEditMode
-										? "Updating..."
-										: "Creating..."
-									: isEditMode
-										? "Update Category"
-										: "Create Category"}
+								{getButtonText()}
 							</Button>
 						</div>
 					</form>

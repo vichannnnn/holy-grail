@@ -29,6 +29,13 @@ export function SubjectEdit({ render, subject, categories }: Readonly<SubjectEdi
 		},
 	});
 
+	const getButtonText = () => {
+		if (isPending) {
+			return isEditMode ? "Updating..." : "Creating...";
+		}
+		return isEditMode ? "Update Subject" : "Create Subject";
+	};
+
 	const toggleOpen = () => setIsOpen((prev) => !prev);
 
 	const onSubmit = async (formData: EditSubjectFormData) => {
@@ -111,13 +118,7 @@ export function SubjectEdit({ render, subject, categories }: Readonly<SubjectEdi
 								Cancel
 							</Button>
 							<Button type="submit" disabled={isPending}>
-								{isPending
-									? isEditMode
-										? "Updating..."
-										: "Creating..."
-									: isEditMode
-										? "Update Subject"
-										: "Create Subject"}
+								{getButtonText()}
 							</Button>
 						</div>
 					</form>
