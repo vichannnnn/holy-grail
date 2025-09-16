@@ -1,4 +1,4 @@
-import { MetadataRoute } from "next";
+import type { MetadataRoute } from "next";
 import { readdirSync } from "fs";
 import * as path from "path";
 
@@ -36,7 +36,7 @@ function getAllRoutes(): string[] {
 	const routes: string[] = [];
 	const appDir = path.join(process.cwd(), "src", "app");
 
-	function scanDirectory(dirPath: string, routePath: string = ""): void {
+	function scanDirectory(dirPath: string, routePath = ""): void {
 		try {
 			const entries = readdirSync(dirPath, { withFileTypes: true });
 
