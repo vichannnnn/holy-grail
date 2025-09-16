@@ -11,7 +11,7 @@ export function Tabs({
 	tabClassName,
 	tabPanelClassName,
 	tabListClassName,
-}: TabsProps) {
+}: Readonly<TabsProps>) {
 	return (
 		<TabGroup
 			defaultIndex={defaultIndex}

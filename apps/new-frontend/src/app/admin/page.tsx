@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 export default async function AdminPage({
 	searchParams,
 }: {
-	searchParams: Promise<NotesSearchParams>;
+	searchParams: Readonly<Promise<NotesSearchParams>>;
 }) {
 	const user = await getUser();
 	if (!user) {

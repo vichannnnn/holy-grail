@@ -5,7 +5,7 @@ import Link from "next/link";
 import type { Note } from "../../types";
 import type { LibraryCardProps } from "./types";
 
-export function LibraryCard({ item, renderAdminActions }: LibraryCardProps) {
+export function LibraryCard({ item, renderAdminActions }: Readonly<LibraryCardProps>) {
 	const formatDate = (dateString: string) => {
 		const options: Intl.DateTimeFormatOptions = {
 			day: "numeric",

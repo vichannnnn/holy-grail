@@ -15,7 +15,7 @@ export function DeveloperContent({
 	subjects,
 	documentTypes,
 	users,
-}: DeveloperContentProps) {
+}: Readonly<DeveloperContentProps>) {
 	const tabs = [
 		{
 			name: `Categories (${categories.data?.length ?? 0})`,

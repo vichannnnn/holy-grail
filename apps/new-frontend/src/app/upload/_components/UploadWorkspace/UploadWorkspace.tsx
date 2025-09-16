@@ -13,7 +13,7 @@ import { NotesSchema, SUPPORTED_FORMATS } from "./schemas";
 import { uploadNotes } from "./actions";
 import { useRouter } from "next/navigation";
 
-export function UploadWorkspace({ categories, documentTypes }: UploadWorkspaceProps) {
+export function UploadWorkspace({ categories, documentTypes }: Readonly<UploadWorkspaceProps>) {
 	const fileDropRef = useRef<FileDropHandle>(null);
 	const [isPending, startTransition] = useTransition();
 	const router = useRouter();

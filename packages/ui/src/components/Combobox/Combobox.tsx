@@ -31,7 +31,7 @@ export function Combobox<T extends Item>({
 	placeholder,
 	disabled,
 	overrideDisplayValue,
-}: ComboboxProps<T>) {
+}: Readonly<ComboboxProps<T>>) {
 	const [query, setQuery] = useState("");
 	const comboboxRef = useRef<HTMLElement | null>(null);
 	const inputClass = twMerge(

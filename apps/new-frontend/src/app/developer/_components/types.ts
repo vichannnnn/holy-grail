@@ -1,7 +1,11 @@
 import type { ReactNode } from "react";
-import type { CategoryType, DocumentType, SubjectType } from "@/app/library/types";
+import type {
+	CategoryType,
+	DocumentType,
+	SubjectType,
+	LibraryAPIResponse,
+} from "@/app/library/types";
 import type { User } from "@lib/auth";
-import type { LibraryAPIResponse } from "@/app/library/types";
 
 export interface DeveloperContentProps {
 	categories: LibraryAPIResponse<CategoryType[]>;

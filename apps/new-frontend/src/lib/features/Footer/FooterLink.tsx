@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { FooterLinkProps } from "./types";
 
-export function FooterLink({ label, href, ...rest }: FooterLinkProps) {
+export function FooterLink({ label, href, ...rest }: Readonly<FooterLinkProps>) {
 	return (
 		<Link
 			href={href}

@@ -6,7 +6,7 @@ interface ResendVerifyEmailProps {
 	children: React.ReactNode;
 }
 
-export function ResendVerifyEmail({ children }: ResendVerifyEmailProps) {
+export function ResendVerifyEmail({ children }: Readonly<ResendVerifyEmailProps>) {
 	const handleResendEmail = async () => {
 		try {
 			const { ok, message } = await resendVerificationEmail();

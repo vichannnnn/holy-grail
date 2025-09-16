@@ -7,7 +7,7 @@ export function DeleteConfirmModal({
 	fileName,
 	onConfirm,
 	onCancel,
-}: DeleteConfirmModalProps) {
+}: Readonly<DeleteConfirmModalProps>) {
 	return (
 		<Modal onClose={onCancel} open={isOpen}>
 			<Title order={3} className="mb-4">

@@ -27,7 +27,7 @@ export async function register(values: RegisterSchema): Promise<{ ok: boolean; m
 			const message = err.response.data?.message ?? err.response.statusText ?? "Request failed";
 			return { ok: false, message: `Register failed (${status}): ${message}` };
 		}
-		const message = err instanceof Error ? err.message : String(err);
+		const message = err instanceof Error ? err.message : JSON.stringify(err);
 		return { ok: false, message };
 	}
 
@@ -41,14 +41,14 @@ export async function register(values: RegisterSchema): Promise<{ ok: boolean; m
 		// pass absolute expiry timestamp in milliseconds to setUser (exp is seconds since epoch)
 		expiresAtMs = decodedToken?.exp ? decodedToken.exp * 1000 : Date.now();
 	} catch (err: unknown) {
-		const message = err instanceof Error ? err.message : String(err);
+		const message = err instanceof Error ? err.message : JSON.stringify(err);
 		return { ok: false, message: `token decoding failed: ${message}` };
 	}
 
 	try {
 		await setUser(data, access_token, expiresAtMs);
 	} catch (err: unknown) {
-		const message = err instanceof Error ? err.message : String(err);
+		const message = err instanceof Error ? err.message : JSON.stringify(err);
 		return { ok: false, message: `failed to set auth cookies: ${message}` };
 	}
 

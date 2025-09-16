@@ -1,7 +1,7 @@
 "use client";
-import { Pagination } from "@lib/features/client";
+import { Pagination, AdminEdit, AdminDelete, AdminApprove } from "@lib/features/client";
 import Image from "next/image";
-import { Title, Text } from "@shared/ui/components";
+import { Title, Text, Button, IconButton } from "@shared/ui/components";
 import { useNavigateToSearchValue } from "@/app/library/_components/utils";
 import { redirect, useSearchParams } from "next/navigation";
 import { LibraryTable, LibraryCard } from "@/app/library/_components/LibraryContent";
@@ -9,11 +9,9 @@ import { useContext } from "react";
 import { ClientContext } from "@shared/ui/providers";
 import type { AdminContentProps } from "./types";
 import type { Note } from "@/app/library/types";
-import { AdminEdit, AdminDelete, AdminApprove } from "@lib/features/client";
-import { Button, IconButton } from "@shared/ui/components";
 import { PencilIcon, TrashIcon, CheckIcon } from "@heroicons/react/24/outline";
 
-export function AdminContent({ ok, data, err }: AdminContentProps) {
+export function AdminContent({ ok, data, err }: Readonly<AdminContentProps>) {
 	const navigateToSearchValue = useNavigateToSearchValue();
 	const searchParams = useSearchParams();
 	const { breakpoint } = useContext(ClientContext);
