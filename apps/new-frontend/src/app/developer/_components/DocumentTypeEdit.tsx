@@ -27,6 +27,13 @@ export function DocumentTypeEdit({ render, documentType }: Readonly<DocumentType
 		},
 	});
 
+	const getButtonText = () => {
+		if (isPending) {
+			return isEditMode ? "Updating..." : "Creating...";
+		}
+		return isEditMode ? "Update Document Type" : "Create Document Type";
+	};
+
 	const toggleOpen = () => setIsOpen((prev) => !prev);
 
 	const onSubmit = async (formData: EditDocumentTypeFormData) => {
@@ -88,13 +95,7 @@ export function DocumentTypeEdit({ render, documentType }: Readonly<DocumentType
 								Cancel
 							</Button>
 							<Button type="submit" disabled={isPending}>
-								{isPending
-									? isEditMode
-										? "Updating..."
-										: "Creating..."
-									: isEditMode
-										? "Update Document Type"
-										: "Create Document Type"}
+								{getButtonText()}
 							</Button>
 						</div>
 					</form>

@@ -47,11 +47,6 @@ export async function signin(values: SignInSchema): Promise<{ ok: boolean; messa
 	}
 
 	try {
-		// const mock = {
-		//   access_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJzZWJhc3Nub29iIiwiZXhwIjoxNzU2OTg3ODI5fQ.urztqWMW3cXuy61LATDK_AEk7rybuVMUAQWOyIcjhF4",
-		//   user: JSON.parse('{"user_id":54,"email":"sebastian.ong@hotmail.com","username":"sebassnoob","role":1,"verified":true}')
-		// }
-		// await setUser(mock.user, mock.access_token, 1856911681641);
 		await setUser(data, access_token, expiresAtMs);
 	} catch (err: unknown) {
 		const message = err instanceof Error ? err.message : JSON.stringify(err);
