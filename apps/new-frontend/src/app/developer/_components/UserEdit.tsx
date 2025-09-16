@@ -9,7 +9,7 @@ import { EditUserSchema, ROLE_OPTIONS, type EditUserFormData } from "./schemas";
 import type { UserEditProps } from "./types";
 import { updateUserRole } from "../actions";
 
-export function UserEdit({ render, user }: UserEditProps) {
+export function UserEdit({ render, user }: Readonly<UserEditProps>) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [isPending, startTransition] = useTransition();
 	const router = useRouter();
@@ -36,7 +36,7 @@ export function UserEdit({ render, user }: UserEditProps) {
 				toast.success("User role updated successfully");
 				setIsOpen(false);
 				router.refresh();
-			} catch (_error) {
+			} catch {
 				toast.error("Failed to update user role");
 			}
 		});

@@ -1,7 +1,7 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import type { DropdownProps } from "./types";
 
-export function Dropdown({ header, content, ...rest }: DropdownProps) {
+export function Dropdown({ header, content, ...rest }: Readonly<DropdownProps>) {
 	return (
 		<Menu>
 			<MenuButton

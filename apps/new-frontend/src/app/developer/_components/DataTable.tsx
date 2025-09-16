@@ -4,7 +4,7 @@ export function DataTable<T = Record<string, unknown>>({
 	data,
 	columns,
 	renderEditAction,
-}: DataTableProps<T>) {
+}: Readonly<DataTableProps<T>>) {
 	return (
 		<div className="overflow-x-auto">
 			<table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -58,14 +58,10 @@ function renderCellValue(value: unknown): string {
 		return "";
 	}
 
-	if (typeof value === "object" && value !== null) {
-		// Handle nested objects like category in SubjectType
-		const obj = value as Record<string, unknown>;
-		if ("name" in obj && typeof obj.name === "string") {
-			return obj.name;
-		}
-		return JSON.stringify(value);
+	// Handle nested objects like category in SubjectType
+	if (typeof value === "object" && "name" in value && typeof value.name === "string") {
+		return value.name;
 	}
 
-	return String(value);
+	return JSON.stringify(value);
 }

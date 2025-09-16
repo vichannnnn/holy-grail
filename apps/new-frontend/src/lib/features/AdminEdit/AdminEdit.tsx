@@ -11,7 +11,7 @@ import { UpdateNoteSchema, type UpdateNoteFormData } from "./schemas";
 import toast from "react-hot-toast";
 import { MAPPED_YEAR_RANGE } from "./constants";
 
-export function AdminEdit({ render, note }: AdminEditProps) {
+export function AdminEdit({ render, note }: Readonly<AdminEditProps>) {
 	const [isOpen, setIsOpen] = useState(false);
 	const router = useRouter();
 

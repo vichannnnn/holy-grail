@@ -28,7 +28,7 @@ export async function signin(values: SignInSchema): Promise<{ ok: boolean; messa
 
 			return { ok: false, message: `Signin failed (${status}): ${message}` };
 		}
-		const message = err instanceof Error ? err.message : String(err);
+		const message = err instanceof Error ? err.message : JSON.stringify(err);
 		return { ok: false, message };
 	}
 
@@ -42,7 +42,7 @@ export async function signin(values: SignInSchema): Promise<{ ok: boolean; messa
 		// pass absolute expiry timestamp in milliseconds to setUser (exp is seconds since epoch)
 		expiresAtMs = decodedToken?.exp ? decodedToken.exp * 1000 : Date.now();
 	} catch (err: unknown) {
-		const message = err instanceof Error ? err.message : String(err);
+		const message = err instanceof Error ? err.message : JSON.stringify(err);
 		return { ok: false, message: `token decoding failed: ${message}` };
 	}
 
@@ -54,7 +54,7 @@ export async function signin(values: SignInSchema): Promise<{ ok: boolean; messa
 		// await setUser(mock.user, mock.access_token, 1856911681641);
 		await setUser(data, access_token, expiresAtMs);
 	} catch (err: unknown) {
-		const message = err instanceof Error ? err.message : String(err);
+		const message = err instanceof Error ? err.message : JSON.stringify(err);
 		return { ok: false, message: `failed to set auth cookies: ${message}` };
 	}
 

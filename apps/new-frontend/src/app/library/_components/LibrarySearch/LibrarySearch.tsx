@@ -10,7 +10,7 @@ export function LibrarySearch({
 	allCategories,
 	allDocumentTypes,
 	allSubjects,
-}: LibrarySearchProps) {
+}: Readonly<LibrarySearchProps>) {
 	const navigateToSearchValue = useNavigateToSearchValue();
 
 	return (

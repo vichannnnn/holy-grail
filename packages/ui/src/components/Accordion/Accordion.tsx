@@ -12,7 +12,7 @@ export function Accordion({
 	panelClassName,
 	iconClassName,
 	defaultOpen = false,
-}: AccordionProps) {
+}: Readonly<AccordionProps>) {
 	return (
 		<Disclosure
 			as="div"

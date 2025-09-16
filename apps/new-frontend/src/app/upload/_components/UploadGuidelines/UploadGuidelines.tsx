@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Modal, Title, Text, Button } from "@shared/ui/components";
 import type { UploadGuidelinesProps } from "./types";
 
-export function UploadGuidelines({ children }: UploadGuidelinesProps) {
+export function UploadGuidelines({ children }: Readonly<UploadGuidelinesProps>) {
 	const [isOpen, setIsOpen] = useState(false);
 
 	return (

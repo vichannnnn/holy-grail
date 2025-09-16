@@ -12,7 +12,7 @@ export function FileDrop({
 	disabled,
 	ref,
 	...props
-}: FileDropProps) {
+}: Readonly<FileDropProps>) {
 	const inputRef = useRef<HTMLInputElement>(null);
 	const containerRef = useRef<HTMLDivElement>(null);
 	const [uploadedFiles, setUploadedFiles] = useState<FileList | null>(null);

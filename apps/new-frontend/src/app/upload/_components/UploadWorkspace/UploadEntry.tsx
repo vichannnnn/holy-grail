@@ -21,7 +21,7 @@ export function UploadEntry({
 	documentTypes,
 	errors,
 	totalEntries,
-}: UploadEntryProps) {
+}: Readonly<UploadEntryProps>) {
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [subjects, setSubjects] = useState<SubjectType[]>([]);
 

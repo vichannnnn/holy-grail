@@ -10,7 +10,7 @@ import type { CategoryEditProps } from "./types";
 import { createCategory, updateCategory } from "../actions";
 import type { LibraryAPIResponse } from "@/app/library/types";
 
-export function CategoryEdit({ render, category }: CategoryEditProps) {
+export function CategoryEdit({ render, category }: Readonly<CategoryEditProps>) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [isPending, startTransition] = useTransition();
 	const router = useRouter();
@@ -47,7 +47,7 @@ export function CategoryEdit({ render, category }: CategoryEditProps) {
 				toast.success(`Category ${isEditMode ? "updated" : "created"} successfully`);
 				setIsOpen(false);
 				router.refresh();
-			} catch (_error) {
+			} catch {
 				toast.error(`Failed to ${isEditMode ? "update" : "create"} category`);
 			}
 		});

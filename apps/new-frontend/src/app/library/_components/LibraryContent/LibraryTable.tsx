@@ -6,7 +6,7 @@ import type { Note } from "../../types";
 import type { LibraryTableProps } from "./types";
 import { ArrowDownTrayIcon } from "@heroicons/react/24/outline";
 
-export function LibraryTable({ items, renderAdminActions }: LibraryTableProps) {
+export function LibraryTable({ items, renderAdminActions }: Readonly<LibraryTableProps>) {
 	const formatDate = (dateString: string) => {
 		const options: Intl.DateTimeFormatOptions = {
 			day: "numeric",

@@ -10,7 +10,7 @@ import type { DocumentTypeEditProps } from "./types";
 import { createDocumentType, updateDocumentType } from "../actions";
 import type { LibraryAPIResponse } from "@/app/library/types";
 
-export function DocumentTypeEdit({ render, documentType }: DocumentTypeEditProps) {
+export function DocumentTypeEdit({ render, documentType }: Readonly<DocumentTypeEditProps>) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [isPending, startTransition] = useTransition();
 	const router = useRouter();
@@ -47,7 +47,7 @@ export function DocumentTypeEdit({ render, documentType }: DocumentTypeEditProps
 				toast.success(`Document type ${isEditMode ? "updated" : "created"} successfully`);
 				setIsOpen(false);
 				router.refresh();
-			} catch (_error) {
+			} catch {
 				toast.error(`Failed to ${isEditMode ? "update" : "create"} document type`);
 			}
 		});

@@ -1,5 +1,5 @@
 "use client";
-import { Pagination } from "@lib/features/client";
+import { Pagination, AdminEdit, AdminDelete } from "@lib/features/client";
 import Image from "next/image";
 import { Title, Text } from "@shared/ui/components";
 import { useNavigateToSearchValue } from "../utils";
@@ -9,11 +9,10 @@ import { useContext } from "react";
 import { ClientContext } from "@shared/ui/providers";
 import { LibraryCard } from "./LibraryCard";
 import type { LibraryContentProps } from "./types";
-import { AdminEdit, AdminDelete } from "@lib/features/client";
 import { Button, IconButton } from "@shared/ui/components";
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 
-export function LibraryContent({ ok, data, err, isAdmin }: LibraryContentProps) {
+export function LibraryContent({ ok, data, err, isAdmin }: Readonly<LibraryContentProps>) {
 	const navigateToSearchValue = useNavigateToSearchValue();
 	const searchParams = useSearchParams();
 	const { breakpoint } = useContext(ClientContext);

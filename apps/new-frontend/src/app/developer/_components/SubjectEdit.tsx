@@ -10,7 +10,7 @@ import type { SubjectEditProps } from "./types";
 import type { LibraryAPIResponse } from "@/app/library/types";
 import { createSubject, updateSubject } from "../actions";
 
-export function SubjectEdit({ render, subject, categories }: SubjectEditProps) {
+export function SubjectEdit({ render, subject, categories }: Readonly<SubjectEditProps>) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [isPending, startTransition] = useTransition();
 	const router = useRouter();
@@ -49,7 +49,7 @@ export function SubjectEdit({ render, subject, categories }: SubjectEditProps) {
 				toast.success(`Subject ${isEditMode ? "updated" : "created"} successfully`);
 				setIsOpen(false);
 				router.refresh();
-			} catch (_error) {
+			} catch {
 				toast.error(`Failed to ${isEditMode ? "update" : "create"} subject`);
 			}
 		});

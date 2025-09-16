@@ -6,7 +6,7 @@ import type { AdminApproveProps } from "./types";
 import { approveNote } from "./actions";
 import toast from "react-hot-toast";
 
-export function AdminApprove({ render, note }: AdminApproveProps) {
+export function AdminApprove({ render, note }: Readonly<AdminApproveProps>) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [isPending, startTransition] = useTransition();
 	const router = useRouter();

@@ -6,7 +6,7 @@ import type { AdminDeleteProps } from "./types";
 import { deleteNote } from "./actions";
 import toast from "react-hot-toast";
 
-export function AdminDelete({ render, note }: AdminDeleteProps) {
+export function AdminDelete({ render, note }: Readonly<AdminDeleteProps>) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [isPending, startTransition] = useTransition();
 	const router = useRouter();
