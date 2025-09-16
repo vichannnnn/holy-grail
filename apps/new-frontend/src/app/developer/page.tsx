@@ -1,7 +1,10 @@
 import { getUser, RoleEnum } from "@lib/auth";
 import { forbidden, unauthorized } from "next/navigation";
-import { Tabs, Text, Title } from "@shared/ui/components";
+import { Text, Title } from "@shared/ui/components";
 import type { Metadata } from "next";
+import { fetchAllCategories, fetchAllDocumentTypes, fetchAllSubjects } from "@/app/library/actions";
+import { fetchAllUsers } from "./actions";
+import { DeveloperContent } from "./_components/DeveloperContent";
 
 export const metadata: Metadata = {
 	title: "Developer Panel - Holy Grail",
@@ -15,6 +18,14 @@ export default async function DeveloperPage() {
 	if (user.role < RoleEnum.DEVELOPER) {
 		forbidden();
 	}
+
+	const [categories, documentTypes, subjects, users] = await Promise.all([
+		fetchAllCategories(),
+		fetchAllDocumentTypes(),
+		fetchAllSubjects(),
+		fetchAllUsers(),
+	]);
+
 	return (
 		<main>
 			<div className="flex flex-col m-auto w-5/6 sm:w-3/4 gap-2 my-8">
@@ -24,13 +35,11 @@ export default async function DeveloperPage() {
 					Additionally, you can update users' permissions here as well.
 				</Text>
 			</div>
-			<Tabs
-				tabs={[
-					{ name: "Tab 1", content: <div>Content for Tab 1</div> },
-					{ name: "Tab 2", content: <div>Content for Tab 2</div> },
-					{ name: "Tab 3", content: <div>Content for Tab 3</div> },
-				]}
-				defaultIndex={0}
+			<DeveloperContent
+				categories={categories}
+				subjects={subjects}
+				documentTypes={documentTypes}
+				users={users}
 			/>
 		</main>
 	);
