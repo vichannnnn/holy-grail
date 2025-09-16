@@ -22,9 +22,9 @@ export const metadata: Metadata = {
 
 export default async function ResetPasswordPage({
 	searchParams,
-}: {
-	searchParams: Readonly<Promise<{ token?: string }>>;
-}) {
+}: Readonly<{
+	searchParams: Promise<{ token?: string }>;
+}>) {
 	const token = (await searchParams).token;
 	if (!token) {
 		return (
