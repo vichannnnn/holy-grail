@@ -98,18 +98,15 @@ services:
     networks:
       - holy-grail-network
 
-  frontend:
-    container_name: holy-grail-frontend
+  new-frontend:
+    container_name: holy-grail-new-frontend
     build:
-      context: ./holy-grail-frontend
+      context: .
+      dockerfile: ./apps/new-frontend/Dockerfile
     ports:
-      - "3000:3000"
+      - "3001:3001"
     environment:
-      - NODE_ENV=development
-    volumes:
-      - ./holy-grail-frontend:/app
-      - /app/node_modules
-      - /app/.next
+      - NODE_ENV=production
     depends_on:
       - backend
     restart: unless-stopped
