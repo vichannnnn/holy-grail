@@ -58,10 +58,10 @@
       "version": "0.1.0",
       "dependencies": {
         "@heroicons/react": "^2.2.0",
-        "@hookform/resolvers": "^5.2.1",
+        "@hookform/resolvers": "^5.2.2",
         "@shared/tooling": "workspace:*",
         "@shared/ui": "workspace:*",
-        "axios": "^1.12.1",
+        "axios": "^1.12.2",
         "babel-plugin-react-compiler": "^19.1.0-rc.3",
         "jwt-decode": "^4.0.0",
         "next": "^15.5.3",
@@ -75,12 +75,15 @@
       },
       "devDependencies": {
         "@tailwindcss/postcss": "^4.1.13",
-        "@types/node": "^24.3.1",
-        "@types/react": "^19.1.12",
+        "@types/node": "^24.4.0",
+        "@types/react": "^19.1.13",
         "@types/react-dom": "^19.1.9",
         "tailwindcss": "^4.1.13",
         "typescript": "^5.9.2",
       },
+    },
+    "apps/task": {
+      "name": "task",
     },
     "packages/tooling": {
       "name": "@shared/tooling",
@@ -581,6 +584,8 @@
     "tapable": ["tapable@2.2.3", "", {}, "sha512-ZL6DDuAlRlLGghwcfmSn9sK3Hr6ArtyudlSAiCqQ6IfE+b+HHbydbYDIG15IfS5do+7XQQBdBiubF/cV2dnDzg=="],
 
     "tar": ["tar@7.4.3", "", { "dependencies": { "@isaacs/fs-minipass": "^4.0.0", "chownr": "^3.0.0", "minipass": "^7.1.2", "minizlib": "^3.0.1", "mkdirp": "^3.0.1", "yallist": "^5.0.0" } }, "sha512-5S7Va8hKfV7W5U6g3aYxXmlPoZVAwUMy9AOKyF2fVuZa2UD3qZjg578OrLRt8PcNN1PleVaL/5/yYATNL0ICUw=="],
+
+    "task": ["task@workspace:apps/task"],
 
     "third-party-capital": ["third-party-capital@1.0.20", "", {}, "sha512-oB7yIimd8SuGptespDAZnNkzIz+NWaJCu2RMsbs4Wmp9zSDUM8Nhi3s2OOcqYuv3mN4hitXc8DVx+LyUmbUDiA=="],
 

@@ -7,7 +7,7 @@
     "turbo": "^2.5.5",
     "typescript": "^5.9.2"
   },
-  "packageManager": "bun@1.2.21",
+  "packageManager": "bun@1.2.22",
   "private": true,
   "scripts": {
     "setup": "bunx turbo setup",
