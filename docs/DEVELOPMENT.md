@@ -128,7 +128,7 @@ docker exec -it holy-grail-db psql -U holy_grail -d holy_grail
 ⚠️ **Warning**: This will delete all data!
 
 ```bash
-docker compose -f external/docker/docker-compose.db.yml down -v
+docker compose -f docker/docker-compose.db.yml down -v
 bun run db
 ```
 

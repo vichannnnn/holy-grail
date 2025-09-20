@@ -5,8 +5,8 @@
     "setup": "cp -n .env.example .env 2>/dev/null || true && uv sync",
     "dev": "uv run uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload",
     "dev:backend-only": "uv run uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload",
-    "docker:up": "docker compose -f ../../external/docker/docker-compose.db.yml up -d",
-    "docker:down": "docker compose -f ../../external/docker/docker-compose.db.yml down",
+    "docker:up": "docker compose -f ../../docker/docker-compose.db.yml up -d",
+    "docker:down": "docker compose -f ../../docker/docker-compose.db.yml down",
     "docker:build": "docker build -t holy-grail-backend .",
     "migrate": "uv run alembic upgrade head",
     "migrate:create": "uv run alembic revision --autogenerate -m",
@@ -18,6 +18,6 @@
     "typecheck": "uv run mypy app",
     "test": "PYTHONPATH=. uv run pytest app/tests -x -vv",
     "test:cov": "PYTHONPATH=. uv run coverage run -m pytest app/tests && uv run coverage report",
-    "check": "npm run lint && npm run typecheck && npm run test"
+    "check": "bun run lint && bun run typecheck && bun run test"
   }
 }

@@ -86,8 +86,8 @@ PYTHONPATH=. uv run pytest
 
 1. **Reset Docker containers**:
    ```bash
-   docker compose -f external/docker/docker-compose.db.yml down -v
-   docker compose -f external/docker/docker-compose.db.yml up -d
+   docker compose -f docker/docker-compose.db.yml down -v
+   docker compose -f docker/docker-compose.db.yml up -d
    ```
 
 2. **Clean Docker system**:

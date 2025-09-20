@@ -25,7 +25,7 @@ jobs:
         run: bun install
 
       - name: Start database
-        run: docker compose -f external/docker/docker-compose.db.ci.yml up -d
+        run: docker compose -f docker/docker-compose.db.ci.yml up -d
 
       - name: Wait for database to be ready
         run: |
