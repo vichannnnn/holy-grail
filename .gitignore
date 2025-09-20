@@ -207,3 +207,7 @@ docker-volumes/
 
 .next
 .env.*
+
+# Project-specific directories
+/data/
+/prototype/
