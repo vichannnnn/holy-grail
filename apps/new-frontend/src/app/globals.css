@@ -13,7 +13,7 @@
 }
 
 @theme {
-	--animate-fade-in: fadeIn 0.3s ease-in both;
+	--animate-fade-in: fadeIn 0.2s ease-in both;
 
 	@keyframes fadeIn {
 		from {

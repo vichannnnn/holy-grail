@@ -69,8 +69,13 @@ export default function FAQPage() {
 						</Title>
 						<Text>
 							You can access the resources uploaded at the{" "}
-							<Link href="/library" passHref>
-								<span className="text-blue-600 hover:underline">Library</span>
+							<Link
+								href="/library"
+								className="underline hover:text-blue-500 transition-colors"
+								prefetch={false}
+								target="_blank"
+							>
+								Library
 							</Link>{" "}
 							above this section. Anyone is able to freely access these resources even without
 							having an account.
@@ -85,8 +90,13 @@ export default function FAQPage() {
 						</Title>
 						<Text>
 							You can upload the notes that you want to share over{" "}
-							<Link href="/upload" passHref>
-								<span className="text-blue-600 hover:underline cursor-pointer">here</span>
+							<Link
+								href="/upload"
+								className="underline hover:text-blue-500 transition-colors"
+								prefetch={false}
+								target="_blank"
+							>
+								here
 							</Link>
 							. Do note that you can only upload PDF files and you will need an account to start
 							uploading your notes. They will only be available to the public after approval.
@@ -109,15 +119,21 @@ export default function FAQPage() {
 							How are you guys sustaining this project then?
 						</Title>
 						<Text>
-							Aside from free time spent in development for this project, we are currently incurring
-							monthly costs such as infrastructure and hosting that is being paid from our own
-							pocket thus far.
+							As of 2025, we are currently collaborating with sponsors to help us with the costs of
+							running the platform. The remainder of the funding will go into development effort for
+							more features in the near future.
 						</Text>
 						<Text className="mt-4">
-							With that being said, as of November 2023, we are collaborating with sponsors that are
-							helping us with the costs in exchange for displaying advertisements for their
-							services. The remainders will go into development effort for more features in the near
-							future (circa 2024).
+							If you are interested in sponsoring us, please reach out us at{" "}
+							<Link
+								href="mailto:allthingsholygrail@gmail.com"
+								className="underline hover:text-blue-500 transition-colors"
+								prefetch={false}
+								target="_blank"
+							>
+								allthingsholygrail@gmail.com
+							</Link>
+							!
 						</Text>
 					</div>
 				</div>
