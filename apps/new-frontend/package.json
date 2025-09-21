@@ -33,11 +33,12 @@
 		"zod": "^4.1.8"
 	},
 	"devDependencies": {
-		"typescript": "^5.9.2",
+		"@next/bundle-analyzer": "^15.5.3",
+		"@tailwindcss/postcss": "^4.1.13",
 		"@types/node": "^24.4.0",
 		"@types/react": "^19.1.13",
 		"@types/react-dom": "^19.1.9",
-		"@tailwindcss/postcss": "^4.1.13",
-		"tailwindcss": "^4.1.13"
+		"tailwindcss": "^4.1.13",
+		"typescript": "^5.9.2"
 	}
 }

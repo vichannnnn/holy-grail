@@ -10,10 +10,10 @@ import type { ReactNode } from "react";
 
 const plusJakarta = Plus_Jakarta_Sans({
 	subsets: ["latin"],
-	weight: ["200", "300", "400", "500", "600", "700", "800"],
-	style: ["normal", "italic"],
+	weight: ["400", "500", "600", "700"], // Correspond to: normal 400, medium 500, semibold 600, bold 700
+	style: ["normal"],
 	variable: "--font-plus-jakarta",
-	display: "swap",
+	preload: true, // Add preload for better performance
 });
 
 export const metadata: Metadata = {
