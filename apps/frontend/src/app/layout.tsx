@@ -1,37 +1,52 @@
-import { Footer } from "@layouts/Footer";
-import { GoogleAnalytics } from "@next/third-parties/google";
-import { Inter } from "next/font/google";
-import Head from "next/head";
-import Script from "next/script";
-import { ReactNode, Suspense } from "react";
-import { Header } from "src/components/layouts/Header";
-
+import type { Metadata } from "next";
 import "./globals.css";
-import Loading from "./loading";
+import { ClientProvider } from "@shared/ui/providers";
+import { twMerge } from "tailwind-merge";
+import { Plus_Jakarta_Sans } from "next/font/google";
+import { Header, Footer } from "@lib/features/server";
+import { Showcase } from "@lib/features/client";
+import { Toaster } from "react-hot-toast";
+import type { ReactNode } from "react";
 
-import { Providers } from "@providers/Providers";
+const plusJakarta = Plus_Jakarta_Sans({
+	subsets: ["latin"],
+	weight: ["200", "300", "400", "500", "600", "700", "800"],
+	style: ["normal", "italic"],
+	variable: "--font-plus-jakarta",
+	display: "swap",
+});
 
-const inter = Inter({ subsets: ["latin"] });
-
-const NEXT_PUBLIC_GOOGLE_ANALYTICS_ID = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID;
-
-export const metadata = {
+export const metadata: Metadata = {
 	title: "Holy Grail",
-	description:
-		"Holy Grail is an online open-content collaborative depository for students from Singapore to share notes.",
+	description: "Holy Grail - The platform for educational resources and community learning.",
 	openGraph: {
-		type: "website",
-		url: "https://grail.moe",
 		title: "Holy Grail",
 		description:
-			"Holy Grail is an online open-content collaborative depository for students from Singapore to share notes.",
-		images: ["https://image.himaa.me/grail-chan-studying-v1.webp"],
+			"Join Holy Grail to discover and share educational resources in our collaborative learning platform.",
+		images: [
+			{
+				url: "",
+			},
+		],
+		siteName: "Holy Grail",
+		locale: "en_US",
+		type: "website",
 	},
-	themeColor: "#ffffff",
-	viewport: "width=device-width, initial-scale=1.0",
-	other: {
-		"msapplication-TileColor": "#ffffff",
-		"msapplication-TileImage": "/ms-icon-144x144.png",
+	twitter: {
+		card: "summary_large_image",
+		title: "Holy Grail",
+		description:
+			"Join Holy Grail to discover and share educational resources in our collaborative learning platform.",
+		images: ["/images/twitter-card.jpg"],
+	},
+	icons: {
+		icon: "/favicon.ico",
+		apple: "/apple-icon.png",
+	},
+	metadataBase: new URL("https://grail.moe"),
+	robots: {
+		index: true,
+		follow: true,
 	},
 };
 
@@ -41,22 +56,26 @@ export default function RootLayout({
 	children: ReactNode;
 }>) {
 	return (
-		<html lang="en" className="dark">
-			<head>
-				<script
-					async
-					src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3197570153783512"
-					crossOrigin="anonymous"
-				></script>
-				<title>Holy Grail</title>
-			</head>
-			<body className={inter.className}>
-				<GoogleAnalytics gaId={NEXT_PUBLIC_GOOGLE_ANALYTICS_ID as string} />
-				<Providers>
+		<html lang="en">
+			<body
+				className={twMerge(
+					"min-h-screen dark:bg-zinc-800 bg-zinc-100 transition-all",
+					plusJakarta.variable,
+				)}
+			>
+				<ClientProvider>
 					<Header />
-					<Suspense fallback={<Loading />}>{children}</Suspense>
+
+					{children}
+					<Showcase />
 					<Footer />
-				</Providers>
+					<Toaster
+						position="bottom-right"
+						toastOptions={{
+							className: "!bg-zinc-100 !text-zinc-900 dark:!bg-zinc-900 dark:!text-white",
+						}}
+					/>
+				</ClientProvider>
 			</body>
 		</html>
 	);
