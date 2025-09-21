@@ -1,5 +1,4 @@
 import type { NextConfig } from "next";
-import analyze from "@next/bundle-analyzer";
 
 const nextConfig: NextConfig = {
 	experimental: {
@@ -17,7 +16,6 @@ const nextConfig: NextConfig = {
 		serverActions: {
 			bodySizeLimit: "13gb", // 500mb * 25 files + buffer (500mb)
 		},
-		cssChunking: true,
 	},
 	images: {
 		remotePatterns: [
@@ -31,6 +29,4 @@ const nextConfig: NextConfig = {
 	output: "standalone",
 };
 
-export default analyze({
-	enabled: process.env.ANALYZE === "true",
-})(nextConfig);
+export default nextConfig;
