@@ -27,7 +27,17 @@ Holy Grail is a comprehensive web library platform for Singaporean students, pro
 │   ├── docs/          # Project documentation
 │   ├── plans/         # Project plans and architectural documents
 │   └── tickets/       # Task tickets and issues
-└── [your project files and directories]
+├── apps/              # Turborepo apps
+│   ├── backend/       # FastAPI backend application
+│   ├── frontend/      # Main React/Next.js frontend
+│   ├── new-frontend/  # New frontend (under development)
+│   └── task/          # Celery task worker
+├── packages/          # Shared packages
+├── docker/            # Docker configurations
+│   └── docker-compose.db.yml  # PostgreSQL database
+├── package.json       # Root turborepo configuration
+├── bun.lockb          # Bun lockfile
+└── turbo.json         # Turborepo configuration
 ```
 
 ## Development Guidelines
@@ -120,37 +130,48 @@ Closes #XXX (if applicable)
 ## Common Commands
 <!-- auto-generated-start:commands -->
 ```bash
-# Backend Development (Docker-based)
-make build          # Build Docker containers
-make migrate        # Run database migrations
-make runserver      # Start backend server on port 9000 (debug mode)
-make tests          # Run all backend tests
-make test file=<name>  # Run specific test file
-make check          # Run linting, type checking, and tests
-make ruff           # Format and lint Python code
-make mypy           # Run type checking
+# Quick Start
+bun install         # Install dependencies for all workspaces
+bun run setup       # Initial setup for turborepo
+bun run dev:full    # Start database, run migrations, seed data, and start all dev servers
 
-# Frontend Development (Next.js)
-cd holy-grail-frontend
-bun install         # Install dependencies
-bun run dev         # Start development server with hot reload
-bun run build-local # Build for local deployment
-bun run build-dev   # Build for development environment
-bun run build-prod  # Build for production environment
+# Development
+bun run dev         # Start all dev servers (backend on :8000, frontend on :3000)
+bun run db          # Start PostgreSQL database in Docker
+bun run migrate     # Run database migrations
+bun run seed        # Seed database with sample data
+bun run task        # Start task worker (Celery)
+
+# Backend-specific (from project root)
+cd apps/backend
+bun run dev         # Start backend server on port 8000 with hot reload
+bun run test        # Run backend tests
+bun run format      # Format Python code with ruff
+bun run lint        # Lint Python code
+bun run lint:fix    # Fix linting issues
+bun run typecheck   # Run MyPy type checking
+bun run check       # Run all quality checks (lint + typecheck + tests)
+
+# Frontend-specific (from project root)
+cd apps/frontend
+bun run dev         # Start frontend dev server
+bun run build       # Build for production
 bun run lint        # Run ESLint
 
-# Docker Services
-docker compose up   # Start all services
-docker compose down # Stop all services
-
 # Database Operations
-make dump           # Import SQL dump to local database
-make migrations name=<description>  # Create new migration
-make downgrade      # Rollback last migration
+bun run migrate                          # Run migrations
+cd apps/backend && bun run migrate:create "migration_name"  # Create new migration
+cd apps/backend && bun run migrate:down  # Rollback last migration
 
-# Testing & Quality
-make coverage       # Run tests with coverage report
-make generate_xml   # Generate coverage XML report
+# Code Quality (all workspaces)
+bun run format      # Format all code
+bun run lint        # Lint all code
+bun run test        # Run all tests
+
+# Docker Services
+bun run db          # Start PostgreSQL database
+cd apps/backend && bun run docker:up    # Start database
+cd apps/backend && bun run docker:down  # Stop database
 ```
 <!-- auto-generated-end:commands -->
 
@@ -244,18 +265,19 @@ Before starting any task:
 - Email disabled by default in local (logs to console instead)
 
 ### Testing Guidelines
-- Run `make test` before committing backend changes
-- Use `make test-file file=<name>` for targeted testing
-- Frontend tests via `bun test` or `npm test`
-- Coverage reports available via `make coverage`
+- Run `bun run test` before committing changes (runs tests in all workspaces)
+- For backend tests: `cd apps/backend && bun run test`
+- For frontend tests: `cd apps/frontend && bun run test`
+- Coverage reports: `cd apps/backend && bun run test:cov`
 - Tests run with `ENVIRONMENT=local` automatically
 
 ### Database Management
-- Migrations managed via Alembic: `make migration name=<description>`
-- Database dumps can be imported via `make dump sql_file_name=<file>`
-- PostgreSQL running in Docker container `holy-grail-db`
+- Migrations managed via Alembic: `cd apps/backend && bun run migrate:create "description"`
+- Run migrations: `bun run migrate`
+- Rollback migrations: `cd apps/backend && bun run migrate:down`
+- PostgreSQL running in Docker container via `bun run db`
 - Database accessible on `localhost:5432` for local development
-- Use `make db-shell` for direct PostgreSQL access
+- Direct PostgreSQL access: `docker exec -it holy-grail-db psql -U postgres -d app`
 
 ### Deployment
 - Development auto-deploys from `dev` branch

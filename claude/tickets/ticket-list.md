@@ -15,10 +15,11 @@ This file maintains a centralized list of all tickets in the project. Update thi
 ## Active Tickets
 
 ### High Priority
-_No high priority tickets currently_
+- 🔴 [TICKET-011](./TICKET-011-replace-frontend-with-new-frontend.md) - Replace Frontend with New-Frontend
+- 🔴 [TICKET-012](./TICKET-012-create-app-frontend.md) - Create App-Frontend for Premium Features
 
 ### Medium Priority
-- 🔴 [TICKET-006](./TICKET-006-create-developer-setup-scripts.md) - Create Developer Setup Scripts
+- 🔴 [TICKET-013](./TICKET-013-update-documentation.md) - Update Documentation for New Architecture
 
 ### Low Priority
 _No low priority tickets yet_
