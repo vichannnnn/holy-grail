@@ -238,8 +238,8 @@ export function UploadEntry({
 							<AdjustmentsHorizontalIcon className="size-8 stroke-2 p-1 stroke-gray-700 dark:stroke-gray-300 cursor-pointer" />
 						}
 						content={[
-							<div
-								role="button"
+							<button
+								type="button"
 								className={twMerge(
 									"block w-full px-2 py-1 rounded-sm text-left",
 									totalEntries > 1 &&
@@ -255,22 +255,34 @@ export function UploadEntry({
 									e.stopPropagation();
 									handleMirrorProperties();
 								}}
-								tabIndex={0}
+								onKeyDown={(e) => {
+									if (e.key === "Enter" || e.key === " ") {
+										e.preventDefault();
+										e.stopPropagation();
+										handleMirrorProperties();
+									}
+								}}
 							>
 								Mirror properties to other entries
-							</div>,
-							<div
-								role="button"
+							</button>,
+							<button
+								type="button"
 								className="block w-full px-2 py-1 rounded-sm hover:bg-red-100 dark:hover:bg-red-900/30 text-left text-red-600 dark:text-red-400"
 								key="delete-file"
 								onClick={(e) => {
 									e.stopPropagation();
 									setShowDeleteModal(true);
 								}}
-								tabIndex={0}
+								onKeyDown={(e) => {
+									if (e.key === "Enter" || e.key === " ") {
+										e.preventDefault();
+										e.stopPropagation();
+										setShowDeleteModal(true);
+									}
+								}}
 							>
 								Delete this entry
-							</div>,
+							</button>,
 						]}
 					/>
 				</div>
