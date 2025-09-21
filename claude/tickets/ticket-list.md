@@ -18,7 +18,7 @@ This file maintains a centralized list of all tickets in the project. Update thi
 _No high priority tickets currently_
 
 ### Medium Priority
-- 🔴 [TICKET-013](./TICKET-013-update-documentation.md) - Update Documentation for New Architecture
+_No medium priority tickets currently_
 
 ### Low Priority
 _No low priority tickets yet_
@@ -35,6 +35,7 @@ _No low priority tickets yet_
 - 🟢 [TICKET-010](./TICKET-010-task-service-decoupling.md) - Verify Task Service Decoupling (Completed: 2025-09-13)
 - 🟢 [TICKET-011](./TICKET-011-replace-frontend-with-new-frontend.md) - Replace Frontend with New-Frontend (Completed: 2025-09-21)
 - 🟢 [TICKET-012](./TICKET-012-create-app-frontend.md) - Create App-Frontend for Premium Features (Completed: 2025-09-21)
+- 🟢 [TICKET-013](./TICKET-013-update-documentation.md) - Update Documentation for New Architecture (Completed: 2025-09-21)
 
 ## Cancelled/Archived Tickets
 _No cancelled tickets yet_
