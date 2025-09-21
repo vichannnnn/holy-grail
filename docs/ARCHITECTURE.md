@@ -10,12 +10,14 @@ Holy Grail is a monorepo containing a full-stack web application for providing e
 └─────────────────┬───────────────────────────────┬──────────────────┘
                   │                               │
                   ▼                               ▼
-                    ┌───────────────┐
-                    │   Frontend    │
-                    │   (Next.js)   │
-                    │  Port: 3000   │
-                    └───────┬───────┘
-                            │
+         ┌───────────────┐               ┌───────────────┐
+         │ Main Frontend │               │ App Frontend  │
+         │   (Next.js)   │               │   (Next.js)   │
+         │  grail.moe    │               │app.grail.moe  │
+         │  Port: 3000   │               │  Port: 3001   │
+         └───────┬───────┘               └───────┬───────┘
+                 │                               │
+                 └───────────┬───────────────────┘
                              │ HTTP/REST
                              ▼
                     ┌─────────────────┐
@@ -36,13 +38,29 @@ Holy Grail is a monorepo containing a full-stack web application for providing e
 
 ## Technology Stack
 
-### Frontend
+### Frontend (Both Main and App)
 - **Framework**: Next.js 15 (App Router)
 - **Language**: TypeScript
-- **Styling**: Tailwind CSS + Material-UI
+- **Styling**: Tailwind CSS v4
+- **UI Components**: Custom components + @shared/ui package
 - **State Management**: React Context + Hooks
+- **Form Handling**: React Hook Form + Zod
 - **Build Tool**: Turbopack
 - **Package Manager**: Bun
+
+### Frontend Architecture
+- **Main Frontend** (`grail.moe`):
+  - Educational content platform
+  - Public library of notes and papers
+  - Upload functionality for contributors
+  - Leaderboard and community features
+  - Admin and developer panels
+
+- **App Frontend** (`app.grail.moe`):
+  - Premium SaaS features
+  - Minimal UI with just authentication and home
+  - Ready for premium study tools implementation
+  - Shares authentication with main frontend
 
 ### Backend
 - **Framework**: FastAPI (Python 3.11+)
@@ -86,6 +104,11 @@ holy-grail/
 │   │   ├── lib/           # Utilities and API clients
 │   │   └── public/        # Static assets
 │   │
+│   ├── app-frontend/       # Premium features frontend
+│   │   ├── src/
+│   │   │   ├── app/        # App router pages
+│   │   │   └── lib/        # Utilities and features
+│   │   └── public/         # Static assets
 │   └── task/              # Celery task worker
 │
 ├── packages/              # Shared packages
