@@ -5,7 +5,7 @@
 	"sideEffects": [
 		"*.css"
 	],
-  "type": "module",
+	"type": "module",
 	"scripts": {
 		"setup": "bun install",
 		"dev": "bunx next dev --turbopack -p 3001",
