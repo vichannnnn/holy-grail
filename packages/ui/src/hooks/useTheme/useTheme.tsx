@@ -14,7 +14,7 @@ function getThemeFromLocalStorage(): Theme {
 }
 
 function subscribeToThemeChanges(callback: () => void) {
-	window.addEventListener(THEME_KEY, callback);
+	window.addEventListener(THEME_KEY, callback, { passive: true });
 	return () => {
 		window.removeEventListener(THEME_KEY, callback);
 	};

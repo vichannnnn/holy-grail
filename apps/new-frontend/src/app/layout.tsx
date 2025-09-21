@@ -25,7 +25,10 @@ export const metadata: Metadata = {
 			"Join Holy Grail to discover and share educational resources in our collaborative learning platform.",
 		images: [
 			{
-				url: "",
+				url: "/grail-chan-happy-v1.webp",
+				width: 1200,
+				height: 630,
+				alt: "Holy Grail - Educational Resources Platform",
 			},
 		],
 		siteName: "Holy Grail",
@@ -37,7 +40,7 @@ export const metadata: Metadata = {
 		title: "Holy Grail",
 		description:
 			"Join Holy Grail to discover and share educational resources in our collaborative learning platform.",
-		images: ["/images/twitter-card.jpg"],
+		images: ["/grail-chan-happy-v1.webp"],
 	},
 	icons: {
 		icon: "/favicon.ico",
@@ -65,7 +68,6 @@ export default function RootLayout({
 			>
 				<ClientProvider>
 					<Header />
-
 					{children}
 					<Showcase />
 					<Footer />
