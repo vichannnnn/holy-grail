@@ -53,7 +53,6 @@ Holy Grail is a modern web application built with:
 That's it! You can now access:
 - 🚀 **Backend API**: http://localhost:8000/docs
 - 🎨 **Frontend**: http://localhost:3000
-- 🆕 **New Frontend**: http://localhost:3001
 
 ## Architecture
 
@@ -71,8 +70,7 @@ That's it! You can now access:
 holy-grail/
 ├── apps/
 │   ├── backend/        # FastAPI backend application
-│   ├── frontend/       # Main Next.js frontend
-│   └── new-frontend/   # Experimental frontend
+│   └── frontend/       # Main Next.js frontend application
 ├── packages/           # Shared packages
 ├── docs/              # Documentation
 └── turbo.json         # Monorepo configuration

@@ -1,44 +1,38 @@
 import Link from "next/link";
+import { Button, Title, Text } from "@shared/ui/components";
+import type { Metadata } from "next";
 
-import { Button } from "@components/Button";
-
-import { generateNotFoundMetadata } from "@utils/metadata";
-
-export { generateNotFoundMetadata };
-
-const ReturnToHomeButton = () => {
-	return (
-		<Link href="/" passHref>
-			<Button
-				className="flex justify-center mx-auto"
-				sx={{
-					color: "black",
-					backgroundColor: "#FFA5A5",
-					"&:hover": {
-						backgroundColor: "#cc8484",
-						border: "none",
-					},
-				}}
-			>
-				Return to Home
-			</Button>
-		</Link>
-	);
+export const metadata: Metadata = {
+	title: "Page Not Found - Holy Grail",
+	description:
+		"The page you are looking for could not be found. Please check the URL or return to the homepage of Holy Grail.",
+	openGraph: {
+		title: "404 - Page Not Found",
+		description:
+			"Oops! The page you are looking for does not exist. Return to the Holy Grail homepage.",
+		images: [
+			{
+				url: "",
+			},
+		],
+	},
 };
 
-const NotFound = () => {
+export default function NotFound() {
 	return (
 		<div className="min-h-screen flex flex-col items-center text-center mt-16">
-			<span className="text-6xl">404</span>
-			<h1 className="text-4xl font-bold mt-4 mb-4 text-white">Oops! Page Not Found</h1>
-			<p className="max-w-md mb-8 text-gray-400">
-				Looks like we&apos;re still cooking up this page. The content you&apos;re looking for might
-				be simmering somewhere else.
-			</p>
+			<Title className="text-6xl">404</Title>
+			<Title order={2} className="mt-4 mb-4">
+				Oops! Page Not Found
+			</Title>
+			<Text className="max-w-md mb-8" description>
+				Looks like we're still cooking up this page. The content you're looking for might be
+				simmering somewhere else.
+			</Text>
 
-			<ReturnToHomeButton />
+			<Link href="/">
+				<Button className="flex justify-center mx-auto">Return to Home</Button>
+			</Link>
 		</div>
 	);
-};
-
-export default NotFound;
+}
