@@ -103,4 +103,4 @@ For package-specific commands, see the README in each package directory.
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-Please make sure that all backend contributions are updated with appropriate tests and passed with `make tests` first.
+Please make sure that all backend contributions are updated with appropriate tests and passed with `bun run test` first.
