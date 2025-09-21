@@ -4,21 +4,21 @@
 Create a new minimal frontend application (app-frontend) for premium SaaS features. This frontend will be a stripped-down version of the main frontend, containing only essential features like authentication and a basic home page. It will run on port 3001 and be accessible via app.grail.moe.
 
 ## Acceptance Criteria
-- [ ] New app-frontend directory created under /apps
-- [ ] Basic Next.js setup with Tailwind CSS
-- [ ] Authentication system functional (login, register, reset password)
-- [ ] Home page with Hero and Analytics components
-- [ ] Running on port 3001
-- [ ] Connects to the same backend API
-- [ ] Uses @shared/ui and @shared/tooling packages
-- [ ] All unnecessary features removed
-- [ ] Clean, minimal codebase
+- [x] New app-frontend directory created under /apps
+- [x] Basic Next.js setup with Tailwind CSS
+- [x] Authentication system functional (login, register, reset password)
+- [x] Home page with Hero and Analytics components
+- [x] Running on port 3001
+- [x] Connects to the same backend API
+- [x] Uses @shared/ui and @shared/tooling packages
+- [x] All unnecessary features removed
+- [x] Clean, minimal codebase
 
 ## Priority
 High
 
 ## Status
-Todo
+Done
 
 ## Implementation Steps
 

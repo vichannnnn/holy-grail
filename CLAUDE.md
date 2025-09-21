@@ -29,7 +29,8 @@ Holy Grail is a comprehensive web library platform for Singaporean students, pro
 │   └── tickets/       # Task tickets and issues
 ├── apps/              # Turborepo apps
 │   ├── backend/       # FastAPI backend application
-│   ├── frontend/      # Main React/Next.js frontend
+│   ├── frontend/      # Main educational platform (React/Next.js)
+│   ├── app-frontend/  # Premium SaaS features platform
 │   └── task/          # Celery task worker
 ├── packages/          # Shared packages
 ├── docker/            # Docker configurations
@@ -135,7 +136,7 @@ bun run setup       # Initial setup for turborepo
 bun run dev:full    # Start database, run migrations, seed data, and start all dev servers
 
 # Development
-bun run dev         # Start all dev servers (backend on :8000, frontend on :3000)
+bun run dev         # Start all dev servers (backend :8000, frontend :3000, app-frontend :3001)
 bun run db          # Start PostgreSQL database in Docker
 bun run migrate     # Run database migrations
 bun run seed        # Seed database with sample data
@@ -153,7 +154,13 @@ bun run check       # Run all quality checks (lint + typecheck + tests)
 
 # Frontend-specific (from project root)
 cd apps/frontend
-bun run dev         # Start frontend dev server
+bun run dev         # Start main frontend on port 3000
+bun run build       # Build for production
+bun run lint        # Run ESLint
+
+# App-Frontend-specific (from project root)
+cd apps/app-frontend
+bun run dev         # Start app frontend on port 3001
 bun run build       # Build for production
 bun run lint        # Run ESLint
 
@@ -252,7 +259,8 @@ Before starting any task:
 <!-- auto-generated-start:notes -->
 ### Service URLs
 - **Backend API**: http://localhost:8000/docs (Swagger UI)
-- **Frontend**: http://localhost:5173/ (development), http://localhost:3000/ (Next.js default)
+- **Main Frontend**: http://localhost:3000 (educational platform - grail.moe)
+- **App Frontend**: http://localhost:3001 (premium features - app.grail.moe)
 - **Debug Backend**: http://localhost:9000/docs (with pdb support)
 
 ### Environment Setup

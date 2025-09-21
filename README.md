@@ -52,17 +52,38 @@ Holy Grail is a modern web application built with:
 
 That's it! You can now access:
 - 🚀 **Backend API**: http://localhost:8000/docs
-- 🎨 **Frontend**: http://localhost:3000
+- 🎨 **Main Frontend**: http://localhost:3000
+- 💎 **App Frontend**: http://localhost:3001
 
 ## Architecture
 
+Holy Grail uses a micro-frontend architecture with two separate frontend applications:
+
 ```
-┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
-│   Frontend      │────▶│   Backend API   │────▶│   PostgreSQL    │
-│  (Next.js)      │     │   (FastAPI)     │     │   (Docker)      │
-│  Port: 3000     │     │   Port: 8000    │     │   Port: 5432    │
-└─────────────────┘     └─────────────────┘     └─────────────────┘
+┌──────────────────┐     ┌──────────────────┐
+│  Main Frontend   │     │   App Frontend   │
+│   (grail.moe)    │     │ (app.grail.moe)  │
+│   Port: 3000     │     │   Port: 3001     │
+└────────┬─────────┘     └────────┬─────────┘
+         │                         │
+         └────────────┬────────────┘
+                      │
+               ┌──────▼─────────┐
+               │  Backend API   │
+               │   (FastAPI)    │
+               │  Port: 8000    │
+               └──────┬─────────┘
+                      │
+               ┌──────▼─────────┐
+               │   PostgreSQL   │
+               │   (Docker)     │
+               │  Port: 5432    │
+               └────────────────┘
 ```
+
+- **Main Frontend** (`/apps/frontend`): The primary educational platform serving free notes and papers
+- **App Frontend** (`/apps/app-frontend`): Premium SaaS features for enhanced studying tools
+- Both frontends connect to the same backend API and share authentication
 
 ## Project Structure
 
@@ -70,7 +91,9 @@ That's it! You can now access:
 holy-grail/
 ├── apps/
 │   ├── backend/        # FastAPI backend application
-│   └── frontend/       # Main Next.js frontend application
+│   ├── frontend/       # Main educational platform (Next.js)
+│   ├── app-frontend/   # Premium features platform (Next.js)
+│   └── task/           # Celery task worker
 ├── packages/           # Shared packages
 ├── docs/              # Documentation
 └── turbo.json         # Monorepo configuration
@@ -89,6 +112,30 @@ bun run lint         # Lint all packages
 ```
 
 For package-specific commands, see the README in each package directory.
+
+## Migration from Previous Setup
+
+If you have the old setup with `new-frontend`:
+
+1. **Pull the latest changes**:
+   ```bash
+   git pull origin main
+   ```
+
+2. **Clean and reinstall dependencies**:
+   ```bash
+   rm -rf node_modules bun.lockb
+   bun install
+   ```
+
+3. **Update your local development**:
+   - The main frontend now runs on port 3000 (previously `new-frontend` was on 3001)
+   - New `app-frontend` runs on port 3001
+   - Remove any local references to the old frontend directory
+
+4. **Update environment variables**:
+   - Main frontend: Uses standard `.env.local`
+   - App frontend: Create `.env.local` from `.env.example`
 
 ## Documentation
 
