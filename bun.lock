@@ -8,6 +8,35 @@
         "typescript": "^5.9.2",
       },
     },
+    "apps/app-frontend": {
+      "name": "app-frontend",
+      "version": "0.1.0",
+      "dependencies": {
+        "@heroicons/react": "^2.2.0",
+        "@hookform/resolvers": "^5.2.2",
+        "@shared/tooling": "workspace:*",
+        "@shared/ui": "workspace:*",
+        "axios": "^1.12.2",
+        "babel-plugin-react-compiler": "^19.1.0-rc.3",
+        "jwt-decode": "^4.0.0",
+        "next": "^15.5.3",
+        "react": "19.1.1",
+        "react-countup": "^6.5.3",
+        "react-dom": "19.1.1",
+        "react-hook-form": "^7.62.0",
+        "react-hot-toast": "^2.6.0",
+        "tailwind-merge": "^3.3.1",
+        "zod": "^4.1.8",
+      },
+      "devDependencies": {
+        "@tailwindcss/postcss": "^4.1.13",
+        "@types/node": "^24.4.0",
+        "@types/react": "^19.1.13",
+        "@types/react-dom": "^19.1.9",
+        "tailwindcss": "^4.1.13",
+        "typescript": "^5.9.2",
+      },
+    },
     "apps/backend": {
       "name": "backend",
     },
@@ -226,6 +255,8 @@
     "@types/react": ["@types/react@19.1.13", "", { "dependencies": { "csstype": "^3.0.2" } }, "sha512-hHkbU/eoO3EG5/MZkuFSKmYqPbSVk5byPFa3e7y/8TybHiLMACgI8seVYlicwk7H5K/rI2px9xrQp/C+AUDTiQ=="],
 
     "@types/react-dom": ["@types/react-dom@19.1.9", "", { "peerDependencies": { "@types/react": "^19.0.0" } }, "sha512-qXRuZaOsAdXKFyOhRBg6Lqqc0yay13vN7KrIg4L7N4aaHN68ma9OK3NE1BoDFgFOTfM7zg+3/8+2n8rLUH3OKQ=="],
+
+    "app-frontend": ["app-frontend@workspace:apps/app-frontend"],
 
     "asynckit": ["asynckit@0.4.0", "", {}, "sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q=="],
 

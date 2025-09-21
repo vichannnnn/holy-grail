@@ -4,20 +4,20 @@
 Remove the old Material UI-based frontend and replace it with the new Tailwind CSS-based frontend. This involves deleting the old frontend directory, renaming new-frontend to frontend, and updating all references and configurations to reflect this change.
 
 ## Acceptance Criteria
-- [ ] Old frontend directory is removed
-- [ ] new-frontend is renamed to frontend
-- [ ] Port configuration updated from 3001 to 3000
-- [ ] All imports and references updated
-- [ ] Frontend runs successfully on port 3000
-- [ ] No broken links or missing dependencies
-- [ ] Turborepo configuration updated
-- [ ] Docker configuration updated if necessary
+- [x] Old frontend directory is removed
+- [x] new-frontend is renamed to frontend
+- [x] Port configuration updated from 3001 to 3000
+- [x] All imports and references updated
+- [x] Frontend runs successfully on port 3000
+- [x] No broken links or missing dependencies
+- [x] Turborepo configuration updated
+- [x] Docker configuration updated if necessary
 
 ## Priority
 High
 
 ## Status
-Todo
+Done
 
 ## Implementation Steps
 
