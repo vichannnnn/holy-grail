@@ -26,11 +26,7 @@ async def seed_analytics():
             pass
 
         # Create mock analytics record
-        analytics = Analytics(
-            file_download_count=1234,
-            unique_active_users=567,
-            user_count=89
-        )
+        analytics = Analytics(file_download_count=1234, unique_active_users=567, user_count=89)
 
         session.add(analytics)
         await session.commit()
