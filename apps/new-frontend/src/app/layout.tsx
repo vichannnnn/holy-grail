@@ -4,16 +4,30 @@ import { ClientProvider } from "@shared/ui/providers";
 import { twMerge } from "tailwind-merge";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import { Header, Footer } from "@lib/features/server";
-import { Showcase } from "@lib/features/client";
 import { Toaster } from "react-hot-toast";
 import type { ReactNode } from "react";
+import dynamic from "next/dynamic";
+
+const Showcase = dynamic(
+	() => import("@lib/features/client").then((mod) => ({ default: mod.Showcase })),
+	{
+		loading: () => (
+			<div className="w-3/4 md:w-1/2 mx-auto mt-4">
+				<div className="animate-pulse">
+					<div className="w-full h-[100px] bg-zinc-200 dark:bg-zinc-700 rounded-lg" />
+				</div>
+			</div>
+		),
+	},
+);
 
 const plusJakarta = Plus_Jakarta_Sans({
 	subsets: ["latin"],
 	weight: ["400", "500", "600", "700"], // Correspond to: normal 400, medium 500, semibold 600, bold 700
 	style: ["normal"],
 	variable: "--font-plus-jakarta",
-	preload: true, // Add preload for better performance
+	preload: true,
+	display: "swap",
 });
 
 export const metadata: Metadata = {
