@@ -5,6 +5,7 @@
 	"sideEffects": [
 		"*.css"
 	],
+  "type": "module",
 	"scripts": {
 		"setup": "bun install",
 		"dev": "bunx next dev --turbopack -p 3001",
@@ -33,7 +34,6 @@
 		"zod": "^4.1.8"
 	},
 	"devDependencies": {
-		"@next/bundle-analyzer": "^15.5.3",
 		"@tailwindcss/postcss": "^4.1.13",
 		"@types/node": "^24.4.0",
 		"@types/react": "^19.1.13",
