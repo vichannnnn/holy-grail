@@ -87,8 +87,8 @@ export function LibraryTable({ items, renderAdminActions }: Readonly<LibraryTabl
 									rel="noopener noreferrer"
 									className="text-blue-600 dark:text-blue-400 hover:underline"
 								>
-									{note.document_name.length > 40
-										? `${note.document_name.substring(0, 40)}...`
+									{note.document_name.length > 60
+										? `${note.document_name.substring(0, 60)}...`
 										: note.document_name}
 								</Link>
 							</td>
