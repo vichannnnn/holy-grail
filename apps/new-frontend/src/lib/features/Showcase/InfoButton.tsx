@@ -10,15 +10,16 @@ export function InfoButton() {
 			<PopoverButton
 				as={IconButton}
 				size="sm"
-				className="bg-black/20 text-white hover:bg-black/30"
+				className="bg-black/20 text-white hover:bg-black/30 dark:bg-white/20 dark:text-black dark:hover:bg-white/30"
 				aria-label="Why am I seeing this ad?"
+				onClick={(e) => e.stopPropagation()}
 			>
 				<InformationCircleIcon className="size-4" />
 			</PopoverButton>
 
 			<PopoverPanel className="absolute z-10 w-80 px-4 mt-3 transform -translate-x-1/2 left-1/2 sm:px-0">
 				<div className="overflow-hidden rounded-lg shadow-lg">
-					<div className="relative bg-white p-6 dark:bg-gray-800">
+					<div className="relative bg-white p-6 dark:bg-neutral-900">
 						<div className="text-base font-medium text-gray-900 dark:text-white">
 							Why am I seeing this ad?
 						</div>

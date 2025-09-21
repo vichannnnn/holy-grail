@@ -43,21 +43,30 @@ export function Showcase() {
 	}, []);
 
 	return (
-		<div
-			role="button"
-			tabIndex={0}
-			className="w-3/4 md:w-1/2 mx-auto cursor-pointer relative mt-4"
-			ref={showcaseRef}
-			onClick={handleShowcaseClick}
-		>
-			<Image
-				alt={ADS_ALT_TEXT}
-				src={ADS_IMAGE_URL}
-				width={500}
-				height={250}
-				className="w-full h-auto"
-			/>
-			<InfoButton />
-		</div>
+		<>
+			{/* biome-ignore lint/a11y/useSemanticElements: Cannot use button element due to nested InfoButton component */}
+			<div
+				role="button"
+				tabIndex={0}
+				className="w-3/4 md:w-1/2 mx-auto cursor-pointer relative mt-4"
+				ref={showcaseRef}
+				onClick={handleShowcaseClick}
+				onKeyDown={(e) => {
+					if (e.key === "Enter" || e.key === " ") {
+						e.preventDefault();
+						handleShowcaseClick();
+					}
+				}}
+			>
+				<Image
+					alt={ADS_ALT_TEXT}
+					src={ADS_IMAGE_URL}
+					width={500}
+					height={250}
+					className="w-full h-auto"
+				/>
+				<InfoButton />
+			</div>
+		</>
 	);
 }

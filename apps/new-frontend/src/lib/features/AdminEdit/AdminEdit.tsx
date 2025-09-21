@@ -50,10 +50,7 @@ export function AdminEdit({ render, note }: Readonly<AdminEditProps>) {
 				fetchSubjects(note.category);
 			}
 		}
-		// biome-ignore lint/correctness/useExhaustiveDependencies: Adding function dependencies would cause infinite loops
-	}, [isOpen, note.category]);
-
-	// Fetch subjects when category changes
+	}, [isOpen, note.category]); // Fetch subjects when category changes
 	// biome-ignore lint/correctness/useExhaustiveDependencies: Adding fetchSubjects would cause infinite loops
 	useEffect(() => {
 		if (currentCategory && currentCategory > 0) {
