@@ -10,12 +10,11 @@ const nextConfig: NextConfig = {
 			"zod",
 			"axios",
 			"tailwind-merge",
-			"react-hook-form",
-			"@hookform/resolvers",
 		],
 		serverActions: {
 			bodySizeLimit: "13gb", // 500mb * 25 files + buffer (500mb)
 		},
+    cssChunking: true,
 	},
 	images: {
 		remotePatterns: [
