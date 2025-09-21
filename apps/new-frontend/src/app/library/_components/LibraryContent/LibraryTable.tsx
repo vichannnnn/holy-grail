@@ -4,7 +4,7 @@ import { downloadNote } from "../../actions";
 import Link from "next/link";
 import type { Note } from "../../types";
 import type { LibraryTableProps } from "./types";
-import { ArrowDownTrayIcon } from "@heroicons/react/24/outline";
+import { CustomDownloadIcon } from "./CustomDownloadIcon";
 
 export function LibraryTable({ items, renderAdminActions }: Readonly<LibraryTableProps>) {
 	const formatDate = (dateString: string) => {
@@ -113,7 +113,7 @@ export function LibraryTable({ items, renderAdminActions }: Readonly<LibraryTabl
 									onClick={() => handleDownload(note)}
 									aria-label={`Download ${note.document_name}`}
 								>
-									<ArrowDownTrayIcon className="h-5 w-5 text-gray-700 dark:text-gray-300" />
+									<CustomDownloadIcon className="size-5 fill-gray-700 dark:fill-gray-300" />
 								</IconButton>
 								{renderAdminActions?.(note)}
 							</td>
