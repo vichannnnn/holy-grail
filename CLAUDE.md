@@ -30,7 +30,6 @@ Holy Grail is a comprehensive web library platform for Singaporean students, pro
 ├── apps/              # Turborepo apps
 │   ├── backend/       # FastAPI backend application
 │   ├── frontend/      # Main React/Next.js frontend
-│   ├── new-frontend/  # New frontend (under development)
 │   └── task/          # Celery task worker
 ├── packages/          # Shared packages
 ├── docker/            # Docker configurations

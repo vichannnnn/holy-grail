@@ -1,13 +1,10 @@
-import { LandingPage } from "@layouts/LandingPage";
+import { Analytics, Hero } from "./_components";
 
-import { generateDefaultMetadata } from "@utils/metadata";
-
-export const generateMetadata = generateDefaultMetadata;
-
-export default function Home() {
+export default async function Home() {
 	return (
-		<div className="flex min-h-screen">
-			<LandingPage />
-		</div>
+		<main className="p-8">
+			<Hero />
+			<Analytics />
+		</main>
 	);
 }

@@ -10,13 +10,12 @@ Holy Grail is a monorepo containing a full-stack web application for providing e
 └─────────────────┬───────────────────────────────┬──────────────────┘
                   │                               │
                   ▼                               ▼
-         ┌───────────────┐               ┌───────────────┐
-         │   Frontend    │               │ New Frontend  │
-         │   (Next.js)   │               │   (Next.js)   │
-         │  Port: 3000   │               │  Port: 3001   │
-         └───────┬───────┘               └───────┬───────┘
-                 │                               │
-                 └───────────┬───────────────────┘
+                    ┌───────────────┐
+                    │   Frontend    │
+                    │   (Next.js)   │
+                    │  Port: 3000   │
+                    └───────┬───────┘
+                            │
                              │ HTTP/REST
                              ▼
                     ┌─────────────────┐
@@ -87,7 +86,7 @@ holy-grail/
 │   │   ├── lib/           # Utilities and API clients
 │   │   └── public/        # Static assets
 │   │
-│   └── new-frontend/      # Experimental frontend
+│   └── task/              # Celery task worker
 │
 ├── packages/              # Shared packages
 │   └── @shared/          # Shared utilities

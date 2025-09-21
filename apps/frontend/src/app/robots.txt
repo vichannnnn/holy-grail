@@ -2,6 +2,6 @@ User-agent: *
 Allow: /
 
 Disallow: /reset-password/
-Disallow: /verify/
+Disallow: /verify-account/
 
 Sitemap: https://grail.moe/sitemap.xml
