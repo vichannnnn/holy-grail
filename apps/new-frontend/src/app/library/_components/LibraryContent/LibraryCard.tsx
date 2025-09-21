@@ -58,8 +58,8 @@ export function LibraryCard({ item, renderAdminActions }: Readonly<LibraryCardPr
 					rel="noopener noreferrer"
 					className="text-blue-600 dark:text-blue-400 hover:underline text-sm"
 				>
-					{item.document_name.length > 80
-						? `${item.document_name.substring(0, 80)}...`
+					{item.document_name.length > 160
+						? `${item.document_name.substring(0, 160)}...`
 						: item.document_name}
 				</Link>
 			</div>
