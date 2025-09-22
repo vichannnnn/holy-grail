@@ -4,20 +4,20 @@
 Update all project documentation to reflect the new two-frontend architecture. This includes updating setup instructions, development commands, architectural diagrams, and adding clear documentation about the separation between the main educational platform (grail.moe) and the premium features platform (app.grail.moe).
 
 ## Acceptance Criteria
-- [ ] CLAUDE.md updated with new project structure
-- [ ] README.md reflects new architecture
-- [ ] Development commands updated for both frontends
-- [ ] Clear documentation on running both frontends
-- [ ] Updated port information (3000 for frontend, 3001 for app-frontend)
-- [ ] Domain structure documented (grail.moe vs app.grail.moe)
-- [ ] No references to old frontend or port 3001 for main frontend
-- [ ] Setup instructions work for new developers
+- [x] CLAUDE.md updated with new project structure
+- [x] README.md reflects new architecture
+- [x] Development commands updated for both frontends
+- [x] Clear documentation on running both frontends
+- [x] Updated port information (3000 for frontend, 3001 for app-frontend)
+- [x] Domain structure documented (grail.moe vs app.grail.moe)
+- [x] No references to old frontend or port 3001 for main frontend
+- [x] Setup instructions work for new developers
 
 ## Priority
 Medium
 
 ## Status
-Todo
+Done
 
 ## Implementation Steps
 
