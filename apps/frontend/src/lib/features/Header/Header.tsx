@@ -1,12 +1,13 @@
 import Image from "next/image";
 import { HeaderMiddle, HeaderRight, DarkModeButton } from "./_components";
 import { getUser } from "@lib/auth";
+import Link from "next/link";
 
 export async function Header() {
 	const user = await getUser();
 	return (
 		<header className="flex justify-between gap-6 py-4 px-8 items-center">
-			<div className="relative w-18 h-18 shrink">
+			<Link className="relative w-18 h-18 shrink" href="/">
 				<Image
 					src="/grail-chan-happy-v1.webp"
 					alt="Grail-chan"
@@ -14,7 +15,7 @@ export async function Header() {
 					className="object-contain"
 					priority
 				/>
-			</div>
+			</Link>
 			<HeaderMiddle />
 			<div className="flex gap-1 items-center">
 				<HeaderRight user={user} />

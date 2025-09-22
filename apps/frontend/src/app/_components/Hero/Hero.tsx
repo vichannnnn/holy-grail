@@ -4,23 +4,21 @@ import Image from "next/image";
 import { LinkButton } from "./LinkButton";
 import { Text, Title } from "@shared/ui/components";
 import { getUser } from "@lib/auth";
-// import { Showcase } from "@components/Showcase";
 
 export async function Hero() {
 	const user = await getUser();
 	return (
 		<div className="flex flex-col w-4/5 m-auto gap-8">
-			<div className="flex flex-col-reverse items-center  md:flex-row gap-16">
+			<div className="flex flex-col-reverse items-center md:flex-row md:gap-16 gap-8">
 				<div className="m-auto">
-					{/*<Showcase />*/}
 					<div className="animate-fade-in">
 						<Title className="mb-4 mt-16 text-3xl font-bold">
 							Access your notes you need in just a click.
 						</Title>
 						<Text className="mb-4">
 							Holy Grail is a completely free-to-access web library aimed at Singaporean students
-							that houses all the summary notes and practice papers for GCE &#39;O&#39; Levels, GCE
-							&#39;A&#39; Levels and International Baccalaureate.
+							that houses all the summary notes and practice papers for GCE 'O' Levels, GCE 'A'
+							Levels and International Baccalaureate.
 						</Text>
 					</div>
 					<LinkButton href="/library">
@@ -28,10 +26,28 @@ export async function Hero() {
 						<ArrowRightIcon className="size-5 inline-block ml-1 -mt-0.5" />
 					</LinkButton>
 				</div>
-				<Image src="/trimmy-grail-chan-studying.webp" alt="Studying" width={300} height={300} />
+				<Image
+					src="/trimmy-grail-chan-studying.webp"
+					alt="Studying"
+					width={250}
+					height={250}
+					priority
+					fetchPriority="high"
+					sizes="(max-width: 768px) 200px, 250px"
+					className="max-w-full h-auto"
+				/>
 			</div>
-			<div className="flex flex-col items-center md:flex-row gap-16">
-				<Image src="/trimmy-grail-chan-sparkling.webp" alt="Sparkling" width={300} height={300} />
+			<div className="flex flex-col items-center md:flex-row md:gap-16 gap-8">
+				<Image
+					src="/trimmy-grail-chan-sparkling.webp"
+					alt="Sparkling"
+					width={250}
+					height={250}
+					priority
+					fetchPriority="high"
+					sizes="(max-width: 768px) 200px, 250px"
+					className="max-w-full h-auto"
+				/>
 				<div className="m-auto gap-4">
 					<div className="animate-fade-in">
 						<Title className="mb-4 text-3xl font-bold">Want to contribute?</Title>
