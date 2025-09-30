@@ -15,7 +15,7 @@ This file maintains a centralized list of all tickets in the project. Update thi
 ## Active Tickets
 
 ### High Priority
-_No high priority tickets currently_
+- 🟡 [TICKET-014](./TICKET-014-staging-terraform-migration.md) - Migrate to Staging/Production Deployment Strategy
 
 ### Medium Priority
 _No medium priority tickets currently_
