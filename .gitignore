@@ -211,3 +211,4 @@ docker-volumes/
 # Project-specific directories
 /data/
 /prototype/
+/scripts/
