@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - dev
+      - staging
       - master
     paths:
       - 'holy-grail-backend/**'
