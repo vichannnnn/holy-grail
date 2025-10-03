@@ -93,14 +93,14 @@ jobs:
       - name: Update Terraform Cloud variable for Docker Image hash
         env:
           TFC_TOKEN: ${{ secrets.TFC_TOKEN }}
-          WORKSPACE_ID: ${{ github.ref == 'refs/heads/dev' && secrets.DEV_WORKSPACE_ID || secrets.PROD_WORKSPACE_ID }}
+          WORKSPACE_ID: ${{ github.ref == 'refs/heads/staging' && secrets.STAGING_WORKSPACE_ID || secrets.PROD_WORKSPACE_ID }}
         run: |
           VARIABLES=$(curl -s \
             --header "Authorization: Bearer $TFC_TOKEN" \
             --header "Content-Type: application/vnd.api+json" \
             --request GET \
             "https://app.terraform.io/api/v2/workspaces/$WORKSPACE_ID/vars")
-          
+
           # Extract the ID of the variable matching the given key
           EXISTING_VAR=$(echo "$VARIABLES" | jq -r --arg key "${{ env.FRONTEND_VARIABLE_HASH_NAME }}" '.data[] | select(
           .attributes.key == $key) | .id')
@@ -260,14 +260,14 @@ jobs:
       - name: Update Terraform Cloud variable for Docker Image hash
         env:
           TFC_TOKEN: ${{ secrets.TFC_TOKEN }}
-          WORKSPACE_ID: ${{ github.ref == 'refs/heads/dev' && secrets.DEV_WORKSPACE_ID || secrets.PROD_WORKSPACE_ID }}
+          WORKSPACE_ID: ${{ github.ref == 'refs/heads/staging' && secrets.STAGING_WORKSPACE_ID || secrets.PROD_WORKSPACE_ID }}
         run: |
           VARIABLES=$(curl -s \
             --header "Authorization: Bearer $TFC_TOKEN" \
             --header "Content-Type: application/vnd.api+json" \
             --request GET \
             "https://app.terraform.io/api/v2/workspaces/$WORKSPACE_ID/vars")
-          
+
           # Extract the ID of the variable matching the given key
           EXISTING_VAR=$(echo "$VARIABLES" | jq -r --arg key "${{ env.CELERY_VARIABLE_HASH_NAME }}" '.data[] | select(
           .attributes.key == $key) | .id')
