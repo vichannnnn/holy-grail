@@ -1,4 +1,5 @@
 export * from './Account';
+export * from './AdBanner';
 export * from './Button';
 export * from './Chip';
 export * from './Combobox';

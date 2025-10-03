@@ -2,7 +2,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import FadeIn from 'react-fade-in';
 
 import { Button } from '@components/Button';
-import { Showcase } from '@components/Showcase';
+import { AdBanner } from '@components/AdBanner';
 
 import { useNavigate } from '@utils/navigation';
 
@@ -21,9 +21,13 @@ export const DesktopHero = () => {
 
   return (
     <div className='flex flex-col w-4/5 m-auto gap-8'>
+      <AdBanner
+        imageUrl='https://image.himaa.me/PALLO_1.png'
+        linkUrl='https://pallo.ai/?utm_source=grail&utm_content=b1'
+        altText='Pallo.ai'
+      />
       <div className='flex flex-row gap-16'>
         <div className='m-auto'>
-          <Showcase />
           <FadeIn>
             <h1 className='mb-4 mt-16 text-3xl font-bold'>
               Access your notes you need in just a click.

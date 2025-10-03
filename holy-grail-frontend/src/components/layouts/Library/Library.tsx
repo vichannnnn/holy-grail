@@ -18,7 +18,7 @@ import {
 
 import { Divider } from '@components/Divider';
 import { DeleteNoteModal, UpdateNoteModal } from '@components/Modal';
-import { Showcase } from '@components/Showcase';
+import { AdBanner } from '@components/AdBanner';
 
 import { NotesTable } from '@features/Library';
 
@@ -175,7 +175,11 @@ export const Library = () => {
         Interested sponsors and advertisers, please contact us at <strong>grail@himaa.me</strong> to
         explore partnership opportunities.
       </p>
-      <Showcase />
+      <AdBanner
+        imageUrl='https://image.himaa.me/PALLO_1.png'
+        linkUrl='https://pallo.ai/?utm_source=grail&utm_content=b1'
+        altText='Pallo.ai'
+      />
 
       <NotesTable
         notes={notes.items}
