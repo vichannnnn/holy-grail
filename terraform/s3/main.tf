@@ -207,15 +207,30 @@ resource "aws_cloudfront_distribution" "s3_bucket_cloudfront_distribution" {
 resource "null_resource" "cloudfront_dns_setup" {
   provisioner "local-exec" {
     command = <<EOT
-      ./porkbun.sh ${aws_cloudfront_distribution.s3_bucket_cloudfront_distribution.domain_name} ${var
-  .root_domain_name} ${replace(var.BUCKET_DOMAIN_NAME, ".${var.root_domain_name}", "")}
+      ./porkbun.sh ${aws_cloudfront_distribution.s3_bucket_cloudfront_distribution.domain_name} ${var.root_domain_name} ${replace(var.BUCKET_DOMAIN_NAME, ".${var.root_domain_name}", "")}
     EOT
+  }
+
+  triggers = {
+    always_run = timestamp()
+  }
+
+  depends_on = [aws_cloudfront_distribution.s3_bucket_cloudfront_distribution]
 }
 
-triggers = {
-  always_run = timestamp()
-}
+resource "null_resource" "post_destroy_cloudfront_script" {
+  triggers = {
+    root_domain_name = var.root_domain_name
+    bucket_subdomain = replace(var.BUCKET_DOMAIN_NAME, ".${var.root_domain_name}", "")
+    record_type      = "CNAME"
+  }
 
+  provisioner "local-exec" {
+    command = "./porkbun_delete.sh ${self.triggers.root_domain_name} ${self.triggers.bucket_subdomain} ${self.triggers.record_type}"
+    when    = destroy
+  }
 
-depends_on = [aws_cloudfront_distribution.s3_bucket_cloudfront_distribution]
+  depends_on = [
+    aws_cloudfront_distribution.s3_bucket_cloudfront_distribution
+  ]
 }
