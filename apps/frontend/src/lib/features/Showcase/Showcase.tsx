@@ -6,14 +6,24 @@ import { ADS_IMAGE_URL, ADS_ALT_TEXT, ADS_REDIRECT_URL } from "./constants";
 import { adClickAction, adImpressionAction } from "./actions";
 import { InfoButton } from "./InfoButton";
 
-export function Showcase() {
+interface ShowcaseProps {
+	imageUrl?: string;
+	altText?: string;
+	redirectUrl?: string;
+}
+
+export function Showcase({
+	imageUrl = ADS_IMAGE_URL,
+	altText = ADS_ALT_TEXT,
+	redirectUrl = ADS_REDIRECT_URL,
+}: ShowcaseProps = {}) {
 	const showcaseRef = useRef<HTMLDivElement>(null);
 
 	const handleShowcaseClick = async () => {
 		try {
 			await adClickAction();
 		} finally {
-			window.open(ADS_REDIRECT_URL, "_blank", "noopener,noreferrer");
+			window.open(redirectUrl, "_blank", "noopener,noreferrer");
 		}
 	};
 
@@ -59,8 +69,8 @@ export function Showcase() {
 				}}
 			>
 				<Image
-					alt={ADS_ALT_TEXT}
-					src={ADS_IMAGE_URL}
+					alt={altText}
+					src={imageUrl}
 					width={500}
 					height={250}
 					className="w-full h-auto"
