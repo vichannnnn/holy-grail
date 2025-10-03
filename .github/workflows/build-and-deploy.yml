@@ -3,7 +3,6 @@ name: Build and Deploy
 on:
   push:
     branches:
-      - dev
       - staging
       - master
     paths:
@@ -13,7 +12,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  DEV_IMAGE_NAME: vichannnnn/holy-grail-dev
+  STAGING_IMAGE_NAME: vichannnnn/holy-grail-staging
   PROD_IMAGE_NAME: vichannnnn/holy-grail
   FRONTEND_IMAGE_NAME: frontend
   BACKEND_IMAGE_NAME: backend
@@ -85,10 +84,10 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./holy-grail-frontend
-          file: ${{ github.ref == 'refs/heads/dev' && './holy-grail-frontend/Dockerfile.dev' || './holy-grail-frontend/Dockerfile.prod' }}
+          file: ${{ github.ref == 'refs/heads/staging' && './holy-grail-frontend/Dockerfile.dev' || './holy-grail-frontend/Dockerfile.prod' }}
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ github.ref == 'refs/heads/dev' && env.DEV_IMAGE_NAME || env.PROD_IMAGE_NAME}}/${{
+            ${{ env.REGISTRY }}/${{ github.ref == 'refs/heads/staging' && env.STAGING_IMAGE_NAME || env.PROD_IMAGE_NAME}}/${{
             env.FRONTEND_IMAGE_NAME }}:${{ env.HASH }}
 
       - name: Update Terraform Cloud variable for Docker Image hash
@@ -174,13 +173,13 @@ jobs:
           context: ./holy-grail-backend/backend
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ github.ref == 'refs/heads/dev' && env.DEV_IMAGE_NAME || env.PROD_IMAGE_NAME}}/${{
+            ${{ env.REGISTRY }}/${{ github.ref == 'refs/heads/staging' && env.STAGING_IMAGE_NAME || env.PROD_IMAGE_NAME}}/${{
             env.BACKEND_IMAGE_NAME }}:${{ env.HASH }}
 
       - name: Update Terraform Cloud variable for Docker Image hash
         env:
           TFC_TOKEN: ${{ secrets.TFC_TOKEN }}
-          WORKSPACE_ID: ${{ github.ref == 'refs/heads/dev' && secrets.DEV_WORKSPACE_ID || secrets.PROD_WORKSPACE_ID }}
+          WORKSPACE_ID: ${{ github.ref == 'refs/heads/staging' && secrets.STAGING_WORKSPACE_ID || secrets.PROD_WORKSPACE_ID }}
 
         run: |
           VARIABLES=$(curl -s \
@@ -255,7 +254,7 @@ jobs:
           context: ./holy-grail-backend/backend
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ github.ref == 'refs/heads/dev' && env.DEV_IMAGE_NAME || env
+            ${{ env.REGISTRY }}/${{ github.ref == 'refs/heads/staging' && env.STAGING_IMAGE_NAME || env
             .PROD_IMAGE_NAME}}/${{env.CELERY_IMAGE_NAME }}:${{ env.HASH }}
 
       - name: Update Terraform Cloud variable for Docker Image hash
@@ -352,7 +351,7 @@ jobs:
       - name: Trigger Terraform Apply
         env:
           TFC_TOKEN: ${{ secrets.TFC_TOKEN }}
-          WORKSPACE_ID: ${{ github.ref == 'refs/heads/dev' && secrets.DEV_WORKSPACE_ID || secrets.PROD_WORKSPACE_ID }}
+          WORKSPACE_ID: ${{ github.ref == 'refs/heads/staging' && secrets.STAGING_WORKSPACE_ID || secrets.PROD_WORKSPACE_ID }}
         run: |
           RESPONSE=$(curl -s \
             --request POST \
