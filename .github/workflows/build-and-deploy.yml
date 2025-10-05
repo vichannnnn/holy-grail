@@ -6,8 +6,8 @@ on:
       - staging
       - master
     paths:
-      - 'holy-grail-backend/**'
-      - 'holy-grail-frontend/**'
+      - 'apps/backend/**'
+      - 'apps/frontend/**'
       - 'terraform/**'
 
 env:
@@ -40,11 +40,11 @@ jobs:
         with:
           filters: |
             backend:
-              - 'holy-grail-backend/**'
+              - 'apps/backend/**'
             celery:
-              - 'holy-grail-backend/**'
+              - 'apps/backend/**'
             frontend:
-              - 'holy-grail-frontend/**'
+              - 'apps/frontend/**'
              
 
       - name: Set up Docker Buildx
@@ -83,8 +83,7 @@ jobs:
       - name: Build and push Frontend Docker image
         uses: docker/build-push-action@v2
         with:
-          context: ./holy-grail-frontend
-          file: ${{ github.ref == 'refs/heads/staging' && './holy-grail-frontend/Dockerfile.dev' || './holy-grail-frontend/Dockerfile.prod' }}
+          context: ./apps/frontend
           push: true
           tags: |
             ${{ env.REGISTRY }}/${{ github.ref == 'refs/heads/staging' && env.STAGING_IMAGE_NAME || env.PROD_IMAGE_NAME}}/${{
@@ -170,7 +169,7 @@ jobs:
       - name: Build and push Backend Docker image
         uses: docker/build-push-action@v2
         with:
-          context: ./holy-grail-backend/backend
+          context: ./apps/backend
           push: true
           tags: |
             ${{ env.REGISTRY }}/${{ github.ref == 'refs/heads/staging' && env.STAGING_IMAGE_NAME || env.PROD_IMAGE_NAME}}/${{
@@ -251,7 +250,7 @@ jobs:
       - name: Build and push Celery Docker image
         uses: docker/build-push-action@v2
         with:
-          context: ./holy-grail-backend/backend
+          context: ./apps/backend
           push: true
           tags: |
             ${{ env.REGISTRY }}/${{ github.ref == 'refs/heads/staging' && env.STAGING_IMAGE_NAME || env
