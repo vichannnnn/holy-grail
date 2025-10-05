@@ -57,7 +57,7 @@ resource "aws_ecs_task_definition" "backend" {
     {
       name    = "celery"
       image   = "${var.celery_image}:${var.celery_image_hash}"
-      command = ["celery", "-A", "app.utils.worker", "worker", "-B", "--loglevel=info"]
+      command = ["uv", "run", "celery", "-A", "app.utils.worker", "worker", "-B", "--loglevel=info"]
       repositoryCredentials = {
         credentialsParameter = aws_secretsmanager_secret.ghcr_token.arn
       }
