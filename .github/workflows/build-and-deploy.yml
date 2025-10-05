@@ -42,7 +42,7 @@ jobs:
             backend:
               - 'apps/backend/**'
             celery:
-              - 'apps/backend/**'
+              - 'apps/task/**'
             frontend:
               - 'apps/frontend/**'
              
@@ -250,7 +250,7 @@ jobs:
       - name: Build and push Celery Docker image
         uses: docker/build-push-action@v2
         with:
-          context: ./apps/backend
+          context: ./apps/task
           push: true
           tags: |
             ${{ env.REGISTRY }}/${{ github.ref == 'refs/heads/staging' && env.STAGING_IMAGE_NAME || env
