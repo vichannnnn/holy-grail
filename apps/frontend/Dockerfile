@@ -29,4 +29,5 @@ ENV HOSTNAME=0.0.0.0
 
 EXPOSE 3000
 
+WORKDIR /app/apps/frontend
 CMD ["bun", "run", "start"]
