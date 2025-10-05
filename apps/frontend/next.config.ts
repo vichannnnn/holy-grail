@@ -18,7 +18,7 @@ const nextConfig: NextConfig = {
 			},
 		],
 	},
-	// output: "standalone", // Commented out for Vercel deployment
+	output: "standalone",
 };
 
 export default nextConfig;
