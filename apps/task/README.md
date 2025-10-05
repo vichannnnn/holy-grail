@@ -1,6 +1,6 @@
 # Task Service
 
-This is the Celery task service for Holy Grail, handling background jobs and asynchronous operations.
+This is the Celery task service for Holy Grail, handling background jobs and asynchronous operations for the educational platform.
 
 ## Setup
 
