@@ -84,7 +84,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          dockerfile: apps/frontend/Dockerfile
+          file: apps/frontend/Dockerfile
           push: true
           tags: |
             ${{ env.REGISTRY }}/${{ github.ref == 'refs/heads/staging' && env.STAGING_IMAGE_NAME || env.PROD_IMAGE_NAME}}/${{
