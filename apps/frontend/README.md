@@ -7,12 +7,6 @@ Frontend for Holy Grail educational platform - providing free educational resour
 First, run the development server:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
 bun dev
 ```
 
