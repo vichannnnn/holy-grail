@@ -65,7 +65,8 @@ export const AdBanner = ({ imageUrl, linkUrl, altText }: AdBannerProps) => {
 
   const bannerRef = useRef(null);
 
-  const handleBannerClick = async () => {
+  const handleBannerClick = async (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
     try {
       await adClick();
     } finally {
@@ -103,7 +104,7 @@ export const AdBanner = ({ imageUrl, linkUrl, altText }: AdBannerProps) => {
   return (
     <div className='flex flex-col justify-center items-center gap-4 my-8' ref={bannerRef}>
       <div className='w-full md:w-1/2 relative flex'>
-        <a onClick={handleBannerClick} className='cursor-pointer'>
+        <a href={linkUrl} onClick={handleBannerClick} className='cursor-pointer'>
           <img alt={altText} src={imageUrl} className='w-full' />
         </a>
         <InfoButton isMobile={isMedium} />
