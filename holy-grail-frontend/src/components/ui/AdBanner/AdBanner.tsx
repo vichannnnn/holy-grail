@@ -37,6 +37,28 @@ const InfoButton = ({ isMobile }: InfoButtonProps) => {
         </div>
       }
       arrow
+      slotProps={{
+        popper: {
+          sx: {
+            zIndex: 9999,
+          },
+        },
+        tooltip: {
+          sx: {
+            pointerEvents: 'auto',
+          },
+        },
+      }}
+      componentsProps={{
+        tooltip: {
+          sx: {
+            pointerEvents: 'auto',
+          },
+        },
+      }}
+      sx={{
+        pointerEvents: 'none',
+      }}
     >
       <IconButton
         sx={{
@@ -47,12 +69,15 @@ const InfoButton = ({ isMobile }: InfoButtonProps) => {
           backgroundColor: 'transparent',
           opacity: 0.9,
           fontSize: '16px',
+          zIndex: 50,
+          pointerEvents: 'auto',
           '&:focus': { outline: 'none' },
           '&:hover': {
             backgroundColor: 'transparent',
           },
         }}
         disableRipple
+        onClick={(e) => e.stopPropagation()}
       >
         <InfoIcon fontSize='small' />
       </IconButton>
@@ -65,13 +90,8 @@ export const AdBanner = ({ imageUrl, linkUrl, altText }: AdBannerProps) => {
 
   const bannerRef = useRef(null);
 
-  const handleBannerClick = async (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    try {
-      await adClick();
-    } finally {
-      window.open(linkUrl, '_blank', 'noopener,noreferrer');
-    }
+  const handleBannerClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    adClick();
   };
 
   useEffect(() => {
@@ -103,11 +123,24 @@ export const AdBanner = ({ imageUrl, linkUrl, altText }: AdBannerProps) => {
 
   return (
     <div className='flex flex-col justify-center items-center gap-4 my-8' ref={bannerRef}>
-      <div className='w-full md:w-1/2 relative flex'>
-        <a href={linkUrl} onClick={handleBannerClick} className='cursor-pointer'>
-          <img alt={altText} src={imageUrl} className='w-full' />
+      <div className='w-full md:w-1/2 relative' style={{ pointerEvents: 'auto' }}>
+        <a
+          href={linkUrl}
+          target='_blank'
+          rel='noopener noreferrer'
+          onClick={handleBannerClick}
+          className='cursor-pointer block w-full'
+          style={{
+            touchAction: 'manipulation',
+            WebkitTouchCallout: 'default',
+            WebkitUserSelect: 'none',
+          }}
+        >
+          <img alt={altText} src={imageUrl} className='w-full block' />
         </a>
-        <InfoButton isMobile={isMedium} />
+        <div style={{ position: 'absolute', top: 0, left: 0, pointerEvents: 'none', width: '40px', height: '40px' }}>
+          <InfoButton isMobile={isMedium} />
+        </div>
       </div>
     </div>
   );

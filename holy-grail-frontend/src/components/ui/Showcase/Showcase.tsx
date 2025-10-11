@@ -33,6 +33,28 @@ const InfoButton = ({ isMobile }: InfoButtonProps) => {
         </div>
       }
       arrow
+      slotProps={{
+        popper: {
+          sx: {
+            zIndex: 9999,
+          },
+        },
+        tooltip: {
+          sx: {
+            pointerEvents: 'auto',
+          },
+        },
+      }}
+      componentsProps={{
+        tooltip: {
+          sx: {
+            pointerEvents: 'auto',
+          },
+        },
+      }}
+      sx={{
+        pointerEvents: 'none',
+      }}
     >
       <IconButton
         sx={{
@@ -43,12 +65,15 @@ const InfoButton = ({ isMobile }: InfoButtonProps) => {
           backgroundColor: 'transparent',
           opacity: 0.9,
           fontSize: '16px',
+          zIndex: 50,
+          pointerEvents: 'auto',
           '&:focus': { outline: 'none' },
           '&:hover': {
             backgroundColor: 'transparent',
           },
         }}
         disableRipple
+        onClick={(e) => e.stopPropagation()}
       >
         <InfoIcon fontSize='small' />
       </IconButton>
@@ -61,16 +86,8 @@ export const Showcase = () => {
 
   const showcaseRef = useRef(null);
 
-  const handleShowcaseClick = async () => {
-    try {
-      await adClick();
-    } finally {
-      window.open(
-        'https://play.google.com/store/apps/details?id=com.turisvpn.tech&pcampaignid=web_share',
-        '_blank',
-        'noopener,noreferrer',
-      );
-    }
+  const handleShowcaseClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    adClick();
   };
 
   useEffect(() => {
@@ -102,11 +119,24 @@ export const Showcase = () => {
 
   return (
     <div className='flex flex-col justify-center items-center gap-4' ref={showcaseRef}>
-      <div className='w-full md:w-1/2 relative flex'>
-        <a onClick={handleShowcaseClick} className='cursor-pointer'>
-          <img alt='Turis VPN' src={ADS_IMAGE_URL} className='w-full' />
+      <div className='w-full md:w-1/2 relative' style={{ pointerEvents: 'auto' }}>
+        <a
+          href='https://play.google.com/store/apps/details?id=com.turisvpn.tech&pcampaignid=web_share'
+          target='_blank'
+          rel='noopener noreferrer'
+          onClick={handleShowcaseClick}
+          className='cursor-pointer block w-full'
+          style={{
+            touchAction: 'manipulation',
+            WebkitTouchCallout: 'default',
+            WebkitUserSelect: 'none',
+          }}
+        >
+          <img alt='Turis VPN' src={ADS_IMAGE_URL} className='w-full block' />
         </a>
-        <InfoButton isMobile={isMedium} />
+        <div style={{ position: 'absolute', top: 0, left: 0, pointerEvents: 'none', width: '40px', height: '40px' }}>
+          <InfoButton isMobile={isMedium} />
+        </div>
       </div>
     </div>
     // <></>
