@@ -6,7 +6,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import { Header, Footer } from "@lib/features/server";
 import { TTFB, Showcase } from "@lib/features/client";
 import { Toaster } from "react-hot-toast";
-import { type ReactNode } from "react";
+import type { ReactNode } from "react";
 
 const plusJakarta = Plus_Jakarta_Sans({
 	subsets: ["latin"],

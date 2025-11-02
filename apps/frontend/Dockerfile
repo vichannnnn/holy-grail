@@ -16,7 +16,7 @@ COPY --from=builder /app/out/json .
 RUN bun install
 
 COPY --from=builder /app/out/full .
-RUN bunx turbo run build --filter=frontend
+RUN bunx turbo run build --filter=frontend -- --webpack
 
 FROM base AS runner
 WORKDIR /app
