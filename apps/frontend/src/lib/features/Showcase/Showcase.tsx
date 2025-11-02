@@ -68,13 +68,7 @@ export function Showcase({
 					}
 				}}
 			>
-				<Image
-					alt={altText}
-					src={imageUrl}
-					width={500}
-					height={250}
-					className="w-full h-auto"
-				/>
+				<Image alt={altText} src={imageUrl} width={500} height={250} className="w-full h-auto" />
 				<InfoButton />
 			</div>
 		</>
