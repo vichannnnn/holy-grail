@@ -8,7 +8,7 @@ import {
 	fetchAllDocumentTypes,
 	fetchAllSubjects,
 } from "./actions";
-import { PAGE_MAX_SIZE } from "./constants";
+import { PAGE_MAX_SIZE, TELEGRAM_LINK } from "./constants";
 import { LibrarySearch, LibraryContent } from "./_components";
 import type { Metadata } from "next";
 
@@ -78,7 +78,7 @@ export default async function LibraryPage({
 				<Text>
 					Join our Telegram channel{" "}
 					<Link
-						href="https://t.me/+FlxeSKjMXIk2ZjA1"
+						href={TELEGRAM_LINK}
 						className="underline hover:text-blue-500 transition-colors"
 						prefetch={false}
 						target="_blank"

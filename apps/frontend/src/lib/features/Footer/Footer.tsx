@@ -4,6 +4,7 @@ import { FooterLeft } from "./FooterLeft";
 import { FooterRight } from "./FooterRight";
 import { Text } from "@shared/ui/components";
 import Link from "next/link";
+import { EMAIL_ADDRESS, TELEGRAM_LINK } from "./constants";
 
 export async function Footer() {
 	const currentYear = new Date().getFullYear();
@@ -19,16 +20,16 @@ export async function Footer() {
 				<Text>
 					© 2023 - {currentYear} Holy Grail Team • Questions? Contact us at{" "}
 					<Link
-						href="mailto:allthingsholygrail@gmail.com"
+						href={`mailto:${EMAIL_ADDRESS}`}
 						className="underline hover:text-blue-500 transition-colors"
 						prefetch={false}
 						target="_blank"
 					>
-						allthingsholygrail@gmail.com
+						{EMAIL_ADDRESS}
 					</Link>
 					, or join our{" "}
 					<Link
-						href="https://t.me/+FlxeSKjMXIk2ZjA1"
+						href={TELEGRAM_LINK}
 						className="underline hover:text-blue-500 transition-colors"
 						prefetch={false}
 						target="_blank"
