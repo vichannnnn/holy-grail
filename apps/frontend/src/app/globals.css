@@ -3,7 +3,7 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-@source "../../../../node_modules/@shared/ui/**/*.tsx";
+@source "../../../../packages/ui/src/**/*.tsx";
 
 /* implementation detail for this app */
 @layer base {

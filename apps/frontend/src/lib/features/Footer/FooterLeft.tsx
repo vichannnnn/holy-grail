@@ -19,8 +19,8 @@ export function FooterLeft() {
 			<div className="w-full max-w-md mt-4">
 				<Text>
 					Holy Grail is a completely free-to-access web library aimed at Singaporean students that
-					houses all the summary notes and practice papers for GCE &apos;O&apos; Levels, GCE
-					&apos;A&apos; Levels and International Baccalaureate.
+					houses all the summary notes and practice papers for GCE 'O' Levels, GCE 'A' Levels and
+					International Baccalaureate.
 				</Text>
 			</div>
 		</div>

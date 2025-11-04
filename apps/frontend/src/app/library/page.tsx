@@ -8,7 +8,7 @@ import {
 	fetchAllDocumentTypes,
 	fetchAllSubjects,
 } from "./actions";
-import { PAGE_MAX_SIZE } from "./constants";
+import { PAGE_MAX_SIZE, TELEGRAM_LINK } from "./constants";
 import { LibrarySearch, LibraryContent } from "./_components";
 import type { Metadata } from "next";
 
@@ -28,14 +28,8 @@ export const metadata: Metadata = {
 	},
 };
 
-export const revalidate = 60; // revalidate every 1 minute
-
-export default async function LibraryPage({
-	searchParams,
-}: {
-	searchParams: Promise<NotesSearchParams>;
-}) {
-	const query = await searchParams;
+async function getContent({ query }: { query: NotesSearchParams }) {
+	"use cache: private";
 	const notesResponse = await fetchApprovedNotes({ ...query, size: PAGE_MAX_SIZE });
 	const categories = await fetchAllCategories();
 	const [documentTypes, subjects] = await Promise.all([
@@ -47,6 +41,16 @@ export default async function LibraryPage({
 		),
 	]);
 
+	return { notesResponse, categories, documentTypes, subjects };
+}
+
+export default async function LibraryPage({
+	searchParams,
+}: {
+	searchParams: Promise<NotesSearchParams>;
+}) {
+	const query = await searchParams;
+	const { notesResponse, categories, documentTypes, subjects } = await getContent({ query });
 	const user = await getUser();
 	return (
 		<main className="flex flex-col gap-8">
@@ -74,7 +78,7 @@ export default async function LibraryPage({
 				<Text>
 					Join our Telegram channel{" "}
 					<Link
-						href="https://t.me/+FlxeSKjMXIk2ZjA1"
+						href={TELEGRAM_LINK}
 						className="underline hover:text-blue-500 transition-colors"
 						prefetch={false}
 						target="_blank"

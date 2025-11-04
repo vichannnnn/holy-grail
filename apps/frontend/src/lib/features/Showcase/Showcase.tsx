@@ -2,21 +2,16 @@
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
-import { ADS_IMAGE_URL, ADS_ALT_TEXT, ADS_REDIRECT_URL } from "./constants";
 import { adClickAction, adImpressionAction } from "./actions";
 import { InfoButton } from "./InfoButton";
 
 interface ShowcaseProps {
-	imageUrl?: string;
-	altText?: string;
-	redirectUrl?: string;
+	imageUrl: string;
+	altText: string;
+	redirectUrl: string;
 }
 
-export function Showcase({
-	imageUrl = ADS_IMAGE_URL,
-	altText = ADS_ALT_TEXT,
-	redirectUrl = ADS_REDIRECT_URL,
-}: ShowcaseProps = {}) {
+export function Showcase({ imageUrl, altText, redirectUrl }: ShowcaseProps) {
 	const showcaseRef = useRef<HTMLDivElement>(null);
 
 	const handleShowcaseClick = async () => {
@@ -68,13 +63,7 @@ export function Showcase({
 					}
 				}}
 			>
-				<Image
-					alt={altText}
-					src={imageUrl}
-					width={500}
-					height={250}
-					className="w-full h-auto"
-				/>
+				<Image alt={altText} src={imageUrl} width={500} height={250} className="w-full h-auto" />
 				<InfoButton />
 			</div>
 		</>

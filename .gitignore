@@ -206,6 +206,7 @@ cython_debug/
 docker-volumes/
 
 .next
+next-env.d.ts
 .env.*
 
 # Project-specific directories
