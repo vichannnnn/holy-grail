@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 import { Divider } from '@components/Divider';
-import { AdBanner } from '@components/AdBanner';
+// import { AdBanner } from '@components/AdBanner';
 
 const LeftSection = () => {
   return (
@@ -67,11 +67,11 @@ export const Footer = () => {
 
   return (
     <div className='mt-8'>
-      <AdBanner
+      {/* <AdBanner
         imageUrl='https://image.himaa.me/PALLO_2.png'
         linkUrl='https://pallo.ai/?utm_source=grail&utm_content=b2'
         altText='Pallo.ai'
-      />
+      /> */}
       <footer className='w-4/5 flex flex-col mx-auto items-center mb-16 mt-8'>
         <div className='flex flex-col md:flex-row gap-16 md:gap-0 w-full justify-between items-start'>
           <LeftSection />

@@ -18,7 +18,7 @@ import {
   getUserScore,
 } from '@api/scoreboard';
 
-import { AdBanner } from '@components/AdBanner';
+// import { AdBanner } from '@components/AdBanner';
 
 export const Leaderboard = () => {
   const [scoreboard, setScoreboard] = useState<ScoreboardUser[]>([]);
@@ -57,11 +57,11 @@ export const Leaderboard = () => {
 
   return (
     <div className='flex flex-col mx-auto md:w-1/2 w-4/5'>
-      <AdBanner
+      {/* <AdBanner
         imageUrl='https://image.himaa.me/PALLO_1.png'
         linkUrl='https://pallo.ai/?utm_source=grail&utm_content=b1'
         altText='Pallo.ai'
-      />
+      /> */}
       <h2 className='font-bold text-center'>Top Contributors</h2>
       <h3 className='text-center'>
         These are the top contributors that has contributed resource materials such as practice

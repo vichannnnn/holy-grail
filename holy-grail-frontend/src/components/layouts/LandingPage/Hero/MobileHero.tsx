@@ -2,7 +2,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import FadeIn from 'react-fade-in';
 
 import { Button } from '@components/Button';
-import { AdBanner } from '@components/AdBanner';
+// import { AdBanner } from '@components/AdBanner';
 
 import { useNavigate } from '@utils/navigation';
 
@@ -21,11 +21,11 @@ export const MobileHero = () => {
 
   return (
     <div className='flex flex-col w-4/5 m-auto gap-4 items-center text-center'>
-      <AdBanner
+      {/* <AdBanner
         imageUrl='https://image.himaa.me/PALLO_1.png'
         linkUrl='https://pallo.ai/?utm_source=grail&utm_content=b1'
         altText='Pallo.ai'
-      />
+      /> */}
       <img src='/trimmy-grail-chan-studying.webp' alt='Studying' width='300' />
       <FadeIn>
         <h1 className='mb-4 mt-8 text-3xl font-bold'>

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { AdBanner } from '@components/AdBanner';
+// import { AdBanner } from '@components/AdBanner';
 
 import { generateFAQMetadata } from '@utils/metadata';
 
@@ -17,11 +17,11 @@ const FAQPage = () => {
         </p>
       </div>
 
-      <AdBanner
+      {/* <AdBanner
         imageUrl='https://image.himaa.me/PALLO_1.png'
         linkUrl='https://pallo.ai/?utm_source=grail&utm_content=b1'
         altText='Pallo.ai'
-      />
+      /> */}
       <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
         <div className='flex flex-col space-y-6'>
           <div className='faq-item'>
