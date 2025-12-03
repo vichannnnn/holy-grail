@@ -4,6 +4,7 @@ import { useNavigateToSearchValue } from "../utils";
 import type { LibrarySearchProps } from "./types";
 import { LibraryCombobox } from "./LibraryCombobox";
 import { YEAR_RANGE } from "../../constants";
+import {MAPPED_YEAR_RANGE} from "@lib/features/AdminEdit/constants.ts";
 
 export function LibrarySearch({
 	query,
@@ -61,10 +62,7 @@ export function LibrarySearch({
 				<LibraryCombobox
 					label="Year"
 					placeholder={`eg. ${new Date().getFullYear()}`}
-					items={Array.from(
-						{ length: YEAR_RANGE[1] - YEAR_RANGE[0] + 1 },
-						(_, i) => YEAR_RANGE[0] + i,
-					).map((year) => ({ id: year, name: String(year) }))}
+					items={MAPPED_YEAR_RANGE}
 					defaultValue={
 						query?.year ? { id: Number(query.year), name: String(query.year) } : undefined
 					}
