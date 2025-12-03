@@ -64,7 +64,7 @@ export async function Hero() {
 							<ArrowRightIcon className="size-5 inline-block ml-1 -mt-0.5" />
 						</LinkButton>
 					) : (
-						<LinkButton href="/login">
+						<LinkButton href="/auth/sign-in">
 							<span>Log in to Contribute</span>
 							<ArrowRightIcon className="size-5 inline-block ml-1 -mt-0.5" />
 						</LinkButton>
