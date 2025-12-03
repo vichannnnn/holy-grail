@@ -15,8 +15,8 @@ export function Footer() {
 				altText="Pallo.ai"
 				redirectUrl="https://pallo.ai/?utm_source=grail&utm_content=b2"
 			/>
-			<footer className="w-5/6 flex flex-col mx-auto items-center mb-16 mt-8">
-				<div className="flex flex-col md:flex-row gap-8 md:gap-2 w-full justify-between items-start">
+			<footer className="flex flex-col mx-auto items-center mb-16 mt-12 w-5/7">
+				<div className="flex flex-col md:flex-row gap-8 md:gap-2 w-full justify-between items-center">
 					<FooterLeft />
 					<FooterRight />
 				</div>
