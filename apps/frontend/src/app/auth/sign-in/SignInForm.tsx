@@ -25,7 +25,17 @@ export function SignInForm() {
 		startTransition(async () => {
 			const { ok, message } = await signin(data);
 			if (!ok) {
-				toast.error(message || "Sign in failed");
+                if (message){
+                    if (message.includes("422")){
+                        toast.error("You have entered an invalid username or password. Please try again.");
+                    }
+                    else{
+                        toast.error(message);
+                    }
+                }
+                else{
+                    toast.error("Sign in failed");
+                }
 			} else {
 				toast.success("Sign in successful! Redirecting...");
 				router.push("/");
