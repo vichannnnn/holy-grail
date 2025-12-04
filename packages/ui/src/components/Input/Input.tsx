@@ -14,6 +14,7 @@ export function Input({
 	className,
 	containerClassName,
 	icon,
+    infoButton,
 	...rest
 }: InputProps) {
 	const inputClass = twMerge(
@@ -34,7 +35,10 @@ export function Input({
 							htmlFor={id}
 							className="text-sm/6 font-medium text-black dark:text-zinc-200"
 						>
-							{label}
+                            <div className="flex gap-x-0.5">
+                                {label}
+                                {infoButton}
+                            </div>
 						</Label>
 					)}
 					{description && (

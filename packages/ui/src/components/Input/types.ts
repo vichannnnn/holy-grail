@@ -8,4 +8,5 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 	icon?: ReactNode;
 	className?: string;
 	containerClassName?: string;
+    infoButton?: ReactNode;
 }
