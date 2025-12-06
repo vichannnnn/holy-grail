@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useNavigateToSearchValue } from "../utils";
 import { FavouriteSwitchProps } from "./types";
 
-function _FavouriteSwitch({query}: FavouriteSwitchProps) {
+function FavouriteSwitchInner({query}: FavouriteSwitchProps) {
     const [enabled, setEnabled] = useState(query?.favourites_only ? (query.favourites_only === "true") : false);
     const navigateToSearchValue = useNavigateToSearchValue();
 
@@ -43,4 +43,4 @@ function _FavouriteSwitch({query}: FavouriteSwitchProps) {
     )
 }
 
-export const FavouriteSwitch = memo(_FavouriteSwitch);
+export const FavouriteSwitch = memo(FavouriteSwitchInner);
