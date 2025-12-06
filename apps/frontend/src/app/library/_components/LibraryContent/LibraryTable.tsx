@@ -6,7 +6,18 @@ import type { Note } from "../../types";
 import type { LibraryTableProps } from "./types";
 import { CustomDownloadIcon } from "./CustomDownloadIcon";
 
-export function LibraryTable({ items, renderAdminActions }: Readonly<LibraryTableProps>) {
+/**
+ * Render a responsive table of library notes with download, favourite, and optional admin actions.
+ *
+ * Renders each note as a row showing document name, category, subject, type, uploader, year, upload date,
+ * and an actions cell containing the download button plus optional favourite and admin action renderers.
+ *
+ * @param items - Array of notes to display in the table.
+ * @param renderAdminActions - Optional function that returns admin action elements for a given note.
+ * @param renderFavouriteAction - Optional function that returns a favourite/action element for a given note.
+ * @returns A JSX element containing a full-width, horizontally scrollable table of notes.
+ */
+export function LibraryTable({ items, renderAdminActions, renderFavouriteAction }: Readonly<LibraryTableProps>) {
 	const formatDate = (dateString: string) => {
 		const options: Intl.DateTimeFormatOptions = {
 			day: "numeric",
@@ -71,9 +82,6 @@ export function LibraryTable({ items, renderAdminActions }: Readonly<LibraryTabl
 						<th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-gray-100">
 							Uploaded On
 						</th>
-						<th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-gray-100">
-							Download
-						</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -115,7 +123,8 @@ export function LibraryTable({ items, renderAdminActions }: Readonly<LibraryTabl
 								>
 									<CustomDownloadIcon className="size-5 fill-gray-700 dark:fill-gray-300" />
 								</IconButton>
-								{renderAdminActions?.(note)}
+                                {renderFavouriteAction?.(note)}
+                                {renderAdminActions?.(note)}
 							</td>
 						</tr>
 					))}

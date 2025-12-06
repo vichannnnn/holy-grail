@@ -5,7 +5,18 @@ import Link from "next/link";
 import type { Note } from "../../types";
 import type { LibraryCardProps } from "./types";
 
-export function LibraryCard({ item, renderAdminActions }: Readonly<LibraryCardProps>) {
+/**
+ * Render a card displaying a library note's metadata, a download action, and optional admin and favourite controls.
+ *
+ * Renders the document name (linked to the CDN when available), metadata grid (category, subject, type, year, uploader, uploaded date),
+ * a download button that retrieves and downloads the note file, optional admin action elements, and an optional favourite action positioned at the card's top-right.
+ *
+ * @param item - The `Note` to display.
+ * @param renderAdminActions - Optional render prop that returns admin action elements to display beneath the download button.
+ * @param renderFavouriteAction - Optional render prop that returns a favourite action element positioned at the top-right of the card.
+ * @returns A React element containing the library card UI.
+ */
+export function LibraryCard({ item, renderAdminActions, renderFavouriteAction }: Readonly<LibraryCardProps>) {
 	const formatDate = (dateString: string) => {
 		const options: Intl.DateTimeFormatOptions = {
 			day: "numeric",
@@ -45,8 +56,8 @@ export function LibraryCard({ item, renderAdminActions }: Readonly<LibraryCardPr
 	};
 
 	return (
-		<Card className="flex flex-col p-4 gap-3">
-			{/* Document Name */}
+		<Card className="flex flex-col p-4 gap-3 relative">
+            {/* Document Name */}
 			<div>
 				<Title order={6} className="mb-1">
 					Document Name
@@ -111,6 +122,10 @@ export function LibraryCard({ item, renderAdminActions }: Readonly<LibraryCardPr
 				</Button>
 				{renderAdminActions?.()}
 			</div>
+
+            <div className="absolute top-1 right-1">
+                {renderFavouriteAction?.()}
+            </div>
 		</Card>
 	);
 }

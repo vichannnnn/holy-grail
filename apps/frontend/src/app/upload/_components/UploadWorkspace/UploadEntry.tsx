@@ -10,7 +10,26 @@ import toast from "react-hot-toast";
 import { twMerge } from "tailwind-merge";
 import { DeleteConfirmModal } from "./DeleteConfirmModal";
 import { MAPPED_YEAR_RANGE } from "@lib/features/AdminEdit/constants";
+import { NameInfoButton } from "./NameInfoButton";
 
+/**
+ * Renders a collapsible upload entry for a single file, exposing editable metadata controls and entry-level actions.
+ *
+ * Displays inputs for document name, category, subject, document type, and year; fetches subjects when the category changes;
+ * provides a dropdown to mirror this entry's category/subject/type/year to other entries and to delete the entry with confirmation.
+ *
+ * @param file - The file metadata to display for this entry (used for label and hidden file field)
+ * @param index - The zero-based index of this entry within the form's notes array
+ * @param control - react-hook-form control object used to register and watch form fields for this entry
+ * @param setValue - react-hook-form setter function used to update other entries when mirroring properties
+ * @param onDelete - Callback invoked with the file name when the user confirms deletion of this entry
+ * @param categories - Available category options for the Category combobox
+ * @param documentTypes - Available document type options for the Document Type combobox
+ * @param errors - Validation errors for the form; used to display file-related validation messages for this entry
+ * @param totalEntries - Total number of entries in the form (used to enable/disable mirroring)
+ *
+ * @returns The JSX element representing the upload entry UI
+ */
 export function UploadEntry({
 	file,
 	index,
@@ -114,6 +133,7 @@ export function UploadEntry({
 									placeholder={`eg. ${file.name}`}
 									containerClassName="w-full"
 									error={error?.message}
+                                    infoButton={<NameInfoButton/>}
 									{...field}
 								/>
 							)}

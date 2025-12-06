@@ -15,6 +15,7 @@ from app.api.deps import (
     SessionAdmin,
     SessionBucket,
     SessionVerifiedUser,
+    SessionUser,
 )
 from app.models.library import Library
 from app.schemas.library import NoteSchema, NoteUpdateSchema
@@ -122,6 +123,7 @@ async def download_note_by_id(
 @notes_router.get("/approved", response_model=Page[NoteSchema])
 async def get_all_approved_notes(
     session: CurrentSession,
+    current_user: SessionUser,
     page: int = Query(1, title="Page number", gt=0),
     size: int = Query(50, title="Page size", gt=0, le=50),
     category: Optional[str] = None,
@@ -130,32 +132,28 @@ async def get_all_approved_notes(
     keyword: Optional[str] = None,
     year: Optional[int] = None,
     sorted_by_upload_date: Optional[str] = "desc",
+    favourites_only: Optional[str] = None,
 ) -> Page[NoteSchema]:
     """
-    Get paginated list of approved educational notes.
-
-    Returns publicly available notes with advanced filtering and search
-    capabilities. Results are paginated for performance.
-
-    Args:
-        session: Active database session
-        page: Page number (1-indexed)
-        size: Number of items per page (max 50)
-        category: Filter by education level (O-LEVEL, A-LEVEL, IB)
-        subject: Filter by subject (e.g., Mathematics, Physics)
-        doc_type: Filter by document type (e.g., Summary Notes, Practice Papers)
-        keyword: Search keyword for title and description
-        year: Filter by year of examination
-        sorted_by_upload_date: Sort order ('asc' or 'desc')
-
+    Return a paginated list of approved notes matching the provided filters and the requesting user's favourites.
+    
+    Parameters:
+        page (int): 1-indexed page number to retrieve.
+        size (int): Number of items per page (maximum 50).
+        category (Optional[str]): Education level filter (e.g., "O-LEVEL", "A-LEVEL", "IB").
+        subject (Optional[str]): Subject filter (e.g., "Mathematics", "Physics").
+        doc_type (Optional[str]): Document type filter (e.g., "Summary Notes", "Practice Papers").
+        keyword (Optional[str]): Keyword to search in title and description.
+        year (Optional[int]): Year of examination to filter by.
+        sorted_by_upload_date (Optional[str]): Upload date sort order, either "asc" or "desc".
+        favourites_only (Optional[str]): If set to "true", restrict results to notes favourited by the requesting user.
+    
     Returns:
-        Page[NoteSchema]: Paginated list of approved notes
-
-    Example:
-        GET /notes/approved?category=O-LEVEL&subject=Mathematics&page=1&size=20
+        Page[NoteSchema]: Paginated list of approved notes that match the provided filters.
     """
     notes = await Library.get_all_notes_paginated(
         session,
+        user_id=current_user.user_id,
         page=page,
         size=size,
         approved=True,
@@ -165,6 +163,7 @@ async def get_all_approved_notes(
         keyword=keyword,
         year=year,
         sorted_by_upload_date=sorted_by_upload_date,
+        favourites_only=favourites_only,
     )
     return notes
 

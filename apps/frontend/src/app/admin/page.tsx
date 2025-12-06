@@ -13,6 +13,12 @@ export const metadata: Metadata = {
 	title: "Administrator Panel - Holy Grail",
 };
 
+/**
+ * Render the Administrator Panel populated with pending approval notes and related search data.
+ *
+ * @param searchParams - Promise resolving to the initial notes search parameters used to populate the panel's search and results
+ * @returns A JSX element containing the administrator title and description, a LibrarySearch configured for admin use, and the pending notes content
+ */
 export default async function AdminPage({
 	searchParams,
 }: {
@@ -51,6 +57,7 @@ export default async function AdminPage({
 				allCategories={categories}
 				allDocumentTypes={documentTypes}
 				allSubjects={subjects}
+                adminPanel={true}
 			/>
 			<AdminContent {...pendingNotesResponse} />
 		</main>

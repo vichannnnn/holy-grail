@@ -6,6 +6,19 @@ const baseInput =
 	"block w-full rounded-sm border-none bg-slate-950/5 dark:bg-white/5 px-3 py-1.5 text-sm/6 dark:text-white text-black";
 const focusInput = "focus:outline-2 focus:outline-blue-500";
 
+/**
+ * Renders a styled form input with optional label, description, trailing icon, info button, and error message.
+ *
+ * @param label - Visible label text or element associated with the input
+ * @param description - Supplemental description rendered under the label
+ * @param error - Error message displayed below the input when present
+ * @param id - HTML id used to link the label to the input
+ * @param className - Additional class names applied to the input element
+ * @param containerClassName - Additional class names applied to the outer container
+ * @param icon - Element rendered inside the input on the right (non-interactive)
+ * @param infoButton - Element rendered adjacent to the label (e.g., a help/info button)
+ * @returns The rendered input component as a JSX element
+ */
 export function Input({
 	label,
 	description,
@@ -14,6 +27,7 @@ export function Input({
 	className,
 	containerClassName,
 	icon,
+    infoButton,
 	...rest
 }: InputProps) {
 	const inputClass = twMerge(
@@ -34,7 +48,10 @@ export function Input({
 							htmlFor={id}
 							className="text-sm/6 font-medium text-black dark:text-zinc-200"
 						>
-							{label}
+                            <div className="flex gap-x-0.5">
+                                {label}
+                                {infoButton}
+                            </div>
 						</Label>
 					)}
 					{description && (

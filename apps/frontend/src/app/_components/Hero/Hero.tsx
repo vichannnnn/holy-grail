@@ -5,6 +5,11 @@ import { LinkButton } from "./LinkButton";
 import { Text, Title } from "@shared/ui/components";
 import { getUser } from "@lib/auth";
 
+/**
+ * Render the hero section with promotional content and a contribution call-to-action that changes based on whether a user is signed in.
+ *
+ * @returns The hero section JSX element. The contribution button links to the upload page when a user is signed in, otherwise it links to the sign-in page.
+ */
 export async function Hero() {
 	const user = await getUser();
 	return (
@@ -64,7 +69,7 @@ export async function Hero() {
 							<ArrowRightIcon className="size-5 inline-block ml-1 -mt-0.5" />
 						</LinkButton>
 					) : (
-						<LinkButton href="/login">
+						<LinkButton href="/auth/sign-in">
 							<span>Log in to Contribute</span>
 							<ArrowRightIcon className="size-5 inline-block ml-1 -mt-0.5" />
 						</LinkButton>
