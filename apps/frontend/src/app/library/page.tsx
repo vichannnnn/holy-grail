@@ -118,6 +118,7 @@ export default async function LibraryPage({
 				allDocumentTypes={documentTypes}
 				allSubjects={subjects}
                 adminPanel={false}
+                isAuthenticated={!!user}
 			/>
 			<LibraryContent {...notesResponse} isAdmin={!!user?.role && user.role >= RoleEnum.ADMIN} favouriteList={userFavouriteList} />
 		</main>

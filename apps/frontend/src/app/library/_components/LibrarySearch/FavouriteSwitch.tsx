@@ -1,11 +1,10 @@
 "use client";
-import { memo } from "react";
+import { memo, useState } from "react";
 import { Field, Label, Switch } from "@headlessui/react";
-import { useState } from "react";
 import { useNavigateToSearchValue } from "../utils";
 import { FavouriteSwitchProps } from "./types";
 
-function FavouriteSwitchInner({query}: FavouriteSwitchProps) {
+function FavouriteSwitchInner({ query }: Readonly<FavouriteSwitchProps>) {
     const [enabled, setEnabled] = useState(query?.favourites_only ? (query.favourites_only === "true") : false);
     const navigateToSearchValue = useNavigateToSearchValue();
 
@@ -34,9 +33,9 @@ function FavouriteSwitchInner({query}: FavouriteSwitchProps) {
                 <Switch
                     checked={enabled}
                     onChange={toggleEnabled}
-                    className="group inline-flex h-6 w-11 items-center rounded-full bg-gray-400 dark:bg-gray-500 transition data-checked:bg-pink-500 cursor-pointer"
+                    className="group inline-flex h-6 w-11 items-center rounded-full bg-gray-400 dark:bg-gray-500 transition data-[checked]:bg-pink-500 cursor-pointer"
                 >
-                    <span className="size-4 translate-x-1 rounded-full bg-white transition group-data-checked:translate-x-6" />
+                    <span className="size-4 translate-x-1 rounded-full bg-white transition group-data-[checked]:translate-x-6" />
                 </Switch>
             </div>
         </Field>

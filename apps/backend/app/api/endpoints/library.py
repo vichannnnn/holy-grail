@@ -15,7 +15,7 @@ from app.api.deps import (
     SessionAdmin,
     SessionBucket,
     SessionVerifiedUser,
-    SessionUser,
+    SessionUserOptional,
 )
 from app.models.library import Library
 from app.schemas.library import NoteSchema, NoteUpdateSchema
@@ -123,7 +123,7 @@ async def download_note_by_id(
 @notes_router.get("/approved", response_model=Page[NoteSchema])
 async def get_all_approved_notes(
     session: CurrentSession,
-    current_user: SessionUser,
+    current_user: SessionUserOptional,
     page: int = Query(1, title="Page number", gt=0),
     size: int = Query(50, title="Page size", gt=0, le=50),
     category: Optional[str] = None,
@@ -159,9 +159,10 @@ async def get_all_approved_notes(
     Example:
         GET /notes/approved?category=O-LEVEL&subject=Mathematics&page=1&size=20
     """
+    user_id = current_user.user_id if current_user else None
     notes = await Library.get_all_notes_paginated(
         session,
-        user_id=current_user.user_id,
+        user_id=user_id,
         page=page,
         size=size,
         approved=True,

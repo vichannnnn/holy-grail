@@ -99,9 +99,8 @@ export const AUTHED_DROPDOWN_INFO: Record<string, NavInfo> = {
 				label="Sign Out"
 				icon={<ArrowRightEndOnRectangleIcon className="size-6" />}
 				onClick={async () => {
-                    window.location.href = "/";
                     await deleteUser();
-					toast.success("Signed out successfully");
+					toast.success("Signed out successfully. Redirecting...");
 				}}
 			/>
 		),

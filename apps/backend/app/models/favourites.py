@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING
 
-from sqlalchemy import ForeignKey, select, delete
+from sqlalchemy import ForeignKey, select, delete, UniqueConstraint
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -15,6 +15,10 @@ if TYPE_CHECKING:
 
 class UserFavourites(Base, CRUD["favourites"]):
     __tablename__ = "user_favourites"
+    __table_args__ = (
+        UniqueConstraint("user_id", "file_id", name="user_file_id"),
+    )
+
     id: Mapped[int] = mapped_column(
         primary_key=True,
         index=True,
@@ -48,7 +52,7 @@ class UserFavourites(Base, CRUD["favourites"]):
         return await super().create(session, data)
 
     @classmethod
-    async def remove_favourite(cls, session: AsyncSession, data:dict) -> None:
+    async def remove_favourite(cls, session: AsyncSession, data: dict) -> None:
         stmt = delete(cls).where(
             cls.user_id == data["user_id"],
             cls.file_id == data["file_id"],

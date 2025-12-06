@@ -52,8 +52,8 @@ export function LibraryContent({ ok, data, err, isAdmin, favouriteList}: Readonl
 						<LibraryCard
 							key={item.id}
 							item={item}
-                            renderFavouriteAction={()=>
-                                !!favouriteList && (
+                            renderFavouriteAction={() =>
+                                favouriteList && (
                                     <FavouriteToggle
                                         note={item}
                                         userFavourites={favouriteList}
@@ -92,8 +92,8 @@ export function LibraryContent({ ok, data, err, isAdmin, favouriteList}: Readonl
 			) : (
 				<LibraryTable
 					items={data.items}
-                    renderFavouriteAction={(note)=>
-                        !!favouriteList && (
+                    renderFavouriteAction={(note) =>
+                        favouriteList && (
                             <FavouriteToggle
                                 note={note}
                                 userFavourites={favouriteList}

@@ -16,8 +16,8 @@ async def add_favourite(session: CurrentSession, data: AddFavouritesSchema, curr
         "user_id": user_id,
         "file_id": data.file_id,
     }
-    data = await UserFavourites.add_favourite(session, full_data)
-    return data
+    result = await UserFavourites.add_favourite(session, full_data)
+    return result
 
 @router.post("/remove", status_code=204)
 async def remove_favourite(session: CurrentSession, data: RemoveFavouritesSchema, current_user: SessionUser):

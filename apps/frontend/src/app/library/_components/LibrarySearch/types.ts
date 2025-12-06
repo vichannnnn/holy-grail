@@ -13,6 +13,7 @@ export interface LibrarySearchProps {
 	allDocumentTypes: LibraryAPIResponse<DocumentType[]>;
 	allSubjects: LibraryAPIResponse<SubjectType[]>;
     adminPanel?: boolean;
+    isAuthenticated?: boolean;
 }
 
 export interface DocumentNameSearchProps {

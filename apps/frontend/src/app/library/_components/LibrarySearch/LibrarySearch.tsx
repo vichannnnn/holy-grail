@@ -12,6 +12,7 @@ export function LibrarySearch({
 	allDocumentTypes,
 	allSubjects,
     adminPanel,
+    isAuthenticated
 }: Readonly<LibrarySearchProps>) {
 	const navigateToSearchValue = useNavigateToSearchValue();
 
@@ -101,7 +102,7 @@ export function LibrarySearch({
                     />
                 </div>
 
-                <div className={`${adminPanel ? "hidden" : ""} sm:ml-4 my-1 sm:my-0`}>
+                <div className={`${ adminPanel || !isAuthenticated ? "hidden" : ""} sm:ml-4 my-1 sm:my-0`}>
                     <FavouriteSwitch
                         query={query}
                     />
