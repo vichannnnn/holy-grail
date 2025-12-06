@@ -50,23 +50,21 @@ from app.utils.upload_errors import UploadError
 
 if TYPE_CHECKING:
     from app.models.categories import CategoryLevel, DocumentTypes, Subjects
+    from app.models.favourites import UserFavourites
 
 
 def form_data_note_parser(
     form_data: FormData, idx: int
 ) -> Union[bool, Tuple[NoteCreateSchema, int]]:
     """
-    Parse form data to extract note information.
-
-    Extracts and validates note upload data from multipart form submission.
-
-    Args:
-        form_data: Form data containing file and metadata
-        idx: Index of the note in batch upload
-
+    Parse and validate a single note's fields from multipart form data for batch uploads.
+    
+    Parameters:
+        form_data (FormData): The multipart form data containing file and metadata fields keyed by index (e.g. "0[file]", "0[category]").
+        idx (int): The numeric index identifying which note's fields to parse.
+    
     Returns:
-        Union[bool, Tuple[NoteCreateSchema, int]]: Parsed note schema and index,
-            or False if validation fails
+        Union[bool, Tuple[NoteCreateSchema, int]]: A tuple (NoteCreateSchema, idx) when parsing and validation succeed, or `False` if validation fails.
     """
     try:
         note_ds = NoteCreateSchema(
@@ -148,6 +146,7 @@ class Library(Base, CRUD["Library"]):
     )
     approved: Mapped[bool] = mapped_column(index=True, nullable=False, server_default="f")
     year: Mapped[int] = mapped_column(nullable=True, index=True)
+    extension: Mapped[str] = mapped_column(server_default=".pdf", nullable=False)
 
     account: Mapped["Account"] = relationship("Account", back_populates="documents")
     doc_category: Mapped["CategoryLevel"] = relationship(
@@ -157,7 +156,7 @@ class Library(Base, CRUD["Library"]):
         "Subjects", back_populates="documents", foreign_keys=[subject]
     )
     doc_type: Mapped["DocumentTypes"] = relationship("DocumentTypes", back_populates="documents")
-    extension: Mapped[str] = mapped_column(server_default=".pdf", nullable=False)
+    favourited_by: Mapped[List["UserFavourites"]] = relationship("UserFavourites", back_populates="library_file", cascade="all, delete-orphan")
 
     @classmethod
     async def create_many(
@@ -169,24 +168,24 @@ class Library(Base, CRUD["Library"]):
         s3_bucket: boto3.client,
     ) -> List[NoteSchema]:
         """
-        Create multiple educational documents from form upload.
-
-        Handles batch upload of educational resources with validation,
-        file storage, and database entry creation.
-
-        Args:
-            session: Active database session
-            uploader_role: Role of the uploading user
-            form_data: Multipart form data containing files and metadata
-            uploaded_by: ID of the user uploading documents
-            s3_bucket: S3 bucket client for file storage
-
+        Create multiple Library records from multipart form data and upload their files to S3.
+        
+        Parses and validates each note in the provided multipart form data, enforces per-role allowed file types, saves files to the given S3 bucket, and inserts corresponding Library records in the database as a single transaction.
+        
+        Parameters:
+            session (AsyncSession): Active async database session used for inserts and refreshes.
+            uploader_role (RoleEnum): Role of the uploader; determines which file extensions are accepted.
+            form_data (FormData): Multipart form data containing note metadata and file uploads.
+            uploaded_by (int): ID of the user performing the upload; assigned to each created record.
+            s3_bucket (boto3.client): S3 client used to store uploaded files.
+        
         Returns:
-            List[NoteSchema]: List of created document records
-
+            List[Library]: List of created Library model instances (refreshed with related entities).
+        
         Raises:
-            AppError.BAD_REQUEST_ERROR: If form data exceeds limits
-            AppError.MULTIPLE_GENERIC_ERRORS: If validation fails for any files
+            AppError.BAD_REQUEST_ERROR: If the multipart form contains more fields than the allowed limit.
+            AppError.MULTIPLE_GENERIC_ERRORS: If one or more notes fail schema validation or have invalid file types.
+            AppError.RESOURCES_NOT_FOUND_ERROR: If a database integrity error occurs during insertion.
         """
         # A form has 6 fields, we have 25 limits so it should be 25 * 6
         if len(form_data) > 25 * 6:
@@ -275,7 +274,34 @@ class Library(Base, CRUD["Library"]):
         keyword: Optional[str] = None,
         year: Optional[int] = None,
         sorted_by_upload_date: Optional[str] = "desc",
+        favourites_only: Optional[str] = None,
+        user_id: Optional[int] = None,
     ):
+        """
+        Retrieve paginated library notes with optional filters, sorting, and favourite-only filtering.
+        
+        Parameters:
+            session (AsyncSession): Database session used to run queries.
+            page (int): 1-based page number.
+            size (int): Number of items per page.
+            approved (bool): If True, only include notes marked approved.
+            category (Optional[str]): Filter by category name.
+            subject (Optional[str]): Filter by subject name.
+            doc_type (Optional[str]): Filter by document type name.
+            keyword (Optional[str]): Case-insensitive substring match against `document_name`.
+            year (Optional[int]): Filter by document year.
+            sorted_by_upload_date (Optional[str]): "asc" or "desc" to sort by upload date (default "desc").
+            favourites_only (Optional[str]): When equal to the string "true" and `user_id` is provided, restrict results to items favourited by that user.
+            user_id (Optional[int]): User identifier used together with `favourites_only` to filter favourites.
+        
+        Returns:
+            dict: A pagination result with keys:
+                - "items": list of Library instances for the requested page.
+                - "page": the requested page number.
+                - "pages": total number of pages.
+                - "size": page size used.
+                - "total": total number of matching items.
+        """
         stmt = select(cls).where(cls.approved == approved)
 
         if category:
@@ -292,6 +318,9 @@ class Library(Base, CRUD["Library"]):
 
         if keyword:
             stmt = stmt.where(cls.document_name.ilike(f"%{keyword}%"))
+
+        if user_id and favourites_only == "true":
+            stmt = stmt.where(cls.favourited_by.any(user_id=user_id))
 
         if sorted_by_upload_date == "asc":
             stmt = stmt.order_by(cls.uploaded_on.asc())

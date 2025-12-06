@@ -11,6 +11,7 @@ import {
 import { PAGE_MAX_SIZE } from "./constants";
 import { LibrarySearch, LibraryContent } from "./_components";
 import type { Metadata } from "next";
+import { getUserFavourites } from "@lib/features/Favourite/actions.ts";
 
 export const metadata: Metadata = {
 	title: "Library - Holy Grail",
@@ -28,7 +29,12 @@ export const metadata: Metadata = {
 	},
 };
 
-export const revalidate = 60; // revalidate every 1 minute
+export const revalidate = 60; /**
+ * Render the Library page with search controls and note listings based on provided search parameters.
+ *
+ * @param searchParams - A promise that resolves to query parameters used to fetch notes, categories, document types, and subjects.
+ * @returns The page's React element containing the hero/info section, a LibrarySearch component populated with fetched filters, and a LibraryContent component populated with fetched notes and the current user's favourites.
+ */
 
 export default async function LibraryPage({
 	searchParams,
@@ -46,8 +52,23 @@ export default async function LibraryPage({
 				: undefined,
 		),
 	]);
-
 	const user = await getUser();
+
+    let userFavouriteList: number[] | null;
+
+    if (user?.role){
+        const result = await getUserFavourites();
+        if (result.ok){
+            userFavouriteList = result.FavouriteFileList;
+        }
+        else{
+            userFavouriteList = [];
+        }
+    }
+    else{
+        userFavouriteList = null;
+    }
+
 	return (
 		<main className="flex flex-col gap-8">
 			<div className="flex flex-col gap-2 mx-6 md:mx-12 my-4">
@@ -101,8 +122,9 @@ export default async function LibraryPage({
 				allCategories={categories}
 				allDocumentTypes={documentTypes}
 				allSubjects={subjects}
+                adminPanel={false}
 			/>
-			<LibraryContent {...notesResponse} isAdmin={!!user?.role && user.role >= RoleEnum.ADMIN} />
+			<LibraryContent {...notesResponse} isAdmin={!!user?.role && user.role >= RoleEnum.ADMIN} favouriteList={userFavouriteList} />
 		</main>
 	);
 }

@@ -3,13 +3,25 @@ import { DocumentNameSearch } from "./DocumentNameSearch";
 import { useNavigateToSearchValue } from "../utils";
 import type { LibrarySearchProps } from "./types";
 import { LibraryCombobox } from "./LibraryCombobox";
-import { YEAR_RANGE } from "../../constants";
+import { MAPPED_YEAR_RANGE } from "@lib/features/AdminEdit/constants.ts";
+import { FavouriteSwitch } from "./FavouriteSwitch.tsx"
 
+/**
+ * Renders the library search controls for filtering documents by category, subject, year, document type, and keyword, and conditionally shows a favourite toggle when not in admin panel.
+ *
+ * @param query - Current search query used to set control default values and displayed values.
+ * @param allCategories - Category list used to populate the Category combobox.
+ * @param allDocumentTypes - Document type list used to populate the Document Type combobox.
+ * @param allSubjects - Subject list used to populate the Subject combobox; the Subject control is disabled until a Category is selected.
+ * @param adminPanel - If true, hides the FavouriteSwitch control.
+ * @returns The JSX element containing the search controls and optional favourite switch.
+ */
 export function LibrarySearch({
 	query,
 	allCategories,
 	allDocumentTypes,
 	allSubjects,
+    adminPanel,
 }: Readonly<LibrarySearchProps>) {
 	const navigateToSearchValue = useNavigateToSearchValue();
 
@@ -61,10 +73,7 @@ export function LibrarySearch({
 				<LibraryCombobox
 					label="Year"
 					placeholder={`eg. ${new Date().getFullYear()}`}
-					items={Array.from(
-						{ length: YEAR_RANGE[1] - YEAR_RANGE[0] + 1 },
-						(_, i) => YEAR_RANGE[0] + i,
-					).map((year) => ({ id: year, name: String(year) }))}
+					items={MAPPED_YEAR_RANGE}
 					defaultValue={
 						query?.year ? { id: Number(query.year), name: String(query.year) } : undefined
 					}
@@ -93,10 +102,22 @@ export function LibrarySearch({
 				/>
 			</div>
 
-			<DocumentNameSearch
-				defaultValue={query?.keyword}
-				onChange={(value) => navigateToSearchValue({ name: "keyword", value })}
-			/>
+            <div className="flex sm:flex-row flex-col">
+
+                <div className="flex-grow">
+                    <DocumentNameSearch
+                        defaultValue={query?.keyword}
+                        onChange={(value) => navigateToSearchValue({ name: "keyword", value })}
+                    />
+                </div>
+
+                <div className={`${adminPanel ? "hidden" : ""} sm:ml-4 my-1 sm:my-0`}>
+                    <FavouriteSwitch
+                        query={query}
+                    />
+                </div>
+            </div>
+
 		</section>
 	);
 }

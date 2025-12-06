@@ -10,6 +10,18 @@ import { signin } from "./actions";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
+/**
+ * Render a sign-in form that validates input, displays field errors and loading state, and handles sign-in results.
+ *
+ * The form shows validation messages for username and password, disables the submit button while signing in, and
+ * displays toast notifications on failure or success. On failure it will:
+ * - show a friendly "invalid username or password" message if the server message contains "422",
+ * - show the server-provided message if present and not "422",
+ * - otherwise show a generic "Sign in failed" message.
+ * On success it shows a success toast and navigates to the application root ("/").
+ *
+ * @returns A JSX element containing the sign-in form.
+ */
 export function SignInForm() {
 	const router = useRouter();
 	const {
@@ -25,7 +37,17 @@ export function SignInForm() {
 		startTransition(async () => {
 			const { ok, message } = await signin(data);
 			if (!ok) {
-				toast.error(message || "Sign in failed");
+                if (message){
+                    if (message.includes("422")){
+                        toast.error("You have entered an invalid username or password. Please try again.");
+                    }
+                    else{
+                        toast.error(message);
+                    }
+                }
+                else{
+                    toast.error("Sign in failed");
+                }
 			} else {
 				toast.success("Sign in successful! Redirecting...");
 				router.push("/");

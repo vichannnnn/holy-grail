@@ -13,6 +13,13 @@ import { NotesSchema, SUPPORTED_FORMATS } from "./schemas";
 import { uploadNotes } from "./actions";
 import { useRouter } from "next/navigation";
 
+/**
+ * Renders the upload workspace UI that lets users select files, edit metadata for each file, and submit them to the server.
+ *
+ * @param categories - Category options used to populate each entry's category selector.
+ * @param documentTypes - Document type options used to populate each entry's type selector.
+ * @returns The upload workspace form element containing file entries, terms text, and a file drop area.
+ */
 export function UploadWorkspace({ categories, documentTypes }: Readonly<UploadWorkspaceProps>) {
 	const fileDropRef = useRef<FileDropHandle>(null);
 	const [isPending, startTransition] = useTransition();
@@ -141,7 +148,7 @@ export function UploadWorkspace({ categories, documentTypes }: Readonly<UploadWo
 							<Text description className="flex-1 text-xs">
 								By uploading, you agree to have read and accepted our{" "}
 								<Link
-									href="/terms"
+									href="/terms-of-service"
 									className="underline hover:text-blue-500 transition-colors cursor-pointer inline"
 								>
 									terms of service

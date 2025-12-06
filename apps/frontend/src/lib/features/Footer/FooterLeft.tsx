@@ -2,9 +2,14 @@ import Link from "next/link";
 import { Text } from "@shared/ui/components";
 import Image from "next/image";
 
+/**
+ * Renders the site logo (linked to the homepage) alongside a short descriptive paragraph about the project.
+ *
+ * @returns The component's JSX element containing the linked logo image and a brief description text block.
+ */
 export function FooterLeft() {
 	return (
-		<div className="flex flex-col gap-4">
+		<div className="flex flex-col gap-4 items-center">
 			<Link href="/" passHref>
 				<div className="relative w-24 h-24 shrink">
 					<Image
