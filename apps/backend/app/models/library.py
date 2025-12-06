@@ -50,6 +50,7 @@ from app.utils.upload_errors import UploadError
 
 if TYPE_CHECKING:
     from app.models.categories import CategoryLevel, DocumentTypes, Subjects
+    from app.models.favourites import UserFavourites
 
 
 def form_data_note_parser(
@@ -148,6 +149,7 @@ class Library(Base, CRUD["Library"]):
     )
     approved: Mapped[bool] = mapped_column(index=True, nullable=False, server_default="f")
     year: Mapped[int] = mapped_column(nullable=True, index=True)
+    extension: Mapped[str] = mapped_column(server_default=".pdf", nullable=False)
 
     account: Mapped["Account"] = relationship("Account", back_populates="documents")
     doc_category: Mapped["CategoryLevel"] = relationship(
@@ -157,7 +159,7 @@ class Library(Base, CRUD["Library"]):
         "Subjects", back_populates="documents", foreign_keys=[subject]
     )
     doc_type: Mapped["DocumentTypes"] = relationship("DocumentTypes", back_populates="documents")
-    extension: Mapped[str] = mapped_column(server_default=".pdf", nullable=False)
+    favourited_by: Mapped[List["UserFavourites"]] = relationship("UserFavourites", back_populates="library_file", cascade="all, delete-orphan")
 
     @classmethod
     async def create_many(
@@ -275,6 +277,8 @@ class Library(Base, CRUD["Library"]):
         keyword: Optional[str] = None,
         year: Optional[int] = None,
         sorted_by_upload_date: Optional[str] = "desc",
+        favourites_only: Optional[str] = None,
+        user_id: Optional[int] = None,
     ):
         stmt = select(cls).where(cls.approved == approved)
 
@@ -292,6 +296,9 @@ class Library(Base, CRUD["Library"]):
 
         if keyword:
             stmt = stmt.where(cls.document_name.ilike(f"%{keyword}%"))
+
+        if user_id and favourites_only == "true":
+            stmt = stmt.where(cls.favourited_by.any(user_id=user_id))
 
         if sorted_by_upload_date == "asc":
             stmt = stmt.order_by(cls.uploaded_on.asc())

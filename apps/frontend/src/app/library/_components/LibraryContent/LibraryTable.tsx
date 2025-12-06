@@ -6,7 +6,7 @@ import type { Note } from "../../types";
 import type { LibraryTableProps } from "./types";
 import { CustomDownloadIcon } from "./CustomDownloadIcon";
 
-export function LibraryTable({ items, renderAdminActions }: Readonly<LibraryTableProps>) {
+export function LibraryTable({ items, renderAdminActions, renderFavouriteAction }: Readonly<LibraryTableProps>) {
 	const formatDate = (dateString: string) => {
 		const options: Intl.DateTimeFormatOptions = {
 			day: "numeric",
@@ -71,9 +71,6 @@ export function LibraryTable({ items, renderAdminActions }: Readonly<LibraryTabl
 						<th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-gray-100">
 							Uploaded On
 						</th>
-						<th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-gray-100">
-							Download
-						</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -115,7 +112,8 @@ export function LibraryTable({ items, renderAdminActions }: Readonly<LibraryTabl
 								>
 									<CustomDownloadIcon className="size-5 fill-gray-700 dark:fill-gray-300" />
 								</IconButton>
-								{renderAdminActions?.(note)}
+                                {renderFavouriteAction?.(note)}
+                                {renderAdminActions?.(note)}
 							</td>
 						</tr>
 					))}

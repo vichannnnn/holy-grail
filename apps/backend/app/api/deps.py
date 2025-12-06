@@ -5,7 +5,8 @@ This module provides reusable dependencies for database sessions,
 authentication, authorization, and external service clients (S3).
 All dependencies follow FastAPI's dependency injection pattern.
 """
-from typing import Annotated, AsyncGenerator, Generator
+from typing import Annotated, AsyncGenerator, Generator, Optional
+from fastapi.security import OAuth2PasswordBearer
 
 import boto3
 from fastapi import Depends
@@ -77,7 +78,10 @@ def get_s3_client() -> boto3.Session:
 
 CurrentSession = Annotated[AsyncSession, Depends(get_session)]
 OAuth2Session = Annotated[Authenticator.oauth2_scheme, Depends(Authenticator.oauth2_scheme)]
-
+oauth2_scheme = OAuth2PasswordBearer(
+    tokenUrl="auth/login",
+    auto_error=False
+)
 
 async def get_verified_user(
     session: CurrentSession,
@@ -163,6 +167,29 @@ async def get_current_user(
     except JWTError as exc:
         raise AppError.INVALID_CREDENTIALS_ERROR from exc
 
+async def get_current_user_optional(session: CurrentSession, token: Optional[str] = Depends(oauth2_scheme)) -> Optional[CurrentUserSchema]:
+    if not token:
+        return None
+
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
+        username = payload.get("sub")
+        user = await Account.select_from_username(session, username) if username else None
+
+        if username and user:
+            return CurrentUserSchema(
+                user_id=user.user_id,
+                username=username,
+                role=user.role,
+                email=user.email,
+                verified=user.verified,
+            )
+
+        else:
+            return None
+
+    except JWTError:
+        return None
 
 async def get_admin(
     session: CurrentSession,
@@ -249,6 +276,7 @@ async def get_developer(
 
 
 SessionUser = Annotated[CurrentUserSchema, Depends(get_current_user)]
+SessionUserOptional = Annotated[Optional[CurrentUserSchema], Depends(get_current_user_optional)]
 SessionVerifiedUser = Annotated[CurrentUserSchema, Depends(get_verified_user)]
 SessionAdmin = Annotated[CurrentUserSchema, Depends(get_admin)]
 SessionDeveloper = Annotated[CurrentUserSchema, Depends(get_developer)]

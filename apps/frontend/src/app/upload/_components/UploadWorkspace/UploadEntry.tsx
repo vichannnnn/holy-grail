@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import { twMerge } from "tailwind-merge";
 import { DeleteConfirmModal } from "./DeleteConfirmModal";
 import { MAPPED_YEAR_RANGE } from "@lib/features/AdminEdit/constants";
+import { NameInfoButton } from "./NameInfoButton";
 
 export function UploadEntry({
 	file,
@@ -114,6 +115,7 @@ export function UploadEntry({
 									placeholder={`eg. ${file.name}`}
 									containerClassName="w-full"
 									error={error?.message}
+                                    infoButton={<NameInfoButton/>}
 									{...field}
 								/>
 							)}

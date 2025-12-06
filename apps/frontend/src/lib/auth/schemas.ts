@@ -6,6 +6,7 @@ export const UserSchema = z.object({
 	email: z.string().optional(),
 	role: z.number(),
 	verified: z.boolean(),
+    favourite_files: z.string().optional(),
 });
 
 export const CurrentUserWithJWTSchema = z.object({

@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export function FooterLeft() {
 	return (
-		<div className="flex flex-col gap-4">
+		<div className="flex flex-col gap-4 items-center">
 			<Link href="/" passHref>
 				<div className="relative w-24 h-24 shrink">
 					<Image

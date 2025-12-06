@@ -5,7 +5,7 @@ import Link from "next/link";
 import type { Note } from "../../types";
 import type { LibraryCardProps } from "./types";
 
-export function LibraryCard({ item, renderAdminActions }: Readonly<LibraryCardProps>) {
+export function LibraryCard({ item, renderAdminActions, renderFavouriteAction }: Readonly<LibraryCardProps>) {
 	const formatDate = (dateString: string) => {
 		const options: Intl.DateTimeFormatOptions = {
 			day: "numeric",
@@ -45,8 +45,8 @@ export function LibraryCard({ item, renderAdminActions }: Readonly<LibraryCardPr
 	};
 
 	return (
-		<Card className="flex flex-col p-4 gap-3">
-			{/* Document Name */}
+		<Card className="flex flex-col p-4 gap-3 relative">
+            {/* Document Name */}
 			<div>
 				<Title order={6} className="mb-1">
 					Document Name
@@ -111,6 +111,10 @@ export function LibraryCard({ item, renderAdminActions }: Readonly<LibraryCardPr
 				</Button>
 				{renderAdminActions?.()}
 			</div>
+
+            <div className="absolute top-1 right-1">
+                {renderFavouriteAction?.()}
+            </div>
 		</Card>
 	);
 }

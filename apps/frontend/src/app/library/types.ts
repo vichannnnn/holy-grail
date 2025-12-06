@@ -15,6 +15,7 @@ export interface NotesSearchParams {
 	size?: number;
 	year?: number;
 	sorted_by_upload_date?: string;
+    favourites_only?: string;
 }
 
 export interface CategorySearchParams {

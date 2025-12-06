@@ -1,5 +1,5 @@
 "use client";
-import { Pagination, AdminEdit, AdminDelete } from "@lib/features/client";
+import { Pagination, AdminEdit, AdminDelete, FavouriteToggle } from "@lib/features/client";
 import Image from "next/image";
 import { Title, Text, Button, IconButton } from "@shared/ui/components";
 import { useNavigateToSearchValue } from "../utils";
@@ -11,7 +11,7 @@ import { LibraryCard } from "./LibraryCard";
 import type { LibraryContentProps } from "./types";
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 
-export function LibraryContent({ ok, data, err, isAdmin }: Readonly<LibraryContentProps>) {
+export function LibraryContent({ ok, data, err, isAdmin, favouriteList}: Readonly<LibraryContentProps>) {
 	const navigateToSearchValue = useNavigateToSearchValue();
 	const searchParams = useSearchParams();
 	const { breakpoint } = useContext(ClientContext);
@@ -52,6 +52,14 @@ export function LibraryContent({ ok, data, err, isAdmin }: Readonly<LibraryConte
 						<LibraryCard
 							key={item.id}
 							item={item}
+                            renderFavouriteAction={() =>
+                                favouriteList && (
+                                    <FavouriteToggle
+                                        note={item}
+                                        userFavourites={favouriteList}
+                                    />
+                                )
+                            }
 							renderAdminActions={() =>
 								isAdmin && (
 									<div className="flex gap-2 mt-2">
@@ -84,6 +92,14 @@ export function LibraryContent({ ok, data, err, isAdmin }: Readonly<LibraryConte
 			) : (
 				<LibraryTable
 					items={data.items}
+                    renderFavouriteAction={(note) =>
+                        favouriteList && (
+                            <FavouriteToggle
+                                note={note}
+                                userFavourites={favouriteList}
+                            />
+                        )
+                    }
 					renderAdminActions={(note) =>
 						isAdmin && (
 							<>

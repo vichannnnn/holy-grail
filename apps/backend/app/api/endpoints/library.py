@@ -15,6 +15,7 @@ from app.api.deps import (
     SessionAdmin,
     SessionBucket,
     SessionVerifiedUser,
+    SessionUserOptional,
 )
 from app.models.library import Library
 from app.schemas.library import NoteSchema, NoteUpdateSchema
@@ -122,6 +123,7 @@ async def download_note_by_id(
 @notes_router.get("/approved", response_model=Page[NoteSchema])
 async def get_all_approved_notes(
     session: CurrentSession,
+    current_user: SessionUserOptional,
     page: int = Query(1, title="Page number", gt=0),
     size: int = Query(50, title="Page size", gt=0, le=50),
     category: Optional[str] = None,
@@ -130,6 +132,7 @@ async def get_all_approved_notes(
     keyword: Optional[str] = None,
     year: Optional[int] = None,
     sorted_by_upload_date: Optional[str] = "desc",
+    favourites_only: Optional[str] = None,
 ) -> Page[NoteSchema]:
     """
     Get paginated list of approved educational notes.
@@ -139,6 +142,7 @@ async def get_all_approved_notes(
 
     Args:
         session: Active database session
+        current_user: Authenticated user making the request
         page: Page number (1-indexed)
         size: Number of items per page (max 50)
         category: Filter by education level (O-LEVEL, A-LEVEL, IB)
@@ -147,6 +151,7 @@ async def get_all_approved_notes(
         keyword: Search keyword for title and description
         year: Filter by year of examination
         sorted_by_upload_date: Sort order ('asc' or 'desc')
+        favourites_only: If 'true', return only user's favourite notes
 
     Returns:
         Page[NoteSchema]: Paginated list of approved notes
@@ -154,8 +159,10 @@ async def get_all_approved_notes(
     Example:
         GET /notes/approved?category=O-LEVEL&subject=Mathematics&page=1&size=20
     """
+    user_id = current_user.user_id if current_user else None
     notes = await Library.get_all_notes_paginated(
         session,
+        user_id=user_id,
         page=page,
         size=size,
         approved=True,
@@ -165,6 +172,7 @@ async def get_all_approved_notes(
         keyword=keyword,
         year=year,
         sorted_by_upload_date=sorted_by_upload_date,
+        favourites_only=favourites_only,
     )
     return notes
 

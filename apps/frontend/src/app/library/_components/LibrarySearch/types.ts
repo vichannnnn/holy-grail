@@ -12,6 +12,8 @@ export interface LibrarySearchProps {
 	allCategories: LibraryAPIResponse<CategoryType[]>;
 	allDocumentTypes: LibraryAPIResponse<DocumentType[]>;
 	allSubjects: LibraryAPIResponse<SubjectType[]>;
+    adminPanel?: boolean;
+    isAuthenticated?: boolean;
 }
 
 export interface DocumentNameSearchProps {
@@ -21,3 +23,7 @@ export interface DocumentNameSearchProps {
 
 export interface LibraryComboboxProps
 	extends ComboboxProps<CategoryType | DocumentType | SubjectType> {}
+
+export interface FavouriteSwitchProps {
+    query?: NotesSearchParams;
+}

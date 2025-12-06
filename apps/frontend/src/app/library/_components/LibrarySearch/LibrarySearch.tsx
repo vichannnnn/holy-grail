@@ -3,13 +3,16 @@ import { DocumentNameSearch } from "./DocumentNameSearch";
 import { useNavigateToSearchValue } from "../utils";
 import type { LibrarySearchProps } from "./types";
 import { LibraryCombobox } from "./LibraryCombobox";
-import { YEAR_RANGE } from "../../constants";
+import { MAPPED_YEAR_RANGE } from "@lib/features/AdminEdit/constants.ts";
+import { FavouriteSwitch } from "./FavouriteSwitch.tsx"
 
 export function LibrarySearch({
 	query,
 	allCategories,
 	allDocumentTypes,
 	allSubjects,
+    adminPanel,
+    isAuthenticated
 }: Readonly<LibrarySearchProps>) {
 	const navigateToSearchValue = useNavigateToSearchValue();
 
@@ -61,10 +64,7 @@ export function LibrarySearch({
 				<LibraryCombobox
 					label="Year"
 					placeholder={`eg. ${new Date().getFullYear()}`}
-					items={Array.from(
-						{ length: YEAR_RANGE[1] - YEAR_RANGE[0] + 1 },
-						(_, i) => YEAR_RANGE[0] + i,
-					).map((year) => ({ id: year, name: String(year) }))}
+					items={MAPPED_YEAR_RANGE}
 					defaultValue={
 						query?.year ? { id: Number(query.year), name: String(query.year) } : undefined
 					}
@@ -93,10 +93,22 @@ export function LibrarySearch({
 				/>
 			</div>
 
-			<DocumentNameSearch
-				defaultValue={query?.keyword}
-				onChange={(value) => navigateToSearchValue({ name: "keyword", value })}
-			/>
+            <div className="flex sm:flex-row flex-col">
+
+                <div className="flex-grow">
+                    <DocumentNameSearch
+                        defaultValue={query?.keyword}
+                        onChange={(value) => navigateToSearchValue({ name: "keyword", value })}
+                    />
+                </div>
+
+                <div className={`${ adminPanel || !isAuthenticated ? "hidden" : ""} sm:ml-4 my-1 sm:my-0`}>
+                    <FavouriteSwitch
+                        query={query}
+                    />
+                </div>
+            </div>
+
 		</section>
 	);
 }
