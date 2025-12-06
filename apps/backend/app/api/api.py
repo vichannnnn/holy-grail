@@ -18,6 +18,7 @@ from app.api.endpoints import (
     library,
     scoreboard,
     tasks,
+    favourites
 )
 from app.core import Environment, settings
 
@@ -32,6 +33,7 @@ api_router.include_router(library.router, tags=["Library"], prefix="/note")
 api_router.include_router(library.notes_router, tags=["Library"], prefix="/notes")
 api_router.include_router(scoreboard.router, tags=["Scoreboard"], prefix="/scoreboard")
 api_router.include_router(tasks.router, tags=["Tasks"])
+api_router.include_router(favourites.router, tags=["Favourites"], prefix="/favourites")
 
 # Include file serving endpoint for local development
 if settings.environment == Environment.LOCAL:

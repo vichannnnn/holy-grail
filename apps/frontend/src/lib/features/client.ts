@@ -5,3 +5,4 @@ export * from "./AdminDelete";
 export * from "./AdminApprove";
 export * from "./AdminApprove";
 export * from "./Showcase";
+export * from "./Favourite";

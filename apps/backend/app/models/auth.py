@@ -6,7 +6,7 @@ authentication, email verification, password management, and role-based
 access control. It integrates with JWT for token-based authentication
 and provides comprehensive user lifecycle management.
 """
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, List
 from uuid import uuid4
 
 import jwt
@@ -36,6 +36,7 @@ from app.utils.exceptions import AppError
 if TYPE_CHECKING:
     from app.models.library import Library
     from app.models.scoreboard import Scoreboard
+    from app.models.favourites import UserFavourites
 
 FRONTEND_URL = settings.frontend_url
 ACCESS_TOKEN_EXPIRE_MINUTES = settings.access_token_expire_minutes
@@ -83,6 +84,7 @@ class Account(Base, CRUD["Account"]):
         "Scoreboard", back_populates="account", uselist=False
     )
     documents: Mapped["Library"] = relationship(back_populates="account", uselist=True)
+    favourites: Mapped[List["UserFavourites"]] = relationship("UserFavourites", back_populates="user", cascade="all, delete-orphan")
 
     id: Mapped[int] = synonym("user_id")
 

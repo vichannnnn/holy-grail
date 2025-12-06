@@ -1,1 +1,1 @@
-from . import admin, auth, base, categories, library
+from . import admin, auth, base, categories, library, favourites

@@ -51,6 +51,7 @@ export default async function AdminPage({
 				allCategories={categories}
 				allDocumentTypes={documentTypes}
 				allSubjects={subjects}
+                adminPanel={true}
 			/>
 			<AdminContent {...pendingNotesResponse} />
 		</main>
