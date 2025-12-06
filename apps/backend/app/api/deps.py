@@ -170,9 +170,25 @@ async def get_current_user(
 async def get_current_user_optional(session: CurrentSession, token: Optional[str] = Depends(oauth2_scheme)) -> Optional[CurrentUserSchema]:
     if not token:
         return None
+
     try:
-        return await get_current_user(session, token)
-    except Exception:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
+        username = payload.get("sub")
+        user = await Account.select_from_username(session, username) if username else None
+
+        if username and user:
+            return CurrentUserSchema(
+                user_id=user.user_id,
+                username=username,
+                role=user.role,
+                email=user.email,
+                verified=user.verified,
+            )
+
+        else:
+            return None
+
+    except JWTError:
         return None
 
 async def get_admin(
