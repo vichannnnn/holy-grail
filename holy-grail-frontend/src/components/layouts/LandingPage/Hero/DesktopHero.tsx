@@ -2,7 +2,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import FadeIn from 'react-fade-in';
 
 import { Button } from '@components/Button';
-// import { AdBanner } from '@components/AdBanner';
+import { AdBanner } from '@components/AdBanner';
 
 import { useNavigate } from '@utils/navigation';
 
@@ -21,11 +21,11 @@ export const DesktopHero = () => {
 
   return (
     <div className='flex flex-col w-4/5 m-auto gap-8'>
-      {/* <AdBanner
-        imageUrl='https://image.himaa.me/PALLO_1.png'
-        linkUrl='https://pallo.ai/?utm_source=grail&utm_content=b1'
-        altText='Pallo.ai'
-      /> */}
+      <AdBanner
+        imageUrl='https://image.himaa.me/TURIS_2026_1.png'
+        linkUrl='https://clickalytics.turisvpn.com/invite?url_id=holygrail'
+        altText='Turis VPN'
+      />
       <div className='flex flex-row gap-16'>
         <div className='m-auto'>
           <FadeIn>

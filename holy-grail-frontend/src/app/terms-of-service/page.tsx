@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 import { generateTermsOfServiceMetadata } from '@utils/metadata';
-// import { Showcase } from '@components/Showcase';
+import { Showcase } from '@components/Showcase';
 
 export const generateMetadata = generateTermsOfServiceMetadata;
 
@@ -10,7 +10,7 @@ const TermsOfServicePage = () => {
     <div className='min-h-screen mx-auto w-4/5 text-white p-8'>
       <section className='mb-12'>
         <h2 className='text-5xl font-semibold mb-6'>Terms of Service</h2>
-        {/* <Showcase /> */}
+        <Showcase />
 
         <p className='text-md leading-relaxed'>
           Welcome, and thank you for your interest in <strong>Holy Grail Team</strong> (&apos;Holy

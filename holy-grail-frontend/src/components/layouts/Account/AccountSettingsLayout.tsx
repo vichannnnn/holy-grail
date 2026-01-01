@@ -10,13 +10,13 @@ import { AuthContext } from '@providers/AuthProvider';
 import { MediaQueryContext } from '@providers/MediaQueryProvider';
 
 import { useNavigate } from '@utils/navigation';
-// import { Showcase } from '@components/Showcase';
+import { Showcase } from '@components/Showcase';
 
 const AccountSettingsHeader = () => {
   return (
     <div>
       <h1 className='text-3xl font-bold mb-2'>Account Settings</h1>
-      {/* <Showcase /> */}
+      <Showcase />
       <p className='mb-6'>View and manage your account details here.</p>
       <div className='mt-8'>
         <Divider />

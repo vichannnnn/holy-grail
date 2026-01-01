@@ -1,5 +1,5 @@
 import { generatePrivacyPolicyMetadata } from '@utils/metadata';
-// import { Showcase } from '@components/Showcase';
+import { Showcase } from '@components/Showcase';
 
 export const generateMetadata = generatePrivacyPolicyMetadata;
 
@@ -7,7 +7,7 @@ const PrivacyPolicyPage = () => {
   return (
     <div className='min-h-screen mx-auto w-4/5 text-white p-8'>
       <h1 className='text-5xl font-bold mb-12'>Privacy Policy</h1>
-      {/* <Showcase /> */}
+      <Showcase />
       <section className='mb-12'>
         <h2 className='text-3xl font-semibold mb-6'>Introduction</h2>
         <p className='text-md leading-relaxed'>

@@ -9,7 +9,7 @@ import { adClick, adImpression } from '@api/analytics';
 
 import { MediaQueryContext } from '@providers/MediaQueryProvider';
 
-const ADS_IMAGE_URL = 'https://image.himaa.me/TURIS_VPN_7.png';
+const ADS_IMAGE_URL = 'https://image.himaa.me/TURIS_2026_1.png';
 
 interface InfoButtonProps {
   isMobile: boolean;
@@ -121,7 +121,7 @@ export const Showcase = () => {
     <div className='flex flex-col justify-center items-center gap-4' ref={showcaseRef}>
       <div className='w-full md:w-1/2 relative' style={{ pointerEvents: 'auto' }}>
         <a
-          href='https://play.google.com/store/apps/details?id=com.turisvpn.tech&pcampaignid=web_share'
+          href='https://clickalytics.turisvpn.com/invite?url_id=holygrail'
           target='_blank'
           rel='noopener noreferrer'
           onClick={handleShowcaseClick}
