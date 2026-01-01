@@ -152,7 +152,7 @@ export const Library = () => {
   };
 
   return (
-    <div className='w-4/5 flex flex-col gap-2'>
+    <div className='w-4/5 mx-auto flex flex-col gap-2'>
       <h2 className='font-bold'>
         Hello,{' '}
         {user ? `${user.username}, welcome back to the Holy Grail` : 'welcome to the Holy Grail'}
