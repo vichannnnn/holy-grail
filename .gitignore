@@ -213,3 +213,4 @@ next-env.d.ts
 /data/
 /prototype/
 /scripts/
+*.backup
