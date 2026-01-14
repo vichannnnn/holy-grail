@@ -519,3 +519,38 @@ class Account(Base, CRUD["Account"]):
         stmt = select(cls).order_by(asc(cls.id))
         result = await session.execute(stmt)
         return result.scalars().all()
+
+    @classmethod
+    async def get_all_users_paginated(
+        cls,
+        session: AsyncSession,
+        page: int,
+        size: int,
+    ) -> dict:
+        """
+        Get paginated list of users sorted by ID in ascending order.
+
+        Args:
+            session: Active database session
+            page: Page number (1-indexed)
+            size: Number of items per page
+
+        Returns:
+            dict: Paginated response with items, page, pages, size, total
+        """
+        stmt = select(cls).order_by(asc(cls.id))
+
+        count_stmt = select(func.count()).select_from(stmt)
+        total = await session.scalar(count_stmt)
+
+        stmt = stmt.limit(size).offset((page - 1) * size)
+        result = await session.execute(stmt)
+
+        pages = total // size if total % size == 0 else (total // size) + 1
+        return {
+            "items": result.scalars().all(),
+            "page": page,
+            "pages": pages,
+            "size": size,
+            "total": total,
+        }

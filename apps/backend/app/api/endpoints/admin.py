@@ -5,14 +5,12 @@ This module provides endpoints for admin and developer operations including
 content approval, user management, and role updates. Access is restricted
 based on user roles (admin/developer).
 """
-from typing import List
-
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
 
 from app.api.deps import CurrentSession, SessionAdmin, SessionDeveloper
 from app.models.auth import Account
 from app.models.library import Library
-from app.schemas.auth import CurrentUserSchema, UpdateUserRoleSchema
+from app.schemas.auth import CurrentUserSchema, PaginatedUsersSchema, UpdateUserRoleSchema
 from app.schemas.library import NoteSchema
 
 router = APIRouter()
@@ -48,28 +46,32 @@ async def approve_note(
     return note
 
 
-@router.get("/users", response_model=List[CurrentUserSchema])
+@router.get("/users", response_model=PaginatedUsersSchema)
 async def get_all_account(
     session: CurrentSession,
     authenticated: SessionDeveloper,  # pylint: disable=W0613
-) -> List[CurrentUserSchema]:
+    page: int = Query(1, title="Page number", gt=0),
+    size: int = Query(20, title="Page size", gt=0, le=50),
+) -> PaginatedUsersSchema:
     """
-    Get list of all registered users.
+    Get paginated list of all registered users.
 
-    Developer-only endpoint that returns all user accounts sorted by ID.
+    Developer-only endpoint that returns paginated user accounts sorted by ID.
     Useful for user management and analytics.
 
     Args:
         session: Active database session
         authenticated: Developer user with access permissions
+        page: Page number (1-indexed)
+        size: Number of items per page (max 50)
 
     Returns:
-        List[CurrentUserSchema]: List of all users with their details
+        PaginatedUsersSchema: Paginated list of users with metadata
 
     Raises:
         HTTPException(403): If user is not a developer
     """
-    res = await Account.get_all_users_ascending_by_id(session)
+    res = await Account.get_all_users_paginated(session, page=page, size=size)
     return res
 
 

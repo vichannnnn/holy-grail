@@ -6,7 +6,7 @@ import { DataTable } from "./DataTable";
 import { CategoryEdit } from "./CategoryEdit";
 import { SubjectEdit } from "./SubjectEdit";
 import { DocumentTypeEdit } from "./DocumentTypeEdit";
-import { UserEdit } from "./UserEdit";
+import { UsersTab } from "./UsersTab";
 import type { DeveloperContentProps } from "./types";
 import { Pencil } from "@phosphor-icons/react";
 
@@ -14,7 +14,6 @@ export function DeveloperContent({
 	categories,
 	subjects,
 	documentTypes,
-	users,
 }: Readonly<DeveloperContentProps>) {
 	const tabs = [
 		{
@@ -86,17 +85,8 @@ export function DeveloperContent({
 			),
 		},
 		{
-			name: `Users (${users.data?.length ?? 0})`,
-			content: renderTabContent(users, ["user_id", "username", "email", "role"], (user) => (
-				<UserEdit
-					user={user}
-					render={({ toggleOpen }) => (
-						<Button variant="ghost" onClick={toggleOpen} className="p-1">
-							<Pencil className="h-4 w-4" />
-						</Button>
-					)}
-				/>
-			)),
+			name: "Users",
+			content: <UsersTab />,
 		},
 	];
 

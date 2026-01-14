@@ -46,13 +46,15 @@ export default async function AdminPage({
 					accordingly.
 				</Text>
 			</div>
-			<LibrarySearch
-				query={query}
-				allCategories={categories}
-				allDocumentTypes={documentTypes}
-				allSubjects={subjects}
-			/>
-			<AdminContent {...pendingNotesResponse} />
+			<div className="m-auto w-5/6 sm:w-3/4">
+				<LibrarySearch
+					query={query}
+					allCategories={categories}
+					allDocumentTypes={documentTypes}
+					allSubjects={subjects}
+				/>
+				<AdminContent {...pendingNotesResponse} />
+			</div>
 		</main>
 	);
 }

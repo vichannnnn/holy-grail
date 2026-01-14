@@ -30,6 +30,7 @@ This file maintains a centralized list of all tickets in the project. Update thi
 - 🔴 [TICKET-019](./TICKET-019-quiz-ui-components.md) - Build Quiz UI Components
 - 🔴 [TICKET-021](./TICKET-021-refactor-authentication.md) - Refactor Authentication System
 - 🔴 [TICKET-024](./TICKET-024-implement-repository-pattern.md) - Implement Repository Pattern
+- 🔴 [TICKET-026](./TICKET-026-developer-panel-pagination-alignment.md) - Developer Panel Users Pagination and Layout Alignment
 
 ### Low Priority
 _No low priority tickets yet_

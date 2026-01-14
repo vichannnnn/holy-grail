@@ -164,3 +164,17 @@ class VerifyEmailSchema(BaseModel):
     """
 
     token: str
+
+
+class PaginatedUsersSchema(BaseModel):
+    """
+    Schema for paginated user list responses.
+
+    Used by admin endpoints to return paginated user data.
+    """
+
+    items: list[CurrentUserSchema]
+    page: int
+    pages: int
+    size: int
+    total: int

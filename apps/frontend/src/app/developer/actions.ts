@@ -2,18 +2,21 @@
 
 import { apiClient } from "@lib/api-client";
 import type { LibraryAPIResponse } from "@/app/library/types";
-import type { User } from "@lib/auth";
 import type { AxiosResponse } from "axios";
 import type {
 	EditCategoryFormData,
 	EditSubjectFormData,
 	EditDocumentTypeFormData,
-} from "./_components/schemas";
+	PaginatedUsers,
+} from "./_components";
 
-export async function fetchAllUsers(): Promise<LibraryAPIResponse<User[]>> {
-	let response: AxiosResponse<User[]>;
+export async function fetchUsers(
+	page: number = 1,
+	size: number = 20,
+): Promise<LibraryAPIResponse<PaginatedUsers>> {
+	let response: AxiosResponse<PaginatedUsers>;
 	try {
-		response = await apiClient.get("/admin/users");
+		response = await apiClient.get(`/admin/users?page=${page}&size=${size}`);
 	} catch (error) {
 		return { ok: false, err: `Failed to fetch users: ${error}` };
 	}
