@@ -47,42 +47,37 @@ Holy Grail is a modern full-stack web application built with:
 
 That's it! You can now access:
 - **Backend API**: http://localhost:8000/docs
-- **Main Frontend**: http://localhost:3000 (grail.moe)
-- **App Frontend**: http://localhost:3001 (app.grail.moe)
+- **Frontend**: http://localhost:3000 (grail.moe)
 
 Or use `bun run dev:full` to start everything with database, migrations, and seed data in one command.
 
 ## Architecture
 
-Holy Grail uses a micro-frontend architecture with two separate frontend applications:
-
 ```
-┌──────────────────┐     ┌──────────────────┐
-│  Main Frontend   │     │   App Frontend   │
-│   (grail.moe)    │     │ (app.grail.moe)  │
-│   Port: 3000     │     │   Port: 3001     │
-└────────┬─────────┘     └────────┬─────────┘
-         │                         │
-         └────────────┬────────────┘
-                      │
-               ┌──────▼──────┐
-               │ Backend API │
-               │  (FastAPI)  │
-               │ Port: 8000  │
-               └──────┬──────┘
-                      │
-         ┌────────────┼────────────┐
-         │            │            │
-   ┌─────▼─────┐ ┌────▼────┐ ┌─────▼─────┐
-   │PostgreSQL │ │  Redis  │ │  Celery   │
-   │  (Docker) │ │ (Broker)│ │  (Tasks)  │
-   │Port: 5432 │ │Port:6379│ │ Port:8001 │
-   └───────────┘ └─────────┘ └───────────┘
+┌──────────────────┐
+│     Frontend     │
+│   (grail.moe)    │
+│   Port: 3000     │
+└────────┬─────────┘
+         │
+   ┌─────▼─────┐
+   │  Backend  │
+   │ (FastAPI) │
+   │ Port:8000 │
+   └─────┬─────┘
+         │
+   ┌─────┼─────────────┐
+   │     │             │
+┌──▼───┐ ┌▼────┐ ┌─────▼─────┐
+│Postgr│ │Redis│ │  Celery   │
+│eSSQL │ │     │ │  (Tasks)  │
+│:5432 │ │:6379│ │ Port:8001 │
+└──────┘ └─────┘ └───────────┘
 ```
 
-- **Main Frontend** (`/apps/frontend`): The primary educational platform serving free notes and papers
-- **App Frontend** (`/apps/app-frontend`): Premium SaaS features for enhanced studying tools
-- Both frontends connect to the same backend API and share authentication
+- **Frontend** (`/apps/frontend`): The educational platform serving free notes and papers
+- **Backend** (`/apps/backend`): FastAPI server handling API requests
+- **Task Worker** (`/apps/task`): Celery worker for async jobs (emails, analytics)
 
 ## Project Structure
 
@@ -90,8 +85,7 @@ Holy Grail uses a micro-frontend architecture with two separate frontend applica
 holy-grail/
 ├── apps/
 │   ├── backend/        # FastAPI backend application
-│   ├── frontend/       # Main educational platform (Next.js 16)
-│   ├── app-frontend/   # Premium features platform (Next.js 15)
+│   ├── frontend/       # Educational platform (Next.js)
 │   └── task/           # Celery task worker + API
 ├── packages/
 │   ├── ui/             # Shared React component library
@@ -117,7 +111,7 @@ bun run setup           # Initial Turborepo setup
 bun run dev:full        # Start DB, run migrations, seed data, and start all dev servers
 
 # Development
-bun run dev             # Start all dev servers (backend, frontend, app-frontend)
+bun run dev             # Start all dev servers (backend, frontend)
 bun run db              # Start PostgreSQL and Redis in Docker
 bun run migrate         # Run database migrations
 bun run seed            # Seed database with sample data
@@ -136,7 +130,7 @@ For package-specific commands, see the README in each package directory.
 
 | Layer | Technology |
 |-------|-----------|
-| **Frontend** | React 19, Next.js 15-16, TypeScript, Tailwind CSS 4.1 |
+| **Frontend** | React 19, Next.js, TypeScript, Tailwind CSS |
 | **Backend** | FastAPI, Python 3.11, SQLAlchemy 2.0, Pydantic 2.0 |
 | **Database** | PostgreSQL 14.1, Alembic migrations |
 | **Task Queue** | Celery 5.4, Redis 7.0.7 |
