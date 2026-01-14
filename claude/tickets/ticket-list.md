@@ -15,10 +15,21 @@ This file maintains a centralized list of all tickets in the project. Update thi
 ## Active Tickets
 
 ### High Priority
-_No high priority tickets currently_
+- 🔴 [TICKET-013](./TICKET-013-elasticsearch-integration.md) - Elasticsearch Integration for Full-Text Search
+- 🟡 [TICKET-014](./TICKET-014-production-deployment.md) - Production Deployment Preparation (partial: CI/CD exists)
+- 🔴 [TICKET-015](./TICKET-015-extract-parse-mcqs.md) - Extract and Parse MCQs from Exam Papers
+- 🔴 [TICKET-016](./TICKET-016-question-answer-matching.md) - Build Question-Answer Matching System
+- 🔴 [TICKET-017](./TICKET-017-gpt5-variation-generator.md) - GPT-5 Question Variation Generator
+- 🔴 [TICKET-018](./TICKET-018-adaptive-quiz-engine.md) - Create Adaptive Quiz Engine
+- 🔴 [TICKET-020](./TICKET-020-implement-service-layer.md) - Implement Service Layer
+- 🔴 [TICKET-022](./TICKET-022-code-cleanup.md) - Code Cleanup
+- 🔴 [TICKET-023](./TICKET-023-cost-estimation-controls.md) - Cost Estimation and Permission Controls
+- 🔴 [TICKET-025](./TICKET-025-pdf-extraction-real-documents.md) - PDF Extraction from Documents
 
 ### Medium Priority
-_No medium priority tickets currently_
+- 🔴 [TICKET-019](./TICKET-019-quiz-ui-components.md) - Build Quiz UI Components
+- 🔴 [TICKET-021](./TICKET-021-refactor-authentication.md) - Refactor Authentication System
+- 🔴 [TICKET-024](./TICKET-024-implement-repository-pattern.md) - Implement Repository Pattern
 
 ### Low Priority
 _No low priority tickets yet_

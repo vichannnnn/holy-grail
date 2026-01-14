@@ -1,4 +1,4 @@
-# TICKET-012: Implement Real PDF Extraction from Holy Grail Documents
+# TICKET-025: Implement Real PDF Extraction from Holy Grail Documents
 
 ## Description
 Update the PDF extraction system to download and extract text from actual Holy Grail documents using the correct URL format (`https://document.grail.moe/{file_name}`). Replace the mock extraction with real PDF content to improve AI summarization quality.
