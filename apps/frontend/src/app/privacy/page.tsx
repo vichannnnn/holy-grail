@@ -28,8 +28,8 @@ export default function PrivacyPolicyPage() {
 					Introduction
 				</Title>
 				<Text className="text-md leading-relaxed">
-					This privacy policy (“Privacy Policy”) applies to all visitors and users of the Hima
-					Boilerplate web and mobile applications (collectively, “Holy Grail,” “App,” or “Apps”),
+					This privacy policy ("Privacy Policy") applies to all visitors and users of the Holy
+					Grail web and mobile applications (collectively, "Holy Grail," "App," or "Apps"),
 					which are offered by Holy Grail Team and/or any of its affiliates (“we,” or “us”). This
 					Privacy Policy describes how we process your personal information, collect information
 					through the use of cookies and related technologies, and how you can access and update
@@ -45,8 +45,8 @@ export default function PrivacyPolicyPage() {
 					Applicability of this Privacy Policy
 				</Title>
 				<Text className="text-md leading-relaxed">
-					This Privacy Policy applies to any personal information collected through Hima
-					Boilerplate. It does not apply to personal information or other data that we process on
+					This Privacy Policy applies to any personal information collected through Holy
+					Grail. It does not apply to personal information or other data that we process on
 					behalf of our customers (collectively, “Customer Data”) as a service provider. We will
 					only use Customer Data (including any personal information) to provide services to
 					customers, and our use of your Customer Data will be governed by the terms of service or
@@ -65,12 +65,11 @@ export default function PrivacyPolicyPage() {
 				<Text className="text-md leading-relaxed">
 					You may choose to interact with our Apps in ways that provide us with your personal
 					information. For example, when creating an account on Holy Grail, we collect information
-					such as your name, email address, and phone number. We will also collect the information
-					you provide with us in connection with creating an account on the App. In each case,
-					FastAPI Boilerplate collects such personal information only insofar as is necessary or
-					appropriate to fulfill the purpose of your interaction with or your request to Hima
-					Boilerplate. We will not disclose your personal information other than as described in
-					this Privacy Policy.
+					such as your email address. We will also collect the information you provide with us in
+					connection with creating an account on the App. In each case, Holy Grail collects such
+					personal information only in so far as is necessary or appropriate to fulfill the purpose
+					of your interaction with or your request to Holy Grail. We will not disclose your personal
+					information other than as described in this Privacy Policy.
 				</Text>
 				<Text className="text-md leading-relaxed mt-4">
 					Like most website operators, Holy Grail automatically collects technical information about
@@ -94,11 +93,6 @@ export default function PrivacyPolicyPage() {
 					Holy Grail does not intentionally collect sensitive personal information, such as genetic
 					data, biometric data for uniquely identifying a person, health information, or religious
 					beliefs.
-				</Text>
-				<Text className="text-md leading-relaxed mt-4">
-					We do not knowingly collect information from, or direct our App specifically to,
-					individuals under the age of 16. If we discover that a user under the age of 16 has
-					provided personal information, we will close the account.
 				</Text>
 			</section>
 

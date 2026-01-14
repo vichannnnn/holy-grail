@@ -76,13 +76,12 @@ export default function TermsOfServicePage() {
 					2. Eligibility
 				</Title>
 				<Text className="text-md leading-relaxed">
-					To use the Service, you must be at least 16 years old and in compliance with all
-					applicable laws. By agreeing to these Terms, you represent that:
+					To use the Service, you must be in compliance with all applicable laws. By agreeing to
+					these Terms, you represent that:
 				</Text>
 				<ul className="list-disc ml-6 mt-2">
-					<li>You are at least 16 years old.</li>
-					<li>You have not been suspended or removed from the Service.</li>
-					<li>
+					<li className="text-black">You have not been suspended or removed from the Service.</li>
+					<li className="text-black">
 						Your registration and use of the Service comply with all applicable laws and
 						regulations.
 					</li>
@@ -123,9 +122,8 @@ export default function TermsOfServicePage() {
 				</Title>
 				<Text className="text-md leading-relaxed">
 					<span className="font-bold">Customer Data:</span> Any data, text, and other information,
-					including but not limited to contact details such as email addresses and phone numbers,
-					provided by you during your use of the Service is referred to as 'Customer Data.' Tutors'
-					phone numbers will only be shown to accounts with verified email addresses. Emails may be
+					including but not limited to contact details such as email addresses,
+					provided by you during your use of the Service is referred to as 'Customer Data.' Emails may be
 					used for marketing purposes but will not be visible to other users.
 				</Text>
 				<Text className="text-md leading-relaxed mt-4">
