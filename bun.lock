@@ -4,8 +4,8 @@
     "": {
       "name": "holy-grail",
       "devDependencies": {
-        "turbo": "^2.5.5",
-        "typescript": "^5.9.2",
+        "turbo": "^2.6.0",
+        "typescript": "^5.9.3",
       },
     },
     "apps/app-frontend": {

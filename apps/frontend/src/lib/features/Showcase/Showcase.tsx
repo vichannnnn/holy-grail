@@ -53,7 +53,7 @@ export function Showcase({ imageUrl, altText, redirectUrl }: ShowcaseProps) {
 			<div
 				role="button"
 				tabIndex={0}
-				className="w-3/4 md:w-1/2 mx-auto cursor-pointer relative mt-4"
+				className="w-3/4 md:w-1/3 mx-auto cursor-pointer relative mt-4"
 				ref={showcaseRef}
 				onClick={handleShowcaseClick}
 				onKeyDown={(e) => {

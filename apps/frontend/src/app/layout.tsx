@@ -73,11 +73,6 @@ export default function RootLayout({
 						altText="Turis VPN"
 						redirectUrl="https://clickalytics.turisvpn.com/invite?url_id=holygrail"
 					/>
-					<Showcase
-						imageUrl="https://image.himaa.me/TURIS_2026_2.png"
-						altText="Turis VPN"
-						redirectUrl="https://clickalytics.turisvpn.com/invite?url_id=holygrail"
-					/>
 					<Footer />
 					<Toaster
 						position="bottom-right"
