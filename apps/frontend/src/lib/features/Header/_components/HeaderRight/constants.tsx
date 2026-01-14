@@ -1,15 +1,15 @@
 import {
-	HomeIcon,
-	QuestionMarkCircleIcon,
-	ArrowUpTrayIcon,
-	UserPlusIcon,
-	TrophyIcon,
-	ArrowRightEndOnRectangleIcon,
-	DocumentTextIcon,
-	UserCircleIcon,
-	AdjustmentsHorizontalIcon,
-	CommandLineIcon,
-} from "@heroicons/react/24/outline";
+	House,
+	Question,
+	UploadSimple,
+	UserPlus,
+	Trophy,
+	SignOut,
+	FileText,
+	UserCircle,
+	SlidersHorizontal,
+	Terminal,
+} from "@phosphor-icons/react";
 import Link from "next/link";
 import { DropdownButton } from "./DropdownButton";
 import type { NavInfo } from "./types";
@@ -21,28 +21,28 @@ export const NAV_DROPDOWN_INFO: Record<string, NavInfo> = {
 	home: {
 		render: () => (
 			<Link href="/">
-				<DropdownButton label="Home" icon={<HomeIcon className="size-6" />} />
+				<DropdownButton label="Home" icon={<House className="size-6" />} />
 			</Link>
 		),
 	},
 	library: {
 		render: () => (
 			<Link href="/library">
-				<DropdownButton label="Library" icon={<DocumentTextIcon className="size-6" />} />
+				<DropdownButton label="Library" icon={<FileText className="size-6" />} />
 			</Link>
 		),
 	},
 	faq: {
 		render: () => (
 			<Link href="/faq">
-				<DropdownButton label="FAQ" icon={<QuestionMarkCircleIcon className="size-6" />} />
+				<DropdownButton label="FAQ" icon={<Question className="size-6" />} />
 			</Link>
 		),
 	},
 	contribute: {
 		render: () => (
 			<Link href="/upload">
-				<DropdownButton label="Contribute" icon={<ArrowUpTrayIcon className="size-6" />} />
+				<DropdownButton label="Contribute" icon={<UploadSimple className="size-6" />} />
 			</Link>
 		),
 		needsRole: 1,
@@ -50,7 +50,7 @@ export const NAV_DROPDOWN_INFO: Record<string, NavInfo> = {
 	leaderboard: {
 		render: () => (
 			<Link href="/leaderboard">
-				<DropdownButton label="Leaderboard" icon={<TrophyIcon className="size-6" />} />
+				<DropdownButton label="Leaderboard" icon={<Trophy className="size-6" />} />
 			</Link>
 		),
 	},
@@ -67,7 +67,7 @@ export const NEEDS_AUTH_DROPDOWN_INFO: Record<string, NavInfo> = {
 			<Link href={AUTH_LINKS.signIn.href}>
 				<DropdownButton
 					label={AUTH_LINKS.signIn.label}
-					icon={<ArrowRightEndOnRectangleIcon className="size-6" />}
+					icon={<SignOut className="size-6" />}
 				/>
 			</Link>
 		),
@@ -77,7 +77,7 @@ export const NEEDS_AUTH_DROPDOWN_INFO: Record<string, NavInfo> = {
 			<Link href={AUTH_LINKS.register.href}>
 				<DropdownButton
 					label={AUTH_LINKS.register.label}
-					icon={<UserPlusIcon className="size-6" />}
+					icon={<UserPlus className="size-6" />}
 				/>
 			</Link>
 		),
@@ -88,7 +88,7 @@ export const AUTHED_DROPDOWN_INFO: Record<string, NavInfo> = {
 	profile: {
 		render: () => (
 			<Link href="/account">
-				<DropdownButton label="Profile" icon={<UserCircleIcon className="size-6" />} />
+				<DropdownButton label="Profile" icon={<UserCircle className="size-6" />} />
 			</Link>
 		),
 		needsRole: RoleEnum.USER,
@@ -97,7 +97,7 @@ export const AUTHED_DROPDOWN_INFO: Record<string, NavInfo> = {
 		render: () => (
 			<DropdownButton
 				label="Sign Out"
-				icon={<ArrowRightEndOnRectangleIcon className="size-6" />}
+				icon={<SignOut className="size-6" />}
 				onClick={async () => {
 					await deleteUser();
 					toast.success("Signed out successfully");
@@ -108,7 +108,7 @@ export const AUTHED_DROPDOWN_INFO: Record<string, NavInfo> = {
 	admin: {
 		render: () => (
 			<Link href="/admin">
-				<DropdownButton label="Admin" icon={<AdjustmentsHorizontalIcon className="size-6" />} />
+				<DropdownButton label="Admin" icon={<SlidersHorizontal className="size-6" />} />
 			</Link>
 		),
 		needsRole: RoleEnum.ADMIN,
@@ -116,7 +116,7 @@ export const AUTHED_DROPDOWN_INFO: Record<string, NavInfo> = {
 	developer: {
 		render: () => (
 			<Link href="/developer">
-				<DropdownButton label="Developer" icon={<CommandLineIcon className="size-6" />} />
+				<DropdownButton label="Developer" icon={<Terminal className="size-6" />} />
 			</Link>
 		),
 		needsRole: RoleEnum.DEVELOPER,

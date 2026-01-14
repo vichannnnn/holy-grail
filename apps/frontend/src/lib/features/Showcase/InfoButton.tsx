@@ -2,7 +2,7 @@
 
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import { IconButton } from "@shared/ui/components";
-import { InformationCircleIcon } from "@heroicons/react/24/outline";
+import { Info } from "@phosphor-icons/react";
 
 export function InfoButton() {
 	return (
@@ -14,7 +14,7 @@ export function InfoButton() {
 				aria-label="Why am I seeing this ad?"
 				onClick={(e) => e.stopPropagation()}
 			>
-				<InformationCircleIcon className="size-4" />
+				<Info className="size-4" />
 			</PopoverButton>
 
 			<PopoverPanel className="absolute z-10 w-80 px-4 mt-3 transform -translate-x-1/2 left-1/2 sm:px-0">

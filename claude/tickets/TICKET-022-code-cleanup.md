@@ -1,4 +1,4 @@
-# TICKET-010: Code Cleanup
+# TICKET-022: Code Cleanup
 
 ## Description
 Clean up technical debt in the backend codebase by removing commented-out code, debug statements, fixing naming inconsistencies, and removing unused imports. This is the fourth phase of the backend refactoring plan (PLAN-001).

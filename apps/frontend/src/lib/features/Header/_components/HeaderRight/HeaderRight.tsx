@@ -11,7 +11,7 @@ import { Button, Text } from "@shared/ui/components";
 import { ClientContext } from "@shared/ui/providers";
 import { useContext } from "react";
 import { Dropdown } from "@shared/ui/components";
-import { Bars3Icon } from "@heroicons/react/24/outline";
+import { List } from "@phosphor-icons/react";
 
 export function HeaderRight({ user }: HeaderRightProps) {
 	const { isMobile } = useContext(ClientContext);
@@ -23,7 +23,7 @@ export function HeaderRight({ user }: HeaderRightProps) {
 			: { ...NAV_DROPDOWN_INFO, ...NEEDS_AUTH_DROPDOWN_INFO };
 		return (
 			<Dropdown
-				header={<Bars3Icon className="size-6 m-1 dark:stroke-white" />}
+				header={<List className="size-6 m-1 dark:text-white" />}
 				content={Object.entries(toRender).map(
 					([key, { render, needsRole }]) =>
 						(!needsRole || (user && user.role >= needsRole)) && <div key={key}>{render()}</div>,
@@ -48,7 +48,7 @@ export function HeaderRight({ user }: HeaderRightProps) {
 				</div>
 				<div className="lg:hidden">
 					<Dropdown
-						header={<Bars3Icon className="size-6 m-1 dark:stroke-white" />}
+						header={<List className="size-6 m-1 dark:text-white" />}
 						content={Object.entries(NEEDS_AUTH_DROPDOWN_INFO).map(([key, { render }]) => (
 							<div key={key}>{render()}</div>
 						))}
@@ -68,7 +68,7 @@ export function HeaderRight({ user }: HeaderRightProps) {
 						</Text>
 					</div>
 					<div className="lg:hidden">
-						<Bars3Icon className="size-6 m-1 dark:stroke-white" />
+						<List className="size-6 m-1 dark:text-white" />
 					</div>
 				</>
 			}

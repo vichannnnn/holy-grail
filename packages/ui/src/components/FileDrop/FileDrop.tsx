@@ -3,7 +3,7 @@ import { Button, Text } from "..";
 import type { FileDropProps } from "./types";
 import { useRef, useEffect, useState, useImperativeHandle } from "react";
 import { twMerge } from "tailwind-merge";
-import { CloudArrowUpIcon } from "@heroicons/react/24/outline";
+import { CloudArrowUp } from "@phosphor-icons/react";
 
 export function FileDrop({
 	optional,
@@ -130,7 +130,7 @@ export function FileDrop({
 				className,
 			)}
 		>
-			<CloudArrowUpIcon className="size-18 lg:size-36 stroke-gray-700 dark:stroke-gray-500" />
+			<CloudArrowUp className="size-18 lg:size-36 text-gray-700 dark:text-gray-500" />
 
 			{uploadedFiles === null ? (
 				<Text description>

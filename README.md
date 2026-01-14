@@ -3,32 +3,27 @@
 [![codecov](https://codecov.io/gh/vichannnnn/holy-grail/branch/dev/graph/badge.svg)](https://codecov.io/gh/vichannnnn/holy-grail/tree/dev)
 [![Python](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/)
 [![Docker](https://img.shields.io/badge/built%20with-Docker-blue)](https://www.docker.com/)
-[![Deploy](https://github.com/vichannnnn/holy-grail/actions/workflows/deploy-dev.yml/badge.svg)](https://github.com/vichannnnn/holy-grail/actions)
-[![Deploy](https://github.com/vichannnnn/holy-grail/actions/workflows/deploy-prod.yml/badge.svg)](https://github.com/vichannnnn/holy-grail/actions)
+[![Build and Deploy](https://github.com/vichannnnn/holy-grail/actions/workflows/build-and-deploy.yml/badge.svg)](https://github.com/vichannnnn/holy-grail/actions/workflows/build-and-deploy.yml)
+[![Pull Request Tests](https://github.com/vichannnnn/holy-grail/actions/workflows/pull-request-test.yml/badge.svg)](https://github.com/vichannnnn/holy-grail/actions/workflows/pull-request-test.yml)
 
 ![Grail-chan](https://image.himaa.me/grail-chan-sparkling-640x480.png)
 
-This is a GitHub monorepo for the Holy Grail webapp consisting of a few services: Celery task runner, Redis broker,
-Postgres database, FastAPI backend and React Frontend.
-
-Updated changes are automatically deployed to their respective environment (development, production).
-
 Holy Grail is a completely free-to-access web library aimed at Singaporean students that houses all the summary
-notes and practice papers for GCE 'O' Levels, GCE 'A' Levels and
-International Baccalaureate.
+notes and practice papers for GCE 'O' Levels, GCE 'A' Levels and International Baccalaureate.
 
 ## Overview
 
-Holy Grail is a modern web application built with:
-- **Backend**: FastAPI (Python) with PostgreSQL database
-- **Frontend**: Next.js (React) with TypeScript
-- **Infrastructure**: Monorepo managed with Turborepo
+Holy Grail is a modern full-stack web application built with:
+- **Backend**: FastAPI (Python 3.11) with PostgreSQL database
+- **Frontend**: Next.js 15/16 (React 19) with TypeScript and Tailwind CSS
+- **Task Queue**: Celery with Redis broker for async processing
+- **Infrastructure**: Turborepo monorepo with Docker containerization
 
 ## Quick Start
 
 ### Prerequisites
-- Node.js 18+ and Bun (or npm/yarn)
-- Python 3.11+
+- Node.js 18+ and [Bun](https://bun.sh/) 1.2.22+
+- Python 3.11+ with [UV](https://docs.astral.sh/uv/) package manager
 - Docker
 
 ### Setup (3 Simple Steps)
@@ -51,39 +46,38 @@ Holy Grail is a modern web application built with:
    ```
 
 That's it! You can now access:
-- 🚀 **Backend API**: http://localhost:8000/docs
-- 🎨 **Main Frontend**: http://localhost:3000
-- 💎 **App Frontend**: http://localhost:3001
+- **Backend API**: http://localhost:8000/docs
+- **Frontend**: http://localhost:3000 (grail.moe)
+
+Or use `bun run dev:full` to start everything with database, migrations, and seed data in one command.
 
 ## Architecture
 
-Holy Grail uses a micro-frontend architecture with two separate frontend applications:
-
 ```
-┌──────────────────┐     ┌──────────────────┐
-│  Main Frontend   │     │   App Frontend   │
-│   (grail.moe)    │     │ (app.grail.moe)  │
-│   Port: 3000     │     │   Port: 3001     │
-└────────┬─────────┘     └────────┬─────────┘
-         │                         │
-         └────────────┬────────────┘
-                      │
-               ┌──────▼─────────┐
-               │  Backend API   │
-               │   (FastAPI)    │
-               │  Port: 8000    │
-               └──────┬─────────┘
-                      │
-               ┌──────▼─────────┐
-               │   PostgreSQL   │
-               │   (Docker)     │
-               │  Port: 5432    │
-               └────────────────┘
+┌──────────────────┐
+│     Frontend     │
+│   (grail.moe)    │
+│   Port: 3000     │
+└────────┬─────────┘
+         │
+   ┌─────▼─────┐
+   │  Backend  │
+   │ (FastAPI) │
+   │ Port:8000 │
+   └─────┬─────┘
+         │
+   ┌─────┼─────────────┐
+   │     │             │
+┌──▼───┐ ┌▼────┐ ┌─────▼─────┐
+│Postgr│ │Redis│ │  Celery   │
+│eSSQL │ │     │ │  (Tasks)  │
+│:5432 │ │:6379│ │ Port:8001 │
+└──────┘ └─────┘ └───────────┘
 ```
 
-- **Main Frontend** (`/apps/frontend`): The primary educational platform serving free notes and papers
-- **App Frontend** (`/apps/app-frontend`): Premium SaaS features for enhanced studying tools
-- Both frontends connect to the same backend API and share authentication
+- **Frontend** (`/apps/frontend`): The educational platform serving free notes and papers
+- **Backend** (`/apps/backend`): FastAPI server handling API requests
+- **Task Worker** (`/apps/task`): Celery worker for async jobs (emails, analytics)
 
 ## Project Structure
 
@@ -91,12 +85,19 @@ Holy Grail uses a micro-frontend architecture with two separate frontend applica
 holy-grail/
 ├── apps/
 │   ├── backend/        # FastAPI backend application
-│   ├── frontend/       # Main educational platform (Next.js)
-│   ├── app-frontend/   # Premium features platform (Next.js)
-│   └── task/           # Celery task worker
-├── packages/           # Shared packages
-├── docs/              # Documentation
-└── turbo.json         # Monorepo configuration
+│   ├── frontend/       # Educational platform (Next.js)
+│   └── task/           # Celery task worker + API
+├── packages/
+│   ├── ui/             # Shared React component library
+│   └── tooling/        # Shared Biome and TypeScript configs
+├── docker/             # Docker configurations (PostgreSQL, Redis)
+├── docs/               # Project documentation
+├── claude/             # Claude Code organization
+│   ├── agents/         # Custom AI agents
+│   ├── docs/           # Development documentation
+│   ├── plans/          # Implementation plans
+│   └── tickets/        # Task tickets
+└── turbo.json          # Monorepo configuration
 ```
 
 ## Available Commands
@@ -104,45 +105,47 @@ holy-grail/
 From the root directory:
 
 ```bash
-bun run dev          # Start all services
-bun run db           # Start database only
-bun run build        # Build all packages
-bun run test         # Run all tests
-bun run lint         # Lint all packages
+# Quick Start
+bun install             # Install all dependencies
+bun run setup           # Initial Turborepo setup
+bun run dev:full        # Start DB, run migrations, seed data, and start all dev servers
+
+# Development
+bun run dev             # Start all dev servers (backend, frontend)
+bun run db              # Start PostgreSQL and Redis in Docker
+bun run migrate         # Run database migrations
+bun run seed            # Seed database with sample data
+bun run task            # Start Celery task worker
+
+# Code Quality
+bun run build           # Build all packages
+bun run test            # Run all tests
+bun run lint            # Lint all packages
+bun run format          # Format all code
 ```
 
 For package-specific commands, see the README in each package directory.
 
-## Migration from Previous Setup
+## Technology Stack
 
-If you have the old setup with `new-frontend`:
-
-1. **Pull the latest changes**:
-   ```bash
-   git pull origin main
-   ```
-
-2. **Clean and reinstall dependencies**:
-   ```bash
-   rm -rf node_modules bun.lockb
-   bun install
-   ```
-
-3. **Update your local development**:
-   - The main frontend now runs on port 3000 (previously `new-frontend` was on 3001)
-   - New `app-frontend` runs on port 3001
-   - Remove any local references to the old frontend directory
-
-4. **Update environment variables**:
-   - Main frontend: Uses standard `.env.local`
-   - App frontend: Create `.env.local` from `.env.example`
+| Layer | Technology |
+|-------|-----------|
+| **Frontend** | React 19, Next.js, TypeScript, Tailwind CSS |
+| **Backend** | FastAPI, Python 3.11, SQLAlchemy 2.0, Pydantic 2.0 |
+| **Database** | PostgreSQL 14.1, Alembic migrations |
+| **Task Queue** | Celery 5.4, Redis 7.0.7 |
+| **Auth** | JWT-based with bcrypt password hashing |
+| **Storage** | AWS S3 for file storage |
+| **Infrastructure** | AWS ECS Fargate, Terraform Cloud |
+| **Package Managers** | Bun (Node), UV (Python) |
+| **Code Quality** | Ruff (Python), Biome (JS/TS), MyPy |
 
 ## Documentation
 
-- 📖 [Setup Guide](./docs/SETUP.md) - Detailed setup instructions
-- 🛠️ [Development Guide](./docs/DEVELOPMENT.md) - Development workflow and tips
-- 🏗️ [Architecture](./docs/ARCHITECTURE.md) - System design and structure
-- 🚨 [Troubleshooting](./docs/TROUBLESHOOTING.md) - Common issues and solutions
+- [Setup Guide](./docs/SETUP.md) - Detailed setup instructions
+- [Development Guide](./docs/DEVELOPMENT.md) - Development workflow and tips
+- [Architecture](./docs/ARCHITECTURE.md) - System design and structure
+- [Troubleshooting](./docs/TROUBLESHOOTING.md) - Common issues and solutions
 
 ## Contributing
 

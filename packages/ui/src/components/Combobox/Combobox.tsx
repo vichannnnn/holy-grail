@@ -9,7 +9,7 @@ import {
 	Description,
 	Field,
 } from "@headlessui/react";
-import { ChevronDownIcon, CheckIcon } from "@heroicons/react/24/outline";
+import { CaretDown, Check } from "@phosphor-icons/react";
 import { twMerge } from "tailwind-merge";
 import { useState, useRef } from "react";
 import type { Item, ComboboxProps } from "./types";
@@ -92,8 +92,9 @@ export function Combobox<T extends Item>({
 						disabled={disabled}
 						className="m-0.5 size-8 absolute inset-y-0 right-1 flex items-center justify-center rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 hover:bg-gray-300 dark:hover:bg-zinc-700 focus-visible:ring-blue-500 disabled:opacity-50 disabled:hover:bg-transparent disabled:cursor-not-allowed transition cursor-pointer"
 					>
-						<ChevronDownIcon
-							className="size-3 stroke-3 stroke-black dark:stroke-white"
+						<CaretDown
+							weight="bold"
+							className="size-3 text-black dark:text-white"
 							aria-hidden="true"
 						/>
 					</ComboboxButton>
@@ -109,7 +110,7 @@ export function Combobox<T extends Item>({
 								value={item}
 								className="group w-full px-2 py-1 rounded-sm hover:bg-gray-200 dark:hover:bg-zinc-600 flex items-center gap-2"
 							>
-								<CheckIcon className="invisible size-4 stroke-2 stroke-black dark:stroke-white group-data-selected:visible" />
+								<Check weight="bold" className="invisible size-4 text-black dark:text-white group-data-selected:visible" />
 								{item.name}
 							</ComboboxOption>
 						))

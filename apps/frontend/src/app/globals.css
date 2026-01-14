@@ -13,11 +13,11 @@
 }
 
 @theme {
-	--animate-fade-in: fadeIn 0.3s ease-in both;
+	--animate-fade-in: fadeIn 0.2s cubic-bezier(0.25, 1, 0.5, 1) both;
 
 	@keyframes fadeIn {
 		from {
-			transform: translateY(10px);
+			transform: translateY(8px);
 			opacity: 0;
 		}
 		to {

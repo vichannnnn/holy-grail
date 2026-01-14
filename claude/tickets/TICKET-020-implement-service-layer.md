@@ -1,4 +1,4 @@
-# TICKET-008: Implement Service Layer
+# TICKET-020: Implement Service Layer
 
 ## Description
 Create a service layer to separate business logic from data models. Move all business logic currently in models to dedicated service classes. This is the second phase of the backend refactoring plan (PLAN-001).

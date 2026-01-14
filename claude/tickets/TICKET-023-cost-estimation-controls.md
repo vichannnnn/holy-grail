@@ -1,4 +1,4 @@
-# TICKET-011: Add Cost Estimation and Permission Controls to AI Summarizer
+# TICKET-023: Add Cost Estimation and Permission Controls to AI Summarizer
 
 ## Description
 Implement cost estimation and user permission controls for API calls in the Holy Grail prototype to prevent unexpected charges and give users full transparency over API usage. This feature will show estimated costs before making any API calls and require explicit user permission by default.

@@ -1,4 +1,4 @@
-# TICKET-011: Implement Repository Pattern
+# TICKET-024: Implement Repository Pattern
 
 ## Description
 Implement the repository pattern to separate data access logic from business logic and models. This is the fifth phase of the backend refactoring plan (PLAN-001).

@@ -3,7 +3,7 @@ import { Accordion, Dropdown, Input, Combobox, Text } from "@shared/ui/component
 import type { UploadEntryProps } from "./types";
 import { fetchAllSubjects } from "@/app/library/actions";
 import { useState, useEffect } from "react";
-import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/outline";
+import { SlidersHorizontal } from "@phosphor-icons/react";
 import type { SubjectType } from "@/app/library/types";
 import { Controller, useWatch } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -235,7 +235,7 @@ export function UploadEntry({
 					<Dropdown
 						onClick={(e) => e.stopPropagation()}
 						header={
-							<AdjustmentsHorizontalIcon className="size-8 stroke-2 p-1 stroke-gray-700 dark:stroke-gray-300 cursor-pointer" />
+							<SlidersHorizontal weight="bold" className="size-8 p-1 text-gray-700 dark:text-gray-300 cursor-pointer" />
 						}
 						content={[
 							<button

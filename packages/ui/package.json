@@ -20,6 +20,7 @@
 	"dependencies": {
 		"@headlessui/react": "^2.2.7",
 		"@heroicons/react": "^2.2.0",
+		"@phosphor-icons/react": "^2.1.10",
 		"@shared/tooling": "workspace:*",
 		"tailwind-merge": "^3.3.1"
 	},
