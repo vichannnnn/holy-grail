@@ -8,7 +8,7 @@ import { SubjectEdit } from "./SubjectEdit";
 import { DocumentTypeEdit } from "./DocumentTypeEdit";
 import { UserEdit } from "./UserEdit";
 import type { DeveloperContentProps } from "./types";
-import { PencilIcon } from "@heroicons/react/24/outline";
+import { Pencil } from "@phosphor-icons/react";
 
 export function DeveloperContent({
 	categories,
@@ -27,7 +27,7 @@ export function DeveloperContent({
 						category={category}
 						render={({ toggleOpen }) => (
 							<Button variant="ghost" onClick={toggleOpen} className="p-1">
-								<PencilIcon className="h-4 w-4" />
+								<Pencil className="h-4 w-4" />
 							</Button>
 						)}
 					/>
@@ -50,7 +50,7 @@ export function DeveloperContent({
 						categories={categories.data || []}
 						render={({ toggleOpen }) => (
 							<Button variant="ghost" onClick={toggleOpen} className="p-1">
-								<PencilIcon className="h-4 w-4" />
+								<Pencil className="h-4 w-4" />
 							</Button>
 						)}
 					/>
@@ -73,7 +73,7 @@ export function DeveloperContent({
 						documentType={documentType}
 						render={({ toggleOpen }) => (
 							<Button variant="ghost" onClick={toggleOpen} className="p-1">
-								<PencilIcon className="h-4 w-4" />
+								<Pencil className="h-4 w-4" />
 							</Button>
 						)}
 					/>
@@ -92,7 +92,7 @@ export function DeveloperContent({
 					user={user}
 					render={({ toggleOpen }) => (
 						<Button variant="ghost" onClick={toggleOpen} className="p-1">
-							<PencilIcon className="h-4 w-4" />
+							<Pencil className="h-4 w-4" />
 						</Button>
 					)}
 				/>

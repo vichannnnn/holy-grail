@@ -9,7 +9,7 @@ import { useContext } from "react";
 import { ClientContext } from "@shared/ui/providers";
 import type { AdminContentProps } from "./types";
 import type { Note } from "@/app/library/types";
-import { PencilIcon, TrashIcon, CheckIcon } from "@heroicons/react/24/outline";
+import { Pencil, Trash, Check } from "@phosphor-icons/react";
 
 export function AdminContent({ ok, data, err }: Readonly<AdminContentProps>) {
 	const navigateToSearchValue = useNavigateToSearchValue();
@@ -103,7 +103,7 @@ export function AdminContent({ ok, data, err }: Readonly<AdminContentProps>) {
 										aria-label={`Edit ${note.document_name}`}
 										className="ml-2"
 									>
-										<PencilIcon className="h-5 w-5 text-gray-700 dark:text-gray-300" />
+										<Pencil className="h-5 w-5 text-gray-700 dark:text-gray-300" />
 									</IconButton>
 								)}
 								note={note}
@@ -115,7 +115,7 @@ export function AdminContent({ ok, data, err }: Readonly<AdminContentProps>) {
 										aria-label={`Approve ${note.document_name}`}
 										className="ml-2"
 									>
-										<CheckIcon className="h-5 w-5 text-green-600 dark:text-green-400" />
+										<Check className="h-5 w-5 text-green-600 dark:text-green-400" />
 									</IconButton>
 								)}
 								note={note}
@@ -127,7 +127,7 @@ export function AdminContent({ ok, data, err }: Readonly<AdminContentProps>) {
 										aria-label={`Delete ${note.document_name}`}
 										className="ml-2"
 									>
-										<TrashIcon className="h-5 w-5 text-red-600 dark:text-red-400" />
+										<Trash className="h-5 w-5 text-red-600 dark:text-red-400" />
 									</IconButton>
 								)}
 								note={note}

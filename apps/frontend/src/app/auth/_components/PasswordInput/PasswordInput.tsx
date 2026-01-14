@@ -2,7 +2,7 @@
 
 import { Input, type InputProps, IconButton } from "@shared/ui/components";
 import { useState } from "react";
-import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+import { Eye, EyeSlash } from "@phosphor-icons/react";
 
 export function PasswordInput(props: InputProps) {
 	const [visible, setVisible] = useState(false);
@@ -20,9 +20,9 @@ export function PasswordInput(props: InputProps) {
 					className="pointer-events-auto"
 				>
 					{visible ? (
-						<EyeSlashIcon className="size-5 stroke-gray-500 dark:stroke-gray-400" />
+						<EyeSlash className="size-5 text-gray-500 dark:text-gray-400" />
 					) : (
-						<EyeIcon className="size-5 stroke-gray-500 dark:stroke-gray-400" />
+						<Eye className="size-5 text-gray-500 dark:text-gray-400" />
 					)}
 				</IconButton>
 			}

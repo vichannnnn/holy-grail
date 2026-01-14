@@ -3,8 +3,8 @@ import { twMerge } from "tailwind-merge";
 import type { InputProps } from "./types";
 
 const baseInput =
-	"block w-full rounded-sm border-none bg-slate-950/5 dark:bg-white/5 px-3 py-1.5 text-sm/6 dark:text-white text-black";
-const focusInput = "focus:outline-2 focus:outline-blue-500";
+	"block w-full rounded-md border-none bg-slate-950/5 dark:bg-white/5 px-3 py-1.5 text-sm/6 dark:text-white text-black";
+const focusInput = "focus:ring-2 focus:ring-blue-500 focus:ring-inset focus:outline-none";
 
 export function Input({
 	label,
@@ -27,7 +27,7 @@ export function Input({
 	return (
 		<div className={containerClassName}>
 			<Field className="flex flex-col gap-1">
-				<div className="flex flex-col gap-0.5">
+				<div className="flex flex-col gap-1">
 					{label && (
 						<Label
 							as="label"

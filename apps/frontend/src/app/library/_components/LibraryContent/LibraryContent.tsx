@@ -9,7 +9,7 @@ import { useContext } from "react";
 import { ClientContext } from "@shared/ui/providers";
 import { LibraryCard } from "./LibraryCard";
 import type { LibraryContentProps } from "./types";
-import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { Pencil, Trash } from "@phosphor-icons/react";
 
 export function LibraryContent({ ok, data, err, isAdmin }: Readonly<LibraryContentProps>) {
 	const navigateToSearchValue = useNavigateToSearchValue();
@@ -94,7 +94,7 @@ export function LibraryContent({ ok, data, err, isAdmin }: Readonly<LibraryConte
 											aria-label={`Edit ${note.document_name}`}
 											className="ml-2"
 										>
-											<PencilIcon className="h-5 w-5 text-gray-700 dark:text-gray-300" />
+											<Pencil className="h-5 w-5 text-gray-700 dark:text-gray-300" />
 										</IconButton>
 									)}
 									note={note}
@@ -106,7 +106,7 @@ export function LibraryContent({ ok, data, err, isAdmin }: Readonly<LibraryConte
 											aria-label={`Delete ${note.document_name}`}
 											className="ml-2"
 										>
-											<TrashIcon className="h-5 w-5 text-red-600 dark:text-red-400" />
+											<Trash className="h-5 w-5 text-red-600 dark:text-red-400" />
 										</IconButton>
 									)}
 									note={note}

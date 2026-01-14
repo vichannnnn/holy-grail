@@ -1,7 +1,7 @@
 "use client";
 import type { PaginationProps } from "./types";
 import { Button, Text } from "@shared/ui/components";
-import { ChevronRightIcon, ChevronLeftIcon } from "@heroicons/react/24/outline";
+import { CaretRight, CaretLeft } from "@phosphor-icons/react";
 
 export function Pagination({ currentPage, totalPages, onPageChange }: PaginationProps) {
 	return (
@@ -12,7 +12,7 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
 				variant="ghost"
 				className="flex items-center space-x-2"
 			>
-				<ChevronLeftIcon className="h-5 w-5" />
+				<CaretLeft className="h-5 w-5" />
 				<span>Previous</span>
 			</Button>
 			<Text>
@@ -25,7 +25,7 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
 				className="flex items-center space-x-2"
 			>
 				<span>Next</span>
-				<ChevronRightIcon className="h-5 w-5" />
+				<CaretRight className="h-5 w-5" />
 			</Button>
 		</div>
 	);

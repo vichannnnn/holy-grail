@@ -1,5 +1,5 @@
 import { Disclosure, DisclosureButton, DisclosurePanel, Transition } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import { CaretDown } from "@phosphor-icons/react";
 import { twMerge } from "tailwind-merge";
 import type { AccordionProps } from "./types";
 
@@ -28,9 +28,10 @@ export function Accordion({
 				<span className="select-none font-semibold">{label}</span>
 				<div className="flex items-center gap-2">
 					{additionalButtons}
-					<ChevronDownIcon
+					<CaretDown
+						weight="bold"
 						className={twMerge(
-							"size-5 stroke-2 stroke-gray-700 dark:stroke-gray-300 transition-transform duration-200 group-data-[open]:rotate-180 cursor-pointer",
+							"size-5 text-gray-700 dark:text-gray-300 transition-transform duration-200 group-data-[open]:rotate-180 cursor-pointer",
 							iconClassName,
 						)}
 					/>

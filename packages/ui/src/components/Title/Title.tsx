@@ -3,9 +3,9 @@ import { twMerge } from "tailwind-merge";
 
 export const defaultStyles = "text-gray-900 dark:text-white";
 export const twTitleTextSizing: Record<TitleOrder, string> = {
-	1: "text-4xl",
-	2: "text-2xl",
-	3: "text-xl",
+	1: "text-4xl tracking-tight",
+	2: "text-2xl tracking-tight",
+	3: "text-xl tracking-tight",
 	4: "text-lg",
 	5: "text-base",
 	6: "text-sm",
