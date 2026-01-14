@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+
 import "./globals.css";
 import { ClientProvider } from "@shared/ui/providers";
 import { twMerge } from "tailwind-merge";
