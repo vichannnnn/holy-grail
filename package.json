@@ -4,8 +4,8 @@
     "node": ">=18"
   },
   "devDependencies": {
-    "turbo": "^2.5.5",
-    "typescript": "^5.9.2"
+    "turbo": "^2.6.0",
+    "typescript": "^5.9.3"
   },
   "packageManager": "bun@1.2.22",
   "private": true,
@@ -23,7 +23,7 @@
     "task": "cd apps/task && npm run dev",
     "dev:full": "bun run db && sleep 3 && bun run migrate && bun run seed && bun run dev"
   },
-    "workspaces": [
+  "workspaces": [
     "apps/*",
     "packages/*"
   ]

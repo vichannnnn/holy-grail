@@ -1,3 +1,4 @@
+"use cache";
 import Link from "next/link";
 import { Title, Text } from "@shared/ui/components";
 import type { Metadata } from "next";
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
 	},
 };
 
-export default function FAQPage() {
+export default async function FAQPage() {
 	return (
 		<div className="container mx-auto px-4 mt-16">
 			<div className="mb-8">

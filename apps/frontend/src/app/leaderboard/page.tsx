@@ -22,6 +22,7 @@ export const metadata: Metadata = {
 };
 
 export default async function LeaderboardPage() {
+	"use cache: private";
 	const scoreboardUsers = await fetchScoreboardUsers();
 	const userScore = await fetchUserScore();
 
@@ -61,7 +62,7 @@ export default async function LeaderboardPage() {
 									<th className="px-4 sm:px-6 py-3 text-left text-xs font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wider">
 										Username
 									</th>
-									<th className="px-4 sm:px-6 py-3 text-left text-xs font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wider break-words max-w-24">
+									<th className="px-4 sm:px-6 py-3 text-left text-xs font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wider wrap-break-word max-w-24">
 										No. of resources uploaded
 									</th>
 								</tr>

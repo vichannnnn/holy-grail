@@ -1,8 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+	reactCompiler: true,
+	cacheComponents: true,
 	experimental: {
-		reactCompiler: true,
 		authInterrupts: true,
 		optimizePackageImports: ["@shared/ui", "@lib"],
 		serverActions: {

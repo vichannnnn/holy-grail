@@ -4,7 +4,7 @@ import { ClientProvider } from "@shared/ui/providers";
 import { twMerge } from "tailwind-merge";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import { Header, Footer } from "@lib/features/server";
-import { Showcase } from "@lib/features/client";
+import { TTFB, Showcase } from "@lib/features/client";
 import { Toaster } from "react-hot-toast";
 import type { ReactNode } from "react";
 
@@ -67,7 +67,17 @@ export default function RootLayout({
 					<Header />
 
 					{children}
-					<Showcase />
+
+					<Showcase
+						imageUrl="https://image.himaa.me/TURIS_2026_1.png"
+						altText="Turis VPN"
+						redirectUrl="https://clickalytics.turisvpn.com/invite?url_id=holygrail"
+					/>
+					<Showcase
+						imageUrl="https://image.himaa.me/TURIS_2026_2.png"
+						altText="Turis VPN"
+						redirectUrl="https://clickalytics.turisvpn.com/invite?url_id=holygrail"
+					/>
 					<Footer />
 					<Toaster
 						position="bottom-right"
@@ -76,6 +86,7 @@ export default function RootLayout({
 						}}
 					/>
 				</ClientProvider>
+				{process.env.PERF && <TTFB />}
 			</body>
 		</html>
 	);
