@@ -32,6 +32,15 @@ module "s3" {
   root_domain_name   = var.root_domain_name
 }
 
+module "opensearch" {
+  source                   = "./opensearch"
+  app_name                 = var.app_name
+  region                   = var.region
+  opensearch_enabled       = var.opensearch_enabled
+  opensearch_instance_type = var.opensearch_instance_type
+  opensearch_volume_size   = var.opensearch_volume_size
+}
+
 module "ecs" {
   source   = "./ecs"
   app_name = var.app_name
@@ -73,4 +82,7 @@ module "ecs" {
   CELERY_RESULT_BACKEND       = var.CELERY_RESULT_BACKEND
   AWS_ACCESS_KEY              = var.AWS_ACCESS_KEY
   AWS_SECRET_KEY              = var.AWS_SECRET_KEY
+
+  OPENSEARCH_HOST    = module.opensearch.opensearch_endpoint
+  OPENSEARCH_ENABLED = module.opensearch.opensearch_enabled
 }

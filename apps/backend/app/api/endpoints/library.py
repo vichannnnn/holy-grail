@@ -17,7 +17,8 @@ from app.api.deps import (
     SessionVerifiedUser,
 )
 from app.models.library import Library
-from app.schemas.library import NoteSchema, NoteUpdateSchema
+from app.schemas.library import NoteSchema, NoteUpdateSchema, SearchResponseSchema
+from app.services import search_service
 from app.utils.limiter import conditional_rate_limit
 
 router = APIRouter()
@@ -219,6 +220,91 @@ async def get_all_pending_approval_notes(
         sorted_by_upload_date=sorted_by_upload_date,
     )
     return notes
+
+
+@notes_router.get("/search", response_model=SearchResponseSchema)
+async def search_notes(
+    page: int = Query(1, title="Page number", gt=0),
+    size: int = Query(50, title="Page size", gt=0, le=50),
+    keyword: Optional[str] = Query(None, title="Search keyword"),
+    category: Optional[str] = Query(None, title="Category filter"),
+    subject: Optional[str] = Query(None, title="Subject filter"),
+    doc_type: Optional[str] = Query(None, title="Document type filter"),
+    year: Optional[int] = Query(None, title="Year filter"),
+    fuzzy: bool = Query(True, title="Enable fuzzy matching"),
+    include_facets: bool = Query(False, title="Include facets for filtering"),
+) -> SearchResponseSchema:
+    """
+    Full-text search across approved educational notes using OpenSearch.
+
+    Provides advanced search capabilities including:
+    - Full-text search with relevance scoring
+    - Fuzzy matching for typos
+    - Phrase matching (when fuzzy=False)
+    - Faceted search for filtering UI
+    - Result highlighting
+
+    Args:
+        page: Page number (1-indexed)
+        size: Number of items per page (max 50)
+        keyword: Search query for full-text search
+        category: Filter by education level (O-LEVEL, A-LEVEL, IB)
+        subject: Filter by subject
+        doc_type: Filter by document type
+        year: Filter by examination year
+        fuzzy: Enable fuzzy matching for typos (default: True)
+        include_facets: Include aggregations for filtering UI
+
+    Returns:
+        SearchResponseSchema: Search results with scores, highlights, and facets
+
+    Note:
+        Returns empty results if OpenSearch is unavailable.
+    """
+    result = search_service.search(
+        keyword=keyword,
+        category=category,
+        subject=subject,
+        doc_type=doc_type,
+        year=year,
+        page=page,
+        size=size,
+        fuzzy=fuzzy,
+        include_facets=include_facets,
+    )
+
+    if result is None:
+        return SearchResponseSchema(
+            items=[],
+            total=0,
+            page=page,
+            pages=0,
+            size=size,
+            facets=None,
+        )
+
+    return SearchResponseSchema(
+        items=[
+            {
+                "id": item.id,
+                "document_name": item.document_name,
+                "category": item.category,
+                "subject": item.subject,
+                "doc_type": item.doc_type,
+                "year": item.year,
+                "uploaded_by": item.uploaded_by,
+                "uploaded_on": item.uploaded_on,
+                "score": item.score,
+                "highlights": item.highlights,
+            }
+            for item in result.items
+        ],
+        total=result.total,
+        page=result.page,
+        pages=result.pages,
+        size=result.size,
+        facets=result.facets,
+    )
 
 
 @router.put("/{id}", response_model=NoteSchema)

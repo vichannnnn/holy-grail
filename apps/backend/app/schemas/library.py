@@ -100,3 +100,48 @@ class UserUploadCount(BaseModel):
 
     uploaded_by: int
     upload_count: int
+
+
+class SearchResultSchema(BaseModel):
+    """
+    Schema for OpenSearch result items.
+
+    Includes relevance score and optional highlights.
+    """
+
+    id: int
+    document_name: str
+    category: str
+    subject: str
+    doc_type: str
+    year: Optional[int] = None
+    uploaded_by: str
+    uploaded_on: datetime
+    score: float
+    highlights: Optional[dict[str, list[str]]] = None
+
+
+class SearchResponseSchema(BaseModel):
+    """
+    Schema for paginated search results from OpenSearch.
+
+    Includes facets for filtering UI.
+    """
+
+    items: list[SearchResultSchema]
+    total: int
+    page: int
+    pages: int
+    size: int
+    facets: Optional[dict[str, list[dict[str, Any]]]] = None
+
+
+class SearchIndexStatsSchema(BaseModel):
+    """
+    Schema for search index statistics.
+    """
+
+    available: bool
+    exists: bool = False
+    doc_count: int = 0
+    size_mb: float = 0.0

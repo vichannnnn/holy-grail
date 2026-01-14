@@ -28,8 +28,30 @@ services:
     networks:
       - holy-grail-network
 
+  opensearch:
+    container_name: holy-grail-opensearch
+    image: opensearchproject/opensearch:2.11.0
+    environment:
+      - discovery.type=single-node
+      - DISABLE_SECURITY_PLUGIN=true
+      - OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m
+    ports:
+      - "9200:9200"
+      - "9600:9600"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s http://localhost:9200 | grep -q 'cluster_name'"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    restart: unless-stopped
+    volumes:
+      - opensearch_data:/usr/share/opensearch/data
+    networks:
+      - holy-grail-network
+
 volumes:
   postgres_data:
+  opensearch_data:
 
 networks:
   holy-grail-network:

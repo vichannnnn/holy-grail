@@ -42,7 +42,9 @@ resource "aws_ecs_task_definition" "backend" {
         { name = "MAILTRAP_BEARER_TOKEN", value = var.MAILTRAP_BEARER_TOKEN },
         { name = "MAILTRAP_API_KEY", value = var.MAILTRAP_API_KEY },
         { name = "PRODUCTION", value = var.PRODUCTION },
-        { name = "LOGFIRE_TOKEN", value = var.LOGFIRE_TOKEN }
+        { name = "LOGFIRE_TOKEN", value = var.LOGFIRE_TOKEN },
+        { name = "OPENSEARCH_HOST", value = var.OPENSEARCH_HOST },
+        { name = "OPENSEARCH_ENABLED", value = tostring(var.OPENSEARCH_ENABLED) }
       ]
       essential = true
       logConfiguration = {
