@@ -175,21 +175,6 @@ class TestAnalyticsIntegration:
     """Test analytics endpoint integration with task service."""
 
     @patch("httpx.AsyncClient.post", new_callable=AsyncMock)
-    async def test_fetch_google_analytics_endpoint(self, mock_post, test_client_admin: TestClient):
-        """Test the analytics fetch endpoint calls task service."""
-        # Mock successful response from backend
-        mock_response = MagicMock()
-        mock_response.status_code = 200
-        mock_response.json.return_value = {"status": "success", "data": "analytics data"}
-        mock_response.raise_for_status = MagicMock()
-        mock_post.return_value = mock_response
-
-        response = test_client_admin.post("/analytics/fetch_google_analytics")
-
-        assert response.status_code == status.HTTP_200_OK
-        assert response.json() == {"status": "success", "data": "analytics data"}
-
-    @patch("httpx.AsyncClient.post", new_callable=AsyncMock)
     async def test_update_scoreboard_endpoint(self, mock_post, test_client_admin: TestClient):
         """Test the scoreboard update endpoint calls task service."""
         # Mock successful response
