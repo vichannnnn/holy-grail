@@ -3,7 +3,7 @@ name: Build and Deploy
 on:
   push:
     branches:
-      - staging
+      # - staging  # Temporarily disabled
       - master
     paths:
       - 'apps/backend/**'
