@@ -1,0 +1,150 @@
+[project]
+name = "backend"
+version = "0.1.0"
+description = "Holy Grail Backend API - Educational platform for Singaporean students"
+# readme = "README.md"  # Uncomment when README.md is added
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [
+    { name = "Holy Grail Team", email = "grail@himaa.me" }
+]
+dependencies = [
+    "alembic>=1.13.1",
+    "asyncpg>=0.29.0",
+    "fastapi>=0.112.2",
+    "fastapi-pagination>=0.12.5",
+    "passlib>=1.7.4",
+    "pydantic-settings>=2.0.0",
+    "python-jose>=3.3.0",
+    "uvicorn[standard]>=0.26.0",
+    "sqlalchemy>=2.0.25",
+    "pydantic[email]>=2.8.2",
+    "python-multipart>=0.0.6",
+    "PyJWT>=2.7.0",
+    "slowapi>=0.1.9",
+    "boto3>=1.28.1",
+    "mailtrap>=2.0.1",
+    "requests>=2.32.3",
+    "requests-toolbelt>=1.0.0",
+    "fpdf>=1.7.2",
+    "pytz>=2023.3.post1",
+    "logfire[fastapi]>=1.1.0",
+    "google-analytics-data>=0.17.2",
+    "google-api-core>=2.12.0",
+    "google-api-python-client>=2.104.0",
+    "google-auth>=2.23.3",
+    "google-auth-httplib2>=0.1.1",
+    "google-auth-oauthlib>=1.1.0",
+    "googleapis-common-protos>=1.61.0",
+    "psycopg>=3.1.17",
+    "psycopg-binary>=3.1.17",
+    "psycopg2-binary>=2.9.9",
+    "httpx>=0.25.2",
+    "aiofiles>=23.2.1",
+    "bcrypt>=4.3.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0",
+    "mypy>=1.3.0",
+    "ruff>=0.8.0",
+    "types-python-jose>=3.3.4",
+    "types-passlib>=1.7.7",
+    "types-requests>=2.32.0",
+    "pre-commit>=3.5.0",
+    "coverage>=7.3.0",
+    "moto[s3]>=4.2.13",
+    "ipdb>=0.13.13",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["app"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["app"]
+
+[tool.ruff.lint]
+select = [
+    "E",     # pycodestyle errors
+    "W",     # pycodestyle warnings
+    "F",     # pyflakes
+    "I",     # isort
+    "B",     # flake8-bugbear
+    "C4",    # flake8-comprehensions
+    "UP",    # pyupgrade
+    "ARG",   # flake8-unused-arguments
+    "SIM",   # flake8-simplify
+]
+ignore = [
+    "E501",  # line too long (handled by formatter)
+    "B008",  # do not perform function calls in argument defaults
+    "B904",  # raise from
+    "SIM108", # Use ternary operator instead of if-else
+    "F401",  # imported but unused
+    "F403",  # star import
+    "I001",  # import block is unsorted
+]
+exclude = [
+    "alembic/*",
+    ".venv/*",
+    "__pycache__",
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.ruff.lint.isort]
+known-first-party = ["app"]
+combine-as-imports = true
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+plugins = ["pydantic.mypy"]
+ignore_missing_imports = true
+disallow_untyped_defs = true
+warn_return_any = true
+warn_unused_configs = true
+no_implicit_optional = true
+exclude = [
+    "alembic/",
+    "tests/",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["app/tests"]
+python_files = ["test_*.py", "*_test.py"]
+addopts = "-v --tb=short"
+asyncio_mode = "auto"
+markers = [
+    "e2e: marks tests as end-to-end tests requiring running services (deselect with '-m \"not e2e\"')",
+]
+
+[tool.coverage.run]
+source = ["app"]
+omit = [
+    "*/tests/*",
+    "*/alembic/*",
+    "*/__pycache__/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]

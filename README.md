@@ -19,69 +19,133 @@ International Baccalaureate.
 
 ## Overview
 
-The backend is deployed with Docker, development is also done through Docker with hot reload properly set up for
-the best development experience while keeping everything isolated.
+Holy Grail is a modern web application built with:
+- **Backend**: FastAPI (Python) with PostgreSQL database
+- **Frontend**: Next.js (React) with TypeScript
+- **Infrastructure**: Monorepo managed with Turborepo
 
-The frontend can be run with `bun` runtime (or `yarn` and `pnpm`) and built with Vite, development experience is
-also ensured with hot reload properly in place.
+## Quick Start
 
-## Quick set-up and Local Deployment
+### Prerequisites
+- Node.js 18+ and Bun (or npm/yarn)
+- Python 3.11+
+- Docker
 
-- Run your Python on the shell and type in this, copy the result and paste into the `.env_example` for your `SECRET_KEY`
-  .
+### Setup (3 Simple Steps)
 
-```python
-import secrets
-secret_key = secrets.token_hex(32)
+1. **Clone and install dependencies**
+   ```bash
+   git clone <repository-url>
+   cd holy-grail
+   bun install
+   ```
+
+2. **Start the database**
+   ```bash
+   bun run db
+   ```
+
+3. **Start the development servers**
+   ```bash
+   bun run dev
+   ```
+
+That's it! You can now access:
+- 🚀 **Backend API**: http://localhost:8000/docs
+- 🎨 **Main Frontend**: http://localhost:3000
+- 💎 **App Frontend**: http://localhost:3001
+
+## Architecture
+
+Holy Grail uses a micro-frontend architecture with two separate frontend applications:
+
+```
+┌──────────────────┐     ┌──────────────────┐
+│  Main Frontend   │     │   App Frontend   │
+│   (grail.moe)    │     │ (app.grail.moe)  │
+│   Port: 3000     │     │   Port: 3001     │
+└────────┬─────────┘     └────────┬─────────┘
+         │                         │
+         └────────────┬────────────┘
+                      │
+               ┌──────▼─────────┐
+               │  Backend API   │
+               │   (FastAPI)    │
+               │  Port: 8000    │
+               └──────┬─────────┘
+                      │
+               ┌──────▼─────────┐
+               │   PostgreSQL   │
+               │   (Docker)     │
+               │  Port: 5432    │
+               └────────────────┘
 ```
 
-- Run the following command (For backend development only)
+- **Main Frontend** (`/apps/frontend`): The primary educational platform serving free notes and papers
+- **App Frontend** (`/apps/app-frontend`): Premium SaaS features for enhanced studying tools
+- Both frontends connect to the same backend API and share authentication
+
+## Project Structure
 
 ```
-cd holy-grail-backend
-cp .env.example .env
-make build
-make migrate
+holy-grail/
+├── apps/
+│   ├── backend/        # FastAPI backend application
+│   ├── frontend/       # Main educational platform (Next.js)
+│   ├── app-frontend/   # Premium features platform (Next.js)
+│   └── task/           # Celery task worker
+├── packages/           # Shared packages
+├── docs/              # Documentation
+└── turbo.json         # Monorepo configuration
 ```
 
-- Run the following command (For frontend development only)
+## Available Commands
 
-```
-cd holy-grail-frontend
-while read -r line; do export "$line"; done < .env.example
-bun install
-bun run local
-```
+From the root directory:
 
-_NOTE: If you don't have WSL installed and you're using Windows environment, you could use any other JavaScript
-runtime such as `yarn` or `pnpm`, just make sure you don't push the lockfile when you're done._
-
-- To set up your virtualenv for pre-commit hooks
-
-```
-make venv
-source holy-grail-backend/backend/app/.venv/bin/activate
-pre-commit install
+```bash
+bun run dev          # Start all services
+bun run db           # Start database only
+bun run build        # Build all packages
+bun run test         # Run all tests
+bun run lint         # Lint all packages
 ```
 
-You should be able to see (holy-grail-py1.0) in your terminal beside your name, this means you're accessing all the
-packages required for development of the app now. If your pre-commit hook is failing, please check the error and
-make sure you re-add and commit the changed files.
+For package-specific commands, see the README in each package directory.
 
-## Usage
+## Migration from Previous Setup
 
-Go to `http://localhost:8000/docs` to access the endpoints from the Swagger UI.
-Go to `http://localhost:5173/` to access
-the web application.
+If you have the old setup with `new-frontend`:
 
-You can also run `make runserver` to access the same application connected to the same database in port 9000, this is
-purely for debugging purpose with `pdb`. In this way, you have to access `http://localhost:9000/docs` while allowing
-interactive CLI for your debugging purpose.
+1. **Pull the latest changes**:
+   ```bash
+   git pull origin main
+   ```
 
-You can run `make check` to run your code through mypy, ruff and pytest as a pre-hook commit for your own projects.
+2. **Clean and reinstall dependencies**:
+   ```bash
+   rm -rf node_modules bun.lockb
+   bun install
+   ```
+
+3. **Update your local development**:
+   - The main frontend now runs on port 3000 (previously `new-frontend` was on 3001)
+   - New `app-frontend` runs on port 3001
+   - Remove any local references to the old frontend directory
+
+4. **Update environment variables**:
+   - Main frontend: Uses standard `.env.local`
+   - App frontend: Create `.env.local` from `.env.example`
+
+## Documentation
+
+- 📖 [Setup Guide](./docs/SETUP.md) - Detailed setup instructions
+- 🛠️ [Development Guide](./docs/DEVELOPMENT.md) - Development workflow and tips
+- 🏗️ [Architecture](./docs/ARCHITECTURE.md) - System design and structure
+- 🚨 [Troubleshooting](./docs/TROUBLESHOOTING.md) - Common issues and solutions
 
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-Please make sure that all backend contributions are updated with appropriate tests and passed with `make tests` first.
+Please make sure that all backend contributions are updated with appropriate tests and passed with `bun run test` first.

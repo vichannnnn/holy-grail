@@ -5,6 +5,9 @@ on:
     branches:
       - dev
       - master
+    paths:
+      - 'apps/backend/**'
+      - '.github/workflows/pull-request-test.yml'
 
 jobs:
   test:
@@ -13,14 +16,52 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Copy .env.example to .env
-        run: cp .env.example .env
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
 
-      - name: Run tests with coverage
-        run: make coverage
+      - name: Install dependencies
+        run: bun install
 
-      - name: Generate xml
-        run: make generate_xml
+      - name: Start database
+        run: docker compose -f docker/docker-compose.db.ci.yml up -d
+
+      - name: Wait for database to be ready
+        run: |
+          until docker exec holy-grail-db pg_isready -U holy_grail; do
+            echo "Waiting for database..."
+            sleep 2
+          done
+
+      - name: Build backend Docker image
+        working-directory: ./apps/backend
+        run: docker build -f Dockerfile.ci -t holy-grail-backend-test .
+
+      - name: Run backend container
+        run: |
+          docker run -d --name backend-test \
+            --network container:holy-grail-db \
+            -e POSTGRES_HOST=localhost \
+            -e POSTGRES_PORT=5432 \
+            -e POSTGRES_DB=holy_grail \
+            -e POSTGRES_USER=holy_grail \
+            -e POSTGRES_PASSWORD=holy_grail \
+            -e ENVIRONMENT=local \
+            holy-grail-backend-test
+
+      - name: Run tests in container
+        run: |
+          docker exec backend-test sh -c "cd /backend && PYTHONPATH=. uv run pytest app/tests -x -vv"
+
+      - name: Generate coverage
+        run: |
+          docker exec backend-test sh -c "cd /backend && PYTHONPATH=. uv run coverage run -m pytest app/tests"
+          docker exec backend-test sh -c "cd /backend && uv run coverage xml"
+
+      - name: Copy coverage file
+        run: |
+          docker cp backend-test:/backend/coverage.xml ./coverage.xml
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
@@ -28,6 +69,13 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: true
           verbose: true
+          file: ./coverage.xml
+
+      - name: Cleanup
+        if: always()
+        run: |
+          docker stop backend-test || true
+          docker rm backend-test || true
 
   check:
     if: always()

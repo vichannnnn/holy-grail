@@ -1,3 +1,4 @@
+# Staging deployment - 2025-10-03
 provider "aws" {
   access_key = var.AWS_ACCESS_KEY
   secret_key = var.AWS_SECRET_KEY

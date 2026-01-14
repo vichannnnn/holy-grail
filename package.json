@@ -1,0 +1,30 @@
+{
+  "name": "holy-grail",
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "turbo": "^2.6.0",
+    "typescript": "^5.9.3"
+  },
+  "packageManager": "bun@1.2.22",
+  "private": true,
+  "scripts": {
+    "setup": "bunx turbo setup",
+    "build": "bunx turbo build",
+    "db": "docker compose -f docker/docker-compose.db.yml up -d",
+    "dev": "FORCE_COLOR=1 bunx turbo dev",
+    "format": "FORCE_COLOR=1 bunx turbo format",
+    "lint": "FORCE_COLOR=1 bunx turbo lint",
+    "start": "NODE_ENV=production bunx turbo run start",
+    "test": "FORCE_COLOR=1 bunx turbo test",
+    "migrate": "cd apps/backend && bun run migrate",
+    "seed": "cd apps/backend && bun run seed",
+    "task": "cd apps/task && npm run dev",
+    "dev:full": "bun run db && sleep 3 && bun run migrate && bun run seed && bun run dev"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}

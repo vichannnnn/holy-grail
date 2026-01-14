@@ -1,3 +1,6 @@
+.claude
+google-analytics/
+
 # Frontend gitignore
 
 # Logs
@@ -27,7 +30,6 @@ holy-grail-backend/.idea
 
 
 *.sql
-postgres/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -49,7 +51,6 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
 lib64/
 parts/
 sdist/
@@ -67,7 +68,6 @@ MANIFEST
 *.manifest
 *.spec
 
-*.json
 
 # Installer logs
 pip-log.txt
@@ -156,9 +156,10 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
+apps/backend/.env
 .env.aws
 .venv
+docker-volumes/
 env/
 venv/
 ENV/
@@ -195,3 +196,20 @@ cython_debug/
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
+
+.turbo
+
+
+# Claude Code configuration
+.claude/
+# Local docker mounts for development
+docker-volumes/
+
+.next
+next-env.d.ts
+.env.*
+
+# Project-specific directories
+/data/
+/prototype/
+/scripts/

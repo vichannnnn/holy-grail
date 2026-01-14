@@ -1,7 +1,0 @@
-User-agent: *
-Allow: /
-
-Disallow: /reset-password/
-Disallow: /verify/
-
-Sitemap: https://grail.moe/sitemap.xml

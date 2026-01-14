@@ -1,0 +1,18 @@
+FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim
+
+WORKDIR /backend
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+# Install system dependencies required for Python packages
+RUN apt-get update && apt-get install -y build-essential libffi-dev && rm -rf /var/lib/apt/lists/*
+
+# Copy all files
+COPY . .
+
+# Install dependencies including dev dependencies for testing
+RUN uv sync --frozen --all-extras
+
+# Keep container running for test execution
+CMD ["tail", "-f", "/dev/null"]

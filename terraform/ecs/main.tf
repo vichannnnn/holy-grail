@@ -118,8 +118,13 @@ resource "aws_iam_role_policy_attachment" "ecs_execution_role_policy_attach" {
 }
 
 resource "aws_cloudwatch_log_group" "ecs" {
-  name = "/aws/ecs/${var.app_name}/cluster"
+  name              = "/aws/ecs/${var.app_name}/cluster"
   retention_in_days = 1
+
+  tags = {
+    Name        = "${var.app_name}-ecs-logs"
+    Environment = var.app_name
+  }
 }
 
 resource "aws_ecs_cluster" "app_alb" {

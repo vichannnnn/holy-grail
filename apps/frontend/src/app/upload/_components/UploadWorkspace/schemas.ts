@@ -1,0 +1,23 @@
+import { z } from "zod";
+
+export const SUPPORTED_FORMATS = ["application/pdf", "application/zip"];
+const FILE_SIZE_LIMIT = 500 * 1024 * 1024; // 500MB
+
+export const NoteSchema = z.object({
+	name: z.string().min(1, "Document name is required").max(100, "Maximum 100 characters"),
+	subject: z.number().min(1, "Subject is required"),
+	type: z.number().min(1, "Type is required"),
+	category: z.number().min(1, "Category is required"),
+	year: z.number().min(1900, "Year must be valid").max(2100, "Year must be valid").optional(),
+	file: z
+		.file()
+		.refine((file) => file.size <= FILE_SIZE_LIMIT, "File too large (max 500MB)")
+		.refine(
+			(file) => SUPPORTED_FORMATS.includes(file.type),
+			"Unsupported File Format (only PDF and ZIP allowed)",
+		),
+});
+
+export const NotesSchema = z.object({
+	notes: z.array(NoteSchema).min(1, "At least one document is required"),
+});

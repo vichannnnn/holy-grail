@@ -11,7 +11,7 @@ resource "aws_ecs_task_definition" "backend" {
     {
       name    = "backend"
       image   = "${var.backend_image}:${var.backend_image_hash}"
-      command = ["sh", "-c", "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"]
+      command = ["sh", "-c", "uv run alembic upgrade head && uv run uvicorn app.main:app --host 0.0.0.0 --port 8000"]
       repositoryCredentials = {
         credentialsParameter = aws_secretsmanager_secret.ghcr_token.arn
       }
@@ -57,7 +57,7 @@ resource "aws_ecs_task_definition" "backend" {
     {
       name    = "celery"
       image   = "${var.celery_image}:${var.celery_image_hash}"
-      command = ["celery", "-A", "app.utils.worker", "worker", "-B", "--loglevel=info"]
+      command = ["uv", "run", "celery", "-A", "worker", "worker", "-B", "--loglevel=info"]
       repositoryCredentials = {
         credentialsParameter = aws_secretsmanager_secret.ghcr_token.arn
       }
