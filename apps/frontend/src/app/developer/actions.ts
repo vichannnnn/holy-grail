@@ -13,10 +13,18 @@ import type {
 export async function fetchUsers(
 	page: number = 1,
 	size: number = 20,
+	search?: string,
 ): Promise<LibraryAPIResponse<PaginatedUsers>> {
 	let response: AxiosResponse<PaginatedUsers>;
 	try {
-		response = await apiClient.get(`/admin/users?page=${page}&size=${size}`);
+		const params = new URLSearchParams({
+			page: page.toString(),
+			size: size.toString(),
+		});
+		if (search) {
+			params.append("search", search);
+		}
+		response = await apiClient.get(`/admin/users?${params.toString()}`);
 	} catch (error) {
 		return { ok: false, err: `Failed to fetch users: ${error}` };
 	}

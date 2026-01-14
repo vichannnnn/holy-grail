@@ -11,7 +11,7 @@ from uuid import uuid4
 
 import jwt
 from pydantic import EmailStr
-from sqlalchemy import Index, asc, exc as SQLAlchemyExceptions, func, select, update
+from sqlalchemy import Index, asc, desc, exc as SQLAlchemyExceptions, func, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Mapped, mapped_column, relationship, synonym
 from sqlalchemy.sql.expression import text
@@ -526,21 +526,26 @@ class Account(Base, CRUD["Account"]):
         session: AsyncSession,
         page: int,
         size: int,
+        search: str | None = None,
     ) -> dict:
         """
-        Get paginated list of users sorted by ID in ascending order.
+        Get paginated list of users sorted by role (descending) then ID.
 
         Args:
             session: Active database session
             page: Page number (1-indexed)
             size: Number of items per page
+            search: Optional username search (case-insensitive partial match)
 
         Returns:
             dict: Paginated response with items, page, pages, size, total
         """
-        stmt = select(cls).order_by(asc(cls.id))
+        stmt = select(cls).order_by(desc(cls.role), asc(cls.id))
 
-        count_stmt = select(func.count()).select_from(stmt)
+        if search:
+            stmt = stmt.where(cls.username.ilike(f"%{search}%"))
+
+        count_stmt = select(func.count()).select_from(stmt.subquery())
         total = await session.scalar(count_stmt)
 
         stmt = stmt.limit(size).offset((page - 1) * size)
