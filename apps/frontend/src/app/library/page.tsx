@@ -10,6 +10,7 @@ import {
 } from "./actions";
 import { PAGE_MAX_SIZE, TELEGRAM_LINK } from "./constants";
 import { LibrarySearch, LibraryContent } from "./_components";
+import { Showcase } from "@lib/features/client";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -100,6 +101,11 @@ export default async function LibraryPage({
 					</Text>
 				</div>
 			</div>
+			<Showcase
+				imageUrl="https://image.himaa.me/TURIS_2026_1.png"
+				altText="Turis VPN"
+				redirectUrl="https://clickalytics.turisvpn.com/invite?url_id=holygrail"
+			/>
 			<LibrarySearch
 				query={query}
 				allCategories={categories}
