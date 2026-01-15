@@ -9,8 +9,8 @@
 		"setup": "bun install",
 		"dev": "bunx next dev --turbopack",
 		"build": "bunx next build",
-		"build-dev": "cp .env.development .env.local && bunx --bun next build",
-		"build-prod": "cp .env.production .env.local && bunx --bun next build",
+		"build-dev": "cp .env.development .env.local && bunx next build",
+		"build-prod": "cp .env.production .env.local && bunx next build",
 		"start": "next start",
 		"format": "bunx biome format --write .",
 		"lint": "bunx biome lint --write ./src"
@@ -22,7 +22,7 @@
 		"@phosphor-icons/react": "^2.1.10",
 		"@shared/tooling": "workspace:*",
 		"@shared/ui": "workspace:*",
-		"axios": "^1.13.1",
+		"axios": "^1.13.2",
 		"babel-plugin-react-compiler": "^1.0.0",
 		"jwt-decode": "^4.0.0",
 		"next": "16.0.1",
@@ -36,10 +36,9 @@
 	},
 	"devDependencies": {
 		"@tailwindcss/postcss": "^4.1.16",
-		"@types/node": "^24.9.2",
-		"@types/react": "^19.2.2",
-		"@types/react-dom": "^19.2.2",
-		"baseline-browser-mapping": "^2.9.14",
+		"@types/node": "^24.10.8",
+		"@types/react": "^19.2.8",
+		"@types/react-dom": "^19.2.3",
 		"tailwindcss": "^4.1.16",
 		"typescript": "^5.9.3"
 	}

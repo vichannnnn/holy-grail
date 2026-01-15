@@ -3,7 +3,6 @@ import { forbidden, unauthorized } from "next/navigation";
 import { Text, Title } from "@shared/ui/components";
 import type { Metadata } from "next";
 import { fetchAllCategories, fetchAllDocumentTypes, fetchAllSubjects } from "@/app/library/actions";
-import { fetchAllUsers } from "./actions";
 import { DeveloperContent } from "./_components/DeveloperContent";
 
 export const metadata: Metadata = {
@@ -19,11 +18,10 @@ export default async function DeveloperPage() {
 		forbidden();
 	}
 
-	const [categories, documentTypes, subjects, users] = await Promise.all([
+	const [categories, documentTypes, subjects] = await Promise.all([
 		fetchAllCategories(),
 		fetchAllDocumentTypes(),
 		fetchAllSubjects(),
-		fetchAllUsers(),
 	]);
 
 	return (
@@ -35,12 +33,13 @@ export default async function DeveloperPage() {
 					Additionally, you can update users' permissions here as well.
 				</Text>
 			</div>
-			<DeveloperContent
-				categories={categories}
-				subjects={subjects}
-				documentTypes={documentTypes}
-				users={users}
-			/>
+			<div className="m-auto w-5/6 sm:w-3/4">
+				<DeveloperContent
+					categories={categories}
+					subjects={subjects}
+					documentTypes={documentTypes}
+				/>
+			</div>
 		</main>
 	);
 }

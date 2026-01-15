@@ -4,5 +4,6 @@ export * from "./CategoryEdit";
 export * from "./SubjectEdit";
 export * from "./DocumentTypeEdit";
 export * from "./UserEdit";
+export * from "./UsersTab";
 export * from "./types";
 export * from "./schemas";

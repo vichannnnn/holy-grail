@@ -170,3 +170,15 @@ variable "CELERY_BROKER_URL" {
   description = "Redis URL"
   type        = string
 }
+
+variable "OPENSEARCH_HOST" {
+  description = "OpenSearch endpoint URL."
+  type        = string
+  default     = ""
+}
+
+variable "OPENSEARCH_ENABLED" {
+  description = "Whether OpenSearch is enabled."
+  type        = bool
+  default     = false
+}

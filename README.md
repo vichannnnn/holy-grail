@@ -3,7 +3,7 @@
 [![codecov](https://codecov.io/gh/vichannnnn/holy-grail/branch/dev/graph/badge.svg)](https://codecov.io/gh/vichannnnn/holy-grail/tree/dev)
 [![Python](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/)
 [![Docker](https://img.shields.io/badge/built%20with-Docker-blue)](https://www.docker.com/)
-[![Build and Deploy](https://github.com/vichannnnn/holy-grail/actions/workflows/build-and-deploy.yml/badge.svg)](https://github.com/vichannnnn/holy-grail/actions/workflows/build-and-deploy.yml)
+[![Build and Deploy](https://github.com/vichannnnn/holy-grail/actions/workflows/build-and-deploy.yml/badge.svg?branch=master)](https://github.com/vichannnnn/holy-grail/actions/workflows/build-and-deploy.yml)
 [![Pull Request Tests](https://github.com/vichannnnn/holy-grail/actions/workflows/pull-request-test.yml/badge.svg)](https://github.com/vichannnnn/holy-grail/actions/workflows/pull-request-test.yml)
 
 ![Grail-chan](https://image.himaa.me/grail-chan-sparkling-640x480.png)

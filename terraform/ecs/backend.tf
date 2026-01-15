@@ -5,7 +5,7 @@ resource "aws_ecs_task_definition" "backend" {
   execution_role_arn       = aws_iam_role.ecs_execution_role.arn
   network_mode             = "awsvpc"
   cpu                      = 512
-  memory                   = 1024
+  memory                   = 1536
 
   container_definitions = jsonencode([
     {
@@ -42,7 +42,10 @@ resource "aws_ecs_task_definition" "backend" {
         { name = "MAILTRAP_BEARER_TOKEN", value = var.MAILTRAP_BEARER_TOKEN },
         { name = "MAILTRAP_API_KEY", value = var.MAILTRAP_API_KEY },
         { name = "PRODUCTION", value = var.PRODUCTION },
-        { name = "LOGFIRE_TOKEN", value = var.LOGFIRE_TOKEN }
+        { name = "LOGFIRE_TOKEN", value = var.LOGFIRE_TOKEN },
+        { name = "OPENSEARCH_HOST", value = var.OPENSEARCH_HOST },
+        { name = "OPENSEARCH_ENABLED", value = tostring(var.OPENSEARCH_ENABLED) },
+        { name = "TASK_API_URL", value = "http://localhost:8001" }
       ]
       essential = true
       logConfiguration = {
@@ -82,7 +85,9 @@ resource "aws_ecs_task_definition" "backend" {
         { name = "MAILTRAP_BEARER_TOKEN", value = var.MAILTRAP_BEARER_TOKEN },
         { name = "MAILTRAP_API_KEY", value = var.MAILTRAP_API_KEY },
         { name = "PRODUCTION", value = var.PRODUCTION },
-        { name = "LOGFIRE_TOKEN", value = var.LOGFIRE_TOKEN }
+        { name = "LOGFIRE_TOKEN", value = var.LOGFIRE_TOKEN },
+        { name = "OPENSEARCH_HOST", value = var.OPENSEARCH_HOST },
+        { name = "OPENSEARCH_ENABLED", value = tostring(var.OPENSEARCH_ENABLED) }
       ]
       essential = true
       logConfiguration = {
@@ -91,6 +96,36 @@ resource "aws_ecs_task_definition" "backend" {
           awslogs-group         = "/aws/ecs/${var.app_name}/cluster"
           awslogs-region        = var.region
           awslogs-stream-prefix = "celery"
+        }
+      }
+    },
+    {
+      name    = "task-api"
+      image   = "${var.celery_image}:${var.celery_image_hash}"
+      command = ["uv", "run", "uvicorn", "api:app", "--host", "0.0.0.0", "--port", "8001"]
+      repositoryCredentials = {
+        credentialsParameter = aws_secretsmanager_secret.ghcr_token.arn
+      }
+      portMappings = [
+        {
+          containerPort = 8001
+          protocol      = "tcp"
+        }
+      ]
+      environment = [
+        { name = "CELERY_BROKER_URL", value = var.CELERY_BROKER_URL },
+        { name = "CELERY_RESULT_BACKEND", value = var.CELERY_RESULT_BACKEND },
+        { name = "OPENSEARCH_HOST", value = var.OPENSEARCH_HOST },
+        { name = "OPENSEARCH_ENABLED", value = tostring(var.OPENSEARCH_ENABLED) },
+        { name = "AWS_CLOUDFRONT_URL", value = var.AWS_CLOUDFRONT_URL }
+      ]
+      essential = true
+      logConfiguration = {
+        logDriver = "awslogs"
+        options = {
+          awslogs-group         = "/aws/ecs/${var.app_name}/cluster"
+          awslogs-region        = var.region
+          awslogs-stream-prefix = "task-api"
         }
       }
     },

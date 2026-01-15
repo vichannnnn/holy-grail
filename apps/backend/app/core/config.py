@@ -70,6 +70,14 @@ class Settings(BaseSettings):
     # Optional Services
     logfire_token: Optional[str] = Field(default=None)
 
+    # OpenSearch Configuration
+    opensearch_host: str = Field(default="localhost")
+    opensearch_port: int = Field(default=9200)
+    opensearch_index: str = Field(default="holy_grail_documents")
+    opensearch_enabled: bool = Field(default=True)
+    opensearch_user: Optional[str] = Field(default=None)
+    opensearch_password: Optional[str] = Field(default=None)
+
     @property
     def database_url(self) -> str:
         """

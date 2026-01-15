@@ -17,6 +17,8 @@ celery_app = Celery(
         "tasks.new_password_email",
         "tasks.update_scoreboard_users",
         "tasks.fetch_google_analytics",
+        "tasks.index_document",
+        "tasks.delete_document",
     ],
 )
 

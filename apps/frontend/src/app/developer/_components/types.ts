@@ -7,11 +7,18 @@ import type {
 } from "@/app/library/types";
 import type { User } from "@lib/auth";
 
+export interface PaginatedUsers {
+	items: User[];
+	page: number;
+	pages: number;
+	size: number;
+	total: number;
+}
+
 export interface DeveloperContentProps {
 	categories: LibraryAPIResponse<CategoryType[]>;
 	subjects: LibraryAPIResponse<SubjectType[]>;
 	documentTypes: LibraryAPIResponse<DocumentType[]>;
-	users: LibraryAPIResponse<User[]>;
 }
 
 export interface DataTableProps<T = Record<string, unknown>> {

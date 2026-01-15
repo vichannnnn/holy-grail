@@ -45,7 +45,7 @@ export function AdminContent({ ok, data, err }: Readonly<AdminContentProps>) {
 	}
 
 	return (
-		<main className="flex flex-col px-8 mt-4">
+		<div className="flex flex-col mt-4">
 			{[undefined, "sm", "md"].includes(breakpoint) ? (
 				<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 					{data.items.map((item) => (
@@ -141,6 +141,6 @@ export function AdminContent({ ok, data, err }: Readonly<AdminContentProps>) {
 				totalPages={data.pages}
 				onPageChange={(page) => navigateToSearchValue({ name: "page", value: page.toString() })}
 			/>
-		</main>
+		</div>
 	);
 }
