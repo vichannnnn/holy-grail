@@ -5,7 +5,6 @@ This module provides endpoints for creating, reading, updating, and deleting
 educational notes and practice papers. Includes functionality for file uploads,
 downloads, approval workflows, and search/filtering capabilities.
 """
-import asyncio
 from typing import List, Optional
 
 from fastapi import APIRouter, Query, Request
@@ -26,14 +25,14 @@ router = APIRouter()
 notes_router = APIRouter()
 
 
-@router.post("", response_model=List[NoteSchema])
+@router.post("", response_model=list[NoteSchema])
 @conditional_rate_limit("5/minute")
 async def create_note(
     request: Request,
     session: CurrentSession,
     s3_bucket: SessionBucket,
     authenticated: SessionVerifiedUser,
-) -> List[NoteSchema]:
+) -> list[NoteSchema]:
     """
     Create new educational notes with file uploads.
 
@@ -158,9 +157,8 @@ async def get_all_approved_notes(
     Example:
         GET /notes/approved?category=O-LEVEL&subject=Mathematics&page=1&size=20
     """
-    if keyword and search_service.is_available():
-        search_result = await asyncio.to_thread(
-            search_service.search,
+    if keyword and await search_service.is_available():
+        search_result = await search_service.search(
             keyword=keyword,
             category=category,
             subject=subject,

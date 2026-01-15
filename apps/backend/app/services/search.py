@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Any, Optional
 
-from opensearchpy import OpenSearch, helpers
+from opensearchpy import AsyncOpenSearch
 from pydantic import BaseModel
 
 from app.core.config import settings
@@ -64,14 +64,8 @@ class SearchService:
     }
 
     def __init__(self) -> None:
-        self._client: Optional[OpenSearch] = None
+        self._client: Optional[AsyncOpenSearch] = None
         self._connected = False
-
-    @property
-    def client(self) -> Optional[OpenSearch]:
-        if not self._connected:
-            self._connect()
-        return self._client
 
     @property
     def index_name(self) -> str:
@@ -81,16 +75,18 @@ class SearchService:
     def is_enabled(self) -> bool:
         return settings.opensearch_enabled
 
-    def _connect(self) -> bool:
+    async def _get_client(self) -> Optional[AsyncOpenSearch]:
         if not self.is_enabled:
-            return False
+            return None
 
-        try:
+        if self._client is None:
             auth = None
             if settings.opensearch_user and settings.opensearch_password:
                 auth = (settings.opensearch_user, settings.opensearch_password)
 
-            self._client = OpenSearch(
+            use_ssl = settings.opensearch_port == 443
+
+            self._client = AsyncOpenSearch(
                 hosts=[
                     {
                         "host": settings.opensearch_host,
@@ -98,60 +94,55 @@ class SearchService:
                     }
                 ],
                 http_auth=auth,
-                use_ssl=False,
+                use_ssl=use_ssl,
                 verify_certs=False,
                 ssl_show_warn=False,
                 timeout=30,
             )
 
-            if self._client.ping():
-                self._connected = True
-                return True
-            else:
-                self._connected = False
-                return False
-        except Exception:
-            self._connected = False
-            return False
+        return self._client
 
-    def is_available(self) -> bool:
+    async def is_available(self) -> bool:
         if not self.is_enabled:
             return False
         try:
-            if self.client:
-                return self.client.ping()
+            client = await self._get_client()
+            if client:
+                return await client.ping()
             return False
         except Exception:
             return False
 
-    def create_index(self, delete_existing: bool = False) -> bool:
-        if not self.client:
+    async def create_index(self, delete_existing: bool = False) -> bool:
+        client = await self._get_client()
+        if not client:
             return False
 
         try:
-            if self.client.indices.exists(index=self.index_name):
+            if await client.indices.exists(index=self.index_name):
                 if delete_existing:
-                    self.client.indices.delete(index=self.index_name)
+                    await client.indices.delete(index=self.index_name)
                 else:
                     return True
 
-            self.client.indices.create(index=self.index_name, body=self.INDEX_SETTINGS)
+            await client.indices.create(index=self.index_name, body=self.INDEX_SETTINGS)
             return True
         except Exception:
             return False
 
-    def delete_index(self) -> bool:
-        if not self.client:
+    async def delete_index(self) -> bool:
+        client = await self._get_client()
+        if not client:
             return False
 
         try:
-            if self.client.indices.exists(index=self.index_name):
-                self.client.indices.delete(index=self.index_name)
+            if await client.indices.exists(index=self.index_name):
+                await client.indices.delete(index=self.index_name)
             return True
         except Exception:
             return False
 
-    def index_document(
+    async def index_document(
         self,
         doc_id: int,
         document_name: str,
@@ -163,7 +154,8 @@ class SearchService:
         uploaded_on: datetime,
         content: Optional[str] = None,
     ) -> bool:
-        if not self.client:
+        client = await self._get_client()
+        if not client:
             return False
 
         search_text = f"{document_name} {subject} {category}"
@@ -184,7 +176,7 @@ class SearchService:
         }
 
         try:
-            self.client.index(
+            await client.index(
                 index=self.index_name,
                 id=str(doc_id),
                 body=doc_body,
@@ -194,8 +186,11 @@ class SearchService:
         except Exception:
             return False
 
-    def bulk_index_documents(self, documents: list[dict[str, Any]]) -> tuple[int, int]:
-        if not self.client:
+    async def bulk_index_documents(self, documents: list[dict[str, Any]]) -> tuple[int, int]:
+        from opensearchpy.helpers import async_bulk
+
+        client = await self._get_client()
+        if not client:
             return 0, len(documents)
 
         actions = []
@@ -229,8 +224,8 @@ class SearchService:
             )
 
         try:
-            success, failed = helpers.bulk(
-                self.client,
+            success, failed = await async_bulk(
+                client,
                 actions,
                 chunk_size=100,
                 request_timeout=60,
@@ -239,12 +234,13 @@ class SearchService:
         except Exception:
             return 0, len(documents)
 
-    def delete_document(self, doc_id: int) -> bool:
-        if not self.client:
+    async def delete_document(self, doc_id: int) -> bool:
+        client = await self._get_client()
+        if not client:
             return False
 
         try:
-            self.client.delete(
+            await client.delete(
                 index=self.index_name,
                 id=str(doc_id),
                 refresh=True,
@@ -253,7 +249,7 @@ class SearchService:
         except Exception:
             return False
 
-    def search(
+    async def search(
         self,
         keyword: Optional[str] = None,
         category: Optional[str] = None,
@@ -265,7 +261,8 @@ class SearchService:
         fuzzy: bool = True,
         include_facets: bool = False,
     ) -> Optional[SearchResponse]:
-        if not self.client:
+        client = await self._get_client()
+        if not client:
             return None
 
         must_clauses: list[dict[str, Any]] = []
@@ -347,7 +344,7 @@ class SearchService:
             }
 
         try:
-            result = self.client.search(index=self.index_name, body=body)
+            result = await client.search(index=self.index_name, body=body)
 
             total = result["hits"]["total"]["value"]
             pages = (total + size - 1) // size if size > 0 else 0
@@ -398,15 +395,16 @@ class SearchService:
         except Exception:
             return None
 
-    def get_index_stats(self) -> Optional[dict[str, Any]]:
-        if not self.client:
+    async def get_index_stats(self) -> Optional[dict[str, Any]]:
+        client = await self._get_client()
+        if not client:
             return None
 
         try:
-            if not self.client.indices.exists(index=self.index_name):
+            if not await client.indices.exists(index=self.index_name):
                 return {"exists": False, "doc_count": 0}
 
-            stats = self.client.indices.stats(index=self.index_name)
+            stats = await client.indices.stats(index=self.index_name)
             doc_count = stats["indices"][self.index_name]["primaries"]["docs"]["count"]
             size_bytes = stats["indices"][self.index_name]["primaries"]["store"]["size_in_bytes"]
 
@@ -418,6 +416,11 @@ class SearchService:
             }
         except Exception:
             return None
+
+    async def close(self) -> None:
+        if self._client:
+            await self._client.close()
+            self._client = None
 
 
 search_service = SearchService()
