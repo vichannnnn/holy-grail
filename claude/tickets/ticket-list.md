@@ -15,7 +15,6 @@ This file maintains a centralized list of all tickets in the project. Update thi
 ## Active Tickets
 
 ### High Priority
-- 🔴 [TICKET-013](./TICKET-013-elasticsearch-integration.md) - Elasticsearch Integration for Full-Text Search
 - 🟡 [TICKET-014](./TICKET-014-production-deployment.md) - Production Deployment Preparation (partial: CI/CD exists)
 - 🔴 [TICKET-015](./TICKET-015-extract-parse-mcqs.md) - Extract and Parse MCQs from Exam Papers
 - 🔴 [TICKET-016](./TICKET-016-question-answer-matching.md) - Build Question-Answer Matching System
@@ -36,6 +35,7 @@ This file maintains a centralized list of all tickets in the project. Update thi
 _No low priority tickets yet_
 
 ## Completed Tickets
+- 🟢 [TICKET-013](./TICKET-013-elasticsearch-integration.md) - OpenSearch Integration for Full-Text Search (Completed: 2026-01-15)
 - 🟢 [TICKET-001](./TICKET-001-implement-configuration-system.md) - Implement Configuration System (Completed: 2025-01-31)
 - 🟢 [TICKET-002](./TICKET-002-migrate-to-uv-package-manager.md) - Migrate to UV Package Manager (Completed: 2025-01-31)
 - 🟢 [TICKET-003](./TICKET-003-simplify-docker-setup.md) - Simplify Docker Setup for Local Development (Completed: 2025-01-31)

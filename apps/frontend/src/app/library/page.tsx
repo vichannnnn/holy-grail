@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { getUser, RoleEnum } from "@lib/auth";
 import Link from "next/link";
 import { Title, Text, Divider } from "@shared/ui/components";
@@ -29,8 +30,7 @@ export const metadata: Metadata = {
 	},
 };
 
-async function getContent({ query }: { query: NotesSearchParams }) {
-	"use cache: private";
+const getContent = cache(async ({ query }: { query: NotesSearchParams }) => {
 	const notesResponse = await fetchApprovedNotes({ ...query, size: PAGE_MAX_SIZE });
 	const categories = await fetchAllCategories();
 	const [documentTypes, subjects] = await Promise.all([
@@ -43,7 +43,7 @@ async function getContent({ query }: { query: NotesSearchParams }) {
 	]);
 
 	return { notesResponse, categories, documentTypes, subjects };
-}
+});
 
 export default async function LibraryPage({
 	searchParams,

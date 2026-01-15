@@ -5,8 +5,10 @@ from pydantic import BaseModel, EmailStr
 
 load_dotenv()
 
+from tasks.delete_document import delete_document_task
 from tasks.fetch_google_analytics import fetch_google_analytics
 from tasks.health_check import ping
+from tasks.index_document import index_document_task
 from tasks.new_password_email import send_new_password_email_task
 from tasks.reset_password_email import send_reset_password_email_task
 from tasks.update_scoreboard_users import update_scoreboard_users_task
@@ -39,6 +41,23 @@ class ResetPasswordEmailRequest(EmailTaskRequest):
 
 class NewPasswordEmailRequest(EmailTaskRequest):
     password: str
+
+
+class IndexDocumentRequest(BaseModel):
+    doc_id: int
+    document_name: str
+    category: str
+    subject: str
+    doc_type: str
+    year: int | None = None
+    uploaded_by: str
+    uploaded_on: str
+    file_name: str
+    extension: str
+
+
+class DeleteDocumentRequest(BaseModel):
+    doc_id: int
 
 
 @app.get("/")
@@ -107,3 +126,28 @@ async def get_task_status(task_id: str):
         "status": task.status,
         "result": task.result if task.state == "SUCCESS" else None,
     }
+
+
+@app.post("/tasks/index-document")
+async def trigger_index_document(request: IndexDocumentRequest):
+    task = index_document_task.delay(
+        doc_id=request.doc_id,
+        document_name=request.document_name,
+        category=request.category,
+        subject=request.subject,
+        doc_type=request.doc_type,
+        year=request.year,
+        uploaded_by=request.uploaded_by,
+        uploaded_on=request.uploaded_on,
+        file_name=request.file_name,
+        extension=request.extension,
+    )
+    return {"task_id": task.id, "status": "queued"}
+
+
+@app.post("/tasks/delete-document")
+async def trigger_delete_document(request: DeleteDocumentRequest):
+    task = delete_document_task.delay(
+        doc_id=request.doc_id,
+    )
+    return {"task_id": task.id, "status": "queued"}

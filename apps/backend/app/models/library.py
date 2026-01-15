@@ -339,6 +339,24 @@ class Library(Base, CRUD["Library"]):
         return res
 
     @classmethod
+    async def get_notes_by_ids(cls, session: AsyncSession, ids: List[int]) -> List["Library"]:
+        if not ids:
+            return []
+
+        stmt = (
+            select(cls)
+            .where(cls.id.in_(ids))
+            .options(
+                selectinload(cls.account).load_only(Account.user_id, Account.username),
+                selectinload(cls.doc_category),
+                selectinload(cls.doc_subject),
+                selectinload(cls.doc_type),
+            )
+        )
+        result = await session.execute(stmt)
+        return list(result.scalars().all())
+
+    @classmethod
     async def download(cls, session: AsyncSession, id: int):  # pylint: disable=W0622, C0103
         note: NoteSchema = await cls.get(session, id)
         url = AWS_CLOUDFRONT_URL + "/" + note.file_name

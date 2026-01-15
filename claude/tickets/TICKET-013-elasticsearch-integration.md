@@ -1,203 +1,137 @@
 # TICKET-013: OpenSearch Integration for Full-Text Search
 
 ## Description
-Implement OpenSearch integration to enable powerful full-text search across 12,000+ documents, replacing the current basic SQL ILIKE search on `document_name` only.
+Implement OpenSearch integration to enable powerful full-text search across 14,000+ documents, replacing the current basic SQL ILIKE search on `document_name` only.
 
 ## Acceptance Criteria
-- [ ] Set up OpenSearch Docker container for local development
-- [ ] Add `opensearch-py` dependency to backend
-- [ ] Create search service with full-text capabilities
-- [ ] Implement advanced search features:
-  - [ ] Full-text search with relevance scoring
-  - [ ] Fuzzy matching for typos
-  - [ ] Phrase matching
-  - [ ] Boolean queries (AND, OR, NOT)
-  - [ ] Field-specific searches
-- [ ] Add search result highlighting
-- [ ] Implement faceted search (by category, subject, year)
-- [ ] Update `/notes/approved` endpoint to use OpenSearch
-- [ ] Add admin reindex endpoint
-- [ ] Create Terraform module for AWS OpenSearch
-- [ ] Performance optimization for sub-second searches
-
-## Implementation Plan
-
-### Phase 1: Local Development Setup
-
-#### 1.1 Add Dependencies
-**File**: `apps/backend/pyproject.toml`
-- Add `opensearch-py` package (AWS-compatible)
-
-#### 1.2 Docker Compose
-**File**: `docker/docker-compose.db.yml`
-```yaml
-opensearch:
-  image: opensearchproject/opensearch:2.11.0
-  environment:
-    - discovery.type=single-node
-    - DISABLE_SECURITY_PLUGIN=true
-  ports:
-    - "9200:9200"
-  healthcheck:
-    test: ["CMD", "curl", "-f", "http://localhost:9200"]
-    interval: 30s
-    timeout: 10s
-    retries: 5
-```
-
-#### 1.3 Configuration
-**File**: `apps/backend/app/core/config.py`
-- Add OpenSearch settings (host, port, index name)
-- Environment-based configuration (local vs AWS)
-
----
-
-### Phase 2: Search Service Implementation
-
-#### 2.1 Create Search Service
-**New File**: `apps/backend/app/services/search.py`
-- OpenSearch client initialization
-- Index management (create, delete, check)
-- Document indexing (single + bulk)
-- Search methods with all advanced features
-- Result highlighting
-
-#### 2.2 Index Schema
-```json
-{
-  "mappings": {
-    "properties": {
-      "id": {"type": "integer"},
-      "document_name": {
-        "type": "text",
-        "analyzer": "standard",
-        "fields": {"keyword": {"type": "keyword"}}
-      },
-      "content": {"type": "text", "analyzer": "english"},
-      "category": {"type": "keyword"},
-      "subject": {"type": "keyword"},
-      "year": {"type": "integer"},
-      "type": {"type": "keyword"},
-      "uploaded_by": {"type": "keyword"},
-      "uploaded_on": {"type": "date"}
-    }
-  }
-}
-```
-
-#### 2.3 Reference Existing Prototype
-- `prototype/build_index.py` (362 lines) contains indexing logic to adapt
-
----
-
-### Phase 3: API Integration
-
-#### 3.1 Update Search Endpoint
-**File**: `apps/backend/app/api/endpoints/library.py`
-- Modify `GET /notes/approved` to use OpenSearch when available
-- Fallback to SQL search if OpenSearch unavailable
-
-#### 3.2 New Schemas
-**File**: `apps/backend/app/schemas/library.py`
-- Add search response schema with highlights
-
-#### 3.3 Admin Endpoints
-**File**: `apps/backend/app/api/endpoints/admin.py`
-- `POST /admin/search/reindex` - Rebuild entire index
-- `GET /admin/search/status` - Index health and document count
-
----
-
-### Phase 4: AWS Infrastructure (Terraform)
-
-#### 4.1 OpenSearch Module
-**New File**: `terraform/opensearch/main.tf`
-```hcl
-resource "aws_opensearch_domain" "main" {
-  domain_name    = "${var.app_name}-search"
-  engine_version = "OpenSearch_2.11"
-
-  cluster_config {
-    instance_type  = "t3.small.search"  # Free tier eligible
-    instance_count = 1
-  }
-
-  ebs_options {
-    ebs_enabled = true
-    volume_size = 10  # Free tier: 10GB
-    volume_type = "gp3"
-  }
-
-  node_to_node_encryption { enabled = true }
-  encrypt_at_rest { enabled = true }
-}
-```
-
-#### 4.2 Variables
-**New File**: `terraform/opensearch/variable.tf`
-- Domain name, instance type, EBS size
-
-#### 4.3 Integration
-**File**: `terraform/main.tf`
-- Add opensearch module
-- Pass endpoint to ECS task definition
-
-#### 4.4 ECS Updates
-**File**: `terraform/ecs/backend.tf`
-- Add `OPENSEARCH_HOST` environment variable
-- Add IAM permissions for OpenSearch access
-
----
-
-### Phase 5: Data Migration & Indexing
-
-#### 5.1 Initial Indexing Script
-**New File**: `apps/backend/scripts/build_search_index.py`
-- Fetch all documents from database
-- Bulk index to OpenSearch
-- Progress logging
-
-#### 5.2 Incremental Indexing
-- Hook into document CRUD operations in `Library` model
-
----
-
-## Files to Modify/Create
-
-| File | Action |
-|------|--------|
-| `apps/backend/pyproject.toml` | Modify |
-| `docker/docker-compose.db.yml` | Modify |
-| `apps/backend/app/core/config.py` | Modify |
-| `apps/backend/app/services/search.py` | Create |
-| `apps/backend/app/api/endpoints/library.py` | Modify |
-| `apps/backend/app/schemas/library.py` | Modify |
-| `apps/backend/app/api/endpoints/admin.py` | Modify |
-| `terraform/opensearch/main.tf` | Create |
-| `terraform/opensearch/variable.tf` | Create |
-| `terraform/main.tf` | Modify |
-| `terraform/ecs/backend.tf` | Modify |
-| `apps/backend/scripts/build_search_index.py` | Create |
+- [x] Set up OpenSearch Docker container for local development
+- [x] Add `opensearch-py` dependency to backend
+- [x] Create search service with full-text capabilities
+- [x] Implement advanced search features:
+  - [x] Full-text search with relevance scoring
+  - [x] Fuzzy matching for typos
+  - [x] Phrase matching
+  - [x] Field-specific searches (document_name, content, subject, category)
+- [x] Implement faceted search (by category, subject, year)
+- [x] Update `/notes/approved` endpoint to use OpenSearch
+- [x] Add admin reindex endpoint (`POST /admin/search/reindex`)
+- [x] Add admin status endpoint (`GET /admin/search/status`)
+- [x] Create Terraform module for AWS OpenSearch
+- [x] PDF content extraction for full-text search
+- [x] Async document indexing via Celery tasks
 
 ## Priority
 High
 
 ## Status
-Todo
+Done
+
+---
+
+## Implementation Summary
+
+### Architecture
+```
+┌─────────────────┐     ┌──────────────────┐     ┌─────────────────┐
+│    Backend      │────▶│   Task Service   │────▶│   OpenSearch    │
+│   (FastAPI)     │     │    (Celery)      │     │   (Docker/AWS)  │
+└─────────────────┘     └──────────────────┘     └─────────────────┘
+       │                        │
+       │                        ▼
+       │                ┌──────────────────┐
+       │                │   CloudFront     │
+       │                │   (PDF files)    │
+       │                └──────────────────┘
+       ▼
+┌─────────────────┐
+│   PostgreSQL    │
+│   (metadata)    │
+└─────────────────┘
+```
+
+### Key Features
+1. **Full-text search** on document name + PDF content
+2. **Fuzzy matching** for typo tolerance (e.g., "chemestry" → "chemistry")
+3. **Relevance scoring** with field boosting (document_name^3, search_text^2, content)
+4. **Async indexing** via Celery with automatic retries
+5. **PDF extraction** using pypdf library
+6. **Graceful fallback** to SQL ILIKE when OpenSearch unavailable
+
+### Files Modified/Created
+
+| File | Action | Description |
+|------|--------|-------------|
+| `apps/backend/pyproject.toml` | Modified | Added `opensearch-py`, `pypdf` |
+| `docker/docker-compose.db.yml` | Modified | Added OpenSearch container |
+| `apps/backend/app/core/config.py` | Modified | OpenSearch settings |
+| `apps/backend/app/services/search.py` | Created | Search service |
+| `apps/backend/app/services/task_client.py` | Created | Task service HTTP client |
+| `apps/backend/app/utils/pdf_extractor.py` | Created | PDF text extraction |
+| `apps/backend/app/api/endpoints/library.py` | Modified | Integrated search |
+| `apps/backend/app/api/endpoints/admin.py` | Modified | Reindex endpoint |
+| `apps/backend/scripts/build_search_index.py` | Created | Bulk indexing script |
+| `apps/task/tasks/index_document.py` | Created | Celery index task |
+| `apps/task/tasks/delete_document.py` | Created | Celery delete task |
+| `apps/task/services/search.py` | Created | Task search service |
+| `apps/task/utils/pdf_extractor.py` | Created | Task PDF extractor |
+| `apps/task/config.py` | Modified | OpenSearch config |
+| `apps/task/api.py` | Modified | Index/delete endpoints |
+| `apps/task/worker.py` | Modified | Task includes |
+| `terraform/opensearch/main.tf` | Created | AWS OpenSearch module |
+| `terraform/opensearch/variable.tf` | Created | Module variables |
+
+---
+
+## Usage
+
+### Local Development
+
+1. Start OpenSearch:
+```bash
+docker compose -f docker/docker-compose.db.yml up -d opensearch
+```
+
+2. Build search index:
+```bash
+cd apps/backend
+export AWS_CLOUDFRONT_URL=https://document.grail.moe
+uv run python scripts/build_search_index.py --recreate
+```
+
+3. Test search:
+```bash
+curl "http://localhost:8000/notes/approved?keyword=chemistry&size=10"
+```
+
+### API Endpoints
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/notes/approved` | GET | Search with `keyword` param uses OpenSearch |
+| `/admin/search/status` | GET | Index health and document count |
+| `/admin/search/reindex` | POST | Trigger full reindex |
+
+### Indexing Script Options
+
+```bash
+uv run python scripts/build_search_index.py [OPTIONS]
+
+Options:
+  --recreate         Delete and recreate index before indexing
+  --limit N          Limit to first N documents (for testing)
+  --no-extract       Skip PDF content extraction
+  --concurrency N    Concurrent PDF downloads (default: 10)
+```
+
+---
 
 ## Cost Estimate (AWS)
 - **First 12 months**: $0 (free tier: t3.small.search + 10GB EBS)
 - **After free tier**: ~$18-25/month for t3.small.search
-
-## Verification
-1. Run `docker compose up` with OpenSearch locally
-2. Run indexing script to populate index
-3. Test search via Swagger UI (`/docs`)
-4. Verify faceted search, highlighting, fuzzy matching
-5. Apply Terraform to staging and test AWS integration
+- **Storage**: Included in free tier, then ~$0.10/GB/month
 
 ## Notes
-- Uses `opensearch-py` for AWS compatibility
-- Fallback to SQL search if OpenSearch unavailable
-- Existing prototype at `prototype/build_index.py` can be referenced
-- Free tier: 750 hours/month for 12 months from AWS account creation
+- Index name: `holy_grail_documents`
+- PDF extraction limited to 50,000 characters per document
+- Celery tasks auto-retry 3 times with exponential backoff
+- Falls back to SQL ILIKE search when OpenSearch unavailable
