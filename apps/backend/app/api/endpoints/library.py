@@ -5,6 +5,7 @@ This module provides endpoints for creating, reading, updating, and deleting
 educational notes and practice papers. Includes functionality for file uploads,
 downloads, approval workflows, and search/filtering capabilities.
 """
+import asyncio
 from typing import List, Optional
 
 from fastapi import APIRouter, Query, Request
@@ -158,7 +159,8 @@ async def get_all_approved_notes(
         GET /notes/approved?category=O-LEVEL&subject=Mathematics&page=1&size=20
     """
     if keyword and search_service.is_available():
-        search_result = search_service.search(
+        search_result = await asyncio.to_thread(
+            search_service.search,
             keyword=keyword,
             category=category,
             subject=subject,
