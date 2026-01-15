@@ -19,8 +19,6 @@ Implement OpenSearch integration to enable powerful full-text search across 14,0
 - [x] Create Terraform module for AWS OpenSearch
 - [x] PDF content extraction for full-text search
 - [x] Async document indexing via Celery tasks
-- [x] Production deployment configuration (ECS task definition)
-- [x] Auto-delete from index when documents are removed
 
 ## Priority
 High
@@ -81,86 +79,6 @@ Done
 | `apps/task/worker.py` | Modified | Task includes |
 | `terraform/opensearch/main.tf` | Created | AWS OpenSearch module |
 | `terraform/opensearch/variable.tf` | Created | Module variables |
-| `terraform/ecs/backend.tf` | Modified | Added task-api container, OpenSearch env vars |
-
----
-
-## Production Deployment
-
-### ECS Configuration
-The ECS task definition now includes 4 containers:
-
-| Container | Port | Purpose |
-|-----------|------|---------|
-| `backend` | 8000 | FastAPI API server |
-| `celery` | - | Celery worker with beat scheduler |
-| `task-api` | 8001 | HTTP API for triggering Celery tasks |
-| `redis` | 6379 | Message broker |
-
-### Environment Variables Added
-- `OPENSEARCH_HOST` - OpenSearch endpoint (backend, celery, task-api)
-- `OPENSEARCH_ENABLED` - Toggle OpenSearch on/off (backend, celery, task-api)
-- `TASK_API_URL` - Task API endpoint for backend (`http://localhost:8001`)
-- `AWS_CLOUDFRONT_URL` - CloudFront URL for PDF downloads (task-api)
-
-### Deployment Steps
-
-1. **Push code** - CI/CD deploys new containers automatically
-2. **Enable OpenSearch** - Set `opensearch_enabled = true` in Terraform Cloud
-3. **Wait for provisioning** - AWS OpenSearch domain takes ~15 minutes
-4. **Run initial backfill** - Execute ECS task to index existing documents:
-
-```bash
-aws ecs run-task \
-  --cluster holy-grail-cluster \
-  --task-definition backend-task \
-  --launch-type FARGATE \
-  --network-configuration "..." \
-  --overrides '{
-    "containerOverrides": [{
-      "name": "backend",
-      "command": ["uv", "run", "python", "scripts/build_search_index.py", "--recreate"]
-    }]
-  }'
-```
-
-### Document Flow (Production)
-```
-Admin approves document
-  └─▶ Backend POST /admin/approve/{id}
-      └─▶ task_client.trigger_index_document()
-          └─▶ HTTP POST to localhost:8001/tasks/index-document
-              └─▶ Task API queues Celery task
-                  └─▶ Celery worker executes index_document_task
-                      ├─▶ Downloads PDF from CloudFront
-                      ├─▶ Extracts text with pypdf
-                      └─▶ Indexes to OpenSearch
-```
-
----
-
-## Usage
-
-### Local Development
-
-1. Start OpenSearch:
-```bash
-docker compose -f docker/docker-compose.db.yml up -d opensearch
-```
-
-2. Build search index:
-```bash
-cd apps/backend
-export AWS_CLOUDFRONT_URL=https://document.grail.moe
-uv run python scripts/build_search_index.py --recreate
-```
-
-3. Test search:
-```bash
-curl "http://localhost:8000/notes/approved?keyword=chemistry&size=10"
-```
-
-### API Endpoints
 
 | Endpoint | Method | Description |
 |----------|--------|-------------|
@@ -192,5 +110,3 @@ Options:
 - PDF extraction limited to 50,000 characters per document
 - Celery tasks auto-retry 3 times with exponential backoff
 - Falls back to SQL ILIKE search when OpenSearch unavailable
-- ECS memory increased from 1024MB to 1536MB for 4 containers
-- Task API uses same Docker image as Celery worker
