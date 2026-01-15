@@ -5,7 +5,7 @@ resource "aws_ecs_task_definition" "backend" {
   execution_role_arn       = aws_iam_role.ecs_execution_role.arn
   network_mode             = "awsvpc"
   cpu                      = 512
-  memory                   = 1536
+  memory                   = 1024
 
   container_definitions = jsonencode([
     {
