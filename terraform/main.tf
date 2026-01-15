@@ -33,12 +33,14 @@ module "s3" {
 }
 
 module "opensearch" {
-  source                   = "./opensearch"
-  app_name                 = var.app_name
-  region                   = var.region
-  opensearch_enabled       = var.opensearch_enabled
-  opensearch_instance_type = var.opensearch_instance_type
-  opensearch_volume_size   = var.opensearch_volume_size
+  source                     = "./opensearch"
+  app_name                   = var.app_name
+  region                     = var.region
+  opensearch_enabled         = var.opensearch_enabled
+  opensearch_instance_type   = var.opensearch_instance_type
+  opensearch_volume_size     = var.opensearch_volume_size
+  opensearch_master_user     = var.opensearch_master_user
+  opensearch_master_password = var.opensearch_master_password
 }
 
 module "ecs" {
