@@ -80,31 +80,6 @@ Done
 | `terraform/opensearch/main.tf` | Created | AWS OpenSearch module |
 | `terraform/opensearch/variable.tf` | Created | Module variables |
 
----
-
-## Usage
-
-### Local Development
-
-1. Start OpenSearch:
-```bash
-docker compose -f docker/docker-compose.db.yml up -d opensearch
-```
-
-2. Build search index:
-```bash
-cd apps/backend
-export AWS_CLOUDFRONT_URL=https://document.grail.moe
-uv run python scripts/build_search_index.py --recreate
-```
-
-3. Test search:
-```bash
-curl "http://localhost:8000/notes/approved?keyword=chemistry&size=10"
-```
-
-### API Endpoints
-
 | Endpoint | Method | Description |
 |----------|--------|-------------|
 | `/notes/approved` | GET | Search with `keyword` param uses OpenSearch |
