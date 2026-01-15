@@ -67,7 +67,7 @@ resource "aws_ecs_service" "frontend" {
 }
 
 resource "aws_lb_target_group" "frontend" {
-  name        = "${var.app_name}-frontend-tg-${substr(uuid(), 0, 3)}"
+  name_prefix = "${substr(var.app_name, 0, 6)}-fe-"
   vpc_id      = var.vpc_id
   port        = 3000
   protocol    = "HTTP"

@@ -183,7 +183,7 @@ resource "aws_ecs_service" "backend" {
 
 
 resource "aws_lb_target_group" "backend" {
-  name        = "${var.app_name}-backend-tg-${substr(uuid(), 0, 3)}"
+  name_prefix = "${substr(var.app_name, 0, 6)}-be-"
   vpc_id      = var.vpc_id
   port        = 8000
   protocol    = "HTTP"
