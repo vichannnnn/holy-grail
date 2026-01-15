@@ -172,3 +172,16 @@ variable "opensearch_volume_size" {
   default     = 10
 }
 
+variable "opensearch_master_user" {
+  description = "Master username for OpenSearch FGAC"
+  type        = string
+  default     = "admin"
+}
+
+variable "opensearch_master_password" {
+  description = "Master password for OpenSearch FGAC"
+  type        = string
+  sensitive   = true
+  default     = ""
+}
+
