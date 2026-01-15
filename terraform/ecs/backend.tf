@@ -160,6 +160,12 @@ resource "aws_ecs_service" "backend" {
   launch_type     = "FARGATE"
   desired_count   = 1
 
+  lifecycle {
+    ignore_changes = [
+      desired_count,
+    ]
+  }
+
   network_configuration {
     subnets          = var.public_subnet_ids
     assign_public_ip = true
