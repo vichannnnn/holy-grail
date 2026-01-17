@@ -15,39 +15,16 @@ This file maintains a centralized list of all tickets in the project. Update thi
 ## Active Tickets
 
 ### High Priority
-- 🟡 [TICKET-014](./TICKET-014-production-deployment.md) - Production Deployment Preparation (partial: CI/CD exists)
-- 🔴 [TICKET-015](./TICKET-015-extract-parse-mcqs.md) - Extract and Parse MCQs from Exam Papers
-- 🔴 [TICKET-016](./TICKET-016-question-answer-matching.md) - Build Question-Answer Matching System
-- 🔴 [TICKET-017](./TICKET-017-gpt5-variation-generator.md) - GPT-5 Question Variation Generator
-- 🔴 [TICKET-018](./TICKET-018-adaptive-quiz-engine.md) - Create Adaptive Quiz Engine
-- 🔴 [TICKET-020](./TICKET-020-implement-service-layer.md) - Implement Service Layer
-- 🔴 [TICKET-022](./TICKET-022-code-cleanup.md) - Code Cleanup
-- 🔴 [TICKET-023](./TICKET-023-cost-estimation-controls.md) - Cost Estimation and Permission Controls
-- 🔴 [TICKET-025](./TICKET-025-pdf-extraction-real-documents.md) - PDF Extraction from Documents
+_No high priority tickets yet_
 
 ### Medium Priority
-- 🔴 [TICKET-019](./TICKET-019-quiz-ui-components.md) - Build Quiz UI Components
-- 🔴 [TICKET-021](./TICKET-021-refactor-authentication.md) - Refactor Authentication System
-- 🔴 [TICKET-024](./TICKET-024-implement-repository-pattern.md) - Implement Repository Pattern
-- 🔴 [TICKET-026](./TICKET-026-developer-panel-pagination-alignment.md) - Developer Panel Users Pagination and Layout Alignment
+_No medium priority tickets yet_
 
 ### Low Priority
 _No low priority tickets yet_
 
 ## Completed Tickets
-- 🟢 [TICKET-013](./TICKET-013-elasticsearch-integration.md) - OpenSearch Integration for Full-Text Search (Completed: 2026-01-15)
-- 🟢 [TICKET-001](./TICKET-001-implement-configuration-system.md) - Implement Configuration System (Completed: 2025-01-31)
-- 🟢 [TICKET-002](./TICKET-002-migrate-to-uv-package-manager.md) - Migrate to UV Package Manager (Completed: 2025-01-31)
-- 🟢 [TICKET-003](./TICKET-003-simplify-docker-setup.md) - Simplify Docker Setup for Local Development (Completed: 2025-01-31)
-- 🟢 [TICKET-004](./TICKET-004-refactor-email-system.md) - Refactor Email System for Local Development (Completed: 2025-01-31)
-- 🟢 [TICKET-005](./TICKET-005-standardize-aws-configuration.md) - Standardize AWS Configuration (Completed: 2025-01-31)
-- 🟢 [TICKET-007](./TICKET-007-add-documentation.md) - Add Documentation to Backend API (Completed: 2025-09-07)
-- 🟢 [TICKET-008](./TICKET-008-docker-compose-simplification.md) - Simplify Docker Compose for Database Only (Completed: 2025-09-13)
-- 🟢 [TICKET-009](./TICKET-009-fix-celery-macos-error.md) - Fix Celery Beat macOS Error (Completed: 2025-09-13)
-- 🟢 [TICKET-010](./TICKET-010-task-service-decoupling.md) - Verify Task Service Decoupling (Completed: 2025-09-13)
-- 🟢 [TICKET-011](./TICKET-011-replace-frontend-with-new-frontend.md) - Replace Frontend with New-Frontend (Completed: 2025-09-21)
-- 🟢 [TICKET-012](./TICKET-012-create-app-frontend.md) - Create App-Frontend for Premium Features (Completed: 2025-09-21)
-- 🟢 [TICKET-013](./TICKET-013-update-documentation.md) - Update Documentation for New Architecture (Completed: 2025-09-21)
+- 🟢 [TICKET-001](./TICKET-001-opensearch-connectivity-fix.md) - Fix OpenSearch Connectivity and Add Separate Search Endpoint (Completed: 2026-01-18)
 
 ## Cancelled/Archived Tickets
 _No cancelled tickets yet_

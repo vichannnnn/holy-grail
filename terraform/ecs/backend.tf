@@ -4,8 +4,8 @@ resource "aws_ecs_task_definition" "backend" {
   requires_compatibilities = ["FARGATE"]
   execution_role_arn       = aws_iam_role.ecs_execution_role.arn
   network_mode             = "awsvpc"
-  cpu                      = 512
-  memory                   = 1536
+  cpu                      = 1024
+  memory                   = 2048
 
   container_definitions = jsonencode([
     {
@@ -45,6 +45,9 @@ resource "aws_ecs_task_definition" "backend" {
         { name = "LOGFIRE_TOKEN", value = var.LOGFIRE_TOKEN },
         { name = "OPENSEARCH_HOST", value = var.OPENSEARCH_HOST },
         { name = "OPENSEARCH_ENABLED", value = tostring(var.OPENSEARCH_ENABLED) },
+        { name = "OPENSEARCH_USER", value = var.OPENSEARCH_USER },
+        { name = "OPENSEARCH_PASSWORD", value = var.OPENSEARCH_PASSWORD },
+        { name = "OPENSEARCH_PORT", value = tostring(var.OPENSEARCH_PORT) },
         { name = "TASK_API_URL", value = "http://localhost:8001" }
       ]
       essential = true
@@ -87,7 +90,10 @@ resource "aws_ecs_task_definition" "backend" {
         { name = "PRODUCTION", value = var.PRODUCTION },
         { name = "LOGFIRE_TOKEN", value = var.LOGFIRE_TOKEN },
         { name = "OPENSEARCH_HOST", value = var.OPENSEARCH_HOST },
-        { name = "OPENSEARCH_ENABLED", value = tostring(var.OPENSEARCH_ENABLED) }
+        { name = "OPENSEARCH_ENABLED", value = tostring(var.OPENSEARCH_ENABLED) },
+        { name = "OPENSEARCH_USER", value = var.OPENSEARCH_USER },
+        { name = "OPENSEARCH_PASSWORD", value = var.OPENSEARCH_PASSWORD },
+        { name = "OPENSEARCH_PORT", value = tostring(var.OPENSEARCH_PORT) }
       ]
       essential = true
       logConfiguration = {
@@ -117,6 +123,9 @@ resource "aws_ecs_task_definition" "backend" {
         { name = "CELERY_RESULT_BACKEND", value = var.CELERY_RESULT_BACKEND },
         { name = "OPENSEARCH_HOST", value = var.OPENSEARCH_HOST },
         { name = "OPENSEARCH_ENABLED", value = tostring(var.OPENSEARCH_ENABLED) },
+        { name = "OPENSEARCH_USER", value = var.OPENSEARCH_USER },
+        { name = "OPENSEARCH_PASSWORD", value = var.OPENSEARCH_PASSWORD },
+        { name = "OPENSEARCH_PORT", value = tostring(var.OPENSEARCH_PORT) },
         { name = "AWS_CLOUDFRONT_URL", value = var.AWS_CLOUDFRONT_URL }
       ]
       essential = true
@@ -160,10 +169,16 @@ resource "aws_ecs_service" "backend" {
   launch_type     = "FARGATE"
   desired_count   = 1
 
+  lifecycle {
+    ignore_changes = [
+      desired_count,
+    ]
+  }
+
   network_configuration {
     subnets          = var.public_subnet_ids
     assign_public_ip = true
-    security_groups  = [aws_security_group.ecs.id]
+    security_groups  = [var.ecs_security_group_id]
   }
 
   load_balancer {
@@ -177,7 +192,7 @@ resource "aws_ecs_service" "backend" {
 
 
 resource "aws_lb_target_group" "backend" {
-  name        = "${var.app_name}-backend-tg-${substr(uuid(), 0, 3)}"
+  name_prefix = "be-"
   vpc_id      = var.vpc_id
   port        = 8000
   protocol    = "HTTP"

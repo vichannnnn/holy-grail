@@ -1,3 +1,28 @@
+resource "aws_security_group" "opensearch" {
+  count  = var.opensearch_enabled && var.vpc_id != "" ? 1 : 0
+  name   = "${var.app_name}-opensearch-sg"
+  vpc_id = var.vpc_id
+
+  ingress {
+    from_port       = 443
+    to_port         = 443
+    protocol        = "tcp"
+    security_groups = [var.ecs_security_group_id]
+    description     = "Allow HTTPS from ECS"
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "${var.app_name}-opensearch-sg"
+  }
+}
+
 resource "aws_opensearch_domain" "main" {
   count = var.opensearch_enabled ? 1 : 0
 
@@ -48,6 +73,14 @@ resource "aws_opensearch_domain" "main" {
       }
     ]
   })
+
+  dynamic "vpc_options" {
+    for_each = var.vpc_id != "" ? [1] : []
+    content {
+      subnet_ids         = [var.subnet_ids[0]]
+      security_group_ids = [aws_security_group.opensearch[0].id]
+    }
+  }
 
   tags = {
     Name = "${var.app_name}-opensearch"

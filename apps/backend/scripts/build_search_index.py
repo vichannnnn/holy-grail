@@ -63,7 +63,7 @@ async def build_index(
     print(f"Extract Content: {extract_content}")
     print()
 
-    if not search_service.is_available():
+    if not await search_service.is_available():
         print("ERROR: OpenSearch is not available!")
         print("Make sure OpenSearch is running:")
         print("  docker compose -f docker/docker-compose.db.yml up opensearch")
@@ -73,12 +73,12 @@ async def build_index(
 
     if recreate:
         print("Recreating index...")
-        search_service.create_index(delete_existing=True)
+        await search_service.create_index(delete_existing=True)
     else:
         print("Creating index if not exists...")
-        search_service.create_index(delete_existing=False)
+        await search_service.create_index(delete_existing=False)
 
-    stats = search_service.get_index_stats()
+    stats = await search_service.get_index_stats()
     if stats:
         print(f"Current index stats: {stats['doc_count']} documents, {stats['size_mb']} MB")
 
@@ -171,7 +171,7 @@ async def build_index(
         print()
         print(f"Indexing {len(docs_to_index)} documents...")
 
-        success, failed = search_service.bulk_index_documents(docs_to_index)
+        success, failed = await search_service.bulk_index_documents(docs_to_index)
 
         print()
         print("=== Indexing Summary ===")
@@ -179,7 +179,7 @@ async def build_index(
         print(f"Successfully indexed: {success}")
         print(f"Failed: {failed}")
 
-        stats = search_service.get_index_stats()
+        stats = await search_service.get_index_stats()
         if stats:
             print()
             print("=== Index Stats ===")

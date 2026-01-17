@@ -168,11 +168,11 @@ async def get_search_index_status(
     Returns:
         SearchIndexStatsSchema: Index statistics and health status
     """
-    available = search_service.is_available()
+    available = await search_service.is_available()
     if not available:
         return SearchIndexStatsSchema(available=False)
 
-    stats = search_service.get_index_stats()
+    stats = await search_service.get_index_stats()
     if stats is None:
         return SearchIndexStatsSchema(available=True, exists=False)
 
@@ -205,8 +205,8 @@ async def reindex_search(
     Returns:
         dict: Status message with count of queued tasks
     """
-    if recreate_index and search_service.is_available():
-        search_service.create_index(delete_existing=True)
+    if recreate_index and await search_service.is_available():
+        await search_service.create_index(delete_existing=True)
 
     from sqlalchemy import select
     from sqlalchemy.orm import selectinload
