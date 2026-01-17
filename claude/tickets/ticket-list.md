@@ -24,7 +24,7 @@ _No medium priority tickets yet_
 _No low priority tickets yet_
 
 ## Completed Tickets
-_No completed tickets yet_
+- 🟢 [TICKET-001](./TICKET-001-opensearch-connectivity-fix.md) - Fix OpenSearch Connectivity and Add Separate Search Endpoint (Completed: 2026-01-18)
 
 ## Cancelled/Archived Tickets
 _No cancelled tickets yet_

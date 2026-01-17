@@ -133,12 +133,10 @@ async def get_all_approved_notes(
     sorted_by_upload_date: Optional[str] = "desc",
 ) -> Page[NoteSchema]:
     """
-    Get paginated list of approved educational notes.
+    Get paginated list of approved educational notes using PostgreSQL.
 
-    Returns publicly available notes with advanced filtering and search
-    capabilities. When a keyword is provided and OpenSearch is available,
-    uses full-text search with fuzzy matching. Falls back to SQL ILIKE
-    search when OpenSearch is unavailable.
+    Returns publicly available notes with filtering and ILIKE search.
+    For full-text search with OpenSearch, use the /search endpoint.
 
     Args:
         session: Active database session
@@ -147,7 +145,7 @@ async def get_all_approved_notes(
         category: Filter by education level (O-LEVEL, A-LEVEL, IB)
         subject: Filter by subject (e.g., Mathematics, Physics)
         doc_type: Filter by document type (e.g., Summary Notes, Practice Papers)
-        keyword: Search keyword (uses OpenSearch full-text when available)
+        keyword: Search keyword (uses PostgreSQL ILIKE)
         year: Filter by year of examination
         sorted_by_upload_date: Sort order ('asc' or 'desc')
 
@@ -157,34 +155,6 @@ async def get_all_approved_notes(
     Example:
         GET /notes/approved?category=O-LEVEL&subject=Mathematics&page=1&size=20
     """
-    if keyword and await search_service.is_available():
-        search_result = await search_service.search(
-            keyword=keyword,
-            category=category,
-            subject=subject,
-            doc_type=doc_type,
-            year=year,
-            page=page,
-            size=size,
-            fuzzy=True,
-            include_facets=False,
-        )
-
-        if search_result and search_result.items:
-            doc_ids = [item.id for item in search_result.items]
-            notes = await Library.get_notes_by_ids(session, doc_ids)
-
-            id_to_note = {note.id: note for note in notes}
-            ordered_notes = [id_to_note[doc_id] for doc_id in doc_ids if doc_id in id_to_note]
-
-            return {
-                "items": ordered_notes,
-                "page": search_result.page,
-                "pages": search_result.pages,
-                "size": search_result.size,
-                "total": search_result.total,
-            }
-
     notes = await Library.get_all_notes_paginated(
         session,
         page=page,
@@ -198,6 +168,82 @@ async def get_all_approved_notes(
         sorted_by_upload_date=sorted_by_upload_date,
     )
     return notes
+
+
+@notes_router.get("/search", response_model=Page[NoteSchema])
+async def search_notes_opensearch(
+    session: CurrentSession,
+    page: int = Query(1, title="Page number", gt=0),
+    size: int = Query(50, title="Page size", gt=0, le=50),
+    category: Optional[str] = None,
+    subject: Optional[str] = None,
+    doc_type: Optional[str] = None,
+    keyword: Optional[str] = None,
+    year: Optional[int] = None,
+) -> Page[NoteSchema]:
+    """
+    Search documents using OpenSearch full-text search.
+
+    This endpoint exclusively uses OpenSearch for searching indexed documents.
+    Falls back to empty results if OpenSearch is unavailable.
+    Use this endpoint for testing OpenSearch connectivity.
+
+    Args:
+        session: Active database session
+        page: Page number (1-indexed)
+        size: Number of items per page (max 50)
+        category: Filter by education level (O-LEVEL, A-LEVEL, IB)
+        subject: Filter by subject (e.g., Mathematics, Physics)
+        doc_type: Filter by document type (e.g., Summary Notes, Practice Papers)
+        keyword: Search keyword for full-text search
+        year: Filter by year of examination
+
+    Returns:
+        Page[NoteSchema]: Paginated list of matching notes
+    """
+    if not await search_service.is_available():
+        return {
+            "items": [],
+            "page": page,
+            "pages": 0,
+            "size": size,
+            "total": 0,
+        }
+
+    search_result = await search_service.search(
+        keyword=keyword,
+        category=category,
+        subject=subject,
+        doc_type=doc_type,
+        year=year,
+        page=page,
+        size=size,
+        fuzzy=True,
+        include_facets=False,
+    )
+
+    if not search_result or not search_result.items:
+        return {
+            "items": [],
+            "page": page,
+            "pages": 0,
+            "size": size,
+            "total": 0,
+        }
+
+    doc_ids = [item.id for item in search_result.items]
+    notes = await Library.get_notes_by_ids(session, doc_ids)
+
+    id_to_note = {note.id: note for note in notes}
+    ordered_notes = [id_to_note[doc_id] for doc_id in doc_ids if doc_id in id_to_note]
+
+    return {
+        "items": ordered_notes,
+        "page": search_result.page,
+        "pages": search_result.pages,
+        "size": search_result.size,
+        "total": search_result.total,
+    }
 
 
 @notes_router.get("/pending", response_model=Page[NoteSchema])

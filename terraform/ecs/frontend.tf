@@ -10,8 +10,8 @@ resource "aws_ecs_task_definition" "frontend" {
 
   container_definitions = jsonencode([
     {
-      name  = "frontend"
-      image = "${var.frontend_image}:${var.frontend_image_hash}"
+      name    = "frontend"
+      image   = "${var.frontend_image}:${var.frontend_image_hash}"
       command = ["bun", "run", "start"]
       repositoryCredentials = {
         credentialsParameter = aws_secretsmanager_secret.ghcr_token.arn
@@ -45,7 +45,7 @@ resource "aws_ecs_service" "frontend" {
   network_configuration {
     subnets          = var.public_subnet_ids
     assign_public_ip = true
-    security_groups  = [aws_security_group.ecs.id]
+    security_groups  = [var.ecs_security_group_id]
   }
 
   load_balancer {
@@ -67,7 +67,7 @@ resource "aws_ecs_service" "frontend" {
 }
 
 resource "aws_lb_target_group" "frontend" {
-  name_prefix = "${substr(var.app_name, 0, 6)}-fe-"
+  name_prefix = "fe-"
   vpc_id      = var.vpc_id
   port        = 3000
   protocol    = "HTTP"

@@ -182,3 +182,32 @@ variable "OPENSEARCH_ENABLED" {
   type        = bool
   default     = false
 }
+
+variable "OPENSEARCH_USER" {
+  description = "OpenSearch master username."
+  type        = string
+  default     = ""
+}
+
+variable "OPENSEARCH_PASSWORD" {
+  description = "OpenSearch master password."
+  type        = string
+  sensitive   = true
+  default     = ""
+}
+
+variable "OPENSEARCH_PORT" {
+  description = "OpenSearch port (443 for AWS managed)."
+  type        = number
+  default     = 443
+}
+
+variable "alb_security_group_id" {
+  description = "ALB security group ID from network module."
+  type        = string
+}
+
+variable "ecs_security_group_id" {
+  description = "ECS security group ID from network module."
+  type        = string
+}

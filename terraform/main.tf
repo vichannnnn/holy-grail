@@ -12,7 +12,8 @@ provider "aws" {
 }
 
 module "network" {
-  source = "./network"
+  source   = "./network"
+  app_name = var.app_name
 }
 
 module "rds" {
@@ -64,6 +65,8 @@ module "ecs" {
   vpc                          = module.network.vpc
   vpc_id                       = module.network.vpc.id
   public_subnet_ids            = [for s in module.network.public_subnets : s.id]
+  alb_security_group_id        = module.network.alb_security_group_id
+  ecs_security_group_id        = module.network.ecs_security_group_id
   depends_on                   = [module.network]
 
   POSTGRES_DB       = var.POSTGRES_DB
@@ -85,6 +88,9 @@ module "ecs" {
   AWS_ACCESS_KEY              = var.AWS_ACCESS_KEY
   AWS_SECRET_KEY              = var.AWS_SECRET_KEY
 
-  OPENSEARCH_HOST    = module.opensearch.opensearch_endpoint
-  OPENSEARCH_ENABLED = module.opensearch.opensearch_enabled
+  OPENSEARCH_HOST     = module.opensearch.opensearch_endpoint
+  OPENSEARCH_ENABLED  = module.opensearch.opensearch_enabled
+  OPENSEARCH_USER     = var.opensearch_master_user
+  OPENSEARCH_PASSWORD = var.opensearch_master_password
+  OPENSEARCH_PORT     = 443
 }

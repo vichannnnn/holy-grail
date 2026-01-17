@@ -2,7 +2,7 @@
 resource "aws_lb" "app_alb" {
   name               = "${var.app_name}-alb"
   load_balancer_type = "application"
-  security_groups    = [aws_security_group.alb.id]
+  security_groups    = [var.alb_security_group_id]
   subnets            = var.public_subnet_ids
 }
 
@@ -30,31 +30,6 @@ resource "aws_lb_listener_certificate" "backend_cert" {
 }
 
 
-resource "aws_security_group" "alb" {
-  name   = "${var.app_name}-alb-sg"
-  vpc_id = var.vpc_id
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  ingress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  depends_on = [var.vpc]
-
-}
 
 data "aws_iam_policy_document" "ecs_assume_policy" {
   statement {
@@ -133,44 +108,6 @@ resource "aws_ecs_cluster" "app_alb" {
     name  = "containerInsights"
     value = "disabled"
   }
-}
-
-resource "aws_security_group" "ecs" {
-  name   = "${var.app_name}-ecs-sg"
-  vpc_id = var.vpc_id
-
-  ingress {
-    from_port       = 8000
-    to_port         = 8000
-    protocol        = "tcp"
-    security_groups = [aws_security_group.alb.id]
-  }
-
-  ingress {
-    from_port       = 3000
-    to_port         = 3000
-    protocol        = "tcp"
-    security_groups = [aws_security_group.alb.id]
-
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-}
-
-resource "aws_security_group_rule" "allow_ecs_internal" {
-  type                     = "ingress"
-  from_port                = 8000
-  to_port                  = 8000
-  protocol                 = "tcp"
-  security_group_id        = aws_security_group.ecs.id
-  source_security_group_id = aws_security_group.ecs.id
-  description              = "Allow ECS tasks to communicate with each other on port 8000"
 }
 
 resource "aws_secretsmanager_secret" "ghcr_token" {

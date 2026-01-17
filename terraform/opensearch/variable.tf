@@ -38,3 +38,21 @@ variable "opensearch_master_password" {
   sensitive   = true
   default     = ""
 }
+
+variable "vpc_id" {
+  description = "VPC ID for OpenSearch deployment."
+  type        = string
+  default     = ""
+}
+
+variable "subnet_ids" {
+  description = "Subnet IDs for OpenSearch (must be in different AZs)."
+  type        = list(string)
+  default     = []
+}
+
+variable "ecs_security_group_id" {
+  description = "ECS security group ID to allow traffic from."
+  type        = string
+  default     = ""
+}
