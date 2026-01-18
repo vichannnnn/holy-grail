@@ -1,4 +1,12 @@
-# Staging deployment - 2025-10-03
+terraform {
+  cloud {
+    organization = "himari-sg"
+    workspaces {
+      name = "holy-grail-production"
+    }
+  }
+}
+
 provider "aws" {
   access_key = var.AWS_ACCESS_KEY
   secret_key = var.AWS_SECRET_KEY
