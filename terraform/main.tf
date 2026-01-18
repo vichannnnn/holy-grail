@@ -101,4 +101,5 @@ module "ecs" {
   OPENSEARCH_USER     = var.opensearch_master_user
   OPENSEARCH_PASSWORD = var.opensearch_master_password
   OPENSEARCH_PORT     = 443
+  OPENSEARCH_USE_SSL  = true
 }

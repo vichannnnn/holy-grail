@@ -67,6 +67,10 @@ class SearchService:
             if settings.opensearch_user and settings.opensearch_password:
                 auth = (settings.opensearch_user, settings.opensearch_password)
 
+            use_ssl = settings.opensearch_use_ssl
+            if use_ssl is None:
+                use_ssl = settings.opensearch_port == 443
+
             self._client = OpenSearch(
                 hosts=[
                     {
@@ -75,7 +79,7 @@ class SearchService:
                     }
                 ],
                 http_auth=auth,
-                use_ssl=False,
+                use_ssl=use_ssl,
                 verify_certs=False,
                 ssl_show_warn=False,
                 timeout=30,

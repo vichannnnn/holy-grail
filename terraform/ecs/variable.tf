@@ -202,6 +202,12 @@ variable "OPENSEARCH_PORT" {
   default     = 443
 }
 
+variable "OPENSEARCH_USE_SSL" {
+  description = "Whether to use SSL for OpenSearch connections."
+  type        = bool
+  default     = true
+}
+
 variable "alb_security_group_id" {
   description = "ALB security group ID from network module."
   type        = string

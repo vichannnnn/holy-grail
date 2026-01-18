@@ -1,41 +1,34 @@
-"""
-Celery task for sending email verification links.
+import logging
 
-This module contains a background task that sends verification emails
-to new users for confirming their email addresses.
-"""
+from celery import Task
 from pydantic import EmailStr
 
 from email_service.email_task_client import EmailTaskClient
 from worker import celery_app
 
+logger = logging.getLogger(__name__)
 
-@celery_app.task
-def send_verification_email_task(email: EmailStr, username: str, confirm_url: str) -> dict:
-    """
-    Send email verification link to new user.
 
-    Sends an email containing a unique verification link
-    that expires after 24 hours.
+class EmailTask(Task):
+    autoretry_for = (Exception,)
+    retry_backoff = True
+    retry_backoff_max = 60
+    retry_jitter = True
+    max_retries = 3
 
-    Args:
-        email: Recipient's email address.
-        username: User's username for personalization.
-        confirm_url: Unique email verification URL.
 
-    Returns:
-        dict: Success message if email sent, None on error.
-    """
-    try:
-        email_client = EmailTaskClient()
-        email_client.send_verify_account_email(
-            sender_name="Holy Grail",
-            username=username,
-            from_email="do-not-reply@grail.moe",
-            to_email=email,
-            confirm_url=confirm_url,
-        )
-        return {"success": f"verification email sent to {username}"}
-
-    except Exception as e:
-        print(str(e))
+@celery_app.task(bind=True, base=EmailTask)
+def send_verification_email_task(
+    _self, email: EmailStr, username: str, confirm_url: str
+) -> dict:
+    logger.info(f"Sending verification email to {email}")
+    email_client = EmailTaskClient()
+    email_client.send_verify_account_email(
+        sender_name="Holy Grail",
+        username=username,
+        from_email="do-not-reply@grail.moe",
+        to_email=email,
+        confirm_url=confirm_url,
+    )
+    logger.info(f"Verification email sent to {email}")
+    return {"success": f"verification email sent to {username}"}

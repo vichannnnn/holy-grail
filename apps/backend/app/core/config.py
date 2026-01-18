@@ -77,6 +77,7 @@ class Settings(BaseSettings):
     opensearch_enabled: bool = Field(default=True)
     opensearch_user: Optional[str] = Field(default=None)
     opensearch_password: Optional[str] = Field(default=None)
+    opensearch_use_ssl: Optional[bool] = Field(default=None)
 
     @property
     def database_url(self) -> str:

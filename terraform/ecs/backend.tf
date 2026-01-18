@@ -48,6 +48,7 @@ resource "aws_ecs_task_definition" "backend" {
         { name = "OPENSEARCH_USER", value = var.OPENSEARCH_USER },
         { name = "OPENSEARCH_PASSWORD", value = var.OPENSEARCH_PASSWORD },
         { name = "OPENSEARCH_PORT", value = tostring(var.OPENSEARCH_PORT) },
+        { name = "OPENSEARCH_USE_SSL", value = tostring(var.OPENSEARCH_USE_SSL) },
         { name = "TASK_API_URL", value = "http://localhost:8001" }
       ]
       essential = true
@@ -93,7 +94,8 @@ resource "aws_ecs_task_definition" "backend" {
         { name = "OPENSEARCH_ENABLED", value = tostring(var.OPENSEARCH_ENABLED) },
         { name = "OPENSEARCH_USER", value = var.OPENSEARCH_USER },
         { name = "OPENSEARCH_PASSWORD", value = var.OPENSEARCH_PASSWORD },
-        { name = "OPENSEARCH_PORT", value = tostring(var.OPENSEARCH_PORT) }
+        { name = "OPENSEARCH_PORT", value = tostring(var.OPENSEARCH_PORT) },
+        { name = "OPENSEARCH_USE_SSL", value = tostring(var.OPENSEARCH_USE_SSL) }
       ]
       essential = true
       logConfiguration = {
@@ -126,6 +128,7 @@ resource "aws_ecs_task_definition" "backend" {
         { name = "OPENSEARCH_USER", value = var.OPENSEARCH_USER },
         { name = "OPENSEARCH_PASSWORD", value = var.OPENSEARCH_PASSWORD },
         { name = "OPENSEARCH_PORT", value = tostring(var.OPENSEARCH_PORT) },
+        { name = "OPENSEARCH_USE_SSL", value = tostring(var.OPENSEARCH_USE_SSL) },
         { name = "AWS_CLOUDFRONT_URL", value = var.AWS_CLOUDFRONT_URL }
       ]
       essential = true
