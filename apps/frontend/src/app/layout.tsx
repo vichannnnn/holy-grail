@@ -5,7 +5,7 @@ import Script from "next/script";
 import "./globals.css";
 import { ClientProvider } from "@shared/ui/providers";
 import { twMerge } from "tailwind-merge";
-import { Plus_Jakarta_Sans, Fraunces } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import { Header, Footer } from "@lib/features/server";
 import { TTFB, Showcase } from "@lib/features/client";
 import { Toaster } from "react-hot-toast";
@@ -16,14 +16,6 @@ const plusJakarta = Plus_Jakarta_Sans({
 	weight: ["200", "300", "400", "500", "600", "700", "800"],
 	style: ["normal", "italic"],
 	variable: "--font-plus-jakarta",
-	display: "swap",
-});
-
-const fraunces = Fraunces({
-	subsets: ["latin"],
-	weight: ["400", "500", "600", "700", "800", "900"],
-	style: ["normal", "italic"],
-	variable: "--font-fraunces",
 	display: "swap",
 });
 
@@ -76,9 +68,8 @@ export default function RootLayout({
 			/>
 			<body
 				className={twMerge(
-					"min-h-screen bg-cream-50 dark:bg-warm-black transition-all",
+					"min-h-screen dark:bg-zinc-800 bg-zinc-100 transition-all",
 					plusJakarta.variable,
-					fraunces.variable,
 				)}
 			>
 				<ClientProvider>
@@ -95,7 +86,7 @@ export default function RootLayout({
 					<Toaster
 						position="bottom-right"
 						toastOptions={{
-							className: "!bg-cream-50 !text-warm-black dark:!bg-warm-black dark:!text-white",
+							className: "!bg-zinc-100 !text-zinc-900 dark:!bg-zinc-900 dark:!text-white",
 						}}
 					/>
 				</ClientProvider>
