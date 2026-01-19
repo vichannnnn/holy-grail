@@ -6,7 +6,6 @@ import { jwtDecode } from "jwt-decode";
 
 // Function to get the current user from cookies
 export async function getUser(): Promise<User | null> {
-	"use cache: private";
 	const cookieStore = await cookies();
 	const userCookie = cookieStore.get(USER_DATA_KEY)?.value;
 
