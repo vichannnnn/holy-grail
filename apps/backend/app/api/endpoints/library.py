@@ -5,7 +5,7 @@ This module provides endpoints for creating, reading, updating, and deleting
 educational notes and practice papers. Includes functionality for file uploads,
 downloads, approval workflows, and search/filtering capabilities.
 """
-from typing import List, Optional
+from typing import Optional
 
 from fastapi import APIRouter, Query, Request
 from fastapi_pagination import Page
@@ -17,8 +17,13 @@ from app.api.deps import (
     SessionVerifiedUser,
 )
 from app.models.library import Library
-from app.schemas.library import NoteSchema, NoteUpdateSchema
-from app.services import search_service, task_client
+from app.schemas.library import NoteSchema, NoteUpdateSchema, SearchNoteSchema
+from app.services import cache_service, search_service, task_client
+from app.services.cache import (
+    deserialize_search_results,
+    generate_search_cache_key,
+    serialize_search_results,
+)
 from app.utils.limiter import conditional_rate_limit
 
 router = APIRouter()
@@ -170,9 +175,8 @@ async def get_all_approved_notes(
     return notes
 
 
-@notes_router.get("/search", response_model=Page[NoteSchema])
+@notes_router.get("/search", response_model=Page[SearchNoteSchema])
 async def search_notes_opensearch(
-    session: CurrentSession,
     page: int = Query(1, title="Page number", gt=0),
     size: int = Query(50, title="Page size", gt=0, le=50),
     category: Optional[str] = None,
@@ -180,16 +184,15 @@ async def search_notes_opensearch(
     doc_type: Optional[str] = None,
     keyword: Optional[str] = None,
     year: Optional[int] = None,
-) -> Page[NoteSchema]:
+) -> Page[SearchNoteSchema]:
     """
-    Search documents using OpenSearch full-text search.
+    Search documents using OpenSearch full-text search with Redis caching.
 
-    This endpoint exclusively uses OpenSearch for searching indexed documents.
-    Falls back to empty results if OpenSearch is unavailable.
-    Use this endpoint for testing OpenSearch connectivity.
+    This endpoint exclusively uses OpenSearch for searching indexed documents
+    and caches results in Redis for improved performance. Returns data directly
+    from OpenSearch without querying PostgreSQL.
 
     Args:
-        session: Active database session
         page: Page number (1-indexed)
         size: Number of items per page (max 50)
         category: Filter by education level (O-LEVEL, A-LEVEL, IB)
@@ -199,18 +202,34 @@ async def search_notes_opensearch(
         year: Filter by year of examination
 
     Returns:
-        Page[NoteSchema]: Paginated list of matching notes
+        Page[SearchNoteSchema]: Paginated list of matching notes
     """
-    if not await search_service.is_available():
-        return {
-            "items": [],
-            "page": page,
-            "pages": 0,
-            "size": size,
-            "total": 0,
-        }
+    empty_response = {
+        "items": [],
+        "page": page,
+        "pages": 0,
+        "size": size,
+        "total": 0,
+    }
 
-    search_result = await search_service.search(
+    if not await search_service.is_available():
+        return empty_response
+
+    cache_key = generate_search_cache_key(
+        keyword=keyword,
+        category=category,
+        subject=subject,
+        doc_type=doc_type,
+        year=year,
+        page=page,
+        size=size,
+    )
+
+    cached_result = await cache_service.get(cache_key)
+    if cached_result:
+        return deserialize_search_results(cached_result)
+
+    search_result = await search_service.search_full(
         keyword=keyword,
         category=category,
         subject=subject,
@@ -219,31 +238,14 @@ async def search_notes_opensearch(
         page=page,
         size=size,
         fuzzy=True,
-        include_facets=False,
     )
 
-    if not search_result or not search_result.items:
-        return {
-            "items": [],
-            "page": page,
-            "pages": 0,
-            "size": size,
-            "total": 0,
-        }
+    if not search_result or not search_result.get("items"):
+        return empty_response
 
-    doc_ids = [item.id for item in search_result.items]
-    notes = await Library.get_notes_by_ids(session, doc_ids)
+    await cache_service.set(cache_key, serialize_search_results(search_result))
 
-    id_to_note = {note.id: note for note in notes}
-    ordered_notes = [id_to_note[doc_id] for doc_id in doc_ids if doc_id in id_to_note]
-
-    return {
-        "items": ordered_notes,
-        "page": search_result.page,
-        "pages": search_result.pages,
-        "size": search_result.size,
-        "total": search_result.total,
-    }
+    return search_result
 
 
 @notes_router.get("/pending", response_model=Page[NoteSchema])
@@ -356,5 +358,7 @@ async def delete_note_by_id(
     deleted_note = await Library.delete_note(session, authenticated, id)
 
     await task_client.trigger_delete_document(id)
+
+    await cache_service.delete_pattern("search:*")
 
     return deleted_note

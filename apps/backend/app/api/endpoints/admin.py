@@ -12,7 +12,7 @@ from app.models.auth import Account
 from app.models.library import Library
 from app.schemas.auth import CurrentUserSchema, PaginatedUsersSchema, UpdateUserRoleSchema
 from app.schemas.library import NoteSchema, SearchIndexStatsSchema
-from app.services import search_service, task_client
+from app.services import cache_service, search_service, task_client
 
 router = APIRouter()
 
@@ -57,7 +57,14 @@ async def approve_note(
         uploaded_on=note.uploaded_on,
         file_name=note.file_name,
         extension=note.extension,
+        view_count=note.view_count,
+        category_id=note.doc_category.id,
+        subject_id=note.doc_subject.id,
+        type_id=note.doc_type.id,
+        user_id=note.account.user_id,
     )
+
+    await cache_service.delete_pattern("search:*")
 
     return note
 
@@ -236,11 +243,18 @@ async def reindex_search(
             "uploaded_on": doc.uploaded_on,
             "file_name": doc.file_name,
             "extension": doc.extension,
+            "view_count": doc.view_count,
+            "category_id": doc.doc_category.id,
+            "subject_id": doc.doc_subject.id,
+            "type_id": doc.doc_type.id,
+            "user_id": doc.account.user_id,
         }
         for doc in documents
     ]
 
     queued, failed = await task_client.trigger_bulk_index(docs_to_index)
+
+    await cache_service.delete_pattern("search:*")
 
     return {
         "status": "started",

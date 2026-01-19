@@ -36,6 +36,11 @@ def index_document_task(
     uploaded_on: str,
     file_name: str,
     extension: str,
+    view_count: int = 0,
+    category_id: int | None = None,
+    subject_id: int | None = None,
+    type_id: int | None = None,
+    user_id: int | None = None,
 ) -> dict:
     logger.info(f"Starting indexing for document {doc_id}: {document_name}")
 
@@ -67,6 +72,14 @@ def index_document_task(
         uploaded_by=uploaded_by,
         uploaded_on=uploaded_on_dt,
         content=content,
+        file_name=file_name,
+        extension=extension,
+        view_count=view_count,
+        approved=True,
+        category_id=category_id,
+        subject_id=subject_id,
+        type_id=type_id,
+        user_id=user_id,
     )
 
     if not success:

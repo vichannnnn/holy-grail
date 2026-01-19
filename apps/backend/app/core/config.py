@@ -79,6 +79,11 @@ class Settings(BaseSettings):
     opensearch_password: Optional[str] = Field(default=None)
     opensearch_use_ssl: Optional[bool] = Field(default=None)
 
+    # Redis Configuration
+    redis_url: str = Field(default="redis://localhost:6379/0")
+    redis_cache_enabled: bool = Field(default=True)
+    redis_cache_ttl: int = Field(default=300)
+
     @property
     def database_url(self) -> str:
         """
