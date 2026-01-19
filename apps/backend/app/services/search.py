@@ -456,8 +456,6 @@ class SearchService:
         must_clauses: list[dict[str, Any]] = []
         filter_clauses: list[dict[str, Any]] = []
 
-        filter_clauses.append({"term": {"approved": True}})
-
         if keyword:
             if fuzzy:
                 must_clauses.append(

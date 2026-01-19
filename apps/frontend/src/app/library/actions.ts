@@ -16,7 +16,7 @@ export async function fetchApprovedNotes(
 ): Promise<LibraryAPIResponse<PaginatedNotes>> {
 	let response: AxiosResponse<PaginatedNotes>;
 	try {
-		response = await apiClient.get<PaginatedNotes>("/notes/approved", {
+		response = await apiClient.get<PaginatedNotes>("/notes/search", {
 			params: searchParams,
 		});
 	} catch (error) {

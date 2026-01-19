@@ -78,7 +78,7 @@ export default function RootLayout({
 					{children}
 
 					<Showcase
-						imageUrl="https://image.himaa.me/TURIS_2026_1.png"
+						imageUrl="https://image.himaa.me/TURIS_2026_2.png"
 						altText="Turis VPN"
 						redirectUrl="https://clickalytics.turisvpn.com/invite?url_id=holygrail"
 					/>

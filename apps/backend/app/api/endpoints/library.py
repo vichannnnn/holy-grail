@@ -125,7 +125,7 @@ async def download_note_by_id(
     return note
 
 
-@notes_router.get("/approved", response_model=Page[NoteSchema])
+@notes_router.get("/approved", response_model=Page[NoteSchema], deprecated=True)
 async def get_all_approved_notes(
     session: CurrentSession,
     page: int = Query(1, title="Page number", gt=0),
@@ -138,7 +138,10 @@ async def get_all_approved_notes(
     sorted_by_upload_date: Optional[str] = "desc",
 ) -> Page[NoteSchema]:
     """
-    Get paginated list of approved educational notes using PostgreSQL.
+    [DEPRECATED] Get paginated list of approved educational notes using PostgreSQL.
+
+    **This endpoint is deprecated. Use /notes/search instead for better
+    full-text search with fuzzy matching and content search.**
 
     Returns publicly available notes with filtering and ILIKE search.
     For full-text search with OpenSearch, use the /search endpoint.
