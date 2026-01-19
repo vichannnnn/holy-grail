@@ -32,8 +32,8 @@ resource "aws_route_table_association" "publics" {
 }
 
 resource "aws_security_group" "alb" {
-  name   = "${var.app_name}-alb-sg"
-  vpc_id = aws_vpc.app_alb.id
+  name_prefix = "${var.app_name}-alb-sg-"
+  vpc_id      = aws_vpc.app_alb.id
 
   egress {
     from_port   = 0
@@ -55,11 +55,15 @@ resource "aws_security_group" "alb" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_security_group" "ecs" {
-  name   = "${var.app_name}-ecs-sg"
-  vpc_id = aws_vpc.app_alb.id
+  name_prefix = "${var.app_name}-ecs-sg-"
+  vpc_id      = aws_vpc.app_alb.id
 
   ingress {
     from_port       = 8000
@@ -80,6 +84,10 @@ resource "aws_security_group" "ecs" {
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  lifecycle {
+    create_before_destroy = true
   }
 }
 

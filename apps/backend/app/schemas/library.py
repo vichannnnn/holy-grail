@@ -145,3 +145,30 @@ class SearchIndexStatsSchema(BaseModel):
     exists: bool = False
     doc_count: int = 0
     size_mb: float = 0.0
+
+
+class SearchNoteSchema(BaseModel):
+    """
+    Schema for notes returned directly from OpenSearch.
+
+    Matches NoteSchema structure but built from indexed data.
+    """
+
+    id: int
+    category: int
+    subject: int
+    type: int
+    year: Optional[int] = None
+    document_name: str
+    file_name: str
+    uploaded_by: int
+    view_count: int
+    uploaded_on: datetime
+    approved: bool
+    doc_type: DocumentTypeSchema
+    doc_category: CategorySchema
+    doc_subject: SubjectSchema
+    account: UploaderSchema
+    extension: str
+    score: Optional[float] = None
+    highlights: Optional[dict[str, list[str]]] = None

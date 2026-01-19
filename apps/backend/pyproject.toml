@@ -45,6 +45,7 @@ dependencies = [
     "opensearch-py[async]>=2.4.0",
     "greenlet>=3.2.4",
     "pypdf>=4.0.0",
+    "redis>=5.0.0",
 ]
 
 [project.optional-dependencies]

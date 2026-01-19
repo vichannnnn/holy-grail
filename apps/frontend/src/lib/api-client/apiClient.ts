@@ -4,6 +4,7 @@ import { ACCESS_TOKEN_KEY } from "@lib/auth/constants";
 import { cookies } from "next/headers";
 
 const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL;
+console.log("🔥 API URL:", NEXT_PUBLIC_API_URL);
 
 export const apiClient = axios.create({
 	baseURL: NEXT_PUBLIC_API_URL,

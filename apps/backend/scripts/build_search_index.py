@@ -125,6 +125,12 @@ async def build_index(
                     "content": "",
                     "file_name": doc.file_name,
                     "extension": doc.extension,
+                    "view_count": doc.view_count,
+                    "approved": doc.approved,
+                    "category_id": doc.doc_category.id,
+                    "subject_id": doc.doc_subject.id,
+                    "type_id": doc.doc_type.id,
+                    "user_id": doc.account.user_id,
                 }
             )
 
@@ -163,10 +169,6 @@ async def build_index(
             print(f"  Documents with extracted content: {extracted_count}/{total}")
         elif extract_content:
             print("WARNING: CloudFront URL not configured, skipping content extraction")
-
-        for doc in docs_to_index:
-            doc.pop("file_name", None)
-            doc.pop("extension", None)
 
         print()
         print(f"Indexing {len(docs_to_index)} documents...")

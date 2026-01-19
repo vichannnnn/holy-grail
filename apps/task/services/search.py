@@ -36,6 +36,17 @@ class SearchService:
                 "uploaded_on": {"type": "date"},
                 "content": {"type": "text", "analyzer": "document_analyzer"},
                 "search_text": {"type": "text", "analyzer": "document_analyzer"},
+                "file_name": {"type": "keyword"},
+                "extension": {"type": "keyword"},
+                "view_count": {"type": "integer"},
+                "approved": {"type": "boolean"},
+                "category_id": {"type": "integer"},
+                "subject_id": {"type": "integer"},
+                "type_id": {"type": "integer"},
+                "user_id": {"type": "integer"},
+                "category_name": {"type": "keyword"},
+                "subject_name": {"type": "keyword"},
+                "doc_type_name": {"type": "keyword"},
             }
         },
     }
@@ -67,6 +78,10 @@ class SearchService:
             if settings.opensearch_user and settings.opensearch_password:
                 auth = (settings.opensearch_user, settings.opensearch_password)
 
+            use_ssl = settings.opensearch_use_ssl
+            if use_ssl is None:
+                use_ssl = settings.opensearch_port == 443
+
             self._client = OpenSearch(
                 hosts=[
                     {
@@ -75,7 +90,7 @@ class SearchService:
                     }
                 ],
                 http_auth=auth,
-                use_ssl=False,
+                use_ssl=use_ssl,
                 verify_certs=False,
                 ssl_show_warn=False,
                 timeout=30,
@@ -128,6 +143,14 @@ class SearchService:
         uploaded_by: str,
         uploaded_on: datetime,
         content: Optional[str] = None,
+        file_name: Optional[str] = None,
+        extension: Optional[str] = None,
+        view_count: int = 0,
+        approved: bool = True,
+        category_id: Optional[int] = None,
+        subject_id: Optional[int] = None,
+        type_id: Optional[int] = None,
+        user_id: Optional[int] = None,
     ) -> bool:
         if not self.client:
             return False
@@ -147,6 +170,17 @@ class SearchService:
             "uploaded_on": uploaded_on.isoformat(),
             "content": content or "",
             "search_text": search_text,
+            "file_name": file_name or "",
+            "extension": extension or "",
+            "view_count": view_count,
+            "approved": approved,
+            "category_id": category_id,
+            "subject_id": subject_id,
+            "type_id": type_id,
+            "user_id": user_id,
+            "category_name": category,
+            "subject_name": subject,
+            "doc_type_name": doc_type,
         }
 
         try:
@@ -154,6 +188,20 @@ class SearchService:
                 index=self.index_name,
                 id=str(doc_id),
                 body=doc_body,
+                refresh=True,
+            )
+            return True
+        except Exception:
+            return False
+
+    def delete_document(self, doc_id: int) -> bool:
+        if not self.client:
+            return False
+
+        try:
+            self.client.delete(
+                index=self.index_name,
+                id=str(doc_id),
                 refresh=True,
             )
             return True

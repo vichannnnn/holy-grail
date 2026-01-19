@@ -50,7 +50,7 @@ export function UpdateEmailForm() {
 		>
 			<Input
 				label="New email address"
-				placeholder="eg. joe.mom@email.com"
+				placeholder="eg. user@example.com"
 				containerClassName="grow"
 				{...register("new_email")}
 				error={errors.new_email?.message as string}

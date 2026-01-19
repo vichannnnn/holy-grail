@@ -138,6 +138,12 @@ variable "AWS_S3_BUCKET_NAME" {
   type        = string
 }
 
+variable "EMAIL_ENABLED" {
+  description = "Enable email sending via Mailtrap"
+  type        = bool
+  default     = true
+}
+
 variable "MAILTRAP_BEARER_TOKEN" {
   description = "Bearer token for Mailtrap API."
   type        = string
@@ -150,9 +156,10 @@ variable "MAILTRAP_API_KEY" {
   sensitive   = true
 }
 
-variable "PRODUCTION" {
-  description = "Flag indicating if the application is running in production mode."
+variable "ENVIRONMENT" {
+  description = "Environment (LOCAL/DEV/PROD)."
   type        = string
+  default     = "PROD"
 }
 
 variable "LOGFIRE_TOKEN" {
@@ -200,6 +207,12 @@ variable "OPENSEARCH_PORT" {
   description = "OpenSearch port (443 for AWS managed)."
   type        = number
   default     = 443
+}
+
+variable "OPENSEARCH_USE_SSL" {
+  description = "Whether to use SSL for OpenSearch connections."
+  type        = bool
+  default     = true
 }
 
 variable "alb_security_group_id" {

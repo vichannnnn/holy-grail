@@ -1,41 +1,32 @@
-"""
-Celery task for sending new password emails.
+import logging
 
-This module contains a background task that sends emails with
-temporary passwords after a password reset.
-"""
+from celery import Task
 from pydantic import EmailStr
 
 from email_service.email_task_client import EmailTaskClient
 from worker import celery_app
 
+logger = logging.getLogger(__name__)
 
-@celery_app.task
-def send_new_password_email_task(email: EmailStr, username: str, password: str) -> dict:
-    """
-    Send new password email to user.
 
-    Sends an email containing a temporary password after
-    the user's password has been reset.
+class EmailTask(Task):
+    autoretry_for = (Exception,)
+    retry_backoff = True
+    retry_backoff_max = 60
+    retry_jitter = True
+    max_retries = 3
 
-    Args:
-        email: Recipient's email address.
-        username: User's username for personalization.
-        password: Temporary password to send to user.
 
-    Returns:
-        dict: Success message if email sent, None on error.
-    """
-    try:
-        email_client = EmailTaskClient()
-        email_client.send_new_password_mail(
-            sender_name="Holy Grail",
-            username=username,
-            from_email="do-not-reply@grail.moe",
-            to_email=email,
-            password=password,
-        )
-        return {"success": f"new password email sent to {username}"}
-
-    except Exception as e:
-        print(str(e))
+@celery_app.task(bind=True, base=EmailTask)
+def send_new_password_email_task(_self, email: EmailStr, username: str, password: str) -> dict:
+    logger.info(f"Sending new password email to {email}")
+    email_client = EmailTaskClient()
+    email_client.send_new_password_mail(
+        sender_name="Holy Grail",
+        username=username,
+        from_email="do-not-reply@grail.moe",
+        to_email=email,
+        password=password,
+    )
+    logger.info(f"New password email sent to {email}")
+    return {"success": f"new password email sent to {username}"}

@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { GoogleAnalytics } from "@next/third-parties/google";
+import Script from "next/script";
 
 import "./globals.css";
 import { ClientProvider } from "@shared/ui/providers";
@@ -58,6 +60,12 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
+			<Script
+				async
+				src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3197570153783512"
+				crossOrigin="anonymous"
+				strategy="lazyOnload"
+			/>
 			<body
 				className={twMerge(
 					"min-h-screen dark:bg-zinc-800 bg-zinc-100 transition-all",
@@ -70,7 +78,7 @@ export default function RootLayout({
 					{children}
 
 					<Showcase
-						imageUrl="https://image.himaa.me/TURIS_2026_1.png"
+						imageUrl="https://image.himaa.me/TURIS_2026_2.png"
 						altText="Turis VPN"
 						redirectUrl="https://clickalytics.turisvpn.com/invite?url_id=holygrail"
 					/>
@@ -84,6 +92,7 @@ export default function RootLayout({
 				</ClientProvider>
 				{process.env.PERF && <TTFB />}
 			</body>
+			<GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID!} />
 		</html>
 	);
 }

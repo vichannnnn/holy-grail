@@ -1,5 +1,3 @@
-import os
-
 from pydantic_settings import BaseSettings
 
 
@@ -10,6 +8,7 @@ class Settings(BaseSettings):
     opensearch_index: str = "holy_grail_documents"
     opensearch_user: str | None = None
     opensearch_password: str | None = None
+    opensearch_use_ssl: bool | None = None
 
     aws_cloudfront_url: str | None = None
 

@@ -59,6 +59,17 @@ class SearchService:
                 "uploaded_on": {"type": "date"},
                 "content": {"type": "text", "analyzer": "document_analyzer"},
                 "search_text": {"type": "text", "analyzer": "document_analyzer"},
+                "file_name": {"type": "keyword"},
+                "extension": {"type": "keyword"},
+                "view_count": {"type": "integer"},
+                "approved": {"type": "boolean"},
+                "category_id": {"type": "integer"},
+                "subject_id": {"type": "integer"},
+                "type_id": {"type": "integer"},
+                "user_id": {"type": "integer"},
+                "category_name": {"type": "keyword"},
+                "subject_name": {"type": "keyword"},
+                "doc_type_name": {"type": "keyword"},
             }
         },
     }
@@ -84,7 +95,9 @@ class SearchService:
             if settings.opensearch_user and settings.opensearch_password:
                 auth = (settings.opensearch_user, settings.opensearch_password)
 
-            use_ssl = settings.opensearch_port == 443
+            use_ssl = settings.opensearch_use_ssl
+            if use_ssl is None:
+                use_ssl = settings.opensearch_port == 443
 
             self._client = AsyncOpenSearch(
                 hosts=[
@@ -153,6 +166,14 @@ class SearchService:
         uploaded_by: str,
         uploaded_on: datetime,
         content: Optional[str] = None,
+        file_name: Optional[str] = None,
+        extension: Optional[str] = None,
+        view_count: int = 0,
+        approved: bool = True,
+        category_id: Optional[int] = None,
+        subject_id: Optional[int] = None,
+        type_id: Optional[int] = None,
+        user_id: Optional[int] = None,
     ) -> bool:
         client = await self._get_client()
         if not client:
@@ -173,6 +194,17 @@ class SearchService:
             "uploaded_on": uploaded_on.isoformat(),
             "content": content or "",
             "search_text": search_text,
+            "file_name": file_name or "",
+            "extension": extension or "",
+            "view_count": view_count,
+            "approved": approved,
+            "category_id": category_id,
+            "subject_id": subject_id,
+            "type_id": type_id,
+            "user_id": user_id,
+            "category_name": category,
+            "subject_name": subject,
+            "doc_type_name": doc_type,
         }
 
         try:
@@ -219,6 +251,17 @@ class SearchService:
                         "uploaded_on": uploaded_on,
                         "content": content,
                         "search_text": search_text,
+                        "file_name": doc.get("file_name", ""),
+                        "extension": doc.get("extension", ""),
+                        "view_count": doc.get("view_count", 0),
+                        "approved": doc.get("approved", True),
+                        "category_id": doc.get("category_id"),
+                        "subject_id": doc.get("subject_id"),
+                        "type_id": doc.get("type_id"),
+                        "user_id": doc.get("user_id"),
+                        "category_name": doc["category"],
+                        "subject_name": doc["subject"],
+                        "doc_type_name": doc["doc_type"],
                     },
                 }
             )
@@ -392,6 +435,158 @@ class SearchService:
                 size=size,
                 facets=facets,
             )
+        except Exception:
+            return None
+
+    async def search_full(
+        self,
+        keyword: Optional[str] = None,
+        category: Optional[str] = None,
+        subject: Optional[str] = None,
+        doc_type: Optional[str] = None,
+        year: Optional[int] = None,
+        page: int = 1,
+        size: int = 50,
+        fuzzy: bool = True,
+    ) -> Optional[dict[str, Any]]:
+        client = await self._get_client()
+        if not client:
+            return None
+
+        must_clauses: list[dict[str, Any]] = []
+        filter_clauses: list[dict[str, Any]] = []
+
+        if keyword:
+            if fuzzy:
+                must_clauses.append(
+                    {
+                        "multi_match": {
+                            "query": keyword,
+                            "fields": [
+                                "document_name^3",
+                                "search_text^2",
+                                "content",
+                            ],
+                            "fuzziness": "AUTO",
+                            "prefix_length": 2,
+                        }
+                    }
+                )
+            else:
+                must_clauses.append(
+                    {
+                        "multi_match": {
+                            "query": keyword,
+                            "fields": [
+                                "document_name^3",
+                                "search_text^2",
+                                "content",
+                            ],
+                            "type": "phrase",
+                        }
+                    }
+                )
+
+        if category:
+            filter_clauses.append({"term": {"category": category}})
+        if subject:
+            filter_clauses.append({"term": {"subject": subject}})
+        if doc_type:
+            filter_clauses.append({"term": {"doc_type": doc_type}})
+        if year:
+            filter_clauses.append({"term": {"year": year}})
+
+        query: dict[str, Any] = {"bool": {"filter": filter_clauses}}
+        if must_clauses:
+            query["bool"]["must"] = must_clauses
+
+        body: dict[str, Any] = {
+            "query": query,
+            "from": (page - 1) * size,
+            "size": size,
+            "sort": [
+                {"_score": {"order": "desc"}},
+                {"uploaded_on": {"order": "desc"}},
+            ],
+            "highlight": {
+                "fields": {
+                    "document_name": {"number_of_fragments": 0},
+                    "content": {"fragment_size": 150, "number_of_fragments": 3},
+                },
+                "pre_tags": ["<mark>"],
+                "post_tags": ["</mark>"],
+            },
+        }
+
+        try:
+            result = await client.search(index=self.index_name, body=body)
+
+            total = result["hits"]["total"]["value"]
+            pages = (total + size - 1) // size if size > 0 else 0
+
+            items = []
+            for hit in result["hits"]["hits"]:
+                source = hit["_source"]
+                uploaded_on = source.get("uploaded_on")
+                if isinstance(uploaded_on, str):
+                    uploaded_on = datetime.fromisoformat(uploaded_on.replace("Z", "+00:00"))
+
+                highlights = None
+                if "highlight" in hit:
+                    highlights = hit["highlight"]
+
+                category_obj = {
+                    "id": source.get("category_id") or 0,
+                    "name": source.get("category_name") or source.get("category", ""),
+                }
+                subject_category = {
+                    "id": source.get("category_id") or 0,
+                    "name": source.get("category_name") or source.get("category", ""),
+                }
+                subject_obj = {
+                    "id": source.get("subject_id") or 0,
+                    "name": source.get("subject_name") or source.get("subject", ""),
+                    "category": subject_category,
+                }
+                doc_type_obj = {
+                    "id": source.get("type_id") or 0,
+                    "name": source.get("doc_type_name") or source.get("doc_type", ""),
+                }
+                account_obj = {
+                    "user_id": source.get("user_id") or 0,
+                    "username": source.get("uploaded_by", ""),
+                }
+
+                items.append(
+                    {
+                        "id": source["id"],
+                        "category": source.get("category_id") or 0,
+                        "subject": source.get("subject_id") or 0,
+                        "type": source.get("type_id") or 0,
+                        "year": source.get("year"),
+                        "document_name": source["document_name"],
+                        "file_name": source.get("file_name", ""),
+                        "uploaded_by": source.get("user_id") or 0,
+                        "view_count": source.get("view_count", 0),
+                        "uploaded_on": uploaded_on.isoformat() if uploaded_on else None,
+                        "approved": source.get("approved", True),
+                        "doc_type": doc_type_obj,
+                        "doc_category": category_obj,
+                        "doc_subject": subject_obj,
+                        "account": account_obj,
+                        "extension": source.get("extension", ""),
+                        "score": hit["_score"],
+                        "highlights": highlights,
+                    }
+                )
+
+            return {
+                "items": items,
+                "total": total,
+                "page": page,
+                "pages": pages,
+                "size": size,
+            }
         except Exception:
             return None
 

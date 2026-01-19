@@ -54,6 +54,11 @@ class IndexDocumentRequest(BaseModel):
     uploaded_on: str
     file_name: str
     extension: str
+    view_count: int = 0
+    category_id: int | None = None
+    subject_id: int | None = None
+    type_id: int | None = None
+    user_id: int | None = None
 
 
 class DeleteDocumentRequest(BaseModel):
@@ -141,6 +146,11 @@ async def trigger_index_document(request: IndexDocumentRequest):
         uploaded_on=request.uploaded_on,
         file_name=request.file_name,
         extension=request.extension,
+        view_count=request.view_count,
+        category_id=request.category_id,
+        subject_id=request.subject_id,
+        type_id=request.type_id,
+        user_id=request.user_id,
     )
     return {"task_id": task.id, "status": "queued"}
 

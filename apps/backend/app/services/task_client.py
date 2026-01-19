@@ -24,6 +24,11 @@ class TaskClient:
         uploaded_on: datetime,
         file_name: str,
         extension: str,
+        view_count: int = 0,
+        category_id: int | None = None,
+        subject_id: int | None = None,
+        type_id: int | None = None,
+        user_id: int | None = None,
     ) -> str | None:
         try:
             async with httpx.AsyncClient(timeout=10.0) as client:
@@ -40,6 +45,11 @@ class TaskClient:
                         "uploaded_on": uploaded_on.isoformat(),
                         "file_name": file_name,
                         "extension": extension,
+                        "view_count": view_count,
+                        "category_id": category_id,
+                        "subject_id": subject_id,
+                        "type_id": type_id,
+                        "user_id": user_id,
                     },
                 )
                 if response.status_code == 200:
@@ -101,6 +111,11 @@ class TaskClient:
                 uploaded_on=doc["uploaded_on"],
                 file_name=doc["file_name"],
                 extension=doc["extension"],
+                view_count=doc.get("view_count", 0),
+                category_id=doc.get("category_id"),
+                subject_id=doc.get("subject_id"),
+                type_id=doc.get("type_id"),
+                user_id=doc.get("user_id"),
             )
             if task_id:
                 queued += 1

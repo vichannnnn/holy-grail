@@ -101,6 +101,7 @@ export const AUTHED_DROPDOWN_INFO: Record<string, NavInfo> = {
 				onClick={async () => {
 					await deleteUser();
 					toast.success("Signed out successfully");
+					window.location.href = "/";
 				}}
 			/>
 		),

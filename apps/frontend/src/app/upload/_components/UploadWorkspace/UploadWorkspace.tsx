@@ -141,7 +141,7 @@ export function UploadWorkspace({ categories, documentTypes }: Readonly<UploadWo
 							<Text description className="flex-1 text-xs">
 								By uploading, you agree to have read and accepted our{" "}
 								<Link
-									href="/terms"
+									href="/terms-of-service"
 									className="underline hover:text-blue-500 transition-colors cursor-pointer inline"
 								>
 									terms of service

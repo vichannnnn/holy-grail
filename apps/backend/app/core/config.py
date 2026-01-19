@@ -46,8 +46,8 @@ class Settings(BaseSettings):
     access_token_expire_minutes: int = Field(default=1440)
 
     # AWS Configuration (Optional for LOCAL)
-    aws_access_key_id: Optional[str] = Field(default=None, alias="AWS_ACCESS_KEY_ID")
-    aws_secret_access_key: Optional[str] = Field(default=None, alias="AWS_SECRET_ACCESS_KEY")
+    aws_access_key_id: Optional[str] = Field(default=None, alias="AWS_ACCESS_KEY")
+    aws_secret_access_key: Optional[str] = Field(default=None, alias="AWS_SECRET_KEY")
     aws_region: str = Field(default="ap-southeast-1", alias="AWS_REGION")
     aws_s3_bucket_name: Optional[str] = Field(default=None, alias="AWS_S3_BUCKET_NAME")
     aws_cloudfront_url: Optional[str] = Field(default=None, alias="AWS_CLOUDFRONT_URL")
@@ -77,6 +77,12 @@ class Settings(BaseSettings):
     opensearch_enabled: bool = Field(default=True)
     opensearch_user: Optional[str] = Field(default=None)
     opensearch_password: Optional[str] = Field(default=None)
+    opensearch_use_ssl: Optional[bool] = Field(default=None)
+
+    # Redis Configuration
+    redis_url: str = Field(default="redis://localhost:6379/0")
+    redis_cache_enabled: bool = Field(default=True)
+    redis_cache_ttl: int = Field(default=300)
 
     @property
     def database_url(self) -> str:
