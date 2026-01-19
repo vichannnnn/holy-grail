@@ -1,6 +1,6 @@
 import type { ButtonProps as HeadlessButtonProps } from "@headlessui/react";
 
 export interface ButtonProps extends HeadlessButtonProps {
-	variant?: "solid" | "outline" | "ghost";
+	variant?: "solid" | "outline" | "ghost" | "glow";
 	className?: string;
 }

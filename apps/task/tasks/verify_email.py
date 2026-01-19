@@ -18,9 +18,7 @@ class EmailTask(Task):
 
 
 @celery_app.task(bind=True, base=EmailTask)
-def send_verification_email_task(
-    _self, email: EmailStr, username: str, confirm_url: str
-) -> dict:
+def send_verification_email_task(_self, email: EmailStr, username: str, confirm_url: str) -> dict:
     logger.info(f"Sending verification email to {email}")
     email_client = EmailTaskClient()
     email_client.send_verify_account_email(
