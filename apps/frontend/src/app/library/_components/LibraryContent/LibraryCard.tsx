@@ -1,5 +1,5 @@
 "use client";
-import { Button, Card, Text, Title } from "@shared/ui/components";
+import { Card, Text, Title } from "@shared/ui/components";
 import Link from "next/link";
 import type { LibraryCardProps } from "./types";
 
@@ -86,9 +86,12 @@ export function LibraryCard({ item, renderAdminActions }: Readonly<LibraryCardPr
 
 			{/* Download Button */}
 			<div className="pt-2 mt-auto">
-				<Button variant="outline" asChild className="w-full text-sm">
-					<a href={getDownloadUrl(item.id)}>Download</a>
-				</Button>
+				<a
+					href={getDownloadUrl(item.id)}
+					className="inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-inset transition-all duration-150 cursor-pointer border border-pink-300 text-pink-600 hover:bg-pink-100 focus-visible:ring-pink-500 dark:bg-transparent dark:border-pink-400/50 dark:text-pink-300 dark:hover:bg-pink-500/10 dark:focus-visible:ring-pink-400 hover:scale-[1.02] active:scale-[0.98] w-full"
+				>
+					Download
+				</a>
 				{renderAdminActions?.()}
 			</div>
 		</Card>
