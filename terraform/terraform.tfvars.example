@@ -36,6 +36,7 @@ S3_BUCKET_NAME                    = "<YOUR_S3_BUCKET_NAME>"
 S3_KEY                            = "<YOUR_S3_KEY>"
 S3_KEY_ID                         = "<YOUR_S3_KEY_ID>"
 
+EMAIL_ENABLED                     = true
 MAILTRAP_API_KEY                  = "<YOUR_MAILTRAP_API_KEY>"
 MAILTRAP_BEARER_TOKEN             = "<YOUR_MAILTRAP_BEARER_TOKEN>"
 

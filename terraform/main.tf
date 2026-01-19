@@ -89,6 +89,7 @@ module "ecs" {
   AWS_S3_BUCKET_NAME          = var.AWS_S3_BUCKET_NAME
   SECRET_KEY                  = var.SECRET_KEY
   LOGFIRE_TOKEN               = var.LOGFIRE_TOKEN
+  EMAIL_ENABLED               = var.EMAIL_ENABLED
   MAILTRAP_API_KEY            = var.MAILTRAP_API_KEY
   MAILTRAP_BEARER_TOKEN       = var.MAILTRAP_BEARER_TOKEN
   CELERY_BROKER_URL           = var.CELERY_BROKER_URL

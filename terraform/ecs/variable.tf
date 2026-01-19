@@ -138,6 +138,12 @@ variable "AWS_S3_BUCKET_NAME" {
   type        = string
 }
 
+variable "EMAIL_ENABLED" {
+  description = "Enable email sending via Mailtrap"
+  type        = bool
+  default     = true
+}
+
 variable "MAILTRAP_BEARER_TOKEN" {
   description = "Bearer token for Mailtrap API."
   type        = string

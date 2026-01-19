@@ -127,6 +127,12 @@ variable "LOGFIRE_TOKEN" {
   sensitive   = true
 }
 
+variable "EMAIL_ENABLED" {
+  description = "Enable email sending via Mailtrap"
+  type        = bool
+  default     = true
+}
+
 variable "MAILTRAP_API_KEY" {
   description = "Mailtrap API Key"
   type        = string

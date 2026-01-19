@@ -49,7 +49,7 @@ export function UpdatePasswordForm() {
 			<div className="flex flex-col gap-2 justify-between">
 				<PasswordInput
 					label="Old password"
-					placeholder="eg. iloveEc0ns/"
+					placeholder="eg. MyStr0ngP@ss!"
 					containerClassName="grow"
 					{...register("before_password")}
 					error={errors.before_password?.message as string}
@@ -57,7 +57,7 @@ export function UpdatePasswordForm() {
 				/>
 				<PasswordInput
 					label="New password"
-					placeholder="eg. ihateEc0ns/"
+					placeholder="eg. N3wS3cur3P@ss!"
 					containerClassName="grow"
 					{...register("password")}
 					error={errors.password?.message as string}
@@ -65,7 +65,7 @@ export function UpdatePasswordForm() {
 				/>
 				<PasswordInput
 					label="Repeat new password"
-					placeholder="eg. ihateEc0ns/"
+					placeholder="eg. N3wS3cur3P@ss!"
 					containerClassName="grow"
 					{...register("repeat_password")}
 					error={errors.repeat_password?.message as string}

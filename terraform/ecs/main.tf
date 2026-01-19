@@ -268,12 +268,12 @@ resource "aws_cloudwatch_metric_alarm" "frontend_cpu_high" {
   alarm_name          = "${var.app_name}-frontend-cpu-high"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = "2"
-  metric_name        = "CPUUtilization"
-  namespace          = "AWS/ECS"
-  period             = "60"
-  statistic          = "Average"
-  threshold          = "75"
-  alarm_description  = "This metric monitors frontend cpu utilization"
+  metric_name         = "CPUUtilization"
+  namespace           = "AWS/ECS"
+  period              = "60"
+  statistic           = "Average"
+  threshold           = "75"
+  alarm_description   = "This metric monitors frontend cpu utilization"
 
   dimensions = {
     ClusterName = aws_ecs_cluster.app_alb.name
@@ -287,12 +287,12 @@ resource "aws_cloudwatch_metric_alarm" "frontend_cpu_low" {
   alarm_name          = "${var.app_name}-frontend-cpu-low"
   comparison_operator = "LessThanThreshold"
   evaluation_periods  = "3"
-  metric_name        = "CPUUtilization"
-  namespace          = "AWS/ECS"
-  period             = "60"
-  statistic          = "Average"
-  threshold          = "25"
-  alarm_description  = "This metric monitors frontend cpu utilization"
+  metric_name         = "CPUUtilization"
+  namespace           = "AWS/ECS"
+  period              = "60"
+  statistic           = "Average"
+  threshold           = "25"
+  alarm_description   = "This metric monitors frontend cpu utilization"
 
   dimensions = {
     ClusterName = aws_ecs_cluster.app_alb.name
