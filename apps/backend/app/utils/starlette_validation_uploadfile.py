@@ -16,9 +16,6 @@ from starlette.types import ASGIApp, Message
 _unsupported_media_type = PlainTextResponse(
     content="Unsupported Media Type", status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE
 )
-_length_required = PlainTextResponse(
-    content="Length Required", status_code=status.HTTP_411_LENGTH_REQUIRED
-)
 _request_entity_too_large = PlainTextResponse(
     content="Request Entity Too Large",
     status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
@@ -126,10 +123,7 @@ class ValidateUploadFileMiddleware(BaseHTTPMiddleware):
                     return _unsupported_media_type
 
             headers = request.headers
-            if "content-length" not in headers:
-                return _length_required
-            # Check content-size
-            if int(headers["content-length"]) > self.max_size:
+            if "content-length" in headers and int(headers["content-length"]) > self.max_size:
                 return _request_entity_too_large
 
         return await call_next(request)
