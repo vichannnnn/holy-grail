@@ -15,9 +15,9 @@ class Environment(str, Enum):
     with helper methods to check environment-specific requirements.
     """
 
-    LOCAL = "local"
-    DEV = "dev"
-    PROD = "prod"
+    LOCAL = "LOCAL"
+    DEV = "DEV"
+    PROD = "PROD"
 
     def is_local(self) -> bool:
         """

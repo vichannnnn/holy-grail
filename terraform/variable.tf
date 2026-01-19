@@ -116,9 +116,10 @@ variable "AWS_S3_BUCKET_NAME" {
   type        = string
 }
 
-variable "PRODUCTION" {
-  description = "Production flag (true/false)."
+variable "ENVIRONMENT" {
+  description = "Environment (LOCAL/DEV/PROD)."
   type        = string
+  default     = "PROD"
 }
 
 variable "LOGFIRE_TOKEN" {

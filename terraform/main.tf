@@ -85,7 +85,7 @@ module "ecs" {
   ACCESS_TOKEN_EXPIRE_MINUTES = var.ACCESS_TOKEN_EXPIRE_MINUTES
   ALGORITHM                   = var.ALGORITHM
   AWS_CLOUDFRONT_URL          = var.AWS_CLOUDFRONT_URL
-  PRODUCTION                  = var.PRODUCTION
+  ENVIRONMENT                 = var.ENVIRONMENT
   AWS_S3_BUCKET_NAME          = var.AWS_S3_BUCKET_NAME
   SECRET_KEY                  = var.SECRET_KEY
   LOGFIRE_TOKEN               = var.LOGFIRE_TOKEN

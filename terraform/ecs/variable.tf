@@ -156,9 +156,10 @@ variable "MAILTRAP_API_KEY" {
   sensitive   = true
 }
 
-variable "PRODUCTION" {
-  description = "Flag indicating if the application is running in production mode."
+variable "ENVIRONMENT" {
+  description = "Environment (LOCAL/DEV/PROD)."
   type        = string
+  default     = "PROD"
 }
 
 variable "LOGFIRE_TOKEN" {

@@ -11,13 +11,13 @@ from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 
 from app.api.api import api_router
-from app.utils.flags import PRODUCTION_FLAG
+from app.core.config import settings
 from app.utils.limiter import limiter
 from app.utils.starlette_validation_uploadfile import ValidateUploadFileMiddleware
 
 app = FastAPI(
-    docs_url=None if PRODUCTION_FLAG else "/docs",
-    redoc_url=None if PRODUCTION_FLAG else "/redoc",
+    docs_url=None if settings.environment.is_prod() else "/docs",
+    redoc_url=None if settings.environment.is_prod() else "/redoc",
 )
 app.state.limiter = limiter
 app.add_middleware(ValidateUploadFileMiddleware, app_path="/note/", max_size=1048576000)
@@ -33,7 +33,7 @@ app.add_middleware(
 
 app.include_router(api_router)
 
-if PRODUCTION_FLAG:
+if settings.environment.is_prod():
     import logfire
 
     logfire.configure()
