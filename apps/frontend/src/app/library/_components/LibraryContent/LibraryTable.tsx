@@ -1,8 +1,5 @@
 "use client";
-import { IconButton } from "@shared/ui/components";
-import { downloadNote } from "../../actions";
 import Link from "next/link";
-import type { Note } from "../../types";
 import type { LibraryTableProps } from "./types";
 import { CustomDownloadIcon } from "./CustomDownloadIcon";
 
@@ -16,33 +13,15 @@ export function LibraryTable({ items, renderAdminActions }: Readonly<LibraryTabl
 		return new Date(dateString).toLocaleDateString("en-SG", options);
 	};
 
-	const handleDownload = async (note: Note) => {
-		const result = await downloadNote(note);
-		if (result.ok && result.data) {
-			const { data: base64Data, filename } = result.data;
-
-			// Convert base64 back to binary
-			const binaryString = atob(base64Data);
-			const bytes = new Uint8Array(binaryString.length);
-			for (let i = 0; i < binaryString.length; i++) {
-				bytes[i] = binaryString.charCodeAt(i);
-			}
-
-			// Create blob and download
-			const blob = new Blob([bytes]);
-			const blobUrl = URL.createObjectURL(blob);
-			const link = document.createElement("a");
-			link.href = blobUrl;
-			link.download = filename; // Use the preserved filename
-			link.click();
-			URL.revokeObjectURL(blobUrl);
-		}
-	};
-
 	const getDocumentUrl = (fileName: string) => {
 		const cdnUrl = process.env.NEXT_PUBLIC_AWS_CLOUDFRONT_URL;
 		if (!cdnUrl) return undefined;
 		return `${cdnUrl}/${fileName}`;
+	};
+
+	const getDownloadUrl = (noteId: number) => {
+		const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+		return `${apiUrl}/note/download/${noteId}`;
 	};
 
 	return (
@@ -109,12 +88,13 @@ export function LibraryTable({ items, renderAdminActions }: Readonly<LibraryTabl
 								{formatDate(note.uploaded_on)}
 							</td>
 							<td className="px-4 py-3 flex">
-								<IconButton
-									onClick={() => handleDownload(note)}
+								<a
+									href={getDownloadUrl(note.id)}
 									aria-label={`Download ${note.document_name}`}
+									className="inline-flex items-center justify-center p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
 								>
 									<CustomDownloadIcon className="size-5 fill-gray-700 dark:fill-gray-300" />
-								</IconButton>
+								</a>
 								{renderAdminActions?.(note)}
 							</td>
 						</tr>

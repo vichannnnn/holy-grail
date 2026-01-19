@@ -1,8 +1,6 @@
 "use client";
 import { Button, Card, Text, Title } from "@shared/ui/components";
-import { downloadNote } from "../../actions";
 import Link from "next/link";
-import type { Note } from "../../types";
 import type { LibraryCardProps } from "./types";
 
 export function LibraryCard({ item, renderAdminActions }: Readonly<LibraryCardProps>) {
@@ -15,33 +13,15 @@ export function LibraryCard({ item, renderAdminActions }: Readonly<LibraryCardPr
 		return new Date(dateString).toLocaleDateString("en-SG", options);
 	};
 
-	const handleDownload = async (note: Note) => {
-		const result = await downloadNote(note);
-		if (result.ok && result.data) {
-			const { data: base64Data, filename } = result.data;
-
-			// Convert base64 back to binary
-			const binaryString = atob(base64Data);
-			const bytes = new Uint8Array(binaryString.length);
-			for (let i = 0; i < binaryString.length; i++) {
-				bytes[i] = binaryString.charCodeAt(i);
-			}
-
-			// Create blob and download
-			const blob = new Blob([bytes]);
-			const blobUrl = URL.createObjectURL(blob);
-			const link = document.createElement("a");
-			link.href = blobUrl;
-			link.download = filename; // Use the preserved filename
-			link.click();
-			URL.revokeObjectURL(blobUrl);
-		}
-	};
-
 	const getDocumentUrl = (fileName: string) => {
 		const cdnUrl = process.env.NEXT_PUBLIC_AWS_CLOUDFRONT_URL;
 		if (!cdnUrl) return undefined;
 		return `${cdnUrl}/${fileName}`;
+	};
+
+	const getDownloadUrl = (noteId: number) => {
+		const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+		return `${apiUrl}/note/download/${noteId}`;
 	};
 
 	return (
@@ -106,8 +86,8 @@ export function LibraryCard({ item, renderAdminActions }: Readonly<LibraryCardPr
 
 			{/* Download Button */}
 			<div className="pt-2 mt-auto">
-				<Button variant="outline" onClick={() => handleDownload(item)} className="w-full text-sm">
-					Download
+				<Button variant="outline" asChild className="w-full text-sm">
+					<a href={getDownloadUrl(item.id)}>Download</a>
 				</Button>
 				{renderAdminActions?.()}
 			</div>
