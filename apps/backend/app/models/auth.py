@@ -458,7 +458,7 @@ class Account(Base, CRUD["Account"]):
                 username=account.username,
                 reset_url=f"{FRONTEND_URL}/reset-password?token={token}",
             )
-        except Exception as e:  # pylint: disable=C0103, W0612, W0703
+        except Exception:  # pylint: disable=C0103, W0612, W0703
             return
 
         stmt = (

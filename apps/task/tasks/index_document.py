@@ -25,7 +25,7 @@ class IndexDocumentTask(Task):
     name="index_document",
 )
 def index_document_task(
-    self,
+    _self,
     doc_id: int,
     document_name: str,
     category: str,

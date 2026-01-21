@@ -8,10 +8,8 @@ import { useTransition } from "react";
 import { PasswordInput } from "../_components";
 import { signin } from "./actions";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
 
 export function SignInForm() {
-	const router = useRouter();
 	const {
 		register,
 		handleSubmit,
@@ -28,8 +26,7 @@ export function SignInForm() {
 				toast.error(message || "Sign in failed");
 			} else {
 				toast.success("Sign in successful! Redirecting...");
-				router.refresh();
-				router.push("/");
+				window.location.href = "/";
 			}
 		});
 	};

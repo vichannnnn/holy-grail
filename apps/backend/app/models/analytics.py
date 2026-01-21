@@ -7,7 +7,7 @@ of analytics data for historical tracking and reporting.
 """
 import datetime
 import os
-from typing import Optional, Tuple
+from typing import Optional
 
 import pytz
 from google.analytics.data_v1beta import BetaAnalyticsDataClient
@@ -28,7 +28,7 @@ from app.models.auth import Account
 from app.utils.exceptions import AppError
 
 
-def extract_metrics(response: RunReportResponse) -> Tuple[Optional[int], Optional[int]]:
+def extract_metrics(response: RunReportResponse) -> tuple[int | None, int | None]:
     """
     Extract specific metrics from Google Analytics response.
 

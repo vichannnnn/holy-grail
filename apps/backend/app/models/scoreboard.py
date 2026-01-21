@@ -5,8 +5,6 @@ This module manages the leaderboard system that tracks and ranks users
 based on their approved educational content contributions, encouraging
 community participation through gamification.
 """
-from typing import List
-
 from sqlalchemy import ForeignKey, func, not_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Mapped, mapped_column, relationship, selectinload, synonym
@@ -63,8 +61,8 @@ class Scoreboard(Base, CRUD["Scoreboard"]):
 
     @classmethod
     async def get_top_n_approved_users(
-        cls, session: AsyncSession, top_n: int, exclude_ids: List[int]
-    ) -> List[ScoreboardUser]:
+        cls, session: AsyncSession, top_n: int, exclude_ids: list[int]
+    ) -> list[ScoreboardUser]:
         """
         Get top contributors excluding specified users.
 

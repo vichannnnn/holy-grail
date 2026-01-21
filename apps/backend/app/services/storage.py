@@ -32,7 +32,7 @@ class StorageService(ABC):
         self,
         file: UploadFile,
         key: str,
-        content_type: Optional[str] = None,
+        content_type: str | None = None,
     ) -> str:
         """
         Upload file to storage backend.
@@ -109,7 +109,7 @@ class LocalFileStorage(StorageService):
         self,
         file: UploadFile,
         key: str,
-        content_type: Optional[str] = None,
+        content_type: str | None = None,
     ) -> str:
         """
         Save uploaded file to local disk.
@@ -239,7 +239,7 @@ class S3Storage(StorageService):
         self,
         file: UploadFile,
         key: str,
-        content_type: Optional[str] = None,
+        content_type: str | None = None,
     ) -> str:
         """
         Upload file to S3 bucket.

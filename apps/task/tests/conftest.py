@@ -1,6 +1,5 @@
 import asyncio
 import os
-from typing import AsyncGenerator
 
 import pytest
 from fastapi.testclient import TestClient
@@ -38,7 +37,7 @@ async def async_client():
 
 
 @pytest.fixture
-def mock_celery_task(monkeypatch):
+def mock_celery_task(_monkeypatch):
     """Mock Celery task execution for testing."""
 
     class MockTaskResult:
@@ -47,7 +46,7 @@ def mock_celery_task(monkeypatch):
             self.state = "PENDING"
             self.result = None
 
-    def mock_delay(*args, **kwargs):
+    def mock_delay(*_args, **_kwargs):
         return MockTaskResult("test-task-id-123")
 
     # This fixture can be used to mock specific tasks in tests

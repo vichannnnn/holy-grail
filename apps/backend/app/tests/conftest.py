@@ -1,7 +1,7 @@
 import asyncio
 import zipfile
 from io import BytesIO
-from typing import AsyncGenerator
+from collections.abc import AsyncGenerator
 
 import pytest
 import sqlalchemy.exc as SQLAlchemyExceptions

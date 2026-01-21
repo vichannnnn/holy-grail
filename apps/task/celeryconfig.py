@@ -9,7 +9,7 @@ if sys.platform == "darwin":
 import billiard
 
 if hasattr(billiard, "set_pdeathsig"):
-    billiard.set_pdeathsig = lambda sig: None
+    billiard.set_pdeathsig = lambda _sig: None
 
 # Additional configuration to prevent the issue
 worker_max_tasks_per_child = 1000

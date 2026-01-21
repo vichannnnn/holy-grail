@@ -5,15 +5,15 @@ from pydantic import BaseModel, EmailStr
 
 load_dotenv()
 
-from tasks.delete_document import delete_document_task
-from tasks.fetch_google_analytics import fetch_google_analytics
-from tasks.health_check import ping
-from tasks.index_document import index_document_task
-from tasks.new_password_email import send_new_password_email_task
-from tasks.reset_password_email import send_reset_password_email_task
-from tasks.update_scoreboard_users import update_scoreboard_users_task
-from tasks.verify_email import send_verification_email_task
-from worker import celery_app
+from tasks.delete_document import delete_document_task  # noqa: E402
+from tasks.fetch_google_analytics import fetch_google_analytics  # noqa: E402
+from tasks.health_check import ping  # noqa: E402
+from tasks.index_document import index_document_task  # noqa: E402
+from tasks.new_password_email import send_new_password_email_task  # noqa: E402
+from tasks.reset_password_email import send_reset_password_email_task  # noqa: E402
+from tasks.update_scoreboard_users import update_scoreboard_users_task  # noqa: E402
+from tasks.verify_email import send_verification_email_task  # noqa: E402
+from worker import celery_app  # noqa: E402
 
 app = FastAPI(title="Holy Grail Celery Task API", version="1.0.0")
 

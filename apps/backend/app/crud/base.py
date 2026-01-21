@@ -5,7 +5,8 @@ This module provides a generic CRUD mixin class that can be inherited
 by SQLAlchemy models to gain common database operations like create,
 read, update, and delete.
 """
-from typing import Any, Dict, Generic, List, Optional, Sequence, Type, TypeVar
+from typing import Any, Generic, Optional, TypeVar
+from collections.abc import Sequence
 
 from sqlalchemy import and_, asc, delete, exc as SQLAlchemyExceptions, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -32,7 +33,7 @@ class CRUD(Generic[ModelType]):
 
     @classmethod
     async def create(  # type: ignore
-        cls: Type[ModelType], session: AsyncSession, data: Dict[str, Any]
+        cls: type[ModelType], session: AsyncSession, data: dict[str, Any]
     ) -> ModelType:
         """
         Create a new record in the database.
@@ -63,7 +64,7 @@ class CRUD(Generic[ModelType]):
 
     @classmethod
     async def get(
-        cls: Type[ModelType],  # type: ignore
+        cls: type[ModelType],  # type: ignore
         session: AsyncSession,
         id: int,  # pylint: disable=W0622
     ) -> ModelType:
@@ -90,10 +91,10 @@ class CRUD(Generic[ModelType]):
 
     @classmethod
     async def update(  # type: ignore
-        cls: Type[ModelType],
+        cls: type[ModelType],
         session: AsyncSession,
         id: int,  # pylint: disable=W0622
-        data: Dict[str, Any],
+        data: dict[str, Any],
     ) -> ModelType:
         """
         Update an existing record.
@@ -131,10 +132,10 @@ class CRUD(Generic[ModelType]):
 
     @classmethod
     async def upsert(  # type: ignore
-        cls: Type[ModelType],
+        cls: type[ModelType],
         session: AsyncSession,
         id: int,  # pylint: disable=W0622
-        data: Dict[str, Any],
+        data: dict[str, Any],
     ) -> ModelType:
         """
         Update or insert a record.
@@ -165,7 +166,7 @@ class CRUD(Generic[ModelType]):
 
     @classmethod
     async def delete(  # type: ignore
-        cls: Type[ModelType],
+        cls: type[ModelType],
         session: AsyncSession,
         id: int,  # pylint: disable=W0622
     ) -> bool:
@@ -194,10 +195,10 @@ class CRUD(Generic[ModelType]):
 
     @classmethod
     async def get_all(  # type: ignore
-        cls: Type[ModelType],
+        cls: type[ModelType],
         session: AsyncSession,
-        filter_: Optional[Dict[str, Any]] = None,
-        options: List[Load] = None,
+        filter_: dict[str, Any] | None = None,
+        options: list[Load] = None,
     ) -> Sequence[ModelType]:
         """
         Get all records with optional filtering.

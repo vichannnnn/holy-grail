@@ -5,7 +5,7 @@ This module defines models for categorizing educational resources by
 education level (O-Level, A-Level, IB), subjects (Math, Physics, etc.),
 and document types (Summary Notes, Practice Papers, etc.).
 """
-from typing import TYPE_CHECKING, List
+from typing import TYPE_CHECKING
 
 from sqlalchemy import ForeignKey, Integer, UniqueConstraint, exc as SQLAlchemyExceptions, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -43,7 +43,7 @@ class CategoryLevel(Base, CRUD["category_level"]):
     documents: Mapped["Library"] = relationship(
         "Library", back_populates="doc_category", uselist=True
     )
-    subjects: Mapped[List["Subjects"]] = relationship(
+    subjects: Mapped[list["Subjects"]] = relationship(
         "Subjects", back_populates="category", cascade="all, delete-orphan"
     )
 

@@ -130,12 +130,12 @@ async def get_all_approved_notes(
     session: CurrentSession,
     page: int = Query(1, title="Page number", gt=0),
     size: int = Query(50, title="Page size", gt=0, le=50),
-    category: Optional[str] = None,
-    subject: Optional[str] = None,
-    doc_type: Optional[str] = None,
-    keyword: Optional[str] = None,
-    year: Optional[int] = None,
-    sorted_by_upload_date: Optional[str] = "desc",
+    category: str | None = None,
+    subject: str | None = None,
+    doc_type: str | None = None,
+    keyword: str | None = None,
+    year: int | None = None,
+    sorted_by_upload_date: str | None = "desc",
 ) -> Page[NoteSchema]:
     """
     [DEPRECATED] Get paginated list of approved educational notes using PostgreSQL.
@@ -182,11 +182,11 @@ async def get_all_approved_notes(
 async def search_notes_opensearch(
     page: int = Query(1, title="Page number", gt=0),
     size: int = Query(50, title="Page size", gt=0, le=50),
-    category: Optional[str] = None,
-    subject: Optional[str] = None,
-    doc_type: Optional[str] = None,
-    keyword: Optional[str] = None,
-    year: Optional[int] = None,
+    category: str | None = None,
+    subject: str | None = None,
+    doc_type: str | None = None,
+    keyword: str | None = None,
+    year: int | None = None,
 ) -> Page[SearchNoteSchema]:
     """
     Search documents using OpenSearch full-text search with Redis caching.
@@ -257,12 +257,12 @@ async def get_all_pending_approval_notes(
     authenticated: SessionAdmin,
     page: int = Query(1, title="Page number", gt=0),
     size: int = Query(50, title="Page size", gt=0, le=50),
-    category: Optional[str] = None,
-    subject: Optional[str] = None,
-    doc_type: Optional[str] = None,
-    keyword: Optional[str] = None,
-    year: Optional[int] = None,
-    sorted_by_upload_date: Optional[str] = "desc",
+    category: str | None = None,
+    subject: str | None = None,
+    doc_type: str | None = None,
+    keyword: str | None = None,
+    year: int | None = None,
+    sorted_by_upload_date: str | None = "desc",
 ) -> Page[NoteSchema]:
     """
     Get paginated list of notes pending admin approval.

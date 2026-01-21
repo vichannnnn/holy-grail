@@ -24,14 +24,14 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy.orm import selectinload, sessionmaker
+from sqlalchemy import select  # noqa: E402
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine  # noqa: E402
+from sqlalchemy.orm import selectinload, sessionmaker  # noqa: E402
 
-from app.core.config import settings
-from app.models.library import Library
-from app.services.search import search_service
-from app.utils.pdf_extractor import extract_text_from_url
+from app.core.config import settings  # noqa: E402
+from app.models.library import Library  # noqa: E402
+from app.services.search import search_service  # noqa: E402
+from app.utils.pdf_extractor import extract_text_from_url  # noqa: E402
 
 PDF_EXTENSIONS = {".pdf"}
 
@@ -88,7 +88,7 @@ async def build_index(
     async with async_session() as session:
         stmt = (
             select(Library)
-            .where(Library.approved == True)
+            .where(Library.approved == True)  # noqa: E712
             .options(
                 selectinload(Library.account),
                 selectinload(Library.doc_category),

@@ -9,8 +9,8 @@ from pathlib import Path
 # Add parent directory to path
 sys.path.append(str(Path(__file__).parent.parent))
 
-from app.db.database import async_session
-from app.models.analytics import Analytics
+from app.db.database import async_session  # noqa: E402
+from app.models.analytics import Analytics  # noqa: E402
 
 
 async def seed_analytics():
@@ -18,7 +18,7 @@ async def seed_analytics():
     async with async_session() as session:
         try:
             # Check if analytics already exists
-            existing = await Analytics.get_latest_analytics(session)
+            await Analytics.get_latest_analytics(session)
             print("Analytics data already exists")
             return
         except Exception:

@@ -28,7 +28,7 @@ class NoteCreateSchema(BaseModel):
     category: int
     subject: int
     type: int
-    year: Optional[int] = None
+    year: int | None = None
     document_name: DocumentNameStr
 
 
@@ -42,7 +42,7 @@ class NoteInsertSchema(BaseModel):
     category: int
     subject: int
     type: int
-    year: Optional[int] = None
+    year: int | None = None
     document_name: str
     uploaded_by: int
     file_name: str
@@ -56,13 +56,13 @@ class NoteUpdateSchema(BaseModel):
     All fields are optional for partial updates.
     """
 
-    category: Optional[int] = None
-    document_name: Optional[DocumentNameStr] = None
-    subject: Optional[int] = None
-    type: Optional[int] = None
-    year: Optional[int] = None
-    uploaded_by: Optional[int] = None
-    extension: Optional[str] = None
+    category: int | None = None
+    document_name: DocumentNameStr | None = None
+    subject: int | None = None
+    type: int | None = None
+    year: int | None = None
+    uploaded_by: int | None = None
+    extension: str | None = None
 
 
 class NoteSchema(BaseModel):
@@ -77,7 +77,7 @@ class NoteSchema(BaseModel):
     category: int
     subject: int
     type: int
-    year: Optional[int] = None
+    year: int | None = None
     document_name: str
     file_name: str
     uploaded_by: int
@@ -114,11 +114,11 @@ class SearchResultSchema(BaseModel):
     category: str
     subject: str
     doc_type: str
-    year: Optional[int] = None
+    year: int | None = None
     uploaded_by: str
     uploaded_on: datetime
     score: float
-    highlights: Optional[dict[str, list[str]]] = None
+    highlights: dict[str, list[str]] | None = None
 
 
 class SearchResponseSchema(BaseModel):
@@ -133,7 +133,7 @@ class SearchResponseSchema(BaseModel):
     page: int
     pages: int
     size: int
-    facets: Optional[dict[str, list[dict[str, Any]]]] = None
+    facets: dict[str, list[dict[str, Any]]] | None = None
 
 
 class SearchIndexStatsSchema(BaseModel):
@@ -158,7 +158,7 @@ class SearchNoteSchema(BaseModel):
     category: int
     subject: int
     type: int
-    year: Optional[int] = None
+    year: int | None = None
     document_name: str
     file_name: str
     uploaded_by: int
@@ -170,5 +170,5 @@ class SearchNoteSchema(BaseModel):
     doc_subject: SubjectSchema
     account: UploaderSchema
     extension: str
-    score: Optional[float] = None
-    highlights: Optional[dict[str, list[str]]] = None
+    score: float | None = None
+    highlights: dict[str, list[str]] | None = None

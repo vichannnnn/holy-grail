@@ -5,8 +5,6 @@ This module provides endpoints for displaying user contributions and rankings
 based on approved educational content submissions. Encourages community
 participation through gamification.
 """
-from typing import List
-
 from fastapi import APIRouter
 
 from app.api.deps import CurrentSession, SessionUser
@@ -17,7 +15,7 @@ router = APIRouter()
 
 
 @router.get("")
-async def top_approved_note_users(session: CurrentSession) -> List[ScoreboardUser]:
+async def top_approved_note_users(session: CurrentSession) -> list[ScoreboardUser]:
     """
     Get the top contributors leaderboard.
 
