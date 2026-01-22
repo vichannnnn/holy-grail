@@ -50,7 +50,9 @@ resource "aws_ecs_task_definition" "backend" {
         { name = "OPENSEARCH_PASSWORD", value = var.OPENSEARCH_PASSWORD },
         { name = "OPENSEARCH_PORT", value = tostring(var.OPENSEARCH_PORT) },
         { name = "OPENSEARCH_USE_SSL", value = tostring(var.OPENSEARCH_USE_SSL) },
-        { name = "TASK_API_URL", value = "http://localhost:8001" }
+        { name = "TASK_API_URL", value = "http://localhost:8001" },
+        { name = "GOOGLE_APPLICATION_PROPERTY_ID", value = var.GOOGLE_APPLICATION_PROPERTY_ID },
+        { name = "GOOGLE_APPLICATION_CREDENTIALS_JSON", value = var.GOOGLE_APPLICATION_CREDENTIALS_JSON }
       ]
       essential = true
       logConfiguration = {
@@ -97,7 +99,9 @@ resource "aws_ecs_task_definition" "backend" {
         { name = "OPENSEARCH_USER", value = var.OPENSEARCH_USER },
         { name = "OPENSEARCH_PASSWORD", value = var.OPENSEARCH_PASSWORD },
         { name = "OPENSEARCH_PORT", value = tostring(var.OPENSEARCH_PORT) },
-        { name = "OPENSEARCH_USE_SSL", value = tostring(var.OPENSEARCH_USE_SSL) }
+        { name = "OPENSEARCH_USE_SSL", value = tostring(var.OPENSEARCH_USE_SSL) },
+        { name = "GOOGLE_APPLICATION_PROPERTY_ID", value = var.GOOGLE_APPLICATION_PROPERTY_ID },
+        { name = "GOOGLE_APPLICATION_CREDENTIALS_JSON", value = var.GOOGLE_APPLICATION_CREDENTIALS_JSON }
       ]
       essential = true
       logConfiguration = {

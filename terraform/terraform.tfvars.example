@@ -45,3 +45,7 @@ REDIS_URL                         = "<YOUR_REDIS_URL>"
 ENVIRONMENT                       = "PROD"
 LOGFIRE_TOKEN                     = "<YOUR_LOGFIRE_TOKEN>"
 
+# Google Analytics (for fetching platform metrics)
+GOOGLE_APPLICATION_PROPERTY_ID      = "<YOUR_GA4_PROPERTY_ID>"
+GOOGLE_APPLICATION_CREDENTIALS_JSON = "<YOUR_BASE64_ENCODED_SERVICE_ACCOUNT_JSON>"
+
