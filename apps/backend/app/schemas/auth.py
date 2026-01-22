@@ -59,8 +59,8 @@ class AccountSchema(AccountRegisterSchema):
     Used for internal operations where user_id may be present.
     """
 
-    user_id: Optional[int] = None
-    repeat_password: Optional[str] = None
+    user_id: int | None = None
+    repeat_password: str | None = None
 
 
 class AccountCreateSchema(BaseModel):
@@ -99,14 +99,14 @@ class CurrentUserSchema(BaseModel):
     """
 
     user_id: int
-    email: Optional[EmailStr]  # type: ignore
+    email: EmailStr | None  # type: ignore
     username: username_validator  # type: ignore
     role: RoleEnum
     verified: bool
 
 
 class UpdateUserRoleSchema(BaseModel):
-    role: Optional[RoleEnum] = None
+    role: RoleEnum | None = None
 
 
 class CurrentUserWithJWTSchema(BaseModel):

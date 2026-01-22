@@ -22,7 +22,7 @@ class DeleteDocumentTask(Task):
     name="delete_document",
 )
 def delete_document_task(
-    self,
+    _self,
     doc_id: int,
 ) -> dict:
     logger.info(f"Deleting document {doc_id} from search index")

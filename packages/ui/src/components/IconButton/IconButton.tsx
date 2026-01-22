@@ -9,7 +9,7 @@ const sizeClasses: Record<NonNullable<IconButtonProps["size"]>, string> = {
 };
 
 const defaultStyles =
-	"inline-flex items-center justify-center rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 hover:bg-gray-200 dark:hover:bg-zinc-700 focus-visible:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition cursor-pointer";
+	"inline-flex items-center justify-center rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-amber hover:bg-navy/5 dark:hover:bg-cream/5 disabled:opacity-50 disabled:cursor-not-allowed transition cursor-pointer";
 
 export function IconButton({ children, className, size = "md", ...props }: IconButtonProps) {
 	const classes = twMerge(defaultStyles, sizeClasses[size], className ?? "");

@@ -224,3 +224,17 @@ variable "ecs_security_group_id" {
   description = "ECS security group ID from network module."
   type        = string
 }
+
+variable "GOOGLE_APPLICATION_PROPERTY_ID" {
+  description = "Google Analytics 4 property ID"
+  type        = string
+  sensitive   = true
+  default     = ""
+}
+
+variable "GOOGLE_APPLICATION_CREDENTIALS_JSON" {
+  description = "Google service account credentials JSON (base64 encoded)"
+  type        = string
+  sensitive   = true
+  default     = ""
+}

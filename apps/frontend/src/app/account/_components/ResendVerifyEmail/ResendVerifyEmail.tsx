@@ -23,7 +23,7 @@ export function ResendVerifyEmail({ children }: Readonly<ResendVerifyEmailProps>
 	return (
 		<button
 			type="button"
-			className="text-blue-500 font-semibold cursor-pointer hover:text-blue-600 transition-colors"
+			className="text-amber font-semibold cursor-pointer hover:underline transition-colors"
 			onClick={handleResendEmail}
 			onKeyDown={(e) => {
 				if (e.key === "Enter" || e.key === " ") {

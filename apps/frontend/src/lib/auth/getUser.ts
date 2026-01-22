@@ -10,7 +10,15 @@ export async function getUser(): Promise<User | null> {
 	const userCookie = cookieStore.get(USER_DATA_KEY)?.value;
 
 	const accessToken = cookieStore.get(ACCESS_TOKEN_KEY)?.value;
-	const { exp } = accessToken ? jwtDecode<{ exp: number }>(accessToken) : { exp: 0 };
+	let exp = 0;
+	if (accessToken) {
+		try {
+			const decoded = jwtDecode<{ exp: number }>(accessToken);
+			exp = decoded.exp;
+		} catch {
+			return null;
+		}
+	}
 	const currentTime = Date.now() / 1000;
 	if (exp < currentTime) {
 		// Token has expired

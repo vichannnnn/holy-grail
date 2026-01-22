@@ -4,6 +4,7 @@ Celery task for updating user rankings on the scoreboard.
 This module contains a periodic task that recalculates user rankings
 based on their educational content contributions.
 """
+
 import os
 
 import requests

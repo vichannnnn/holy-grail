@@ -9,13 +9,13 @@ from app.core.config import settings
 
 class CacheService:
     def __init__(self) -> None:
-        self._client: Optional[redis.Redis] = None
+        self._client: redis.Redis | None = None
 
     @property
     def is_enabled(self) -> bool:
         return settings.redis_cache_enabled
 
-    async def _get_client(self) -> Optional[redis.Redis]:
+    async def _get_client(self) -> redis.Redis | None:
         if not self.is_enabled:
             return None
 
@@ -28,7 +28,7 @@ class CacheService:
 
         return self._client
 
-    async def get(self, key: str) -> Optional[str]:
+    async def get(self, key: str) -> str | None:
         client = await self._get_client()
         if not client:
             return None
@@ -38,7 +38,7 @@ class CacheService:
         except Exception:
             return None
 
-    async def set(self, key: str, value: str, ttl: Optional[int] = None) -> bool:
+    async def set(self, key: str, value: str, ttl: int | None = None) -> bool:
         client = await self._get_client()
         if not client:
             return False
@@ -88,11 +88,11 @@ class CacheService:
 
 
 def generate_search_cache_key(
-    keyword: Optional[str] = None,
-    category: Optional[str] = None,
-    subject: Optional[str] = None,
-    doc_type: Optional[str] = None,
-    year: Optional[int] = None,
+    keyword: str | None = None,
+    category: str | None = None,
+    subject: str | None = None,
+    doc_type: str | None = None,
+    year: int | None = None,
     page: int = 1,
     size: int = 50,
 ) -> str:

@@ -5,8 +5,6 @@ This module provides endpoints for managing categories (education levels),
 subjects, and document types. These form the taxonomy for organizing
 educational resources in the library system.
 """
-from typing import List
-
 from fastapi import APIRouter
 from sqlalchemy.orm import joinedload
 
@@ -27,11 +25,11 @@ from app.schemas.categories import (
 router = APIRouter()
 
 
-@router.get("/all_subjects", response_model=List[SubjectSchema])
+@router.get("/all_subjects", response_model=list[SubjectSchema])
 async def get_subjects_list(
     session: CurrentSession,
     category_id: int = None,
-) -> List[SubjectSchema]:
+) -> list[SubjectSchema]:
     """
     Get list of all available subjects with optional category filtering.
 
@@ -53,10 +51,10 @@ async def get_subjects_list(
     return data
 
 
-@router.get("/all_category_level", response_model=List[CategorySchema])
+@router.get("/all_category_level", response_model=list[CategorySchema])
 async def get_category_level_list(
     session: CurrentSession,
-) -> List[CategorySchema]:
+) -> list[CategorySchema]:
     """
     Get list of all education levels/categories.
 
@@ -97,10 +95,10 @@ async def get_category(
     return data
 
 
-@router.get("/all_document_type", response_model=List[DocumentTypeSchema])
+@router.get("/all_document_type", response_model=list[DocumentTypeSchema])
 async def get_notes_type_list(
     session: CurrentSession,
-) -> List[DocumentTypeSchema]:
+) -> list[DocumentTypeSchema]:
     """
     Get list of all document types.
 

@@ -75,7 +75,7 @@ class SubjectUpdateSchema(SubjectCreateSchema):
     All fields are optional for partial updates.
     """
 
-    name: Optional[str] = None
+    name: str | None = None
 
 
 class CategoryUpdateSchema(CategoryCreateSchema):
@@ -85,7 +85,7 @@ class CategoryUpdateSchema(CategoryCreateSchema):
     All fields are optional for partial updates.
     """
 
-    name: Optional[str] = None
+    name: str | None = None
 
 
 class DocumentTypeUpdateSchema(DocumentTypeCreateSchema):
@@ -95,4 +95,4 @@ class DocumentTypeUpdateSchema(DocumentTypeCreateSchema):
     All fields are optional for partial updates.
     """
 
-    name: Optional[str] = None
+    name: str | None = None

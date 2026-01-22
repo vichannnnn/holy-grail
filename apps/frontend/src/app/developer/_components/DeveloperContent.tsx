@@ -102,11 +102,14 @@ function renderTabContent<T>(
 	if (!response.ok || !response.data) {
 		return (
 			<div className="flex flex-col items-center justify-center py-12">
-				<Image src="/trimmy-grail-chan-sparkling.webp" alt="Error" width={100} height={100} />
-				<Title order={2} className="font-bold mb-4">
-					We ran into an issue :(
+				<div className="relative mb-4">
+					<div className="absolute -inset-4 rounded-full bg-gradient-to-br from-coral/20 to-amber/20 blur-2xl dark:from-coral/10 dark:to-amber/10" />
+					<Image src="/trimmy-grail-chan-sparkling.webp" alt="Error" width={100} height={100} className="relative" />
+				</div>
+				<Title order={2} className="font-bold mb-2 text-navy-deep dark:text-cream">
+					Something went wrong
 				</Title>
-				<Text>{response.err ?? "An unknown error occurred."}</Text>
+				<Text className="text-navy/70 dark:text-cream/60">{response.err ?? "An unknown error occurred."}</Text>
 			</div>
 		);
 	}
@@ -114,11 +117,15 @@ function renderTabContent<T>(
 	if (response.data.length === 0) {
 		return (
 			<div className="flex flex-col items-center justify-center py-12">
-				<Image src="/trimmy-grail-chan-sparkling.webp" alt="No Results" width={100} height={100} />
-				<Title order={2} className="font-bold mb-4">
+				<div className="relative mb-4">
+					<div className="absolute -inset-4 rounded-full bg-gradient-to-br from-amber/20 to-coral/20 blur-2xl dark:from-amber/10 dark:to-coral/10" />
+					<Image src="/trimmy-grail-chan-sparkling.webp" alt="No Results" width={100} height={100} className="relative" />
+				</div>
+				<Title order={2} className="font-bold mb-2 text-navy-deep dark:text-cream">
 					No data found
 				</Title>
-				<Text>This section appears to be empty.</Text>
+				<Text className="text-navy/70 dark:text-cream/60">This section appears to be empty.</Text>
+				{renderAddAction && <div className="mt-4">{renderAddAction()}</div>}
 			</div>
 		);
 	}

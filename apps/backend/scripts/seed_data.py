@@ -13,15 +13,15 @@ from pathlib import Path
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select  # noqa: E402
+from sqlalchemy.ext.asyncio import AsyncSession  # noqa: E402
 
-from app.core import settings
-from app.db.database import async_session, engine
-from app.models.auth import Account
-from app.models.categories import CategoryLevel, DocumentTypes, Subjects
-from app.models.library import Library
-from app.utils.auth import Authenticator
+from app.core import settings  # noqa: E402
+from app.db.database import async_session, engine  # noqa: E402
+from app.models.auth import Account  # noqa: E402
+from app.models.categories import CategoryLevel, DocumentTypes, Subjects  # noqa: E402
+from app.models.library import Library  # noqa: E402
+from app.utils.auth import Authenticator  # noqa: E402
 
 
 async def create_admin_user(session: AsyncSession):

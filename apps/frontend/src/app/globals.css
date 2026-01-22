@@ -13,7 +13,20 @@
 }
 
 @theme {
+	--color-navy: #1e293b;
+	--color-navy-deep: #0f172a;
+	--color-cream: #faf7f2;
+	--color-cream-dark: #f5f0e8;
+	--color-amber: #f59e0b;
+	--color-amber-light: #fbbf24;
+	--color-coral: #fb7185;
+	--color-coral-soft: #fda4af;
+
 	--animate-fade-in: fadeIn 0.2s cubic-bezier(0.25, 1, 0.5, 1) both;
+	--animate-fade-in-up: fadeInUp 0.5s cubic-bezier(0.25, 1, 0.5, 1) both;
+	--animate-float: float 6s ease-in-out infinite;
+	--animate-glow: glow 2s ease-in-out infinite alternate;
+	--animate-shimmer: shimmer 2s linear infinite;
 
 	@keyframes fadeIn {
 		from {
@@ -23,6 +36,45 @@
 		to {
 			transform: translateY(0);
 			opacity: 1;
+		}
+	}
+
+	@keyframes fadeInUp {
+		from {
+			transform: translateY(20px);
+			opacity: 0;
+		}
+		to {
+			transform: translateY(0);
+			opacity: 1;
+		}
+	}
+
+	@keyframes float {
+		0%,
+		100% {
+			transform: translateY(0px);
+		}
+		50% {
+			transform: translateY(-10px);
+		}
+	}
+
+	@keyframes glow {
+		from {
+			box-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
+		}
+		to {
+			box-shadow: 0 0 30px rgba(245, 158, 11, 0.4);
+		}
+	}
+
+	@keyframes shimmer {
+		0% {
+			background-position: -200% 0;
+		}
+		100% {
+			background-position: 200% 0;
 		}
 	}
 }

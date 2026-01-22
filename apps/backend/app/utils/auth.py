@@ -7,7 +7,7 @@ generation, and password hashing using bcrypt.
 import random
 import string
 from datetime import datetime, timedelta
-from typing import Any, Dict
+from typing import Any
 
 from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
@@ -61,7 +61,7 @@ class Authenticator:
     oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
     @classmethod
-    def create_access_token(cls, data: Dict[str, Any]) -> str:
+    def create_access_token(cls, data: dict[str, Any]) -> str:
         """
         Create a JWT access token.
 

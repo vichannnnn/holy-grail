@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import Optional
 
 from opensearchpy import OpenSearch
 
@@ -52,11 +51,11 @@ class SearchService:
     }
 
     def __init__(self) -> None:
-        self._client: Optional[OpenSearch] = None
+        self._client: OpenSearch | None = None
         self._connected = False
 
     @property
-    def client(self) -> Optional[OpenSearch]:
+    def client(self) -> OpenSearch | None:
         if not self._connected:
             self._connect()
         return self._client
@@ -139,18 +138,18 @@ class SearchService:
         category: str,
         subject: str,
         doc_type: str,
-        year: Optional[int],
+        year: int | None,
         uploaded_by: str,
         uploaded_on: datetime,
-        content: Optional[str] = None,
-        file_name: Optional[str] = None,
-        extension: Optional[str] = None,
+        content: str | None = None,
+        file_name: str | None = None,
+        extension: str | None = None,
         view_count: int = 0,
         approved: bool = True,
-        category_id: Optional[int] = None,
-        subject_id: Optional[int] = None,
-        type_id: Optional[int] = None,
-        user_id: Optional[int] = None,
+        category_id: int | None = None,
+        subject_id: int | None = None,
+        type_id: int | None = None,
+        user_id: int | None = None,
     ) -> bool:
         if not self.client:
             return False

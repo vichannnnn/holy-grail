@@ -1,5 +1,3 @@
-from typing import Tuple
-
 import pytest
 from fastapi import status
 from fastapi.encoders import jsonable_encoder
@@ -342,7 +340,7 @@ def test_get_subjects_from_category(
     indirect=["test_client", "test_add_subject", "test_update_subject"],
 )
 def test_add_and_update_two_subjects(
-    create_two_education_level: Tuple[CategoryLevel],
+    create_two_education_level: tuple[CategoryLevel],
     test_client: TestClient,
     user_type: schemas.auth.CurrentUserSchema,
     test_add_subject: schemas.categories.SubjectCreateSchema,

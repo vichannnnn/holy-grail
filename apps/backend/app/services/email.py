@@ -7,7 +7,7 @@ The service is automatically selected based on environment configuration.
 """
 import logging
 from abc import ABC, abstractmethod
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 
 import httpx
 
@@ -30,8 +30,8 @@ class EmailService(ABC):
         to: str,
         subject: str,
         body: str,
-        template: Optional[str] = None,
-        context: Optional[Dict[str, Any]] = None,
+        template: str | None = None,
+        context: dict[str, Any] | None = None,
     ) -> bool:
         """
         Send a generic email.
@@ -108,8 +108,8 @@ class ConsoleEmailService(EmailService):
         to: str,
         subject: str,
         body: str,
-        template: Optional[str] = None,
-        context: Optional[Dict[str, Any]] = None,
+        template: str | None = None,
+        context: dict[str, Any] | None = None,
     ) -> bool:
         """
         Log email to console in formatted box.
@@ -272,8 +272,8 @@ class HTTPEmailService(EmailService):
         to: str,
         subject: str,
         body: str,
-        template: Optional[str] = None,
-        context: Optional[Dict[str, Any]] = None,
+        template: str | None = None,
+        context: dict[str, Any] | None = None,
     ) -> bool:
         """
         Generic email sending is not implemented for HTTP service.

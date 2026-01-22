@@ -2,7 +2,7 @@ import type { CardProps } from "./types";
 import { twMerge } from "tailwind-merge";
 
 const defaultStyles =
-	"flex flex-col bg-white border border-black/8 rounded-md dark:bg-zinc-900 dark:border-white/8 p-4";
+	"flex flex-col bg-white/60 border border-navy/5 rounded-2xl dark:bg-navy/40 dark:border-cream/5 p-4 backdrop-blur-sm";
 
 export function Card({ children, className, ...rest }: CardProps) {
 	const mergedStyles = twMerge(defaultStyles, className);

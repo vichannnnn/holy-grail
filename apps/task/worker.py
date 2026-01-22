@@ -5,9 +5,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Import celery configuration before creating the app
-import celeryconfig
-
 celery_app = Celery(
     "tasks",
     include=[

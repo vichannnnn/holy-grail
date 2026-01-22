@@ -13,11 +13,11 @@ class SearchResult(BaseModel):
     category: str
     subject: str
     doc_type: str
-    year: Optional[int]
+    year: int | None
     uploaded_by: str
     uploaded_on: datetime
     score: float
-    highlights: Optional[dict[str, list[str]]] = None
+    highlights: dict[str, list[str]] | None = None
 
 
 class SearchResponse(BaseModel):
@@ -26,7 +26,7 @@ class SearchResponse(BaseModel):
     page: int
     pages: int
     size: int
-    facets: Optional[dict[str, list[dict[str, Any]]]] = None
+    facets: dict[str, list[dict[str, Any]]] | None = None
 
 
 class SearchService:
@@ -75,7 +75,7 @@ class SearchService:
     }
 
     def __init__(self) -> None:
-        self._client: Optional[AsyncOpenSearch] = None
+        self._client: AsyncOpenSearch | None = None
         self._connected = False
 
     @property
@@ -86,7 +86,7 @@ class SearchService:
     def is_enabled(self) -> bool:
         return settings.opensearch_enabled
 
-    async def _get_client(self) -> Optional[AsyncOpenSearch]:
+    async def _get_client(self) -> AsyncOpenSearch | None:
         if not self.is_enabled:
             return None
 
@@ -162,18 +162,18 @@ class SearchService:
         category: str,
         subject: str,
         doc_type: str,
-        year: Optional[int],
+        year: int | None,
         uploaded_by: str,
         uploaded_on: datetime,
-        content: Optional[str] = None,
-        file_name: Optional[str] = None,
-        extension: Optional[str] = None,
+        content: str | None = None,
+        file_name: str | None = None,
+        extension: str | None = None,
         view_count: int = 0,
         approved: bool = True,
-        category_id: Optional[int] = None,
-        subject_id: Optional[int] = None,
-        type_id: Optional[int] = None,
-        user_id: Optional[int] = None,
+        category_id: int | None = None,
+        subject_id: int | None = None,
+        type_id: int | None = None,
+        user_id: int | None = None,
     ) -> bool:
         client = await self._get_client()
         if not client:
@@ -294,16 +294,16 @@ class SearchService:
 
     async def search(
         self,
-        keyword: Optional[str] = None,
-        category: Optional[str] = None,
-        subject: Optional[str] = None,
-        doc_type: Optional[str] = None,
-        year: Optional[int] = None,
+        keyword: str | None = None,
+        category: str | None = None,
+        subject: str | None = None,
+        doc_type: str | None = None,
+        year: int | None = None,
         page: int = 1,
         size: int = 50,
         fuzzy: bool = True,
         include_facets: bool = False,
-    ) -> Optional[SearchResponse]:
+    ) -> SearchResponse | None:
         client = await self._get_client()
         if not client:
             return None
@@ -440,15 +440,15 @@ class SearchService:
 
     async def search_full(
         self,
-        keyword: Optional[str] = None,
-        category: Optional[str] = None,
-        subject: Optional[str] = None,
-        doc_type: Optional[str] = None,
-        year: Optional[int] = None,
+        keyword: str | None = None,
+        category: str | None = None,
+        subject: str | None = None,
+        doc_type: str | None = None,
+        year: int | None = None,
         page: int = 1,
         size: int = 50,
         fuzzy: bool = True,
-    ) -> Optional[dict[str, Any]]:
+    ) -> dict[str, Any] | None:
         client = await self._get_client()
         if not client:
             return None
@@ -590,7 +590,7 @@ class SearchService:
         except Exception:
             return None
 
-    async def get_index_stats(self) -> Optional[dict[str, Any]]:
+    async def get_index_stats(self) -> dict[str, Any] | None:
         client = await self._get_client()
         if not client:
             return None

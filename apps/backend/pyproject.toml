@@ -95,6 +95,9 @@ ignore = [
     "F401",  # imported but unused
     "F403",  # star import
     "I001",  # import block is unsorted
+    "ARG001", # unused function argument (common in FastAPI dependency injection)
+    "ARG002", # unused method argument (common in stub/mock methods)
+    "ARG003", # unused class method argument
 ]
 exclude = [
     "alembic/*",

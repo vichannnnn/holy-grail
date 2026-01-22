@@ -2,7 +2,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RegisterSchema } from "./schemas";
-import { Input, Title, Text, Button } from "@shared/ui/components";
+import { Input, Button } from "@shared/ui/components";
 import Link from "next/link";
 import { useTransition } from "react";
 import { PasswordInput } from "../_components";
@@ -34,11 +34,17 @@ export function RegisterForm() {
 	};
 
 	return (
-		<div className="flex flex-col items-center xl:w-1/2 md:w-2/3 w-1/2">
-			<Title order={1} className="text-2xl">
-				Register a new account
-			</Title>
-			<form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-sm mt-6 flex flex-col gap-4">
+		<div className="animate-fade-in">
+			<div className="mb-6 text-center">
+				<h1 className="text-2xl font-bold text-navy-deep dark:text-cream">
+					Join the community
+				</h1>
+				<p className="mt-1 text-sm text-navy/60 dark:text-cream/50">
+					Create an account to contribute notes
+				</p>
+			</div>
+
+			<form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
 				<Input
 					label="Username"
 					{...register("username")}
@@ -64,36 +70,41 @@ export function RegisterForm() {
 					error={errors.repeat_password?.message as string}
 					required
 				/>
-				<Text description className="text-xs">
-					By creating an account, you confirm that you have read and agree to our{" "}
-					<Link href="/privacy" className="font-bold">
+
+				<p className="text-xs text-navy/50 dark:text-cream/40">
+					By creating an account, you agree to our{" "}
+					<Link href="/privacy" className="text-amber hover:underline">
 						Privacy Policy
 					</Link>{" "}
 					and{" "}
-					<Link href="/terms-of-service" className="font-bold">
+					<Link href="/terms-of-service" className="text-amber hover:underline">
 						Terms of Service
 					</Link>
-					, including how we collect, use, and share your data.
-				</Text>
-				<div className="mt-2">
-					{isPending ? (
-						<Button type="submit" className="w-full" disabled>
-							Registering...
-						</Button>
-					) : (
-						<Button type="submit" className="w-full">
-							Register
-						</Button>
-					)}
+					.
+				</p>
+
+				<div className="pt-2">
+					<Button
+						type="submit"
+						className="w-full bg-amber text-navy-deep hover:bg-amber-light"
+						disabled={isPending}
+					>
+						{isPending ? "Creating account..." : "Create Account"}
+					</Button>
 				</div>
 			</form>
-			<Text description className="mt-4 text-sm">
-				Already have an account? Sign in{" "}
-				<Link href="/auth/sign-in" className="font-bold">
-					here
-				</Link>
-				.
-			</Text>
+
+			<div className="mt-6 text-center text-sm">
+				<p className="text-navy/60 dark:text-cream/50">
+					Already have an account?{" "}
+					<Link
+						href="/auth/sign-in"
+						className="font-medium text-amber hover:underline"
+					>
+						Sign in
+					</Link>
+				</p>
+			</div>
 		</div>
 	);
 }

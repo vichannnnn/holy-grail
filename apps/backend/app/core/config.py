@@ -46,16 +46,16 @@ class Settings(BaseSettings):
     access_token_expire_minutes: int = Field(default=1440)
 
     # AWS Configuration (Optional for LOCAL)
-    aws_access_key_id: Optional[str] = Field(default=None, alias="AWS_ACCESS_KEY")
-    aws_secret_access_key: Optional[str] = Field(default=None, alias="AWS_SECRET_KEY")
+    aws_access_key_id: str | None = Field(default=None, alias="AWS_ACCESS_KEY")
+    aws_secret_access_key: str | None = Field(default=None, alias="AWS_SECRET_KEY")
     aws_region: str = Field(default="ap-southeast-1", alias="AWS_REGION")
-    aws_s3_bucket_name: Optional[str] = Field(default=None, alias="AWS_S3_BUCKET_NAME")
-    aws_cloudfront_url: Optional[str] = Field(default=None, alias="AWS_CLOUDFRONT_URL")
+    aws_s3_bucket_name: str | None = Field(default=None, alias="AWS_S3_BUCKET_NAME")
+    aws_cloudfront_url: str | None = Field(default=None, alias="AWS_CLOUDFRONT_URL")
 
     # Email Configuration
     email_enabled: bool = Field(default=False)
-    mailtrap_api_key: Optional[str] = Field(default=None)
-    mailtrap_bearer_token: Optional[str] = Field(default=None)
+    mailtrap_api_key: str | None = Field(default=None)
+    mailtrap_bearer_token: str | None = Field(default=None)
 
     # Application URLs
     frontend_url: str = Field(default="http://localhost:3000")
@@ -68,16 +68,16 @@ class Settings(BaseSettings):
     local_storage_url: str = Field(default="http://localhost:8000/files")
 
     # Optional Services
-    logfire_token: Optional[str] = Field(default=None)
+    logfire_token: str | None = Field(default=None)
 
     # OpenSearch Configuration
     opensearch_host: str = Field(default="localhost")
     opensearch_port: int = Field(default=9200)
     opensearch_index: str = Field(default="holy_grail_documents")
     opensearch_enabled: bool = Field(default=True)
-    opensearch_user: Optional[str] = Field(default=None)
-    opensearch_password: Optional[str] = Field(default=None)
-    opensearch_use_ssl: Optional[bool] = Field(default=None)
+    opensearch_user: str | None = Field(default=None)
+    opensearch_password: str | None = Field(default=None)
+    opensearch_use_ssl: bool | None = Field(default=None)
 
     # Redis Configuration
     redis_url: str = Field(default="redis://localhost:6379/0")
@@ -122,7 +122,7 @@ class Settings(BaseSettings):
 
     @field_validator("aws_access_key_id", "aws_secret_access_key", "aws_s3_bucket_name")
     @classmethod
-    def validate_aws_config(cls, v: Optional[str], info) -> Optional[str]:
+    def validate_aws_config(cls, v: str | None, info) -> str | None:
         """
         Validate AWS configuration based on environment.
 
@@ -165,7 +165,7 @@ class Settings(BaseSettings):
 
     @field_validator("mailtrap_api_key", "mailtrap_bearer_token")
     @classmethod
-    def validate_mailtrap_config(cls, v: Optional[str], info) -> Optional[str]:
+    def validate_mailtrap_config(cls, v: str | None, info) -> str | None:
         """
         Validate Mailtrap configuration when email is enabled.
 

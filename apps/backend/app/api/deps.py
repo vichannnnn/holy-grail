@@ -5,7 +5,8 @@ This module provides reusable dependencies for database sessions,
 authentication, authorization, and external service clients (S3).
 All dependencies follow FastAPI's dependency injection pattern.
 """
-from typing import Annotated, AsyncGenerator, Generator
+from collections.abc import AsyncGenerator, Generator
+from typing import Annotated
 
 import boto3
 from fastapi import Depends

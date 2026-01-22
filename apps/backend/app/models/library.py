@@ -7,7 +7,7 @@ It handles file uploads, categorization, approval workflows, and download tracki
 """
 import datetime
 import uuid
-from typing import TYPE_CHECKING, List, Optional, Tuple, Union
+from typing import TYPE_CHECKING, Optional, Union
 
 import boto3
 import httpx
@@ -52,9 +52,7 @@ if TYPE_CHECKING:
     from app.models.categories import CategoryLevel, DocumentTypes, Subjects
 
 
-def form_data_note_parser(
-    form_data: FormData, idx: int
-) -> Union[bool, Tuple[NoteCreateSchema, int]]:
+def form_data_note_parser(form_data: FormData, idx: int) -> bool | tuple[NoteCreateSchema, int]:
     """
     Parse form data to extract note information.
 
@@ -167,7 +165,7 @@ class Library(Base, CRUD["Library"]):
         form_data: FormData,
         uploaded_by: int,
         s3_bucket: boto3.client,
-    ) -> List[NoteSchema]:
+    ) -> list[NoteSchema]:
         """
         Create multiple educational documents from form upload.
 
@@ -192,7 +190,7 @@ class Library(Base, CRUD["Library"]):
         if len(form_data) > 25 * 6:
             raise AppError.BAD_REQUEST_ERROR
 
-        valid_notes: List[tuple[NoteCreateSchema, int]] = []
+        valid_notes: list[tuple[NoteCreateSchema, int]] = []
         failed_notes = {
             UploadError.SCHEMA_VALIDATION_ERROR.name: [],
             UploadError.INVALID_FILE_TYPE.name: [],
@@ -219,7 +217,7 @@ class Library(Base, CRUD["Library"]):
                 failed_notes[UploadError.INVALID_FILE_TYPE.name].append(idx)
                 idxes_to_remove.append(idx)
 
-        valid_notes: List[tuple[NoteCreateSchema, int]] = [
+        valid_notes: list[tuple[NoteCreateSchema, int]] = [
             (elem[0], elem[1]) for elem in valid_notes if elem[1] not in idxes_to_remove
         ]
 
@@ -228,7 +226,7 @@ class Library(Base, CRUD["Library"]):
             raise AppError.MULTIPLE_GENERIC_ERRORS(**failed_notes)
 
         objs = []
-        files: List[Tuple[UploadFile, str]] = []
+        files: list[tuple[UploadFile, str]] = []
         for note, _ in valid_notes:
             if uploader_role.DEVELOPER:
                 extension = developer_accepted_doc_type_extensions[note.file.content_type]
@@ -269,12 +267,12 @@ class Library(Base, CRUD["Library"]):
         page: int,
         size: int,
         approved: bool = True,
-        category: Optional[str] = None,
-        subject: Optional[str] = None,
-        doc_type: Optional[str] = None,
-        keyword: Optional[str] = None,
-        year: Optional[int] = None,
-        sorted_by_upload_date: Optional[str] = "desc",
+        category: str | None = None,
+        subject: str | None = None,
+        doc_type: str | None = None,
+        keyword: str | None = None,
+        year: int | None = None,
+        sorted_by_upload_date: str | None = "desc",
     ):
         stmt = select(cls).where(cls.approved == approved)
 
@@ -339,7 +337,7 @@ class Library(Base, CRUD["Library"]):
         return res
 
     @classmethod
-    async def get_notes_by_ids(cls, session: AsyncSession, ids: List[int]) -> List["Library"]:
+    async def get_notes_by_ids(cls, session: AsyncSession, ids: list[int]) -> list["Library"]:
         if not ids:
             return []
 
@@ -470,10 +468,10 @@ class Library(Base, CRUD["Library"]):
     @classmethod
     async def get_latest_scoreboard_users_stats(
         cls, session: AsyncSession
-    ) -> List[UserUploadCount]:
+    ) -> list[UserUploadCount]:
         stmt = (
             select(cls.uploaded_by, func.count(cls.id).label("upload_count"))
-            .where(cls.approved == True)
+            .where(cls.approved is True)
             .group_by(cls.uploaded_by)
         )
 
