@@ -66,13 +66,13 @@ Or use `bun run dev:full` to start everything with database, migrations, and see
    │ Port:8000 │
    └─────┬─────┘
          │
-   ┌─────┼─────────────┐
-   │     │             │
-┌──▼───┐ ┌▼────┐ ┌─────▼─────┐
-│Postgr│ │Redis│ │  Celery   │
-│eSSQL │ │     │ │  (Tasks)  │
-│:5432 │ │:6379│ │ Port:8001 │
-└──────┘ └─────┘ └───────────┘
+   ┌─────┼─────────────────────┐
+   │     │             │       │
+┌──▼───┐ ┌▼────┐ ┌─────▼─────┐ ┌▼──────────┐
+│Postgr│ │Redis│ │  Celery   │ │OpenSearch │
+│eSSQL │ │     │ │  (Tasks)  │ │ (Search)  │
+│:5432 │ │:6379│ │ Port:8001 │ │  :9200    │
+└──────┘ └─────┘ └───────────┘ └───────────┘
 ```
 
 - **Frontend** (`/apps/frontend`): The educational platform serving free notes and papers
@@ -130,12 +130,14 @@ For package-specific commands, see the README in each package directory.
 
 | Layer | Technology |
 |-------|-----------|
-| **Frontend** | React 19, Next.js, TypeScript, Tailwind CSS |
+| **Frontend** | React 19, Next.js 16, TypeScript, Tailwind CSS v4 |
 | **Backend** | FastAPI, Python 3.11, SQLAlchemy 2.0, Pydantic 2.0 |
 | **Database** | PostgreSQL 14.1, Alembic migrations |
+| **Search** | OpenSearch (full-text search) |
 | **Task Queue** | Celery 5.4, Redis 7.0.7 |
 | **Auth** | JWT-based with bcrypt password hashing |
 | **Storage** | AWS S3 for file storage |
+| **Analytics** | Google Analytics 4 |
 | **Infrastructure** | AWS ECS Fargate, Terraform Cloud |
 | **Package Managers** | Bun (Node), UV (Python) |
 | **Code Quality** | Ruff (Python), Biome (JS/TS), MyPy |
