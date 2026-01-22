@@ -1,6 +1,7 @@
 export interface StatCardProps {
 	title: string;
 	value: number;
+	icon?: "download" | "users" | "user";
 }
 
 export interface AnalyticsResponse {

@@ -68,7 +68,7 @@ export default function RootLayout({
 			/>
 			<body
 				className={twMerge(
-					"min-h-screen dark:bg-zinc-800 bg-zinc-100 transition-all",
+					"min-h-screen bg-cream dark:bg-navy-deep transition-all",
 					plusJakarta.variable,
 				)}
 			>
@@ -86,7 +86,7 @@ export default function RootLayout({
 					<Toaster
 						position="bottom-right"
 						toastOptions={{
-							className: "!bg-zinc-100 !text-zinc-900 dark:!bg-zinc-900 dark:!text-white",
+							className: "!bg-white !text-navy-deep dark:!bg-navy dark:!text-cream",
 						}}
 					/>
 				</ClientProvider>

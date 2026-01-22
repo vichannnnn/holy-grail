@@ -1,76 +1,66 @@
 "use client";
 import type { HeaderRightProps } from "./types";
-import {
-	AUTH_LINKS,
-	NAV_DROPDOWN_INFO,
-	AUTHED_DROPDOWN_INFO,
-	NEEDS_AUTH_DROPDOWN_INFO,
-} from "./constants";
+import { AUTH_LINKS, AUTHED_DROPDOWN_INFO, NEEDS_AUTH_DROPDOWN_INFO } from "./constants";
 import Link from "next/link";
 import { Button, Text } from "@shared/ui/components";
 import { ClientContext } from "@shared/ui/providers";
 import { useContext } from "react";
 import { Dropdown } from "@shared/ui/components";
-import { List } from "@phosphor-icons/react";
+import { MobileDrawer } from "../MobileDrawer";
 
 export function HeaderRight({ user }: HeaderRightProps) {
 	const { isMobile } = useContext(ClientContext);
 
-	// Mobile view
-	if (isMobile) {
-		const toRender = user
-			? { ...NAV_DROPDOWN_INFO, ...AUTHED_DROPDOWN_INFO }
-			: { ...NAV_DROPDOWN_INFO, ...NEEDS_AUTH_DROPDOWN_INFO };
-		return (
-			<Dropdown
-				header={<List className="size-6 m-1 dark:text-white" />}
-				content={Object.entries(toRender).map(
-					([key, { render, needsRole }]) =>
-						(!needsRole || (user && user.role >= needsRole)) && <div key={key}>{render()}</div>,
-				)}
-			/>
-		);
-	}
+	const authContent = (
+		<div className="flex flex-col gap-1">
+			{Object.entries(AUTH_LINKS).map(([key, { label, href }]) => (
+				<Link
+					key={key}
+					href={href}
+					className="block px-4 py-3 rounded-lg text-navy/80 dark:text-cream/80 hover:text-navy dark:hover:text-cream hover:bg-cream-dark dark:hover:bg-navy font-medium transition-colors text-center"
+				>
+					{label}
+				</Link>
+			))}
+		</div>
+	);
 
-	// Desktop view
+	const userContent = (
+		<div className="flex flex-col gap-1">
+			{Object.entries(AUTHED_DROPDOWN_INFO).map(
+				([key, { render, needsRole }]) =>
+					(!needsRole || (user && user.role >= needsRole)) && <div key={key}>{render()}</div>,
+			)}
+		</div>
+	);
+
+	if (isMobile) {
+		return <MobileDrawer user={user} authContent={authContent} userContent={userContent} />;
+	}
 
 	if (!user) {
-		// render sign in / sign up buttons if screensize is large
-		// otherwise render dropdown with sign in / sign up links
 		return (
-			<>
-				<div className="gap-1 items-center hidden lg:flex">
-					{Object.entries(AUTH_LINKS).map(([key, { label, href }]) => (
-						<Link key={key} href={href}>
-							<Button variant="ghost">{label}</Button>
-						</Link>
-					))}
-				</div>
-				<div className="lg:hidden">
-					<Dropdown
-						header={<List className="size-6 m-1 dark:text-white" />}
-						content={Object.entries(NEEDS_AUTH_DROPDOWN_INFO).map(([key, { render }]) => (
-							<div key={key}>{render()}</div>
-						))}
-					/>
-				</div>
-			</>
+			<div className="gap-1 items-center flex">
+				{Object.entries(AUTH_LINKS).map(([key, { label, href }]) => (
+					<Link key={key} href={href}>
+						<Button
+							variant="ghost"
+							className="text-navy/70 hover:text-navy hover:bg-cream-dark dark:text-cream/70 dark:hover:text-cream dark:hover:bg-navy"
+						>
+							{label}
+						</Button>
+					</Link>
+				))}
+			</div>
 		);
 	}
-	// if screen is large show username dropdown, otherwise show hamburger menu with dropdown
+
 	return (
 		<Dropdown
 			header={
-				<>
-					<div className="hidden lg:block">
-						<Text className="text-pink-700 hover:bg-pink-100 focus-visible:ring-pink-500 dark:bg-transparent dark:text-pink-200 dark:hover:bg-zinc-700 dark:focus-visible:ring-pink-400 inline-flex items-center justify-center rounded-md px-3 py-2 text-sm font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-0 transition cursor-pointer">
-							{user.username}
-						</Text>
-					</div>
-					<div className="lg:hidden">
-						<List className="size-6 m-1 dark:text-white" />
-					</div>
-				</>
+				<Text className="text-navy/80 hover:text-navy hover:bg-cream-dark dark:text-cream/80 dark:hover:text-cream dark:hover:bg-navy inline-flex items-center justify-center rounded-lg px-3 py-2 text-sm font-medium transition-colors cursor-pointer">
+					{user.username}
+				</Text>
 			}
 			content={Object.entries(AUTHED_DROPDOWN_INFO).map(
 				([key, { render, needsRole }]) =>

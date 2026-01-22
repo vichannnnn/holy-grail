@@ -5,8 +5,8 @@ This module provides a generic CRUD mixin class that can be inherited
 by SQLAlchemy models to gain common database operations like create,
 read, update, and delete.
 """
-from typing import Any, Generic, Optional, TypeVar
 from collections.abc import Sequence
+from typing import Any, Generic, Optional, TypeVar
 
 from sqlalchemy import and_, asc, delete, exc as SQLAlchemyExceptions, select, update
 from sqlalchemy.ext.asyncio import AsyncSession

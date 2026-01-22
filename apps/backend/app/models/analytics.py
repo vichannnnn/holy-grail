@@ -5,7 +5,9 @@ This module integrates with Google Analytics to track user engagement,
 file downloads, and platform activity. It stores periodic snapshots
 of analytics data for historical tracking and reporting.
 """
+import base64
 import datetime
+import json
 import os
 from typing import Optional
 
@@ -128,7 +130,13 @@ class Analytics(Base, CRUD["analytics"]):
         """
         starting_date = "2023-06-14"
         ending_date = "today"
-        client = BetaAnalyticsDataClient()
+
+        credentials_json = os.getenv("GOOGLE_APPLICATION_CREDENTIALS_JSON", "")
+        if credentials_json:
+            credentials_info = json.loads(base64.b64decode(credentials_json))
+            client = BetaAnalyticsDataClient.from_service_account_info(credentials_info)
+        else:
+            client = BetaAnalyticsDataClient()
 
         request_api = RunReportRequest(
             property=f"properties/{os.getenv('GOOGLE_APPLICATION_PROPERTY_ID', '')}",

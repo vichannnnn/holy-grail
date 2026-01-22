@@ -5,7 +5,7 @@ export function FooterLink({ label, href, ...rest }: Readonly<FooterLinkProps>) 
 	return (
 		<Link
 			href={href}
-			className="text-zinc-600 dark:text-zinc-400 hover:underline text-sm"
+			className="text-sm text-navy/60 transition-colors hover:text-amber dark:text-cream/50 dark:hover:text-amber"
 			{...rest}
 		>
 			{label}

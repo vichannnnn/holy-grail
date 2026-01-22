@@ -4,6 +4,7 @@ import { Text, Title } from "@shared/ui/components";
 import type { Metadata } from "next";
 import { fetchAllCategories, fetchAllDocumentTypes, fetchAllSubjects } from "@/app/library/actions";
 import { DeveloperContent } from "./_components/DeveloperContent";
+import { CommandLineIcon } from "@heroicons/react/24/outline";
 
 export const metadata: Metadata = {
 	title: "Developer Panel - Holy Grail",
@@ -25,15 +26,22 @@ export default async function DeveloperPage() {
 	]);
 
 	return (
-		<main>
-			<div className="flex flex-col m-auto w-5/6 sm:w-3/4 gap-2 my-8">
-				<Title className="font-bold text-2xl">Developer Panel</Title>
-				<Text>
-					Create or update subjects, education level (categories) and types of resources here.
-					Additionally, you can update users' permissions here as well.
+		<main className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-8">
+			<div className="mb-6">
+				<div className="flex items-center gap-3 mb-2">
+					<div className="p-2 rounded-xl bg-coral/10 dark:bg-coral/20">
+						<CommandLineIcon className="size-6 text-coral" />
+					</div>
+					<Title className="font-bold text-2xl text-navy-deep dark:text-cream">
+						Developer Panel
+					</Title>
+				</div>
+				<Text className="text-navy/70 dark:text-cream/60">
+					Manage categories, subjects, document types, and user permissions.
 				</Text>
 			</div>
-			<div className="m-auto w-5/6 sm:w-3/4">
+
+			<div className="rounded-2xl border border-navy/5 bg-white/50 p-4 shadow-sm backdrop-blur-sm dark:border-cream/5 dark:bg-navy/30 md:p-6">
 				<DeveloperContent
 					categories={categories}
 					subjects={subjects}

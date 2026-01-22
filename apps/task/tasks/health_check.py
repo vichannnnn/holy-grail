@@ -4,6 +4,7 @@ Celery task for health checking the backend service.
 This module contains a periodic task that pings the backend
 to ensure the service is responsive.
 """
+
 import os
 
 import requests

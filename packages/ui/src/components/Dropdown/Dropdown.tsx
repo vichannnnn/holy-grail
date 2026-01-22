@@ -5,7 +5,7 @@ export function Dropdown({ header, content, ...rest }: Readonly<DropdownProps>) 
 	return (
 		<Menu>
 			<MenuButton
-				className="inline-flex items-center justify-center rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 hover:bg-gray-200 dark:hover:bg-zinc-700 focus-visible:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition cursor-pointer"
+				className="inline-flex items-center justify-center rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-amber hover:bg-cream-dark dark:hover:bg-navy disabled:opacity-50 disabled:cursor-not-allowed transition cursor-pointer"
 				{...rest}
 			>
 				{header}
@@ -14,7 +14,7 @@ export function Dropdown({ header, content, ...rest }: Readonly<DropdownProps>) 
 			<MenuItems
 				transition
 				anchor="bottom end"
-				className="absolute right-0 mt-2 w-52 origin-top-right rounded-md border bg-white p-1 text-sm/6 text-gray-900 transition duration-100 ease-out [--anchor-gap:--spacing(1)] focus:outline-none data-closed:scale-95 data-closed:opacity-0 border-gray-200 dark:border-white/5 dark:bg-zinc-700 dark:text-white z-50"
+				className="absolute right-0 mt-2 w-56 origin-top-right rounded-2xl border bg-cream/95 backdrop-blur-md p-2 text-sm transition duration-150 ease-out [--anchor-gap:--spacing(2)] focus:outline-none data-closed:scale-95 data-closed:opacity-0 border-navy/10 shadow-xl shadow-navy/10 dark:border-cream/10 dark:bg-navy-deep/95 dark:shadow-black/20 z-50"
 			>
 				{content.map((item, idx) => (
 					<MenuItem key={`${item?.valueOf()}-${idx}`} as="div">

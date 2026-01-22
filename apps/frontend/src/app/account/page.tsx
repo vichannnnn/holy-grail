@@ -1,6 +1,6 @@
 import { getUser, RoleEnum } from "@lib/auth";
 import { unauthorized } from "next/navigation";
-import { Title, Text, Divider } from "@shared/ui/components";
+import { Card } from "@shared/ui/components";
 import {
 	AccountSection,
 	ResendVerifyEmail,
@@ -31,6 +31,7 @@ export const metadata: Metadata = {
 		],
 	},
 };
+
 export default async function AccountPage() {
 	const user = await getUser();
 	if (!user) {
@@ -38,86 +39,118 @@ export default async function AccountPage() {
 	}
 
 	return (
-		<main className="flex flex-col items-center mx-auto lg:w-2/3 w-11/12">
-			<div className="flex flex-col items-center gap-2 mb-8">
-				<Title order={1} className="font-bold text-center text-2xl">
-					Account Settings
-				</Title>
-				<Text>View and manage your account details here.</Text>
-			</div>
-			<Divider className="w-full" />
-			<div className="flex flex-col gap-12 my-6 w-full">
-				<AccountSection
-					title="Account Information"
-					icon={<UserIcon className="size-6" />}
-					className="flex flex-col gap-4"
-				>
-					<div className="flex sm:flex-row flex-col gap-3 justify-between sm:items-center">
-						<div className="flex flex-col gap-0.5">
-							<Text className="font-semibold text-lg">Username</Text>
-							<Text description className="text-sm md:text-xs">
-								Your username cannot be changed once created. Sorry!
-							</Text>
-						</div>
-						<Text>{user.username}</Text>
-					</div>
-					<div className="flex sm:flex-row flex-col gap-3 justify-between sm:items-center">
-						<Text className="font-semibold text-lg">Role</Text>
-						<Text className="capitalize">{RoleEnum[user.role].toLowerCase()}</Text>
-					</div>
-					<div className="flex sm:flex-row flex-col gap-3 justify-between sm:items-center">
-						<div className="flex flex-col gap-0.5">
-							<Text className="font-semibold text-lg">Account verification status</Text>
-							<Text description className="text-sm md:text-xs">
-								{user.verified ? (
-									"Verified accounts can upload notes to our repository :)"
-								) : (
-									<>
-										Please click <ResendVerifyEmail>here</ResendVerifyEmail> to resend the
-										verification email.
-									</>
-								)}
-							</Text>
-						</div>
+		<section className="relative overflow-hidden py-12">
+			<div className="absolute -left-40 top-20 size-80 rounded-full bg-amber/5 blur-3xl dark:bg-amber/3" />
+			<div className="absolute -right-40 bottom-20 size-80 rounded-full bg-coral/5 blur-3xl dark:bg-coral/3" />
 
-						{user.verified ? (
-							<Text className="text-green-600 dark:text-green-500 flex items-center gap-1">
-								<CheckCircleIcon className="size-5" />
-								Verified
-							</Text>
-						) : (
-							<Text className="text-red-600 dark:text-red-500 flex items-center gap-1">
-								<ExclamationCircleIcon className="size-5" />
-								Not verified
-							</Text>
-						)}
-					</div>
-				</AccountSection>
-				<AccountSection
-					title="Update email address"
-					icon={<EnvelopeIcon className="size-6" />}
-					className="flex flex-col gap-4"
-				>
-					<Text>
-						{user.email ? (
-							<>
-								Your current email address is <span className="font-semibold">{user.email}</span>.
-							</>
-						) : (
-							"You have not set an email address yet."
-						)}
-					</Text>
-					<UpdateEmailForm />
-				</AccountSection>
-				<AccountSection
-					title="Change password"
-					icon={<LockClosedIcon className="size-6" />}
-					className="flex flex-col gap-4"
-				>
-					<Text>Enter your current password and the new password you want to change to.</Text>
-					<UpdatePasswordForm />
-				</AccountSection>
+			<div className="relative mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+				<div className="mb-10 text-center animate-fade-in-up">
+					<p className="mb-2 text-sm font-semibold uppercase tracking-wider text-amber">
+						Your Profile
+					</p>
+					<h1 className="mb-3 text-3xl font-bold text-navy-deep dark:text-cream">
+						Account Settings
+					</h1>
+					<p className="text-navy/60 dark:text-cream/50">
+						View and manage your account details here.
+					</p>
+				</div>
+
+				<div className="space-y-8 animate-fade-in-up [animation-delay:100ms]">
+					<AccountSection
+						title="Account Information"
+						icon={<UserIcon className="size-5" />}
+					>
+						<div className="space-y-5">
+							<div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+								<div>
+									<p className="font-medium text-navy-deep dark:text-cream">Username</p>
+									<p className="text-xs text-navy/50 dark:text-cream/40">
+										Your username cannot be changed once created.
+									</p>
+								</div>
+								<p className="mt-1 font-mono text-navy/80 dark:text-cream/70 sm:mt-0">
+									{user.username}
+								</p>
+							</div>
+
+							<div className="border-t border-navy/5 dark:border-cream/5" />
+
+							<div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+								<p className="font-medium text-navy-deep dark:text-cream">Role</p>
+								<span className="inline-flex items-center rounded-full bg-amber/10 px-3 py-1 text-xs font-medium capitalize text-amber dark:bg-amber/20">
+									{RoleEnum[user.role].toLowerCase()}
+								</span>
+							</div>
+
+							<div className="border-t border-navy/5 dark:border-cream/5" />
+
+							<div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+								<div>
+									<p className="font-medium text-navy-deep dark:text-cream">
+										Verification Status
+									</p>
+									<p className="text-xs text-navy/50 dark:text-cream/40">
+										{user.verified ? (
+											"Verified accounts can upload notes to our repository :)"
+										) : (
+											<>
+												Click <ResendVerifyEmail>here</ResendVerifyEmail> to resend the
+												verification email.
+											</>
+										)}
+									</p>
+								</div>
+								{user.verified ? (
+									<span className="mt-1 inline-flex items-center gap-1.5 text-sm font-medium text-emerald-600 dark:text-emerald-400 sm:mt-0">
+										<CheckCircleIcon className="size-4" />
+										Verified
+									</span>
+								) : (
+									<span className="mt-1 inline-flex items-center gap-1.5 text-sm font-medium text-coral dark:text-coral-soft sm:mt-0">
+										<ExclamationCircleIcon className="size-4" />
+										Not verified
+									</span>
+								)}
+							</div>
+						</div>
+					</AccountSection>
+
+					<AccountSection
+						title="Update Email Address"
+						icon={<EnvelopeIcon className="size-5" />}
+					>
+						<div className="space-y-4">
+							<p className="text-sm text-navy/70 dark:text-cream/60">
+								{user.email ? (
+									<>
+										Your current email address is{" "}
+										<span className="font-medium text-navy-deep dark:text-cream">
+											{user.email}
+										</span>
+										.
+									</>
+								) : (
+									"You have not set an email address yet."
+								)}
+							</p>
+							<UpdateEmailForm />
+						</div>
+					</AccountSection>
+
+					<AccountSection
+						title="Change Password"
+						icon={<LockClosedIcon className="size-5" />}
+					>
+						<div className="space-y-4">
+							<p className="text-sm text-navy/70 dark:text-cream/60">
+								Enter your current password and the new password you want to change to.
+							</p>
+							<UpdatePasswordForm />
+						</div>
+					</AccountSection>
+				</div>
 			</div>
-		</main>
+		</section>
 	);
 }

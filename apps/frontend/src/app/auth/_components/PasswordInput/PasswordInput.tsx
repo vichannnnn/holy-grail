@@ -20,9 +20,9 @@ export function PasswordInput(props: InputProps) {
 					className="pointer-events-auto"
 				>
 					{visible ? (
-						<EyeSlash className="size-5 text-gray-500 dark:text-gray-400" />
+						<EyeSlash className="size-5 text-navy/50 dark:text-cream/50" />
 					) : (
-						<Eye className="size-5 text-gray-500 dark:text-gray-400" />
+						<Eye className="size-5 text-navy/50 dark:text-cream/50" />
 					)}
 				</IconButton>
 			}

@@ -8,6 +8,7 @@ import { fetchPendingApprovalNotes } from "./actions";
 import { PAGE_MAX_SIZE } from "./constants";
 import { AdminContent } from "./_components";
 import { fetchAllCategories, fetchAllDocumentTypes, fetchAllSubjects } from "@/app/library/actions";
+import { ShieldCheckIcon } from "@heroicons/react/24/outline";
 
 export const metadata: Metadata = {
 	title: "Administrator Panel - Holy Grail",
@@ -38,23 +39,34 @@ export default async function AdminPage({
 		),
 	]);
 	return (
-		<main>
-			<div className="flex flex-col m-auto w-5/6 sm:w-3/4 gap-2 my-8">
-				<Title className="font-bold text-2xl">Administrator Panel</Title>
-				<Text>
-					This is a list of unapproved notes for your review, you can approve or delete them
-					accordingly.
+		<main className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-8">
+			<div className="mb-6">
+				<div className="flex items-center gap-3 mb-2">
+					<div className="p-2 rounded-xl bg-amber/10 dark:bg-amber/20">
+						<ShieldCheckIcon className="size-6 text-amber" />
+					</div>
+					<Title className="font-bold text-2xl text-navy-deep dark:text-cream">
+						Administrator Panel
+					</Title>
+				</div>
+				<Text className="text-navy/70 dark:text-cream/60">
+					Review and approve pending note submissions from contributors.
 				</Text>
 			</div>
-			<div className="m-auto w-5/6 sm:w-3/4">
+
+			<div className="rounded-2xl border border-navy/5 bg-white/50 p-4 shadow-sm backdrop-blur-sm dark:border-cream/5 dark:bg-navy/30 md:p-6 mb-6">
+				<Title order={3} className="mb-4 text-lg font-semibold text-navy-deep dark:text-cream">
+					Filter Submissions
+				</Title>
 				<LibrarySearch
 					query={query}
 					allCategories={categories}
 					allDocumentTypes={documentTypes}
 					allSubjects={subjects}
 				/>
-				<AdminContent {...pendingNotesResponse} />
 			</div>
+
+			<AdminContent {...pendingNotesResponse} />
 		</main>
 	);
 }

@@ -4,12 +4,12 @@ export function DropdownButton({ label, icon, ...rest }: DropdownButtonProps) {
 	return (
 		<button
 			aria-label="Dropdown Button"
-			className="block w-full px-2 py-1 rounded-sm hover:bg-gray-200 dark:hover:bg-zinc-600 text-left cursor-pointer"
+			className="flex w-full items-center gap-3 px-3 py-2.5 rounded-xl text-navy/80 hover:text-navy hover:bg-navy/5 dark:text-cream/80 dark:hover:text-cream dark:hover:bg-cream/5 text-left cursor-pointer transition-colors"
 			tabIndex={0}
 			{...rest}
 		>
-			<span className="inline-block mr-2 align-middle">{icon}</span>
-			<span className="align-middle">{label}</span>
+			<span className="text-navy/50 dark:text-cream/50">{icon}</span>
+			<span className="font-medium">{label}</span>
 		</button>
 	);
 }

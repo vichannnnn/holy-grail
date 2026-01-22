@@ -2,7 +2,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ForgotPasswordSchema, type ForgotPasswordFormData } from "./schemas";
-import { Input, Title, Text, Button } from "@shared/ui/components";
+import { Input, Button } from "@shared/ui/components";
 import Link from "next/link";
 import { useTransition } from "react";
 import toast from "react-hot-toast";
@@ -30,40 +30,46 @@ export function ForgotPasswordForm() {
 	};
 
 	return (
-		<div className="flex flex-col items-center xl:w-1/2 md:w-2/3 w-1/2">
-			<Title order={1} className="text-2xl">
-				Forgot your password?
-			</Title>
-			<Text description className="mt-4 text-sm">
-				Please enter the email you registered the account with to reset your password.
-			</Text>
+		<div className="animate-fade-in">
+			<div className="mb-6 text-center">
+				<h1 className="text-2xl font-bold text-navy-deep dark:text-cream">
+					Reset your password
+				</h1>
+				<p className="mt-1 text-sm text-navy/60 dark:text-cream/50">
+					Enter your email and we'll send you a reset link
+				</p>
+			</div>
 
-			<form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-sm mt-6 flex flex-col gap-4">
+			<form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
 				<Input
 					label="Email"
 					{...register("email")}
 					error={errors.email?.message as string}
 					required
 				/>
-				<div className="mt-2">
-					{isPending ? (
-						<Button type="submit" className="w-full" disabled>
-							Resetting
-						</Button>
-					) : (
-						<Button type="submit" className="w-full">
-							Reset Password
-						</Button>
-					)}
+
+				<div className="pt-2">
+					<Button
+						type="submit"
+						className="w-full bg-amber text-navy-deep hover:bg-amber-light"
+						disabled={isPending}
+					>
+						{isPending ? "Sending..." : "Send Reset Link"}
+					</Button>
 				</div>
 			</form>
-			<Text description className="mt-4 text-sm">
-				Remembered your password? Sign in{" "}
-				<Link href="/auth/sign-in" className="font-bold">
-					here
-				</Link>
-				.
-			</Text>
+
+			<div className="mt-6 text-center text-sm">
+				<p className="text-navy/60 dark:text-cream/50">
+					Remember your password?{" "}
+					<Link
+						href="/auth/sign-in"
+						className="font-medium text-amber hover:underline"
+					>
+						Sign in
+					</Link>
+				</p>
+			</div>
 		</div>
 	);
 }

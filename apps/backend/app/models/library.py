@@ -52,9 +52,7 @@ if TYPE_CHECKING:
     from app.models.categories import CategoryLevel, DocumentTypes, Subjects
 
 
-def form_data_note_parser(
-    form_data: FormData, idx: int
-) -> bool | tuple[NoteCreateSchema, int]:
+def form_data_note_parser(form_data: FormData, idx: int) -> bool | tuple[NoteCreateSchema, int]:
     """
     Parse form data to extract note information.
 

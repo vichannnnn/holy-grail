@@ -1,13 +1,13 @@
 import { FooterLink } from "./FooterLink";
-import { Title } from "@shared/ui/components";
 
 export function FooterRight() {
-	//TODO: Need to turn this into 2x2 grid when in mobile
 	return (
-		<div className="flex flex-col md:mx-auto">
-			<div className="md:flex grid grid-cols-2 gap-4 md:flex-row md:gap-12">
+		<div className="grid grid-cols-2 gap-8 sm:grid-cols-3 md:gap-12">
+			<div className="flex flex-col gap-3">
+				<h3 className="text-sm font-semibold uppercase tracking-wider text-navy-deep dark:text-cream">
+					Information
+				</h3>
 				<div className="flex flex-col gap-2">
-					<Title order={3}>Information</Title>
 					<FooterLink href="/" label="Home" />
 					<FooterLink href="/library" label="Library" />
 					<FooterLink href="/faq" label="FAQ" />
@@ -18,14 +18,23 @@ export function FooterRight() {
 						target="_blank"
 					/>
 				</div>
+			</div>
+			<div className="flex flex-col gap-3">
+				<h3 className="text-sm font-semibold uppercase tracking-wider text-navy-deep dark:text-cream">
+					Legal
+				</h3>
 				<div className="flex flex-col gap-2">
-					<Title order={3}>Legal</Title>
 					<FooterLink href="/privacy" label="Privacy Policy" />
 					<FooterLink href="/terms-of-service" label="Terms of Service" />
 				</div>
+			</div>
+			<div className="flex flex-col gap-3">
+				<h3 className="text-sm font-semibold uppercase tracking-wider text-navy-deep dark:text-cream">
+					Contribute
+				</h3>
 				<div className="flex flex-col gap-2">
-					<Title order={3}>Contribute</Title>
 					<FooterLink href="/upload" label="Upload" />
+					<FooterLink href="/leaderboard" label="Leaderboard" />
 				</div>
 			</div>
 		</div>
