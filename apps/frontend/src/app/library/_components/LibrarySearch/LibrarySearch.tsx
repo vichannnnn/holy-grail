@@ -14,8 +14,8 @@ export function LibrarySearch({
 	const navigateToSearchValue = useNavigateToSearchValue();
 
 	return (
-		<section className="space-y-2 mx-6 md:mx-12">
-			<div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-2">
+		<section className="space-y-3">
+			<div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
 				<LibraryCombobox
 					key={`category-${query?.category ?? ""}`}
 					label="Category"

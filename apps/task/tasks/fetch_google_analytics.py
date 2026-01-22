@@ -4,6 +4,7 @@ Celery task for fetching Google Analytics data.
 This module contains a background task that fetches analytics data
 from Google Analytics API via the backend endpoint.
 """
+
 import os
 
 import requests

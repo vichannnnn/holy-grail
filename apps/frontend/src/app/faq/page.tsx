@@ -1,6 +1,5 @@
 "use cache";
 import Link from "next/link";
-import { Title, Text } from "@shared/ui/components";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -19,110 +18,129 @@ export const metadata: Metadata = {
 	},
 };
 
+function FAQItem({
+	question,
+	children,
+	alternate = false,
+}: {
+	question: string;
+	children: React.ReactNode;
+	alternate?: boolean;
+}) {
+	return (
+		<div
+			className={`rounded-xl px-6 py-5 ${alternate ? "bg-navy/[0.03] dark:bg-cream/[0.03]" : ""}`}
+		>
+			<h3 className="mb-3 text-lg font-semibold text-navy-deep dark:text-cream">
+				{question}
+			</h3>
+			<div className="space-y-3 text-navy/70 dark:text-cream/60">{children}</div>
+		</div>
+	);
+}
+
 export default async function FAQPage() {
 	return (
-		<div className="container mx-auto px-4 mt-16">
-			<div className="mb-8">
-				<Title order={1} className="text-2xl mb-2">
-					Frequently Asked Questions
-				</Title>
-				<Text className="mb-6">
-					Quick answers to questions you may have. Can't find what you're looking for? Send the
-					administrators a message through the relevant channels.
-				</Text>
-			</div>
+		<section className="relative overflow-hidden py-16">
+			<div className="absolute -left-40 top-20 size-80 rounded-full bg-amber/5 blur-3xl dark:bg-amber/3" />
+			<div className="absolute -right-40 bottom-20 size-80 rounded-full bg-coral/5 blur-3xl dark:bg-coral/3" />
 
-			<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-				<div className="flex flex-col space-y-6">
-					<div>
-						<Title order={3} className="text-lg mb-2">
-							What is the Holy Grail?
-						</Title>
-						<Text>
-							Holy Grail is a collaborative initiative undertaken by a group of students in
-							Singapore to compile a repository of notes and practice papers to support fellow
-							students in their academic journey.
-						</Text>
-						<Text className="mt-4">
-							The aim of this project is to reduce the gap in resources between students and level
-							the playing field for everyone on a national scale.
-						</Text>
-					</div>
+			<div className="relative mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+				<div className="mb-12 text-center animate-fade-in-up">
+					<p className="mb-3 text-sm font-semibold uppercase tracking-wider text-amber">
+						Help Center
+					</p>
+					<h1 className="mb-4 text-3xl font-bold text-navy-deep dark:text-cream sm:text-4xl">
+						Frequently Asked Questions
+					</h1>
+					<p className="mx-auto max-w-2xl text-navy/70 dark:text-cream/60">
+						Quick answers to questions you may have. Can't find what you're
+						looking for? Send the administrators a message through the relevant
+						channels.
+					</p>
+				</div>
 
-					<div>
-						<Title order={3} className="text-lg mb-2">
-							How did the Holy Grail come about?
-						</Title>
-						<Text>
-							The project was initiated due to the absence of a suitable platform to store and
-							access these educational resources.
-						</Text>
-						<Text className="mt-4">
-							Initially stored in a collaborative Google Drive, a web application has since been
-							developed to store and retrieve them much more conveniently and to make it more
-							accessible, which is what you're seeing here now!
-						</Text>
-					</div>
+				<div className="animate-fade-in-up [animation-delay:100ms] space-y-1">
+					<FAQItem question="What is the Holy Grail?">
+						<p>
+							Holy Grail is a collaborative initiative undertaken by a group of
+							students in Singapore to compile a repository of notes and practice
+							papers to support fellow students in their academic journey.
+						</p>
+						<p>
+							The aim of this project is to reduce the gap in resources between
+							students and level the playing field for everyone on a national
+							scale.
+						</p>
+					</FAQItem>
 
-					<div>
-						<Title order={3} className="text-lg mb-2">
-							How do I use the Holy Grail?
-						</Title>
-						<Text>
+					<FAQItem question="How did the Holy Grail come about?" alternate>
+						<p>
+							The project was initiated due to the absence of a suitable platform
+							to store and access these educational resources.
+						</p>
+						<p>
+							Initially stored in a collaborative Google Drive, a web application
+							has since been developed to store and retrieve them much more
+							conveniently and to make it more accessible, which is what you're
+							seeing here now!
+						</p>
+					</FAQItem>
+
+					<FAQItem question="How do I use the Holy Grail?">
+						<p>
 							You can access the resources uploaded at the{" "}
-							<Link href="/library" passHref>
-								<span className="text-blue-600 hover:underline">Library</span>
+							<Link
+								href="/library"
+								className="font-medium text-amber hover:underline"
+							>
+								Library
 							</Link>{" "}
-							above this section. Anyone is able to freely access these resources even without
-							having an account.
-						</Text>
-					</div>
-				</div>
+							above this section. Anyone is able to freely access these resources
+							even without having an account.
+						</p>
+					</FAQItem>
 
-				<div className="flex flex-col space-y-6">
-					<div>
-						<Title order={3} className="text-lg mb-2">
-							How can I contribute my materials?
-						</Title>
-						<Text>
+					<FAQItem question="How can I contribute my materials?" alternate>
+						<p>
 							You can upload the notes that you want to share over{" "}
-							<Link href="/upload" passHref>
-								<span className="text-blue-600 hover:underline cursor-pointer">here</span>
+							<Link
+								href="/upload"
+								className="font-medium text-amber hover:underline"
+							>
+								here
 							</Link>
-							. Do note that you can only upload PDF files and you will need an account to start
-							uploading your notes. They will only be available to the public after approval.
-						</Text>
-					</div>
+							. Do note that you can only upload PDF files and you will need an
+							account to start uploading your notes. They will only be available
+							to the public after approval.
+						</p>
+					</FAQItem>
 
-					<div>
-						<Title order={3} className="text-lg mb-2">
-							Will the Holy Grail always be free?
-						</Title>
-						<Text>
-							Yes. The entire project and application is done out of initiative and will always be
-							free. This means that content and resources such as contributed notes and practice
-							papers will never be behind a paywall.
-						</Text>
-					</div>
+					<FAQItem question="Will the Holy Grail always be free?">
+						<p>
+							Yes. The entire project and application is done out of initiative
+							and will always be free. This means that content and resources such
+							as contributed notes and practice papers will never be behind a
+							paywall.
+						</p>
+					</FAQItem>
 
-					<div>
-						<Title order={3} className="text-lg mb-2">
-							How are you guys sustaining this project then?
-						</Title>
-						<Text>
-							Aside from free time spent in development for this project, we are currently incurring
-							monthly costs such as infrastructure and hosting that is being paid from our own
-							pocket thus far.
-						</Text>
-						<Text className="mt-4">
-							With that being said, as of November 2023, we are collaborating with sponsors that are
-							helping us with the costs in exchange for displaying advertisements for their
-							services. The remainders will go into development effort for more features in the near
-							future (circa 2024).
-						</Text>
-					</div>
+					<FAQItem question="How are you guys sustaining this project then?" alternate>
+						<p>
+							Aside from free time spent in development for this project, we are
+							currently incurring monthly costs such as infrastructure and hosting
+							that is being paid from our own pocket thus far.
+						</p>
+						<p>
+							With that being said, as of November 2023, we are collaborating
+							with sponsors that are helping us with the costs in exchange for
+							displaying advertisements for their services. The remainders will
+							go into development effort for more features in the near future
+							(circa 2024).
+						</p>
+					</FAQItem>
 				</div>
 			</div>
-		</div>
+		</section>
 	);
 }

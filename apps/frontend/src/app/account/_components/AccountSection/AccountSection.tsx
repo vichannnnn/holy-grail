@@ -1,20 +1,17 @@
-import { Card, Title } from "@shared/ui/components";
 import type { AccountSectionProps } from "./types";
-import { twMerge } from "tailwind-merge";
 
 export function AccountSection({
 	title,
 	icon,
 	children,
-	className,
 }: Readonly<AccountSectionProps>) {
 	return (
-		<div className="w-full">
-			<Title order={2} className="flex items-center gap-2 mb-2 text-xl font-semibold">
-				{icon}
-				{title}
-			</Title>
-			<Card className={twMerge("p-6 w-full", className)}>{children}</Card>
+		<div className="rounded-2xl border border-navy/5 bg-white/60 p-6 shadow-sm backdrop-blur-sm dark:border-cream/5 dark:bg-navy/40">
+			<div className="mb-4 flex items-center gap-2">
+				<span className="text-amber">{icon}</span>
+				<h2 className="text-lg font-semibold text-navy-deep dark:text-cream">{title}</h2>
+			</div>
+			{children}
 		</div>
 	);
 }

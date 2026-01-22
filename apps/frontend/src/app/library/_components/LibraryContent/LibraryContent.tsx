@@ -45,7 +45,7 @@ export function LibraryContent({ ok, data, err, isAdmin }: Readonly<LibraryConte
 	}
 
 	return (
-		<main className="flex flex-col px-8">
+		<main className="flex flex-col">
 			{[undefined, "sm", "md"].includes(breakpoint) ? (
 				<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 					{data.items.map((item) => (

@@ -18,34 +18,39 @@ export function AdminContent({ ok, data, err }: Readonly<AdminContentProps>) {
 
 	if (!ok || !data) {
 		return (
-			<div className="flex flex-col items-center justify-center mt-4">
-				<Image src="/trimmy-grail-chan-sparkling.webp" alt="Error" width={100} height={100} />
-				<Title order={2} className="font-bold mb-4">
-					We ran into an issue :(
+			<div className="flex flex-col items-center justify-center py-12 rounded-2xl border border-navy/5 bg-white/50 dark:border-cream/5 dark:bg-navy/30">
+				<div className="relative mb-4">
+					<div className="absolute -inset-4 rounded-full bg-gradient-to-br from-coral/20 to-amber/20 blur-2xl dark:from-coral/10 dark:to-amber/10" />
+					<Image src="/trimmy-grail-chan-sparkling.webp" alt="Error" width={100} height={100} className="relative" />
+				</div>
+				<Title order={2} className="font-bold mb-2 text-navy-deep dark:text-cream">
+					Something went wrong
 				</Title>
-				<Text>{err ?? "An unknown error occurred."}</Text>
+				<Text className="text-navy/70 dark:text-cream/60">{err ?? "An unknown error occurred."}</Text>
 			</div>
 		);
 	}
 	if (data.page > data.pages && data.pages > 0) {
-		// redirect to last valid page if current page exceeds total pages
 		redirect(`?${searchParams.toString().replace(/page=\d+/, `page=${data.pages}`)}`);
 	}
 
 	if (data.items.length === 0) {
 		return (
-			<div className="flex flex-col items-center justify-center h-64 mt-4">
-				<Image src="/trimmy-grail-chan-sparkling.webp" alt="No Results" width={100} height={100} />
-				<Title order={2} className="font-bold mb-4">
-					No pending approval notes found
+			<div className="flex flex-col items-center justify-center py-12 rounded-2xl border border-navy/5 bg-white/50 dark:border-cream/5 dark:bg-navy/30">
+				<div className="relative mb-4">
+					<div className="absolute -inset-4 rounded-full bg-gradient-to-br from-amber/20 to-coral/20 blur-2xl dark:from-amber/10 dark:to-coral/10" />
+					<Image src="/trimmy-grail-chan-sparkling.webp" alt="No Results" width={100} height={100} className="relative" />
+				</div>
+				<Title order={2} className="font-bold mb-2 text-navy-deep dark:text-cream">
+					All caught up!
 				</Title>
-				<Text>All notes have been reviewed or there are no pending submissions.</Text>
+				<Text className="text-navy/70 dark:text-cream/60">No pending submissions to review.</Text>
 			</div>
 		);
 	}
 
 	return (
-		<div className="flex flex-col mt-4">
+		<div className="flex flex-col">
 			{[undefined, "sm", "md"].includes(breakpoint) ? (
 				<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 					{data.items.map((item) => (

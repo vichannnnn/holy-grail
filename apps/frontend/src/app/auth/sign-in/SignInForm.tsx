@@ -2,7 +2,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignInSchema } from "./schemas";
-import { Input, Title, Text, Button } from "@shared/ui/components";
+import { Input, Button } from "@shared/ui/components";
 import Link from "next/link";
 import { useTransition } from "react";
 import { PasswordInput } from "../_components";
@@ -32,11 +32,17 @@ export function SignInForm() {
 	};
 
 	return (
-		<div className="flex flex-col items-center xl:w-1/2 md:w-2/3 w-1/2">
-			<Title order={1} className="text-2xl">
-				Sign in to your account
-			</Title>
-			<form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-sm mt-6 flex flex-col gap-4">
+		<div className="animate-fade-in">
+			<div className="mb-6 text-center">
+				<h1 className="text-2xl font-bold text-navy-deep dark:text-cream">
+					Welcome back
+				</h1>
+				<p className="mt-1 text-sm text-navy/60 dark:text-cream/50">
+					Sign in to continue to Holy Grail
+				</p>
+			</div>
+
+			<form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
 				<Input
 					label="Username"
 					{...register("username")}
@@ -50,32 +56,38 @@ export function SignInForm() {
 					error={errors.password?.message as string}
 					required
 				/>
-				<div className="mt-2">
-					{isPending ? (
-						<Button type="submit" className="w-full" disabled>
-							Signing In...
-						</Button>
-					) : (
-						<Button type="submit" className="w-full">
-							Sign In
-						</Button>
-					)}
+
+				<div className="pt-2">
+					<Button
+						type="submit"
+						className="w-full bg-amber text-navy-deep hover:bg-amber-light"
+						disabled={isPending}
+					>
+						{isPending ? "Signing in..." : "Sign In"}
+					</Button>
 				</div>
 			</form>
-			<Text description className="mt-4 text-sm">
-				Forgot your password? Click{" "}
-				<Link href="/auth/forgot-password" className="font-bold">
-					here
-				</Link>
-				.
-			</Text>
-			<Text description className="mt-4 text-sm">
-				Don't have an account yet? Register{" "}
-				<Link href="/auth/register" className="font-bold">
-					here
-				</Link>
-				.
-			</Text>
+
+			<div className="mt-6 space-y-2 text-center text-sm">
+				<p className="text-navy/60 dark:text-cream/50">
+					Forgot your password?{" "}
+					<Link
+						href="/auth/forgot-password"
+						className="font-medium text-amber hover:underline"
+					>
+						Reset it
+					</Link>
+				</p>
+				<p className="text-navy/60 dark:text-cream/50">
+					Don't have an account?{" "}
+					<Link
+						href="/auth/register"
+						className="font-medium text-amber hover:underline"
+					>
+						Register
+					</Link>
+				</p>
+			</div>
 		</div>
 	);
 }

@@ -142,7 +142,9 @@ export function UploadWorkspace({ categories, documentTypes }: Readonly<UploadWo
 								By uploading, you agree to have read and accepted our{" "}
 								<Link
 									href="/terms-of-service"
-									className="underline hover:text-blue-500 transition-colors cursor-pointer inline"
+									target="_blank"
+									rel="noopener noreferrer"
+									className="underline hover:text-amber transition-colors cursor-pointer inline"
 								>
 									terms of service
 								</Link>{" "}

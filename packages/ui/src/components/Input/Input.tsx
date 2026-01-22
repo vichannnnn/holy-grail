@@ -3,8 +3,8 @@ import { twMerge } from "tailwind-merge";
 import type { InputProps } from "./types";
 
 const baseInput =
-	"block w-full rounded-md border-none bg-slate-950/5 dark:bg-white/5 px-3 py-1.5 text-sm/6 dark:text-white text-black";
-const focusInput = "focus:ring-2 focus:ring-blue-500 focus:ring-inset focus:outline-none";
+	"block w-full rounded-lg border border-navy/10 bg-white/50 dark:border-cream/10 dark:bg-navy/30 px-3 py-2 text-sm/6 text-navy dark:text-cream placeholder:text-navy/40 dark:placeholder:text-cream/40";
+const focusInput = "focus:ring-2 focus:ring-amber/50 focus:border-amber focus:outline-none";
 
 export function Input({
 	label,
@@ -32,13 +32,13 @@ export function Input({
 						<Label
 							as="label"
 							htmlFor={id}
-							className="text-sm/6 font-medium text-black dark:text-zinc-200"
+							className="text-sm/6 font-medium text-navy-deep dark:text-cream"
 						>
 							{label}
 						</Label>
 					)}
 					{description && (
-						<Description className="text-gray-600 dark:text-gray-400 text-sm">
+						<Description className="text-navy/60 dark:text-cream/50 text-sm">
 							{description}
 						</Description>
 					)}
