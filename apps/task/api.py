@@ -21,10 +21,16 @@ from tasks.verify_email import send_verification_email_task  # noqa: E402
 from worker import celery_app  # noqa: E402
 
 
+STARTUP_DELAY_SECONDS = 30
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    logger.info("Task API starting up - triggering fetch_google_analytics task")
-    fetch_google_analytics.delay()
+    logger.info(
+        "Task API starting up - scheduling fetch_google_analytics task with %ds delay",
+        STARTUP_DELAY_SECONDS,
+    )
+    fetch_google_analytics.apply_async(countdown=STARTUP_DELAY_SECONDS)
     yield
     logger.info("Task API shutting down")
 
