@@ -8,8 +8,10 @@ of analytics data for historical tracking and reporting.
 import base64
 import datetime
 import json
+import logging
 import os
-from typing import Optional
+
+logger = logging.getLogger(__name__)
 
 import pytz
 from google.analytics.data_v1beta import BetaAnalyticsDataClient
@@ -30,7 +32,7 @@ from app.models.auth import Account
 from app.utils.exceptions import AppError
 
 
-def extract_metrics(response: RunReportResponse) -> tuple[int | None, int | None]:
+def extract_metrics(response: RunReportResponse) -> tuple[int, int]:
     """
     Extract specific metrics from Google Analytics response.
 
@@ -40,7 +42,7 @@ def extract_metrics(response: RunReportResponse) -> tuple[int | None, int | None
         response: Google Analytics API response
 
     Returns:
-        Tuple[Optional[int], Optional[int]]: File download count and active users
+        tuple[int, int]: File download count and active users (defaults to 0 if not found)
     """
     event_name_position = next(
         (i for i, header in enumerate(response.dimension_headers) if header.name == "eventName"),
@@ -56,13 +58,18 @@ def extract_metrics(response: RunReportResponse) -> tuple[int | None, int | None
         None,
     )
 
-    file_download_event_count, page_view_active_user = None, None
+    file_download_event_count, page_view_active_user = 0, 0
+
+    if event_name_position is None:
+        logger.warning("eventName dimension not found in GA response")
+        return file_download_event_count, page_view_active_user
 
     for row in response.rows:
-        if row.dimension_values[event_name_position].value == "file_download":
-            file_download_event_count = row.metric_values[event_count_position].value
-        elif row.dimension_values[event_name_position].value == "page_view":
-            page_view_active_user = row.metric_values[active_users_position].value
+        event_name = row.dimension_values[event_name_position].value
+        if event_name == "file_download" and event_count_position is not None:
+            file_download_event_count = int(row.metric_values[event_count_position].value)
+        elif event_name == "page_view" and active_users_position is not None:
+            page_view_active_user = int(row.metric_values[active_users_position].value)
 
     return file_download_event_count, page_view_active_user
 
@@ -128,36 +135,53 @@ class Analytics(Base, CRUD["analytics"]):
         Args:
             session: Active database session
         """
-        starting_date = "2023-06-14"
-        ending_date = "today"
+        logger.info("Starting Google Analytics fetch")
 
-        credentials_json = os.getenv("GOOGLE_APPLICATION_CREDENTIALS_JSON", "")
-        if credentials_json:
-            credentials_info = json.loads(base64.b64decode(credentials_json))
-            client = BetaAnalyticsDataClient.from_service_account_info(credentials_info)
-        else:
-            client = BetaAnalyticsDataClient()
+        try:
+            starting_date = "2023-06-14"
+            ending_date = "today"
 
-        request_api = RunReportRequest(
-            property=f"properties/{os.getenv('GOOGLE_APPLICATION_PROPERTY_ID', '')}",
-            dimensions=[Dimension(name="eventName")],
-            metrics=[Metric(name="activeUsers"), Metric(name="eventCount")],
-            date_ranges=[DateRange(start_date=starting_date, end_date=ending_date)],
-        )
-        resp = client.run_report(request=request_api)
+            credentials_json = os.getenv("GOOGLE_APPLICATION_CREDENTIALS_JSON", "")
+            if credentials_json:
+                credentials_info = json.loads(base64.b64decode(credentials_json))
+                client = BetaAnalyticsDataClient.from_service_account_info(credentials_info)
+            else:
+                logger.warning("No GOOGLE_APPLICATION_CREDENTIALS_JSON found, using default credentials")
+                client = BetaAnalyticsDataClient()
 
-        user_count = await Account.get_users_count(session=session)
-        file_download_event_count, page_view_active_user = extract_metrics(resp)
+            property_id = os.getenv("GOOGLE_APPLICATION_PROPERTY_ID", "")
+            if not property_id:
+                logger.error("GOOGLE_APPLICATION_PROPERTY_ID not set")
+                raise ValueError("GOOGLE_APPLICATION_PROPERTY_ID environment variable is required")
 
-        tz = pytz.timezone("Asia/Singapore")
-        now = datetime.datetime.now(tz)
+            request_api = RunReportRequest(
+                property=f"properties/{property_id}",
+                dimensions=[Dimension(name="eventName")],
+                metrics=[Metric(name="activeUsers"), Metric(name="eventCount")],
+                date_ranges=[DateRange(start_date=starting_date, end_date=ending_date)],
+            )
+            resp = client.run_report(request=request_api)
 
-        data = {
-            "file_download_count": int(file_download_event_count),
-            "unique_active_users": int(page_view_active_user),
-            "user_count": user_count,
-            "timestamp": now,
-        }
-        await Analytics.create(session=session, data=data)
+            user_count = await Account.get_users_count(session=session)
+            file_download_event_count, page_view_active_user = extract_metrics(resp)
 
-        return
+            tz = pytz.timezone("Asia/Singapore")
+            now = datetime.datetime.now(tz)
+
+            data = {
+                "file_download_count": file_download_event_count,
+                "unique_active_users": page_view_active_user,
+                "user_count": user_count,
+                "timestamp": now,
+            }
+            await Analytics.create(session=session, data=data)
+
+            logger.info(
+                "Google Analytics fetch completed: downloads=%d, active_users=%d, user_count=%d",
+                file_download_event_count,
+                page_view_active_user,
+                user_count,
+            )
+        except Exception as e:
+            logger.exception("Failed to fetch Google Analytics data: %s", str(e))
+            raise

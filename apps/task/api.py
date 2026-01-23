@@ -1,9 +1,14 @@
+import logging
+from contextlib import asynccontextmanager
+
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr
 
 load_dotenv()
+
+logger = logging.getLogger(__name__)
 
 from tasks.delete_document import delete_document_task  # noqa: E402
 from tasks.fetch_google_analytics import fetch_google_analytics  # noqa: E402
@@ -15,7 +20,16 @@ from tasks.update_scoreboard_users import update_scoreboard_users_task  # noqa: 
 from tasks.verify_email import send_verification_email_task  # noqa: E402
 from worker import celery_app  # noqa: E402
 
-app = FastAPI(title="Holy Grail Celery Task API", version="1.0.0")
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    logger.info("Task API starting up - triggering fetch_google_analytics task")
+    fetch_google_analytics.delay()
+    yield
+    logger.info("Task API shutting down")
+
+
+app = FastAPI(title="Holy Grail Celery Task API", version="1.0.0", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
