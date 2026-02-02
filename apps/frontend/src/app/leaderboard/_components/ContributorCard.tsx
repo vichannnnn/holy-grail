@@ -19,10 +19,10 @@ const rankStyles = {
 	},
 	2: {
 		container:
-			"bg-gradient-to-br from-slate-300/30 via-slate-200/20 to-slate-100/10 border-slate-300/40 dark:from-slate-400/20 dark:via-slate-300/10 dark:to-slate-200/5 dark:border-slate-400/30",
-		badge: "bg-slate-400 text-white",
-		icon: "text-slate-400",
-		glow: "shadow-slate-300/20 dark:shadow-slate-400/20",
+			"bg-gradient-to-br from-navy/15 via-navy/10 to-navy/5 border-navy/30 dark:from-cream/20 dark:via-cream/15 dark:to-cream/10 dark:border-cream/30",
+		badge: "bg-navy/60 text-cream dark:bg-cream/80 dark:text-navy-deep",
+		icon: "text-navy/60 dark:text-cream/80",
+		glow: "shadow-navy/15 dark:shadow-cream/20",
 	},
 	3: {
 		container:

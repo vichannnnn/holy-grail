@@ -94,7 +94,7 @@ export function UploadEntry({
 					defaultOpen
 					label={file.name}
 					className="mb-0"
-					iconClassName="size-8 p-1 transition-none rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 hover:bg-gray-200 dark:hover:bg-zinc-700 focus-visible:ring-blue-500"
+					iconClassName="size-8 p-1 transition-none rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 hover:bg-cream-dark dark:hover:bg-navy/40 focus-visible:ring-amber"
 				>
 					<div className="flex flex-col items-center gap-2">
 						{/* Display file validation errors */}
@@ -235,7 +235,7 @@ export function UploadEntry({
 					<Dropdown
 						onClick={(e) => e.stopPropagation()}
 						header={
-							<SlidersHorizontal weight="bold" className="size-8 p-1 text-gray-700 dark:text-gray-300 cursor-pointer" />
+							<SlidersHorizontal weight="bold" className="size-8 p-1 text-navy/70 dark:text-cream/70 cursor-pointer" />
 						}
 						content={[
 							<button
@@ -246,7 +246,7 @@ export function UploadEntry({
 										currentValues?.category &&
 										currentValues?.subject &&
 										currentValues?.type
-										? "hover:bg-gray-200 dark:hover:bg-zinc-600 cursor-pointer"
+										? "hover:bg-cream-dark dark:hover:bg-navy/40 cursor-pointer"
 										: "opacity-50 cursor-not-allowed",
 								)}
 								key="mirror-properties"

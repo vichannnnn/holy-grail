@@ -7,7 +7,7 @@ export async function Analytics() {
 	return (
 		<section className="py-16">
 			<div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-				<div className="relative overflow-hidden rounded-3xl border border-navy/5 bg-white/60 px-6 py-12 shadow-sm backdrop-blur-sm dark:border-cream/5 dark:bg-navy/40 sm:px-12">
+				<div className="relative overflow-hidden rounded-2xl border border-navy/5 bg-cream/80 px-6 py-12 shadow-lg shadow-navy/10 backdrop-blur-md dark:border-cream/5 dark:bg-navy-deep/80 dark:shadow-black/20 sm:px-12">
 					<div className="absolute -left-20 -top-20 size-64 rounded-full bg-amber/5 blur-3xl" />
 					<div className="absolute -bottom-20 -right-20 size-64 rounded-full bg-coral/5 blur-3xl" />
 

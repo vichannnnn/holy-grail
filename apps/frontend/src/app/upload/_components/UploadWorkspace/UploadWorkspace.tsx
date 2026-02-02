@@ -120,7 +120,7 @@ export function UploadWorkspace({ categories, documentTypes }: Readonly<UploadWo
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit)} className="w-full flex flex-col items-center">
-			<div className="flex flex-col items-center mb-4 shadow-sm dark:shadow-none bg-gray-200 dark:bg-gray-600/20 p-4 rounded-lg w-full">
+			<div className="flex flex-col items-center mb-4 shadow-sm dark:shadow-none bg-cream-dark dark:bg-navy/30 p-4 rounded-lg w-full">
 				{fields.length > 0 ? (
 					<div className="w-full">
 						{fields.map((field, index) => (
